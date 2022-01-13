@@ -8,5 +8,6 @@ sources:
     tables:
       - name: AverageDailyAttendance_v3
       - name: StudentAttendanceByDate
+      - name: StudentAttendance_v2
       - name: StudentDemographics
       - name: StudentEnrollments
