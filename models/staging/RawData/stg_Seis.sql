@@ -1,3 +1,5 @@
+--Note: After extracting and uploading files to BigQuery, the Seis_Extract_Date column must be added in BigQuery manually
+
 WITH
 seis AS (
   SELECT * FROM {{ source('RawData', 'SeisEmpower')}}
