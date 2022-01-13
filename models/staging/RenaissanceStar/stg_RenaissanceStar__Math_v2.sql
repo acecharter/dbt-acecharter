@@ -12,7 +12,7 @@ With star_math AS (
     FirstName,
     MiddleName,
     Gender,
-    DATE(Birthdate) AS Birthdate,
+    DATE(Birthdate) AS BirthDate,
     Gradelevel As GradeLevel,
     EnrollmentStatus,
     AssessmentID,
