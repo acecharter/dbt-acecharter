@@ -1,0 +1,10 @@
+version: 2
+
+
+sources:
+  - name: StarterPack
+    database: landing-zone-acecharter
+    schema: StarterPack
+    tables:
+      - name: StudentDemographics
+      - name: StudentEnrollments
