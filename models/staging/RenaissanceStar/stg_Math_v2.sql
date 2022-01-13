@@ -20,7 +20,6 @@ With star_math AS (
     AssessmentNumber,
     GradePlacement,
     Grade,
-    UnifiedScore,
     GradeEquivalent,
     CASE WHEN GradeEquivalent='>12.9' THEN '13' ELSE GradeEquivalent END AS GradeEquivalentValue,
     ScaledScore,
