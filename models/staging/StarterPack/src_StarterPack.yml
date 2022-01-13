@@ -1,0 +1,13 @@
+version: 2
+
+
+sources:
+  - name: StarterPack
+    database: landing-zone-acecharter
+    schema: StarterPack
+    tables:
+      - name: AverageDailyAttendance_v3
+      - name: StudentAttendanceByDate
+      - name: StudentAttendance_v2
+      - name: StudentDemographics
+      - name: StudentEnrollments
