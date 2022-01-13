@@ -2,10 +2,9 @@ version: 2
 
 
 sources:
-  - name: star
-    database: RenaissanceStar
-    schema: star
+  - name: RenaissanceStar
+    database: landing-zone-acecharter
+    schema: RenaissanceStar
     tables:
       - name: Math_v2
       - name: Reading_v2
-      
