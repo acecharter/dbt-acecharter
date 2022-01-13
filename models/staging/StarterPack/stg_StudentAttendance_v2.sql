@@ -10,7 +10,7 @@ SELECT
   SumOfAllAbsenceEventDurations,
   CountOfAllAbsenceEvents,
   SumOfAllInAttendanceEventDurations,
-  CountOfAllInAttendanceEventDurations,
+  CountOfAllInAttendanceEvents,
   CountOfDaysEnrolled,
   SumOfUnreconciledAbsenceEventDurations,
   CountOfUnreconciledAbsenceEvents
