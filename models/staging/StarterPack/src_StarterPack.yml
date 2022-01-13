@@ -6,5 +6,6 @@ sources:
     database: landing-zone-acecharter
     schema: StarterPack
     tables:
+      - name: AverageDailyAttendance_v3
       - name: StudentDemographics
       - name: StudentEnrollments
