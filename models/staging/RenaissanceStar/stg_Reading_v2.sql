@@ -38,7 +38,7 @@ With star_reading AS (
     DATE(ScreeningWindowStartDate) AS ScreeningWindowStartDate,
     DATE(ScreeningWindowEndDate) AS ScreeningWindowEndDate
 
- FROM `landing-zone-acecharter.RenaissanceStar.Reading_v2`
+FROM {{ source('RenaissanceStar', 'Reading_v2')}}
 )
 
 SELECT * FROM star_reading
