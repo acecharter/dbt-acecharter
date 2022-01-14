@@ -1,20 +1,10 @@
---Note: After extracting and uploading files to BigQuery, the Seis_Extract_Date column must be added in BigQuery manually
+/*
+Note: After extracting and uploading individual school SEIS files to BigQuery, 
+these files must be unioned and Seis_Extract_Date column added in BigQuery prior
+using BigQuery saved query 'seis_union_and_add_extract_date' prior to running
+this model.
+*/
 
-WITH
-seis AS (
-  SELECT * FROM {{ source('RawData', 'SeisEmpower')}}
-  
-  UNION ALL
-  SELECT * FROM {{ source('RawData', 'SeisEsperanza')}}
-  
-  UNION ALL
-  SELECT * FROM {{ source('RawData', 'SeisInspire')}}
-  
-  UNION ALL
-  SELECT * FROM {{ source('RawData', 'SeisHS')}}
-),
-
-final AS (
   SELECT
     CAST(SEIS_ID AS STRING) AS SeisId,
     Last_Name AS LastName,
@@ -23,9 +13,8 @@ final AS (
     School_of_Attendance AS SchoolName,
     CAST(Student_SSID AS STRING) AS StateUniqueId,
     Grade_Code AS GradeLevel,
+    Student_Eligibility_Status AS StudentEligibilityStatus,
     Seis_Extract_Date AS SeisExtractDate
 
-  FROM seis
-)
+FROM {{ source('RawData', 'Seis')}}
 
-SELECT * FROM final

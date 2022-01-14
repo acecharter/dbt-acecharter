@@ -6,7 +6,4 @@ sources:
     database: landing-zone-acecharter
     schema: RawData
     tables:
-      - name: SeisEmpower
-      - name: SeisEsperanza
-      - name: SeisHS
-      - name: SeisInspire
+      - name: Seis
