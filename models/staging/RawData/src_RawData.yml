@@ -1,0 +1,9 @@
+version: 2
+
+
+sources:
+  - name: RawData
+    database: landing-zone-acecharter
+    schema: RawData
+    tables:
+      - name: Seis
