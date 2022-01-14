@@ -36,6 +36,8 @@ models:
     marts:
       core:
         +materialized: table
+        intermediate:
+          +materialized: view
     # Applies to all files under models/staging/
     staging:
       +materialized: view
