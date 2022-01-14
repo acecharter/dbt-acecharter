@@ -23,7 +23,7 @@ final AS (
     School_of_Attendance AS SchoolName,
     CAST(Student_SSID AS STRING) AS StateUniqueId,
     Grade_Code AS GradeLevel,
-    Seis_Extract_Date
+    Seis_Extract_Date AS SeisExtractDate
 
   FROM seis
 )
