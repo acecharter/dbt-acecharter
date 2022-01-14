@@ -7,7 +7,7 @@ WITH enrollments_ranked AS (
     FROM {{ ref('stg_StarterPack__StudentEnrollments') }}
 ),
 demographics AS (
-    SELECT * FROM {{ ref('StudentDemographics_Seis__joined')}}
+    SELECT * FROM {{ ref('int_StudentDemographics_Seis__joined')}}
 )
 
 
