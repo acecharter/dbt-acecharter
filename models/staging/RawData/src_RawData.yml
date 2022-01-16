@@ -7,8 +7,12 @@ sources:
     schema: RawData
     tables:
       - name: Seis
-      - name: Caaspp2021AllSantaClaraCounty
-      - name: Caaspp2021Entities
       - name: CaasppStudentGroups
       - name: CaasppTests
+      - name: CaasppSantaClaraCounty2021
+      - name: CaasppEntities2021
+      - name: CaasppSantaClaraCounty2019
+      - name: CaasppEntities2019
+      - name: CaasppSantaClaraCounty2018
+      - name: CaasppEntities2018
       

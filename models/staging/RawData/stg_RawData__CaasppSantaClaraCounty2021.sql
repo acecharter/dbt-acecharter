@@ -34,4 +34,4 @@ SELECT
   ROUND(Area_4_Percentage_Near_Standard/100, 4) AS Area4PctNearStandard,
   ROUND(Area_4_Percentage_Below_Standard/100, 4) AS Area4PctBelowStandard
 
-FROM {{ source('RawData', 'Caaspp2021AllSantaClaraCounty')}}
+FROM {{ source('RawData', 'CaasppSantaClaraCounty2021')}}

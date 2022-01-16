@@ -9,7 +9,7 @@ WITH entities AS (
     DistrictName,
     SchoolName,
     ZipCode
-  FROM {{ ref('stg_RawData__Caaspp2021Entities')}}
+  FROM {{ ref('stg_RawData__CaasppEntities2021')}}
 ),
 
 results AS (
@@ -47,7 +47,7 @@ results AS (
     Area4PctAboveStandard,
     Area4PctNearStandard,
     Area4PctBelowStandard
-  FROM {{ ref('stg_RawData__Caaspp2021AllSantaClaraCounty')}}
+  FROM {{ ref('stg_RawData__CaasppSantaClaraCounty2021')}}
 ),
 
 student_groups AS (

@@ -1,5 +1,5 @@
 SELECT *
-FROM {{ ref('int_Caaspp2021AllSantaClaraCounty_IDs_joined')}}
+FROM {{ ref('int_CaasppSantaClaraCounty2021_CaasppEntities2021_joined')}}
 WHERE SchoolCode IN (
   '0116814', --ACE Empower
   '0125617', --ACE High School
