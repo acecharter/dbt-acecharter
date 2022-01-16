@@ -9,6 +9,9 @@ SELECT
   County_Name AS CountyName,
   District_Name AS DistrictName,
   School_Name AS SchoolName,
-  CAST(Zip_Code AS STRING) AS ZipCode
+  CASE
+    WHEN REPLACE(Zip_Code, ' ', '') = '' THEN NULL
+    ELSE CAST(Zip_Code AS STRING)
+  END AS ZipCode
 
 FROM {{ source('RawData', 'CaasppEntities2018')}}

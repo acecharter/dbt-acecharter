@@ -1,7 +1,6 @@
 -- Columns dropped: Filler
 
 SELECT
-  CAST(NULL AS STRING) AS TypeId,
   FORMAT("%02d", County_Code) AS CountyCode,
   FORMAT("%05d", District_Code) AS DistrictCode,
   FORMAT("%07d", School_Code) AS SchoolCode,
