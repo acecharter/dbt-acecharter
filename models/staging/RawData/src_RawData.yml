@@ -15,4 +15,9 @@ sources:
       - name: CaasppEntities2019
       - name: CaasppSantaClaraCounty2018
       - name: CaasppEntities2018
-      
+      - name: ManualDataImportTracker
+      - name: TomsCaasppEnrolled2021Empower
+      - name: TomsCaasppEnrolled2021Esperanza
+      - name: TomsCaasppEnrolled2021HighSchool
+      - name: TomsCaasppEnrolled2021Inspire
+
