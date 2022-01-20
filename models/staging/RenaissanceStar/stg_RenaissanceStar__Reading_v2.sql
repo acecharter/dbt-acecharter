@@ -17,11 +17,11 @@ With star_reading AS (
     EnrollmentStatus,
     AssessmentID,
     DATE(CompletedDateLocal) AS CompletedDateLocal,
-    AssessmentNumber,
+    CAST(AssessmentNumber AS INT64) AS AssessmentNumber,
     GradePlacement,
     Grade,
     GradeEquivalent,
-    CASE WHEN GradeEquivalent='>12.9' THEN '13' ELSE GradeEquivalent END AS GradeEquivalentValue,
+    CASE WHEN GradeEquivalent='> 12.9' THEN '13.0' ELSE GradeEquivalent END AS GradeEquivalentValue,
     ScaledScore,
     UnifiedScore,
     PercentileRank,
@@ -41,4 +41,4 @@ With star_reading AS (
 FROM {{ source('RenaissanceStar', 'Reading_v2')}}
 )
 
-SELECT * FROM star_reading
+SELECT * FROM star_reading WHERE AssessmentNumber >1

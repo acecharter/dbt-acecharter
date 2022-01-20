@@ -16,7 +16,11 @@ SELECT
   Birthdate AS BirthDate,
   BirthSex,
   Gender,
-  RaceEthFedRollup AS RaceEthnicity,
+  CASE
+    WHEN RaceEthFedRollup = 'Hispanic or Latino of any race' THEN 'Hispanic or Latino' 
+    WHEN RaceEthFedRollup IS NULL THEN 'Unknown/Missing'
+    ELSE RaceEthFedRollup 
+  END AS RaceEthnicity,
   IsEll,
   EllStatus,
   HasFrl,
