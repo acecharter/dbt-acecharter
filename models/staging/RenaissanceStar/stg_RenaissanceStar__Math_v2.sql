@@ -21,7 +21,7 @@ With star_math AS (
     GradePlacement,
     Grade,
     GradeEquivalent,
-    CASE WHEN GradeEquivalent='> 12.9' THEN '13' ELSE GradeEquivalent END AS GradeEquivalentValue,
+    CASE WHEN GradeEquivalent='> 12.9' THEN '13.0' ELSE GradeEquivalent END AS GradeEquivalentValue,
     ScaledScore,
     UnifiedScore,
     PercentileRank,
