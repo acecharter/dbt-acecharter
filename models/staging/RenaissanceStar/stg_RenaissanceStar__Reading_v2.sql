@@ -33,7 +33,7 @@ With star_reading AS (
     StudentGrowthPercentileFallWinter,
     StudentGrowthPercentileSpringSpring,
     StudentGrowthPercentileWinterSpring,
-    CurrentSGP
+    CurrentSGP,
     ScreeningPeriodWindowName,
     DATE(ScreeningWindowStartDate) AS ScreeningWindowStartDate,
     DATE(ScreeningWindowEndDate) AS ScreeningWindowEndDate
