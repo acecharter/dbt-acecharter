@@ -7,4 +7,17 @@ sources:
     schema: RenaissanceStar
     tables:
       - name: Math_v2
+        description: Student-level Renaissance Star Math Enterprise Asseessment (English) data. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
+        columns:
+          - name: RenaissanceClientID
+            description: Renaissance customer number
+          - name: StudentRenaissanceID
+            description: Unique internal Renaissance student ID. Used by Renaissance to link the student to other Renaissance systems.
+          - name: StudentUniqueId
+            description: (StudentSourcedID in source documnetation)
+          - name: StudentIdentifier
+          - name: StudentUserID
+          - name: StateUniqueId
+            description: (StudentStateID in source documentation) Student's state ID in Renaissance. Blank if not provided.
       - name: Reading_v2
+        description: Student-level Renaissance Star Reading Enterprise Asseessment (English) data. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
