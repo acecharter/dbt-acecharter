@@ -46,6 +46,7 @@ sources:
               - unique
               - not_null
       - name: SeisInspire
+        description: An extract from SEIS listing Inspire students with SEIS records
         columns:
           - name: SEIS_ID
             description: Primary key of the table
@@ -56,7 +57,6 @@ sources:
             description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
               - unique
               - not_null
-        description: An extract from SEIS listing Inspire students with SEIS records
       - name: CaasppStudentGroups
       - name: CaasppTests
       - name: CaasppSantaClaraCounty2021
