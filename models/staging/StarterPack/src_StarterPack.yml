@@ -5,17 +5,47 @@ sources:
   - name: StarterPack
     database: landing-zone-acecharter
     schema: StarterPack
+    description: Analytics data mart created by Landing Zone from data pulled from ACE's PowerSchool SIS and passed through the Ed-Fi ODS. Landing Zone's documentation available at https://docs.google.com/spreadsheets/d/10EhwdMyb015thaPAXbGFWm0Pp_CCATmMiyL2nUeNWiw
     tables:
       - name: AverageDailyAttendance_v3
+        description: Provides aggregate calculations of average daily attendance.
+
+      - name: CalendarDates
+        description: General student calendar information for schools in the current academic year.
+
+      - name: CourseEnrollments_v2
+        description: Provides current year course enrollments for all students and schools.
+
+      - name: DisciplineActions
+        description: Information related to student discipline actions for the current academic year.
+
+      - name: DisciplineIncidents
+        description: Information related to student discipline incidents for the current academic year.
+
       - name: Schools
-        description: School level information from PowerSchool
+        description: Schools within the organization.
         columns:
           - name: SchoolId
             description: Primary key of the table
             tests:
               - unique
               - not_null
+
+      - name: Staff_v2
+        description: Demographical information about staff members for each of their work assignments.
+
       - name: StudentAttendanceByDate
+        description: Student attendance table providing all non-present attendance events from a day-level view.
+
       - name: StudentAttendance_v2
+        description: Attendance aggregations taken at the student level. Includes the student's average daily attendance, sums of all attendance event durations, and counts of all attendance events.
+
       - name: StudentDemographics
+        description: General demographic information about students enrolled in the current academic year.
+
       - name: StudentEnrollments
+        description: Student enrollments for students enrolled in the current academic year.
+
+      - name: StudentRaceAndEthnicity
+        description: Student race and ethnicity information.
+        
