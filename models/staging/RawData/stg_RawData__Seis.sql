@@ -19,7 +19,7 @@ WITH seis AS (
 )
 
 SELECT
-  CAST(SEIS_ID AS STRING) AS SeisId,
+  CAST(SEIS_ID AS STRING) AS SeisUniqueId,
   Last_Name AS LastName,
   First_Name AS FirstName,
   Date_of_Birth AS BirthDate,

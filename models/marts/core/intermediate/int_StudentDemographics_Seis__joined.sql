@@ -8,7 +8,7 @@ students_with_iep AS (
 
 SELECT
  sd.*,
- CASE WHEN i.SeisId IS NOT NULL THEN TRUE ELSE FALSE END AS HasIep,
+ CASE WHEN i.SeisUniqueId IS NOT NULL THEN TRUE ELSE FALSE END AS HasIep,
  i.SeisExtractDate AS IepStatusDate 
 FROM student_demographics AS sd
 LEFT JOIN students_with_iep AS i

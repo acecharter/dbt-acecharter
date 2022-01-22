@@ -7,9 +7,56 @@ sources:
     schema: RawData
     tables:
       - name: SeisEmpower
+        description: An extract from SEIS (Special Education Information System) listing Empower students with SEIS records
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+            tests:
+              - unique
+              - not_null
       - name: SeisEsperanza
-      - name: SeisInspire
+        description: An extract from SEIS listing Esperanza students with SEIS records
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+            tests:
+              - unique
+              - not_null
       - name: SeisHighSchool
+        description: An extract from SEIS listing ACE High School students with SEIS records
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+            tests:
+              - unique
+              - not_null
+      - name: SeisInspire
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+              - unique
+              - not_null
+        description: An extract from SEIS listing Inspire students with SEIS records
       - name: CaasppStudentGroups
       - name: CaasppTests
       - name: CaasppSantaClaraCounty2021
