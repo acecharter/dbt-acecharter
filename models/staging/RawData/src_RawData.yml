@@ -6,7 +6,10 @@ sources:
     database: landing-zone-acecharter
     schema: RawData
     tables:
-      - name: Seis
+      - name: SeisEmpower
+      - name: SeisEsperanza
+      - name: SeisInspire
+      - name: SeisHighSchool
       - name: CaasppStudentGroups
       - name: CaasppTests
       - name: CaasppSantaClaraCounty2021
