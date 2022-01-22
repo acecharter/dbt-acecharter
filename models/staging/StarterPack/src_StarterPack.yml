@@ -8,6 +8,13 @@ sources:
     tables:
       - name: AverageDailyAttendance_v3
       - name: Schools
+        description: School level information from PowerSchool
+        columns:
+          - name: SchoolId
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
       - name: StudentAttendanceByDate
       - name: StudentAttendance_v2
       - name: StudentDemographics
