@@ -2,7 +2,7 @@
 
 SELECT
   SchoolId,
-  NameOfInstitution,
+  NameOfInstitution AS SchoolName,
   StudentUniqueId,
   LastSurname,
   FirstName,

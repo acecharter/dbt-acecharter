@@ -7,7 +7,7 @@
 
 SELECT
   StudentUniqueId,
-  StateUniqueId,
+  StateUniqueId AS SSID,
   SisUniqueId,
   DisplayName,
   LastSurname AS LastName,
@@ -28,6 +28,6 @@ SELECT
   Email,
   IsCurrentlyEnrolled,
   CurrentSchoolId,
-  CurrentNameOfInstitution,
+  CurrentNameOfInstitution AS CurrentSchoolName,
   CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
 FROM {{ source('StarterPack', 'StudentDemographics')}}

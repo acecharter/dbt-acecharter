@@ -12,4 +12,4 @@ SELECT
  i.SeisExtractDate AS IepStatusDate 
 FROM student_demographics AS sd
 LEFT JOIN students_with_iep AS i
-USING (StateUniqueId)
+USING (SSID)

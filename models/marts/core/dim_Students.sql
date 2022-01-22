@@ -13,9 +13,9 @@ demographics AS (
 
 SELECT
     e.SchoolId,
-    e.NameOfInstitution,
+    e.SchoolName,
     e.StudentUniqueId,
-    d.StateUniqueId,
+    d.SSID,
     d.DisplayName,
     d.LastName,
     d.FirstName,

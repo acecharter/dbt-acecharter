@@ -2,7 +2,7 @@
 
 SELECT
   SchoolId,
-  NameOfInstitution,
+  NameOfInstitution AS SchoolName,
   WeekOf,
   CAST(GradeLevel AS int64) AS GradeLevel,
   Month,
