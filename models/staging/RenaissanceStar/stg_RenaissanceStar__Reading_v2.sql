@@ -41,4 +41,4 @@ With star_reading AS (
 FROM {{ source('RenaissanceStar', 'Reading_v2')}}
 )
 
-SELECT * FROM star_reading WHERE AssessmentNumber >1
+SELECT * FROM star_reading
