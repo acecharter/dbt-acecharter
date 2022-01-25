@@ -37,10 +37,24 @@ With star_math AS (
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
     Quantile,
-    ScreeningPeriodWindowName,
-    DATE(ScreeningWindowStartDate) AS ScreeningWindowStartDate,
-    DATE(ScreeningWindowEndDate) AS ScreeningWindowEndDate
-
+    ScreeningPeriodWindowName AS AceTestingWindowName,
+    DATE(ScreeningWindowStartDate) AS AceTestingWindowStartDate,
+    DATE(ScreeningWindowEndDate) AS AceTestingWindowEndDate,
+    CASE
+      WHEN
+        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-01')) AND
+        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-11-30'))
+      THEN 'Fall'
+      WHEN
+        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-12-01')) AND
+        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-03-31'))
+      THEN 'Winter'
+      WHEN
+        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-04-01')) AND
+        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
+      THEN 'Spring'
+    END AS StarTestingWindow
+    
  FROM {{ source('RenaissanceStar', 'Math_v2')}}
 )
 
