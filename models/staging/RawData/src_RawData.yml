@@ -66,6 +66,22 @@ sources:
       - name: CaasppSantaClaraCounty2018
       - name: CaasppEntities2018
       - name: ManualDataImportTracker
+      - name: Schools
+        description: Additional school information
+        columns:
+          - name: SchoolId
+            description: Primary key of the table, no leading zeros
+            tests:
+              - unique
+              - not_null
+          - name: StateCountyCode
+            description: State-assigned county code
+            tests:
+              - not_null
+          - name: StateDistrictCode
+            description: State-assigned district code for the authorizing district or entity
+            tests:
+              - not_null
       - name: TomsCaasppEnrolled2021Empower
       - name: TomsCaasppEnrolled2021Esperanza
       - name: TomsCaasppEnrolled2021HighSchool
