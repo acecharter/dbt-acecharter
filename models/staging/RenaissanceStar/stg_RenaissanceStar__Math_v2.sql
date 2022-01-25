@@ -8,6 +8,10 @@ With star_math AS (
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId AS SSID,
+    CASE
+      WHEN MiddleName IS NULL THEN CONCAT(LastSurname, ", ", FirstName)
+      ELSE CONCAT(LastSurname, ", ", FirstName, " ", MiddleName)
+    END AS DisplayName,
     LastSurname AS LastName,
     FirstName,
     MiddleName,
