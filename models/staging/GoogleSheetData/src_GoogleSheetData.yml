@@ -6,7 +6,7 @@ sources:
     database: landing-zone-acecharter
     schema: GoogleSheetData
     tables:
-      - name: ManuallyMaintainedFilesUpdateDateTracker
+      - name: ManuallyMaintainedFilesTracker
         description: A google sheet used to track the last date that files requiring manual maintenance (i.e. files that must be continuously updated via manual uploads) were last updated in BigQuery
         columns:
           - name: DatasetName
