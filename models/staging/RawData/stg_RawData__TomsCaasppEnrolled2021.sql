@@ -8,7 +8,13 @@ WITH empower AS (
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     LexileorQuantileMeasure,
     ScaleScore,
-    AchievementLevels
+    AchievementLevels,
+    CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
+    CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
+    CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
+    CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
+    CAST(ScaleScoreMinus2 AS STRING) AS ScaleScoreMinus2,
+    CAST(AchievementLevelMinus2 AS STRING) AS AchievementLevelMinus2
   FROM {{ source('RawData', 'TomsCaasppEnrolled2021Empower')}}
 ),
 
@@ -22,7 +28,13 @@ esperanza AS (
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     LexileorQuantileMeasure,
     ScaleScore,
-    AchievementLevels
+    AchievementLevels,
+    CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
+    CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
+    CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
+    CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
+    CAST(ScaleScoreMinus2 AS STRING) AS ScaleScoreMinus2,
+    CAST(AchievementLevelMinus2 AS STRING) AS AchievementLevelMinus2
   FROM {{ source('RawData', 'TomsCaasppEnrolled2021Esperanza')}}
 ),
 
@@ -36,7 +48,13 @@ inspire AS (
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     LexileorQuantileMeasure,
     ScaleScore,
-    AchievementLevels
+    AchievementLevels,
+    CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
+    CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
+    CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
+    CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
+    CAST(ScaleScoreMinus2 AS STRING) AS ScaleScoreMinus2,
+    CAST(AchievementLevelMinus2 AS STRING) AS AchievementLevelMinus2
   FROM {{ source('RawData', 'TomsCaasppEnrolled2021Inspire')}}
 ),
 
@@ -50,7 +68,13 @@ hs AS (
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     LexileorQuantileMeasure,
     ScaleScore,
-    AchievementLevels
+    AchievementLevels,
+    CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
+    CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
+    CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
+    CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
+    CAST(ScaleScoreMinus2 AS STRING) AS ScaleScoreMinus2,
+    CAST(AchievementLevelMinus2 AS STRING) AS AchievementLevelMinus2
   FROM {{ source('RawData', 'TomsCaasppEnrolled2021HighSchool')}}
 ),
 
@@ -89,5 +113,11 @@ SELECT
   END AS IncludeIndicator,
   LexileorQuantileMeasure,
   ScaleScore,
-  AchievementLevels
+  AchievementLevels,
+  CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
+  CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
+  CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
+  CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
+  CAST(ScaleScoreMinus2 AS STRING) AS ScaleScoreMinus2,
+  CAST(AchievementLevelMinus2 AS STRING) AS AchievementLevelMinus2
 FROM final
