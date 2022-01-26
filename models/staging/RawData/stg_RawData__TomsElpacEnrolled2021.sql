@@ -21,7 +21,8 @@ WITH empower AS (
     CAST(OverallPLMinus1 AS STRING) AS OverallPLMinus1,
     CAST(AttemptednessMinus2 AS STRING) AS AttemptednessMinus2,
     CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
-    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2
+    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2,
+    CAST(OverallPLMinus2 AS STRING) AS OverallPLMinus2
       FROM {{ source('RawData', 'TomsElpacEnrolled2021Empower')}}
 ),
 
@@ -48,7 +49,8 @@ esperanza AS (
     CAST(OverallPLMinus1 AS STRING) AS OverallPLMinus1,
     CAST(AttemptednessMinus2 AS STRING) AS AttemptednessMinus2,
     CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
-    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2
+    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2,
+    CAST(OverallPLMinus2 AS STRING) AS OverallPLMinus2
   FROM {{ source('RawData', 'TomsElpacEnrolled2021Esperanza')}}
 ),
 
@@ -75,7 +77,8 @@ inspire AS (
     CAST(OverallPLMinus1 AS STRING) AS OverallPLMinus1,
     CAST(AttemptednessMinus2 AS STRING) AS AttemptednessMinus2,
     CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
-    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2
+    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2,
+    CAST(OverallPLMinus2 AS STRING) AS OverallPLMinus2
   FROM {{ source('RawData', 'TomsElpacEnrolled2021Inspire')}}
 ),
 
@@ -102,7 +105,8 @@ hs AS (
     CAST(OverallPLMinus1 AS STRING) AS OverallPLMinus1,
     CAST(AttemptednessMinus2 AS STRING) AS AttemptednessMinus2,
     CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
-    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2
+    CAST(OverallScaleScoreMinus2 AS STRING) AS OverallScaleScoreMinus2,
+    CAST(OverallPLMinus2 AS STRING) AS OverallPLMinus2
   FROM {{ source('RawData', 'TomsElpacEnrolled2021HighSchool')}}
 ),
 
