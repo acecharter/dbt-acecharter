@@ -149,5 +149,6 @@ SELECT
   OverallPLMinus1,
   AttemptednessMinus2,
   GradeAssessedMinus2,
-  OverallScaleScoreMinus2
+  OverallScaleScoreMinus2,
+  OverallPLMinus2
 FROM final
