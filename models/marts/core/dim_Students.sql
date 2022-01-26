@@ -28,6 +28,7 @@ SELECT
     d.HasFrl,
     d.FrlStatus,
     d.HasIep,
+    d.SeisEligibilityStatus,
     d.IepStatusDate,
     d.Email,
     e.GradeLevel,
