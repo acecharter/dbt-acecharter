@@ -82,7 +82,19 @@ sources:
             tests:
               - not_null
       - name: TomsCaasppEnrolled2021Empower
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsCaasppEnrolled2021Esperanza
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Esperanza as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsCaasppEnrolled2021HighSchool
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsCaasppEnrolled2021Inspire
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021Empower
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021Esperanza
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Esperanza as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021HighSchool
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021Inspire
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
 
