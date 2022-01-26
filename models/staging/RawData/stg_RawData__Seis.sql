@@ -1,11 +1,16 @@
-/*
-Note: After uploading the individual school SEIS files to BigQuery, the 
-Seis_Extract_Date column must be added and populated with a date string
-(using 'YYYY-MM-DD' format) in BigQuery prior to running this model, using
-the saved project query 'Seis_AddExtractDateToSeisSchoolFiles'.
-*/
-
-WITH seis AS (
+WITH seis_update_dates AS (
+  SELECT
+    CASE
+      WHEN TableName = 'SeisEmpower' THEN 'ACE Empower Academy'
+      WHEN TableName = 'SeisEsperanza' THEN 'ACE Esperanza Middle'
+      WHEN TableName = 'SeisInspire' THEN 'ACE Inspire Academy'
+      WHEN TableName = 'SeisHighSchool' THEN 'ACE Charter High'
+    END AS SchoolName,
+    DateTableLastUpdated
+  FROM {{ source('GoogleSheetData', 'ManuallyMaintainedFilesTracker')}}
+),
+  
+seis_unioned AS (
   SELECT * FROM {{ source('RawData', 'SeisEmpower')}}
 
   UNION ALL
@@ -16,17 +21,24 @@ WITH seis AS (
 
   UNION ALL
   SELECT * FROM {{ source('RawData', 'SeisHighSchool')}}
+),
+
+seis AS (
+  SELECT
+    CAST(SEIS_ID AS STRING) AS SeisUniqueId,
+    Last_Name AS LastName,
+    First_Name AS FirstName,
+    Date_of_Birth AS BirthDate,
+    School_of_Attendance AS SchoolName,
+    CAST(Student_SSID AS STRING) AS SSID,
+    Grade_Code AS GradeLevel,
+    Student_Eligibility_Status AS StudentEligibilityStatus
+  FROM seis_unioned
 )
 
 SELECT
-  CAST(SEIS_ID AS STRING) AS SeisUniqueId,
-  Last_Name AS LastName,
-  First_Name AS FirstName,
-  Date_of_Birth AS BirthDate,
-  School_of_Attendance AS SchoolName,
-  CAST(Student_SSID AS STRING) AS SSID,
-  Grade_Code AS GradeLevel,
-  Student_Eligibility_Status AS StudentEligibilityStatus,
-  CAST(Seis_Extract_Date AS DATE) AS SeisExtractDate
-
-FROM seis
+  s.*,
+  d.DateTableLastUpdated AS SeisExtractDate
+FROM seis AS s
+LEFT JOIN seis_update_dates AS d
+USING (SchoolName)
