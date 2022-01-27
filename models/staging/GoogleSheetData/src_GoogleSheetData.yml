@@ -15,3 +15,9 @@ sources:
             description: Name of the table that is manually maintained
           - name: DateOfLastUpdate
             description: Date that each listed table was last updated
+      - name: CersEmpower
+        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Empower
+      - name: CersEsperanza
+        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Esperanza
+      - name: CersInspire
+        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Inspire
