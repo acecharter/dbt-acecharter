@@ -1,6 +1,12 @@
 With star_reading AS (
   SELECT
-    SchoolIdentifier,
+    CASE
+      WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
+      WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247',
+      WHEN SchoolIdentifier='57b1f93e473b517136000007' THEN '131656',
+      WHEN SchoolIdentifier='061182013023' THEN '125617',
+      ELSE '999999999'
+    END AS SchoolId,
     NameofInstitution AS SchoolName,
     SchoolYear,
     DATE(SchoolYearStartDate) AS SchoolYearStartDate,
