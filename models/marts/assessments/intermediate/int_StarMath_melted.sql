@@ -143,7 +143,7 @@ results_unioned AS(
 
 SELECT
  s.*,
- r.*
+ r.* EXCEPT (AssessmentID)
 FROM star_reading_keys AS s
 LEFT JOIN results_unioned AS r
 USING (AssessmentID)
