@@ -6,6 +6,64 @@ sources:
     database: landing-zone-acecharter
     schema: GoogleSheetData
     tables:
+      - name: AssessmentFamilies
+        description: Assessment family information
+
+      - name: Assessments
+        description: A google sheet listing assessments used by ACE
+        columns:
+          - name: AceAssessmentUniqueId
+            description: Internally created primary key of the table.
+            tests:
+              - unique
+              - not_null
+          - name: AssessmentFamilyId
+            description: Foreign key identifying the assessment's assessment family
+          - name: AssessmentNameLong
+            tests:
+              - not_null
+          - name: AssessmentNameShort
+            tests:
+              - not_null
+          - name: SysemOrVendorAssessmentId
+            description: Optional additional assessment ID field; only applicable for assessments where the vendor uses an assessment-specific ID
+
+      - name: AssessmentScaleScoreRanges
+        description: A google sheet containing assessment- and grade-specific scale score ranges for assessments used by ACE.
+        columns:
+          - name: "AceAssessmentUniqueId || '-' || Area || '-' || GradeLevel"
+            description: Table does not have a primary key, but the combination of these columns should be unique
+            tests:
+              - unique
+          - name: AceAssessmentUniqueId
+            description: Foreign key from Assessments table unique to each assessment (but not grade level)
+            tests:
+              - not_null
+          - name: AssessmentNameShort
+            description: Name of assessment associated with scale score range
+          - name: Area
+            description: Assessment ares to which scale score range applies. Default value is 'Overall'.
+            tests:
+              - not_null
+          - name: GradeLevel
+            description: Grade level to which scale score range applies. Default value is 'All' if range is not grade specific.
+            tests:
+              - not_null
+          - name: Level1Max
+            description: Maximum scale score within Level 1 range
+          - name: Level2Min
+            description: Minimum scale score within Level 2 range
+          - name: Level2Max
+            description: Maximum scale score within Level 2 range
+          - name: Level3Min
+            description: Minimum scale score within Level 3 range
+          - name: Level3Max
+            description: Maximum scale score within Level 3 range
+          - name: Level4Min
+            description: Minimum scale score within Level 4 range; ('N/A' if not applicable)
+          - name: Notes
+
+        columns:  
       - name: ManuallyMaintainedFilesTracker
         description: A google sheet used to track the last date that files requiring manual maintenance (i.e. files that must be continuously updated via manual uploads) were last updated in BigQuery
         columns:
