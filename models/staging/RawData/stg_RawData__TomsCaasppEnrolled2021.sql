@@ -1,5 +1,6 @@
 WITH empower AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -20,6 +21,7 @@ WITH empower AS (
 
 esperanza AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -40,6 +42,7 @@ esperanza AS (
 
 inspire AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -60,6 +63,7 @@ inspire AS (
 
 hs AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -89,6 +93,7 @@ final AS (
 )
 
 SELECT
+  SchoolId,
   RecordType,
   CASE
     WHEN RecordType = 1 THEN 'SB ELA'
