@@ -11,7 +11,7 @@ With star_math AS (
     CONCAT(LEFT(SchoolYear, 5), RIGHT(SchoolYear, 2)) AS SchoolYear,
     StudentRenaissanceID,
     StudentIdentifier,
-    StateUniqueId AS SSID,
+    StateUniqueId,
     CASE
       WHEN MiddleName IS NULL THEN CONCAT(LastSurname, ", ", FirstName)
       ELSE CONCAT(LastSurname, ", ", FirstName, " ", MiddleName)

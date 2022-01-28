@@ -7,7 +7,7 @@
 
 SELECT
   StudentUniqueId,
-  StateUniqueId AS SSID,
+  StateUniqueId,
   SisUniqueId,
   DisplayName,
   LastSurname AS LastName,

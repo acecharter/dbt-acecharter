@@ -6,10 +6,10 @@ caaspp_keys_2021 AS(
   SELECT
     --ASSESSMENT_KEY,
     --OBJECTIVE_ASSESSMENT_KEY,
-    SSID,
+    StateUniqueId,
     SchoolId,
     '2020-21' AS SchoolYear,
-    CONCAT('2021-', RecordType, '-', SSID) AS AssessmentId,
+    CONCAT('2021-', RecordType, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
     GradeAssessed AS AssessedGradeLevel
   FROM caaspp
@@ -17,7 +17,7 @@ caaspp_keys_2021 AS(
 
 scale_score_2021 AS (
   SELECT
-    CONCAT(RecordType, "-", SSID) AS AssessmentId,
+    CONCAT(RecordType, "-", StateUniqueId) AS AssessmentId,
     RecordType,
     'Scale Score' AS ReportingMethod,
     'Scale Score' AS StudentResultDataType,
@@ -27,7 +27,7 @@ scale_score_2021 AS (
 
 achievement_level_2021 AS (
   SELECT
-    CONCAT(RecordType, "-", SSID) AS AssessmentId,
+    CONCAT(RecordType, "-", StateUniqueId) AS AssessmentId,
     RecordType,
     'Achievement Level' AS ReportingMethod,
     'Level' AS StudentResultDataType,
@@ -39,10 +39,10 @@ caaspp_keys_2020 AS(
   SELECT
     --ASSESSMENT_KEY,
     --OBJECTIVE_ASSESSMENT_KEY,
-    SSID,
+    StateUniqueId,
     SchoolId,
     '2019-20' AS SchoolYear,
-    CONCAT('2020-', RecordType, '-', SSID) AS AssessmentId,
+    CONCAT('2020-', RecordType, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
     GradeAssessedMinus1 AS AssessedGradeLevel
   FROM caaspp
@@ -50,7 +50,7 @@ caaspp_keys_2020 AS(
 
 scale_score_2020 AS (
   SELECT
-    CONCAT(RecordType, "-", SSID) AS AssessmentId,
+    CONCAT(RecordType, "-", StateUniqueId) AS AssessmentId,
     RecordType,
     'Scale Score' AS ReportingMethod,
     'Scale Score' AS StudentResultDataType,
@@ -60,7 +60,7 @@ scale_score_2020 AS (
 
 achievement_level_2020 AS (
   SELECT
-    CONCAT(RecordType, "-", SSID) AS AssessmentId,
+    CONCAT(RecordType, "-", StateUniqueId) AS AssessmentId,
     RecordType,
     'Achievement Level' AS ReportingMethod,
     'Level' AS StudentResultDataType,
@@ -72,10 +72,10 @@ caaspp_keys_2019 AS(
   SELECT
     --ASSESSMENT_KEY,
     --OBJECTIVE_ASSESSMENT_KEY,
-    SSID,
+    StateUniqueId,
     SchoolId,
     '2018-19' AS SchoolYear,
-    CONCAT('2019-', RecordType, '-', SSID) AS AssessmentId,
+    CONCAT('2019-', RecordType, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
     GradeAssessedMinus1 AS AssessedGradeLevel
   FROM caaspp
@@ -83,7 +83,7 @@ caaspp_keys_2019 AS(
 
 scale_score_2019 AS (
   SELECT
-    CONCAT(RecordType, "-", SSID) AS AssessmentId,
+    CONCAT(RecordType, "-", StateUniqueId) AS AssessmentId,
     RecordType,
     'Scale Score' AS ReportingMethod,
     'Scale Score' AS StudentResultDataType,
@@ -93,7 +93,7 @@ scale_score_2019 AS (
 
 achievement_level_2019 AS (
   SELECT
-    CONCAT(RecordType, "-", SSID) AS AssessmentId,
+    CONCAT(RecordType, "-", StateUniqueId) AS AssessmentId,
     RecordType,
     'Achievement Level' AS ReportingMethod,
     'Level' AS StudentResultDataType,

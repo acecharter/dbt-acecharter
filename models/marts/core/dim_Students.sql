@@ -15,7 +15,7 @@ SELECT
     e.SchoolId,
     e.SchoolName,
     e.StudentUniqueId,
-    d.SSID,
+    d.StateUniqueId,
     d.DisplayName,
     d.LastName,
     d.FirstName,

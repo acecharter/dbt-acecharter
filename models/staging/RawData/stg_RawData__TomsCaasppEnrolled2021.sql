@@ -103,7 +103,7 @@ SELECT
     WHEN RecordType = 6 THEN 'CAST'
     WHEN RecordType = 9 THEN 'CSA'
   END AS TestName,
-  CAST(SSID AS STRING) AS SSID,
+  CAST(SSID AS STRING) AS StateUniqueId,
   GradeAssessed,
   CASE
     WHEN Attemptedness = 'false' THEN 'N'

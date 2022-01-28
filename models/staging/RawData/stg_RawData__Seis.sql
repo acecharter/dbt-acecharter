@@ -30,7 +30,7 @@ seis AS (
     First_Name AS FirstName,
     Date_of_Birth AS BirthDate,
     School_of_Attendance AS SchoolName,
-    CAST(Student_SSID AS STRING) AS SSID,
+    CAST(Student_SSID AS STRING) AS StateUniqueId,
     Grade_Code AS GradeLevel,
     Student_Eligibility_Status AS StudentEligibilityStatus
   FROM seis_unioned

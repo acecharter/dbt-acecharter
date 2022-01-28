@@ -8,7 +8,7 @@ star_reading_keys AS(
     --OBJECTIVE_ASSESSMENT_KEY,
     StudentRenaissanceID,
     StudentIdentifier,
-    SSID,
+    StateUniqueId,
     SchoolId,
     SchoolYear,
     AssessmentID,
