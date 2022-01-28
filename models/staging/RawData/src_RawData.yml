@@ -6,4 +6,95 @@ sources:
     database: landing-zone-acecharter
     schema: RawData
     tables:
-      - name: Seis
+      - name: SeisEmpower
+        description: An extract from SEIS (Special Education Information System) listing Empower students with SEIS records
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+            tests:
+              - unique
+              - not_null
+      - name: SeisEsperanza
+        description: An extract from SEIS listing Esperanza students with SEIS records
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+            tests:
+              - unique
+              - not_null
+      - name: SeisHighSchool
+        description: An extract from SEIS listing ACE High School students with SEIS records
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+            tests:
+              - unique
+              - not_null
+      - name: SeisInspire
+        description: An extract from SEIS listing Inspire students with SEIS records
+        columns:
+          - name: SEIS_ID
+            description: Primary key of the table
+            tests:
+              - unique
+              - not_null
+          - name: Student_SSID
+            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+              - unique
+              - not_null
+      - name: CaasppStudentGroups
+      - name: CaasppTests
+      - name: CaasppSantaClaraCounty2021
+      - name: CaasppEntities2021
+      - name: CaasppSantaClaraCounty2019
+      - name: CaasppEntities2019
+      - name: CaasppSantaClaraCounty2018
+      - name: CaasppEntities2018
+      - name: Schools
+        description: Additional school information
+        columns:
+          - name: SchoolId
+            description: Primary key of the table, no leading zeros
+            tests:
+              - unique
+              - not_null
+          - name: StateCountyCode
+            description: State-assigned county code
+            tests:
+              - not_null
+          - name: StateDistrictCode
+            description: State-assigned district code for the authorizing district or entity
+            tests:
+              - not_null
+      - name: TomsCaasppEnrolled2021Empower
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsCaasppEnrolled2021Esperanza
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Esperanza as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsCaasppEnrolled2021HighSchool
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsCaasppEnrolled2021Inspire
+        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021Empower
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021Esperanza
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Esperanza as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021HighSchool
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      - name: TomsElpacEnrolled2021Inspire
+        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+

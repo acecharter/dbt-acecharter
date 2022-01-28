@@ -7,12 +7,13 @@ students_with_iep AS (
 )
 
 SELECT
- sd.*,
- CASE
-   WHEN i.SeisId IS NOT NULL THEN TRUE
-   ELSE FALSE
- END AS HasIep,
- i.SeisExtractDate AS IepStatusDate 
+  sd.*,
+  CASE
+    WHEN i.StudentEligibilityStatus = 'Eligible/Previously Eligible' THEN TRUE
+    ELSE FALSE
+  END AS HasIep,
+  i.StudentEligibilityStatus AS SeisEligibilityStatus,
+  i.SeisExtractDate AS IepStatusDate 
 FROM student_demographics AS sd
 LEFT JOIN students_with_iep AS i
-USING (StateUniqueId)
+USING (SSID)

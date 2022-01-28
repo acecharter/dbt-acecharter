@@ -7,7 +7,7 @@
 
 SELECT
   StudentUniqueId,
-  StateUniqueId,
+  StateUniqueId AS SSID,
   SisUniqueId,
   DisplayName,
   LastSurname AS LastName,
@@ -16,7 +16,11 @@ SELECT
   Birthdate AS BirthDate,
   BirthSex,
   Gender,
-  RaceEthFedRollup AS RaceEthnicity,
+  CASE
+    WHEN RaceEthFedRollup = 'Hispanic or Latino of any race' THEN 'Hispanic or Latino' 
+    WHEN RaceEthFedRollup IS NULL THEN 'Unknown/Missing'
+    ELSE RaceEthFedRollup 
+  END AS RaceEthnicity,
   IsEll,
   EllStatus,
   HasFrl,
@@ -24,6 +28,6 @@ SELECT
   Email,
   IsCurrentlyEnrolled,
   CurrentSchoolId,
-  CurrentNameOfInstitution,
+  CurrentNameOfInstitution AS CurrentSchoolName,
   CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
 FROM {{ source('StarterPack', 'StudentDemographics')}}

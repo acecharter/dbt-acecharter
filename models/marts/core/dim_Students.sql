@@ -13,9 +13,9 @@ demographics AS (
 
 SELECT
     e.SchoolId,
-    e.NameOfInstitution,
+    e.SchoolName,
     e.StudentUniqueId,
-    d.StateUniqueId,
+    d.SSID,
     d.DisplayName,
     d.LastName,
     d.FirstName,
@@ -28,6 +28,7 @@ SELECT
     d.HasFrl,
     d.FrlStatus,
     d.HasIep,
+    d.SeisEligibilityStatus,
     d.IepStatusDate,
     d.Email,
     e.GradeLevel,
