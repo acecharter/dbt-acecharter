@@ -1,5 +1,15 @@
-With star_math AS (
+WITH assessment_ids AS (
+  SELECT 
+    AceAssessmentUniqueId,
+    AssessmentNameShort AS AssessmentName,
+    'Enterprise' AS AssessmentType
+  FROM {{ ref('stg_GoogleSheetData__Assessments') }}
+  WHERE AssessmentNameShort = 'Star Math'
+),
+
+star_math AS (
   SELECT
+    AssessmentType,
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
       WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247'
@@ -61,4 +71,9 @@ With star_math AS (
  FROM {{ source('RenaissanceStar', 'Math_v2')}}
 )
 
-SELECT * FROM star_math
+SELECT
+  a.* EXCEPT(AssessmentType),
+  s.* EXCEPT(AssessmentType)
+FROM star_math as s
+LEFT JOIN assessment_ids AS a
+USING (AssessmentType)

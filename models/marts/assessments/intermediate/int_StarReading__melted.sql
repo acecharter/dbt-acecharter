@@ -4,8 +4,7 @@ WITH star_reading AS (
 
 star_reading_keys AS(
   SELECT
-    --ASSESSMENT_KEY,
-    --OBJECTIVE_ASSESSMENT_KEY,
+    AceAssessmentUniqueId,
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId,
