@@ -1,32 +1,33 @@
 SELECT
+    AceAssessmentUniqueId,
     StateUniqueId,
     SchoolId,
     SchoolYear,
     AssessmentID AS AssessmentId,
     CAST(AdministrationDate AS STRING) AS AdministrationDate,
     AssessedGradeLevel,
-    ReportingMethod,
-    StudentResultDataType,
+    ResultType,
     StudentResult
 FROM {{ ref('int_StarMath__melted') }}
 
 UNION ALL
 
 SELECT
+    AceAssessmentUniqueId,
     StateUniqueId,
     SchoolId,
     SchoolYear,
     AssessmentID AS AssessmentId,
     CAST(AdministrationDate AS STRING) AS AdministrationDate,
     AssessedGradeLevel,
-    ReportingMethod,
-    StudentResultDataType,
+    ResultType,
     StudentResult
 FROM {{ ref('int_StarReading__melted') }}
 
 UNION ALL
 
 SELECT
+    AceAssessmentUniqueId,
     StateUniqueId,
     SchoolId,
     SchoolYear,
@@ -34,7 +35,6 @@ SELECT
     CAST(NULL AS STRING) AS AdministrationDate,
     AssessedGradeLevel
     RecordType,
-    ReportingMethod,
-    StudentResultDataType,
+    ResultType,
     StudentResult
 FROM {{ ref('int_TomsCaasppEnrolled2021__melted') }}
