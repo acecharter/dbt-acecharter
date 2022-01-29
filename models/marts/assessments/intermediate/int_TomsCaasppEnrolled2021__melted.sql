@@ -4,12 +4,11 @@ WITH caaspp AS (
 
 caaspp_keys_2021 AS(
   SELECT
-    --ASSESSMENT_KEY,
-    --OBJECTIVE_ASSESSMENT_KEY,
+    AceAssessmentUniqueId,
     StateUniqueId,
     SchoolId,
     '2020-21' AS SchoolYear,
-    CONCAT('2021-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2021-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
     CAST(GradeAssessed AS STRING) AS AssessedGradeLevel
   FROM caaspp
@@ -17,32 +16,29 @@ caaspp_keys_2021 AS(
 
 scale_score_2021 AS (
   SELECT
-    CONCAT('2021-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2021-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Scale Score' AS ReportingMethod,
-    'Scale Score' AS StudentResultDataType,
+    'Scale Score' AS ResultType,
     CAST(ScaleScore AS STRING) AS StudentResult
   FROM caaspp
 ),
 
 achievement_level_2021 AS (
   SELECT
-    CONCAT('2021-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2021-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Achievement Level' AS ReportingMethod,
-    'Level' AS StudentResultDataType,
+    'Achievement Level' AS ResultType,
     CAST(AchievementLevels AS STRING) AS StudentResult
   FROM caaspp
 ),
 
 caaspp_keys_2020 AS(
   SELECT
-    --ASSESSMENT_KEY,
-    --OBJECTIVE_ASSESSMENT_KEY,
+    AceAssessmentUniqueId,
     StateUniqueId,
     SchoolId,
     '2019-20' AS SchoolYear,
-    CONCAT('2020-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2020-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
     CAST(GradeAssessedMinus1 AS STRING) AS AssessedGradeLevel
   FROM caaspp
@@ -50,32 +46,29 @@ caaspp_keys_2020 AS(
 
 scale_score_2020 AS (
   SELECT
-    CONCAT('2020-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2020-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Scale Score' AS ReportingMethod,
-    'Scale Score' AS StudentResultDataType,
+    'Scale Score' AS ResultType,
     CAST(ScaleScoreMinus1 AS STRING) AS StudentResult
   FROM caaspp
 ),
 
 achievement_level_2020 AS (
   SELECT
-    CONCAT('2020-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2020-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Achievement Level' AS ReportingMethod,
-    'Level' AS StudentResultDataType,
+    'Achievement Level' AS ResultType,
     CAST(AchievementLevelMinus1 AS STRING) AS StudentResult
   FROM caaspp
 ),
 
 caaspp_keys_2019 AS(
   SELECT
-    --ASSESSMENT_KEY,
-    --OBJECTIVE_ASSESSMENT_KEY,
+    AceAssessmentUniqueId,
     StateUniqueId,
     SchoolId,
     '2018-19' AS SchoolYear,
-    CONCAT('2019-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2019-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
     CAST(GradeAssessedMinus1 AS STRING) AS AssessedGradeLevel
   FROM caaspp
@@ -83,20 +76,18 @@ caaspp_keys_2019 AS(
 
 scale_score_2019 AS (
   SELECT
-    CONCAT('2019-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2019-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Scale Score' AS ReportingMethod,
-    'Scale Score' AS StudentResultDataType,
+    'Scale Score' AS ResultType,
     CAST(ScaleScoreMinus2 AS STRING) AS StudentResult
   FROM caaspp
 ),
 
 achievement_level_2019 AS (
   SELECT
-    CONCAT('2019-', RecordType, '-', StateUniqueId) AS AssessmentId,
+    CONCAT('2019-', AceAssessmentUniqueId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Achievement Level' AS ReportingMethod,
-    'Level' AS StudentResultDataType,
+    'Achievement Level' AS ResultType,
     CAST(AchievementLevelMinus2 AS STRING) AS StudentResult
   FROM caaspp
 ),
@@ -164,3 +155,4 @@ final AS(
 SELECT *
 FROM final
 WHERE StudentResult IS NOT NULL
+LIMIT 9999999
