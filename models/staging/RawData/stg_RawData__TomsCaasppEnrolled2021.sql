@@ -1,4 +1,13 @@
-WITH empower AS (
+WITH assessment_ids AS (
+  SELECT 
+    AceAssessmentUniqueId,
+    AssessmentNameShort AS AssessmentName,
+    CAST(SystemOrVendorAssessmentId AS INT64) AS RecordType,
+  FROM {{ ref('stg_GoogleSheetData__Assessments') }}
+  WHERE SystemOrVendorName='CAASPP'
+),
+
+empower AS (
   SELECT
     CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
@@ -82,7 +91,7 @@ hs AS (
   FROM {{ source('RawData', 'TomsCaasppEnrolled2021HighSchool')}}
 ),
 
-final AS (
+unioned AS (
     SELECT * FROM empower
     UNION All
     SELECT * FROM esperanza
@@ -90,19 +99,23 @@ final AS (
     SELECT * FROM inspire
     UNION All
     SELECT * FROM hs
+), 
+
+final AS (
+  SELECT
+    a.AceAssessmentUniqueId,
+    a.AssessmentName,
+    u.*
+  FROM unioned AS u
+  LEFT JOIN assessment_ids AS a  
+  USING (RecordType)
 )
 
 SELECT
+  AceAssessmentUniqueId,
+  AssessmentName,
+  CAST(RecordType AS STRING) AS RecordType,
   SchoolId,
-  RecordType,
-  CASE
-    WHEN RecordType = 1 THEN 'SB ELA'
-    WHEN RecordType = 2 THEN 'SB Math'
-    WHEN RecordType = 3 THEN 'CAA ELA'
-    WHEN RecordType = 4 THEN 'CAA Math'
-    WHEN RecordType = 6 THEN 'CAST'
-    WHEN RecordType = 9 THEN 'CSA'
-  END AS TestName,
   CAST(SSID AS STRING) AS StateUniqueId,
   GradeAssessed,
   CASE
