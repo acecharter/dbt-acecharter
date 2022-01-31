@@ -1,5 +1,15 @@
-WITH empower AS (
+WITH assessment_ids AS (
+  SELECT 
+    AceAssessmentId,
+    AssessmentNameShort AS AssessmentName,
+    CAST(SystemOrVendorAssessmentId AS INT64) AS RecordType,
+  FROM {{ ref('stg_GoogleSheetData__Assessments') }}
+  WHERE AssessmentNameShort='Summative ELPAC'
+),
+
+empower AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -28,6 +38,7 @@ WITH empower AS (
 
 esperanza AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -56,6 +67,7 @@ esperanza AS (
 
 inspire AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -84,6 +96,7 @@ inspire AS (
 
 hs AS (
   SELECT
+    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -110,7 +123,7 @@ hs AS (
   FROM {{ source('RawData', 'TomsElpacEnrolled2021HighSchool')}}
 ),
 
-final AS (
+unioned AS (
     SELECT * FROM empower
     UNION All
     SELECT * FROM esperanza
@@ -118,14 +131,25 @@ final AS (
     SELECT * FROM inspire
     UNION All
     SELECT * FROM hs
+),
+
+final AS (
+  SELECT
+    a.AceAssessmentId,
+    a.AssessmentName,
+    u.*
+  FROM unioned AS u
+  LEFT JOIN assessment_ids AS a  
+  USING (RecordType)
 )
 
+
 SELECT
-  RecordType,
-  CASE
-    WHEN RecordType = 21 THEN 'Summative ELPAC'
-  END AS TestName,
-  CAST(SSID AS STRING) AS SSID,
+  AceAssessmentId,
+  AssessmentName,
+  CAST(RecordType AS STRING) AS RecordType,
+  SchoolId,
+  CAST(SSID AS STRING) AS StateUniqueId,
   GradeAssessed,
   CASE
     WHEN Attemptedness = 'false' THEN 'N'

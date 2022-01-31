@@ -12,7 +12,6 @@ SELECT
 FROM {{ ref('int_StarMath__melted') }}
 
 UNION ALL
-
 SELECT
     AceAssessmentId,
     StateUniqueId,
@@ -27,7 +26,6 @@ SELECT
 FROM {{ ref('int_StarReading__melted') }}
 
 UNION ALL
-
 SELECT
     AceAssessmentId,
     StateUniqueId,
@@ -41,3 +39,18 @@ SELECT
     StudentResultDataType,
     StudentResult
 FROM {{ ref('int_TomsCaasppEnrolled2021__melted') }}
+
+UNION ALL
+SELECT
+    AceAssessmentId,
+    StateUniqueId,
+    SchoolId,
+    SchoolYear,
+    AssessmentId,
+    CAST(NULL AS STRING) AS AdministrationDate,
+    AssessedGradeLevel
+    RecordType,
+    ReportingMethod,
+    StudentResultDataType,
+    StudentResult
+FROM {{ ref('int_TomsElpacEnrolled2021__melted') }}
