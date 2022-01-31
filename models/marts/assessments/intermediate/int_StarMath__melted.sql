@@ -19,7 +19,8 @@ star_math_keys AS(
 gp AS (
   SELECT
     AssessmentID,
-    'Grade Equivalent Minus Grade Placement' AS ResultType,
+    'Grade Placement' AS ReportingMethod,
+    'FLOAT64' AS StudentResultDataType,
     CAST(GradePlacement AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -27,7 +28,8 @@ gp AS (
 ge AS (
   SELECT
     AssessmentID,
-    'Grade Equivalent' AS ResultType,
+    'Grade Equivalent' AS ReportingMethod,
+    'STRING' AS StudentResultDataType,
     CAST(GradeEquivalent AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -35,7 +37,8 @@ ge AS (
 unified_score AS (
   SELECT
     AssessmentID,
-    'Unified Score' AS ResultType,
+    'Unified Score' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(UnifiedScore AS STRING) AS StudentResult
   FROM star_math
 ), 
@@ -43,7 +46,8 @@ unified_score AS (
 percentile_rank AS (
   SELECT
     AssessmentID,
-    'Percentile Rank' AS ResultType,
+    'Percentile Rank' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(PercentileRank AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -51,7 +55,8 @@ percentile_rank AS (
 sgp_fall_fall AS (
   SELECT
     AssessmentID,
-    'Student Growth Percentile (Fall to Fall)' AS ResultType,
+    'Student Growth Percentile (Fall to Fall)' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(StudentGrowthPercentileFallFall AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -59,7 +64,8 @@ sgp_fall_fall AS (
 sgp_fall_winter AS (
   SELECT
     AssessmentID,
-    'Student Growth Percentile (Fall to Winter)' AS ResultType,
+    'Student Growth Percentile (Fall to Winter)' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(StudentGrowthPercentileFallWinter AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -67,7 +73,8 @@ sgp_fall_winter AS (
 sgp_fall_spring AS (
   SELECT
     AssessmentID,
-    'Student Growth Percentile (Fall to Spring)' AS ResultType,
+    'Student Growth Percentile (Fall to Spring)' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(StudentGrowthPercentileFallSpring AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -75,7 +82,8 @@ sgp_fall_spring AS (
 sgp_spring_spring AS (
   SELECT
     AssessmentID,
-    'Student Growth Percentile (Spring to Spring)' AS ResultType,
+    'Student Growth Percentile (Spring to Spring)' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(StudentGrowthPercentileSpringSpring AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -83,7 +91,8 @@ sgp_spring_spring AS (
 sgp_winter_spring AS (
   SELECT
     AssessmentID,
-    'Student Growth Percentile (Winter to Spring)' AS ResultType,
+    'Student Growth Percentile (Winter to Spring)' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(StudentGrowthPercentileWinterSpring AS STRING) AS StudentResult
   FROM star_math
 ),
@@ -91,7 +100,8 @@ sgp_winter_spring AS (
 sgp_current AS (
   SELECT
     AssessmentID,
-    'Student Growth Percentile (current)' AS ResultType,
+    'Student Growth Percentile (current)' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(CurrentSGP AS STRING) AS StudentResult
   FROM star_math
 ),

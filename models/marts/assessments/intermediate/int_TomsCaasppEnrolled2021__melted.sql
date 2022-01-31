@@ -18,7 +18,8 @@ scale_score_2021 AS (
   SELECT
     CONCAT('2021-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Scale Score' AS ResultType,
+    'Scale Score' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(ScaleScore AS STRING) AS StudentResult
   FROM caaspp
 ),
@@ -27,7 +28,8 @@ achievement_level_2021 AS (
   SELECT
     CONCAT('2021-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Achievement Level' AS ResultType,
+    'Achievement Level' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(AchievementLevels AS STRING) AS StudentResult
   FROM caaspp
 ),
@@ -48,7 +50,8 @@ scale_score_2020 AS (
   SELECT
     CONCAT('2020-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Scale Score' AS ResultType,
+    'Scale Score' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(ScaleScoreMinus1 AS STRING) AS StudentResult
   FROM caaspp
 ),
@@ -57,7 +60,8 @@ achievement_level_2020 AS (
   SELECT
     CONCAT('2020-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Achievement Level' AS ResultType,
+    'Achievement Level' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(AchievementLevelMinus1 AS STRING) AS StudentResult
   FROM caaspp
 ),
@@ -78,7 +82,8 @@ scale_score_2019 AS (
   SELECT
     CONCAT('2019-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Scale Score' AS ResultType,
+    'Scale Score' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(ScaleScoreMinus2 AS STRING) AS StudentResult
   FROM caaspp
 ),
@@ -87,7 +92,8 @@ achievement_level_2019 AS (
   SELECT
     CONCAT('2019-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     RecordType,
-    'Achievement Level' AS ResultType,
+    'Achievement Level' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
     CAST(AchievementLevelMinus2 AS STRING) AS StudentResult
   FROM caaspp
 ),
@@ -155,4 +161,3 @@ final AS(
 SELECT *
 FROM final
 WHERE StudentResult IS NOT NULL
-LIMIT 9999999

@@ -1,5 +1,5 @@
 SELECT
-    AceAssessmentUniqueId,
+    AceAssessmentId,
     StateUniqueId,
     SchoolId,
     SchoolYear,
@@ -13,7 +13,7 @@ FROM {{ ref('int_StarMath__melted') }}
 UNION ALL
 
 SELECT
-    AceAssessmentUniqueId,
+    AceAssessmentId,
     StateUniqueId,
     SchoolId,
     SchoolYear,
@@ -27,7 +27,7 @@ FROM {{ ref('int_StarReading__melted') }}
 UNION ALL
 
 SELECT
-    AceAssessmentUniqueId,
+    AceAssessmentId,
     StateUniqueId,
     SchoolId,
     SchoolYear,
