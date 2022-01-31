@@ -6,7 +6,8 @@ SELECT
     AssessmentID AS AssessmentId,
     CAST(AdministrationDate AS STRING) AS AdministrationDate,
     AssessedGradeLevel,
-    ResultType,
+    ReportingMethod,
+    StudentResultDataType,
     StudentResult
 FROM {{ ref('int_StarMath__melted') }}
 
@@ -20,7 +21,8 @@ SELECT
     AssessmentID AS AssessmentId,
     CAST(AdministrationDate AS STRING) AS AdministrationDate,
     AssessedGradeLevel,
-    ResultType,
+    ReportingMethod,
+    StudentResultDataType,
     StudentResult
 FROM {{ ref('int_StarReading__melted') }}
 
@@ -35,6 +37,7 @@ SELECT
     CAST(NULL AS STRING) AS AdministrationDate,
     AssessedGradeLevel
     RecordType,
-    ResultType,
+    ReportingMethod,
+    StudentResultDataType,
     StudentResult
 FROM {{ ref('int_TomsCaasppEnrolled2021__melted') }}

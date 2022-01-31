@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: int_StarMath__melted
+    description: Student Star Math results reshaped to long, narrow table in preparation to be added to the student assessment results fact table
+    config:
+      materialized: table
+    columns:
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
+        tests:
+          - unique
