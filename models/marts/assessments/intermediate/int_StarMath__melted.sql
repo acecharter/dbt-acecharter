@@ -4,7 +4,7 @@ WITH star_math AS (
 
 star_math_keys AS(
   SELECT
-    AceAssessmentUniqueId,
+    AceAssessmentId,
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId,

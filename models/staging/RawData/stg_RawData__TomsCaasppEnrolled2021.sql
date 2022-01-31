@@ -1,6 +1,6 @@
 WITH assessment_ids AS (
   SELECT 
-    AceAssessmentUniqueId,
+    AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
     CAST(SystemOrVendorAssessmentId AS INT64) AS RecordType,
   FROM {{ ref('stg_GoogleSheetData__Assessments') }}
@@ -103,7 +103,7 @@ unioned AS (
 
 final AS (
   SELECT
-    a.AceAssessmentUniqueId,
+    a.AceAssessmentId,
     a.AssessmentName,
     u.*
   FROM unioned AS u
@@ -112,7 +112,7 @@ final AS (
 )
 
 SELECT
-  AceAssessmentUniqueId,
+  AceAssessmentId,
   AssessmentName,
   CAST(RecordType AS STRING) AS RecordType,
   SchoolId,

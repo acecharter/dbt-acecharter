@@ -1,6 +1,6 @@
 WITH assessment_ids AS (
   SELECT 
-    AceAssessmentUniqueId,
+    AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
     'Enterprise' AS AssessmentType
   FROM {{ ref('stg_GoogleSheetData__Assessments') }}
