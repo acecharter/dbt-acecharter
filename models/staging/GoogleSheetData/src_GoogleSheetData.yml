@@ -6,30 +6,43 @@ sources:
     database: landing-zone-acecharter
     schema: GoogleSheetData
     tables:
-      - name: AssessmentFamilies
-        description: Assessment family information
-
       - name: Assessments
-        description: A google sheet listing assessments used by ACE
+        description: A google sheet listing assessments used by ACE and corresponding assessment information
         columns:
-          - name: AceAssessmentUniqueId
+        
+          - name: AceAssessmentId
             description: Internally created primary key of the table.
             tests:
               - unique
               - not_null
 
-          - name: AssessmentFamilyId
-            description: Foreign key identifying the assessment's assessment family
-          - name: AssessmentNameLong
+          - name: AssessmentNameShort
+            description: Abbreviated assessment name
             tests:
               - not_null
 
-          - name: AssessmentNameShort
+          - name: AssessmentName
+            description: Full assessment name
+            tests:
+              - not_null
+
+          - name: AssessmentFamilyNameShort
+            description: Abbreviated assessment family name
+            tests:
+              - not_null
+
+          - name: AssessmentFamilyName
+            description: Full assessment family name
+            tests:
+              - not_null
+
+          - name: SystemOrVendor
+            description: Name of the assessment vendor or system of assessments that the assessment is a part of
             tests:
               - not_null
 
           - name: SysemOrVendorAssessmentId
-            description: Optional additional assessment ID field; only applicable for assessments where the vendor uses an assessment-specific ID
+            description: Optional additional assessment ID field; only applicable if the assessment has a system- or vendor-specific ID
 
       - name: AssessmentScaleScoreRanges
         description: A google sheet containing assessment- and grade-specific scale score ranges for assessments used by ACE.
