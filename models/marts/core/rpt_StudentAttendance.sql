@@ -1,4 +1,13 @@
-WITH students AS (
+WITH schools AS (
+    SELECT
+      SchoolId,
+      SchoolName,
+      SchoolNameMid,
+      SchoolNameShort
+    FROM {{ ref('dim_Schools')}}
+),
+
+students AS (
   SELECT * EXCEPT (LastName, FirstName, MiddleName, BirthDate, Email, ExitWithdrawReason)
   FROM {{ref('dim_Students')}}
 ),
@@ -24,10 +33,13 @@ attendance AS (
 )
 
 SELECT
-  s.*,
+  sc.*,
+  st.* EXCEPT (SchoolId),
   a.* EXCEPT (SchoolId, StudentUniqueId)
-FROM students AS s
+FROM students AS st
 LEFT JOIN attendance AS a
 ON
-  s.StudentUniqueId = a.StudentUniqueId AND
-  s.SchoolId = a.SchoolId
+  st.StudentUniqueId = a.StudentUniqueId AND
+  st.SchoolId = a.SchoolId
+LEFT JOIN schools AS sc
+ON sc.SchoolId = a.SchoolId
