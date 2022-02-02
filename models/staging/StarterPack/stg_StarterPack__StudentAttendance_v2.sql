@@ -20,5 +20,5 @@ SELECT
     WHEN AverageDailyAttendance > 0.90 AND AverageDailyAttendance < 0.95 THEN 'At Risk'
     WHEN AverageDailyAttendance > 0.80 AND AverageDailyAttendance <= 0.90 THEN 'Moderate Chronic Absence'
     WHEN AverageDailyAttendance <= 0.80 THEN 'Severe Chronic Absence'
-  END AS AttendanceRateGroup,
+  END AS AttendanceRateGroup
 FROM {{ source('StarterPack', 'StudentAttendance_v2')}}
