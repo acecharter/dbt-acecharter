@@ -6,6 +6,7 @@ WITH enrollments_ranked AS (
         ) Rank
     FROM {{ ref('stg_StarterPack__StudentEnrollments') }}
 ),
+
 demographics AS (
     SELECT * FROM {{ ref('int_StudentDemographics_Seis__joined')}}
 )
@@ -13,7 +14,6 @@ demographics AS (
 
 SELECT
     e.SchoolId,
-    e.SchoolName,
     e.StudentUniqueId,
     d.StateUniqueId,
     d.DisplayName,
