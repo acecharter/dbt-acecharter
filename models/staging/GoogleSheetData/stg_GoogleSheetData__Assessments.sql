@@ -2,6 +2,7 @@ SELECT
   CAST(AceAssessmentId AS STRING) AS AceAssessmentId,
   AssessmentNameShort,
   AssessmentName,
+  AssessmentSubject,
   AssessmentFamilyNameShort,
   AssessmentFamilyName,
   SystemOrVendorName,

@@ -21,18 +21,19 @@ assessment_results AS (
 assessment_info AS (
     SELECT 
       AceAssessmentId,
+      AssessmentSubject,
       AssessmentFamilyNameShort,
       SystemOrVendorName
     FROM {{ ref('stg_GoogleSheetData__Assessments')}}
 ),
 
-caaspp_results AS (
+sbac_results AS (
     SELECT
       r.StateUniqueId,
       r.AssessmentSchoolYear,
       r.AceAssessmentId,
       r.AssessmentName,
-      i.AssessmentFamilyNameShort AS AssessmentFamily,
+      i.AssessmentSubject,
       i.SystemOrVendorName,
       r.AssessmentId,
       r.AssessedGradeLevel,
@@ -41,7 +42,9 @@ caaspp_results AS (
     FROM assessment_results AS r
     LEFT JOIN assessment_info AS i
     USING(AceAssessmentId)
-    WHERE SystemOrVendorName = 'CAASPP'
+    WHERE 
+      SystemOrVendorName = 'CAASPP' AND 
+      AssessmentFamilyNameShort = 'SBAC'
 
 )
 
@@ -54,7 +57,7 @@ SELECT
     ),
   r.* EXCEPT (StateUniqueId)
 FROM current_students AS cs
-LEFT JOIN caaspp_results AS r
+LEFT JOIN sbac_results AS r
 ON cs.StateUniqueId = r.StateUniqueId
 LEFT JOIN schools AS s
 ON cs.SchoolId = s.SchoolId
