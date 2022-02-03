@@ -37,7 +37,13 @@ sbac_results AS (
       i.SystemOrVendorName,
       r.AssessmentId,
       r.AssessedGradeLevel,
-      CAST(r.StudentResult AS INT64) AS AchievementLevel
+      CAST(r.StudentResult AS INT64) AS AchievementLevel,
+      CASE
+        WHEN r.StudentResult = '1' THEN 'Not Met'
+        WHEN r.StudentResult = '2' THEN 'Nearly Met'
+        WHEN r.StudentResult = '3' THEN 'Met'
+        WHEN r.StudentResult = '4' THEN 'Exceeded'
+      END AS AchievementLevelCategory
     FROM assessment_results AS r
     LEFT JOIN assessment_info AS i
     USING(AceAssessmentId)
