@@ -4,7 +4,7 @@ WITH caaspp AS (
     AssessmentName,
     RecordType,
     StateUniqueId,
-    TestedSchoolId,
+    NULL AS TestedSchoolId,
     CONCAT('2019-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     '2018-19' AS SchoolYear,
     GradeAssessedMinus2 AS GradeAssessed,
@@ -79,5 +79,5 @@ unioned_merged AS (
 )
 
 SELECT * FROM unioned_merged
-WHERE StudentResult IS NULL
+WHERE StudentResult IS NOT NULL
  
