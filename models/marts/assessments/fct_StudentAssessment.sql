@@ -44,7 +44,7 @@ caaspp_2021 AS (
     ReportingMethod,
     StudentResultDataType,
     StudentResult
-  FROM {{ ref('int_TomsCaasppEnrolled2021__melted_DfsAdded') }}
+  FROM {{ ref('int_TomsCaasppEnrolled2021__melted_unioned') }}
 ),
 
 elpac_2021 AS (
