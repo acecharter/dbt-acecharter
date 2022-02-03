@@ -1,4 +1,4 @@
   SELECT
-    CAST(AceAssessmentUniqueID AS STRING) AS AceAssessmentUniqueID,
-    * EXCEPT (AceAssessmentUniqueID)
+    CAST(AceAssessmentId AS STRING) AS AceAssessmentId,
+    * EXCEPT (AceAssessmentId)
   FROM {{ source('GoogleSheetData', 'AssessmentScaleScoreRanges')}}
