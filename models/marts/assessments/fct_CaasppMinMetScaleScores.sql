@@ -2,5 +2,5 @@ SELECT
   AceAssessmentId,
   Area,
   GradeLevel,
-  Level3Min AS MinStandardMetScaleScore
+  CAST(Level3Min AS INT64) AS MinStandardMetScaleScore
 FROM {{ ref('stg_GoogleSheetData__AssessmentScaleScoreRanges') }}
