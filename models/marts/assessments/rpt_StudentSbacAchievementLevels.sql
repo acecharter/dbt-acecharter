@@ -37,14 +37,15 @@ sbac_results AS (
       i.SystemOrVendorName,
       r.AssessmentId,
       r.AssessedGradeLevel,
-      r.ReportingMethod,
-      CAST(r.StudentResult AS INT64) AS StudentResult
+      CAST(r.StudentResult AS INT64) AS AchievementLevel
     FROM assessment_results AS r
     LEFT JOIN assessment_info AS i
     USING(AceAssessmentId)
     WHERE 
-      SystemOrVendorName = 'CAASPP' AND 
-      AssessmentFamilyNameShort = 'SBAC'
+      i.SystemOrVendorName = 'CAASPP' AND 
+      i.AssessmentFamilyNameShort = 'SBAC' AND
+      r.ReportingMethod = 'Achievement Level' AND
+      CAST(r.StudentResult AS INT64) <= 4
 
 )
 
