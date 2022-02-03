@@ -4,6 +4,7 @@ WITH caaspp AS (
     AssessmentName,
     RecordType,
     StateUniqueId,
+    TestedSchoolId,
     CONCAT('2019-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     '2018-19' AS SchoolYear,
     GradeAssessedMinus2 AS GradeAssessed,
@@ -19,6 +20,7 @@ caaspp_keys AS(
     AssessmentId,
     AceAssessmentId,
     StateUniqueId,
+    TestedSchoolId,
     SchoolYear,
     CAST(GradeAssessed AS STRING) AS AssessedGradeLevel
   FROM caaspp

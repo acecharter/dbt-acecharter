@@ -16,8 +16,8 @@ star_math AS (
       WHEN SchoolIdentifier='57b1f93e473b517136000007' THEN '131656'
       WHEN SchoolIdentifier='061182013023' THEN '125617'
       ELSE '999999999'
-    END AS SchoolId,
-    NameofInstitution AS SchoolName,
+    END AS TestedSchoolId,
+    NameofInstitution AS TestedSchoolName,
     CONCAT(LEFT(SchoolYear, 5), RIGHT(SchoolYear, 2)) AS SchoolYear,
     StudentRenaissanceID,
     StudentIdentifier,

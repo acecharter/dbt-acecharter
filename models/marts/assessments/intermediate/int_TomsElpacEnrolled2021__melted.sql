@@ -6,7 +6,7 @@ elpac_keys_2021 AS(
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     '2020-21' AS SchoolYear,
     CONCAT('2021-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
@@ -38,7 +38,7 @@ elpac_keys_2020 AS(
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     '2019-20' AS SchoolYear,
     CONCAT('2020-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,
@@ -70,7 +70,7 @@ elpac_keys_2019 AS(
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     '2018-19' AS SchoolYear,
     CONCAT('2019-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
     --FinalTestCompletedDate AS AssessmentDate,

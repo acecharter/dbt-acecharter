@@ -8,7 +8,7 @@ star_math_keys AS(
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     SchoolYear,
     AssessmentID,
     AssessmentDate AS AdministrationDate,

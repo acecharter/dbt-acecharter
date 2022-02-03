@@ -9,7 +9,8 @@ WITH assessment_ids AS (
 
 empower AS (
   SELECT
-    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
+    CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
+    CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -38,7 +39,8 @@ empower AS (
 
 esperanza AS (
   SELECT
-    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
+    CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
+    CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -67,7 +69,8 @@ esperanza AS (
 
 inspire AS (
   SELECT
-    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
+    CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
+    CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -96,7 +99,8 @@ inspire AS (
 
 hs AS (
   SELECT
-    CAST(CAST(LEFT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS SchoolId,
+    CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
+    CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
     RecordType,
     SSID,
     GradeAssessed,
@@ -148,7 +152,8 @@ SELECT
   AceAssessmentId,
   AssessmentName,
   CAST(RecordType AS STRING) AS RecordType,
-  SchoolId,
+  EnrolledSchoolId,
+  TestedSchoolId,
   CAST(SSID AS STRING) AS StateUniqueId,
   GradeAssessed,
   CASE

@@ -6,7 +6,7 @@ star_math AS (
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     SchoolYear AS AssessmentSchoolYear,
     AssessmentID AS AssessmentId,
     CAST(AdministrationDate AS STRING) AS AdministrationDate,
@@ -21,7 +21,7 @@ star_reading AS (
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     SchoolYear AS AssessmentSchoolYear,
     AssessmentID AS AssessmentId,
     CAST(AdministrationDate AS STRING) AS AdministrationDate,
@@ -36,7 +36,7 @@ caaspp_2021 AS (
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     SchoolYear AS AssessmentSchoolYear,
     AssessmentId,
     CAST(NULL AS STRING) AS AdministrationDate,
@@ -51,7 +51,7 @@ elpac_2021 AS (
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    SchoolId,
+    TestedSchoolId,
     SchoolYear AS AssessmentSchoolYear,
     AssessmentId,
     CAST(NULL AS STRING) AS AdministrationDate,
@@ -78,7 +78,7 @@ final AS (
     n.AceAssessmentId,
     n.AssessmentNameShort AS AssessmentName,
     r.StateUniqueId,
-    r.SchoolId,
+    r.TestedSchoolId,
     r.AssessmentSchoolYear,
     r.AssessmentId,
     r.AdministrationDate,
