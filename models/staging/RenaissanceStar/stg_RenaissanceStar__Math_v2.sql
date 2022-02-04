@@ -70,7 +70,7 @@ star_math AS (
     CASE
       WHEN
         CompletedDateLocal >= '2021-08-01' AND
-        CompletedDateLocal <= '2021-08-11'
+        CompletedDateLocal <= '2021-08-10'
       THEN 'Fall (early)'
       WHEN
         CompletedDateLocal >= '2021-08-11' AND

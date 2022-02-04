@@ -71,7 +71,7 @@ star_reading AS (
     CASE
       WHEN
         CompletedDateLocal >= '2021-08-01' AND
-        CompletedDateLocal <= '2021-08-11'
+        CompletedDateLocal <= '2021-08-10'
       THEN 'Fall (early)'
       WHEN
         CompletedDateLocal >= '2021-08-11' AND
@@ -102,7 +102,7 @@ star_reading AS (
         CompletedDateLocal <= '2022-07-31'
       THEN 'Spring (late)'
     END AS DetailedTestingWindow2122
-    
+
 FROM {{ source('RenaissanceStar', 'Reading_v2')}}
 )
 
