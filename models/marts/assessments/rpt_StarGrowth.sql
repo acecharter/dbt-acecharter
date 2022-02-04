@@ -50,4 +50,4 @@ SELECT
 FROM {{ ref('rpt_StudentAssessment')}}
 WHERE
   AssessmentName IN ('Star Reading', 'Star Math')
-  AND ReportingMethod LIKE 'Student Growth Percentile%'
+  AND ReportingMethod LIKE 'SGP%'
