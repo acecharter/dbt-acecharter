@@ -20,7 +20,7 @@ caaspp_keys AS(
     AssessmentId,
     AceAssessmentId,
     StateUniqueId,
-    TestedSchoolId,
+    CAST(TestedSchoolId AS STRING) AS TestedSchoolId,
     SchoolYear,
     CAST(GradeAssessed AS STRING) AS AssessedGradeLevel
   FROM caaspp
