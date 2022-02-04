@@ -20,9 +20,9 @@ caaspp_keys AS(
     AssessmentId,
     AceAssessmentId,
     StateUniqueId,
-    CAST(TestedSchoolId AS STRING) AS TestedSchoolId,
+    TestedSchoolId,
     SchoolYear,
-    CAST(GradeAssessed AS STRING) AS AssessedGradeLevel
+    GradeAssessed AS AssessedGradeLevel
   FROM caaspp
 ),
 
@@ -31,7 +31,7 @@ scale_score AS (
     AssessmentId,
     'Scale Score' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(ScaleScore AS STRING) AS StudentResult
+    ScaleScore AS StudentResult
   FROM caaspp
 ),
 
@@ -40,7 +40,7 @@ achievement_level AS (
     AssessmentId,
     'Achievement Level' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(AchievementLevel AS STRING) AS StudentResult
+    AchievementLevel AS StudentResult
   FROM caaspp
 ),
 
@@ -49,7 +49,7 @@ dfs AS(
     AssessmentId,
     'Distance From Standard' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(DistanceFromStandard AS STRING) AS StudentResult
+    DistanceFromStandard AS StudentResult
   FROM caaspp
 ),
 
