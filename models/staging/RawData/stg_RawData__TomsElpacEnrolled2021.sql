@@ -2,7 +2,7 @@ WITH assessment_ids AS (
   SELECT 
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
-    CAST(SystemOrVendorAssessmentId AS INT64) AS RecordType,
+    SystemOrVendorAssessmentId AS RecordType,
   FROM {{ ref('stg_GoogleSheetData__Assessments') }}
   WHERE AssessmentNameShort='Summative ELPAC'
 ),
@@ -11,9 +11,9 @@ empower AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     CAST(OverallScaleScore AS STRING) AS OverallScaleScore,
@@ -41,9 +41,9 @@ esperanza AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     CAST(OverallScaleScore AS STRING) AS OverallScaleScore,
@@ -71,9 +71,9 @@ inspire AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     CAST(OverallScaleScore AS STRING) AS OverallScaleScore,
@@ -101,9 +101,9 @@ hs AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
     CAST(OverallScaleScore AS STRING) AS OverallScaleScore,
@@ -151,10 +151,10 @@ final AS (
 SELECT
   AceAssessmentId,
   AssessmentName,
-  CAST(RecordType AS STRING) AS RecordType,
+  RecordType,
   EnrolledSchoolId,
   TestedSchoolId,
-  CAST(SSID AS STRING) AS StateUniqueId,
+  SSID AS StateUniqueId,
   GradeAssessed,
   CASE
     WHEN Attemptedness = 'false' THEN 'N'
