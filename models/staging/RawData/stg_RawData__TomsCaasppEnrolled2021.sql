@@ -2,7 +2,7 @@ WITH assessment_ids AS (
   SELECT 
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
-    CAST(SystemOrVendorAssessmentId AS INT64) AS RecordType,
+    CAST(SystemOrVendorAssessmentId AS STRING) AS RecordType,
   FROM {{ ref('stg_GoogleSheetData__Assessments') }}
   WHERE SystemOrVendorName='CAASPP'
 ),
@@ -11,15 +11,15 @@ empower AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
-    ScoreStatus,
+    CAST(ScoreStatus AS STRING) AS ScoreStatus,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
-    LexileorQuantileMeasure,
-    ScaleScore,
-    AchievementLevels,
+    CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
+    CAST(ScaleScore AS STRING) AS ScaleScore,
+    CAST(AchievementLevels AS STRING) AS AchievementLevel,
     CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
     CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
     CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
@@ -33,15 +33,15 @@ esperanza AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
-    ScoreStatus,
+    CAST(ScoreStatus AS STRING) AS ScoreStatus,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
-    LexileorQuantileMeasure,
-    ScaleScore,
-    AchievementLevels,
+    CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
+    CAST(ScaleScore AS STRING) AS ScaleScore,
+    CAST(AchievementLevels AS STRING) AS AchievementLevel,
     CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
     CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
     CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
@@ -55,15 +55,15 @@ inspire AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
-    ScoreStatus,
+    CAST(ScoreStatus AS STRING) AS ScoreStatus,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
-    LexileorQuantileMeasure,
-    ScaleScore,
-    AchievementLevels,
+    CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
+    CAST(ScaleScore AS STRING) AS ScaleScore,
+    CAST(AchievementLevels AS STRING) AS AchievementLevel,
     CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
     CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
     CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
@@ -77,15 +77,15 @@ hs AS (
   SELECT
     CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS EnrolledSchoolId,
     CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS TestedSchoolId,
-    RecordType,
-    SSID,
-    GradeAssessed,
+    CAST(RecordType AS STRING) AS RecordType,
+    CAST(SSID AS STRING) AS SSID,
+    CAST(GradeAssessed AS STRING) AS GradeAssessed,
     CAST(Attemptedness AS STRING) AS Attemptedness,
-    ScoreStatus,
+    CAST(ScoreStatus AS STRING) AS ScoreStatus,
     CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
-    LexileorQuantileMeasure,
-    ScaleScore,
-    AchievementLevels,
+    CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
+    CAST(ScaleScore AS STRING) AS ScaleScore,
+    CAST(AchievementLevels AS STRING) AS AchievementLevel,
     CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
     CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
     CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
@@ -127,27 +127,33 @@ min_met_scores AS (
 final AS(
   SELECT
     r.*,
-    CASE
-      WHEN r.ScaleScore IS NOT NULL THEN CAST(r.ScaleScore AS INT64) - m.MinStandardMetScaleScore
-      ELSE NULL
-    END AS Dfs,
-    m.MinStandardMetScaleScore,
-    CASE
-      WHEN r.ScaleScoreMinus1 IS NOT NULL THEN CAST(r.ScaleScoreMinus1 AS INT64) - m1.MinStandardMetScaleScore
-      ELSE NULL
-    END AS DfsMinus1,
-    m1.MinStandardMetScaleScore AS MinStandardMetScaleScoreMinus1,
-    CASE
-      WHEN r.ScaleScoreMinus2 IS NOT NULL THEN CAST(r.ScaleScoreMinus2 AS INT64) - m2.MinStandardMetScaleScore
-      ELSE NULL
-    END AS DfsMinus2,
-    m2.MinStandardMetScaleScore AS MinStandardMetScaleScoreMinus2,
+    CAST(
+      CASE
+        WHEN r.ScaleScore IS NOT NULL THEN CAST(r.ScaleScore AS INT64) - m.MinStandardMetScaleScore
+        ELSE NULL
+      END AS STRING
+    ) AS DistanceFromStandard,
+    CAST(m.MinStandardMetScaleScore AS STRING) AS MinStandardMetScaleScore,
+    CAST(
+      CASE
+        WHEN r.ScaleScoreMinus1 IS NOT NULL THEN CAST(r.ScaleScoreMinus1 AS INT64) - m1.MinStandardMetScaleScore
+        ELSE NULL
+      END AS STRING
+    ) AS DistanceFromStandardMinus1,
+    CAST(m1.MinStandardMetScaleScore AS STRING) AS MinStandardMetScaleScoreMinus1,
+    CAST(
+      CASE
+        WHEN r.ScaleScoreMinus2 IS NOT NULL THEN CAST(r.ScaleScoreMinus2 AS INT64) - m2.MinStandardMetScaleScore
+        ELSE NULL
+      END AS STRING
+    ) AS DistanceFromStandardMinus2,
+    CAST(m2.MinStandardMetScaleScore AS STRING) AS MinStandardMetScaleScoreMinus2,
   FROM results_with_assessment_id AS r
   
   LEFT JOIN min_met_scores AS m
   ON
     r.AceAssessmentId = m.AceAssessmentId AND
-    CAST(r.GradeAssessed AS STRING) = m.GradeLevel
+    r.GradeAssessed = m.GradeLevel
 
   LEFT JOIN min_met_scores AS m1
   ON
@@ -164,10 +170,10 @@ final AS(
 SELECT
   AceAssessmentId,
   AssessmentName,
-  CAST(RecordType AS STRING) AS RecordType,
+  RecordType,
   EnrolledSchoolId,
   TestedSchoolId,
-  CAST(SSID AS STRING) AS StateUniqueId,
+  SSID AS StateUniqueId,
   GradeAssessed,
   CASE
     WHEN Attemptedness = 'false' THEN 'N'
@@ -181,18 +187,27 @@ SELECT
     ELSE IncludeIndicator
   END AS IncludeIndicator,
   LexileorQuantileMeasure,
-  AchievementLevels AS AchievementLevel,
+  CASE
+    WHEN AchievementLevel='9' THEN NULL
+    ELSE AchievementLevel
+  END AS AchievementLevel,
   ScaleScore,
   MinStandardMetScaleScore,
-  Dfs AS DistanceFromStandard,
-  CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
-  CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
-  CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
+  DistanceFromStandard,
+  GradeAssessedMinus1,
+  CASE
+    WHEN AchievementLevelMinus1='9' THEN NULL
+    ELSE AchievementLevelMinus1
+  END AS AchievementLevelMinus1,
+  ScaleScoreMinus1,
   MinStandardMetScaleScoreMinus1,
-  CAST(DfsMinus1 AS STRING) AS DistanceFromStandardMinus1,
-  CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
-  CAST(AchievementLevelMinus2 AS STRING) AS AchievementLevelMinus2,
-  CAST(ScaleScoreMinus2 AS STRING) AS ScaleScoreMinus2,
+  DistanceFromStandardMinus1,
+  GradeAssessedMinus2,
+  CASE
+    WHEN AchievementLevelMinus2='9' THEN NULL
+    ELSE AchievementLevelMinus2
+  END AS AchievementLevelMinus2,
+  ScaleScoreMinus2,
   MinStandardMetScaleScoreMinus2,
-  CAST(DfsMinus2 AS STRING) AS DistanceFromStandardMinus2
+  DistanceFromStandardMinus2
 FROM final
