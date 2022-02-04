@@ -67,7 +67,42 @@ star_reading AS (
         CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-04-01')) AND
         CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
       THEN 'Spring'
-    END AS StarTestingWindow
+    END AS StarTestingWindow,
+    CASE
+      WHEN
+        CompletedDateLocal >= '2021-08-01' AND
+        CompletedDateLocal <= '2021-08-11'
+      THEN 'Fall (early)'
+      WHEN
+        CompletedDateLocal >= '2021-08-11' AND
+        CompletedDateLocal <= '2021-09-30'
+      THEN 'Fall'
+      WHEN
+        CompletedDateLocal >= '2021-10-01' AND
+        CompletedDateLocal <= '2021-11-30'
+      THEN 'Fall (late)'
+      WHEN
+        CompletedDateLocal >= '2021-12-01' AND
+        CompletedDateLocal <= '2022-01-14'
+      THEN 'Winter'
+      WHEN
+        CompletedDateLocal >= '2022-01-15' AND
+        CompletedDateLocal <= '2022-03-31'
+      THEN 'Winter (late)'
+      WHEN
+        CompletedDateLocal >= '2022-04-01' AND
+        CompletedDateLocal <= '2022-04-14'
+      THEN 'Spring (early)'
+      WHEN
+        CompletedDateLocal >= '2022-04-15' AND
+        CompletedDateLocal <= '2022-05-31'
+      THEN 'Spring'
+      WHEN
+        CompletedDateLocal >= '2022-06-01' AND
+        CompletedDateLocal <= '2022-07-31'
+      THEN 'Spring (late)'
+    END AS DetailedTestingWindow2122
+    
 FROM {{ source('RenaissanceStar', 'Reading_v2')}}
 )
 
