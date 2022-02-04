@@ -4,29 +4,29 @@ WITH current_students AS (
     WHERE IsCurrentlyEnrolled = true
 ),
 
-caaspp_elpac_results AS (
+caaspp AS (
     SELECT * EXCEPT (AdministrationDate)
     FROM {{ ref('fct_StudentAssessment')}}
     WHERE
-      AceAssessmentId IN ('1', '2', '8')
+      AceAssessmentId IN ('1', '2')
 ),
 
 levels AS (
     SELECT *
-    FROM caaspp_elpac_results
-    WHERE ReportingMethod IN ('Overall Performance Level', 'Achievement Level')
+    FROM caaspp
+    WHERE ReportingMethod = 'Achievement Level'
 ),
 
 scale_scores AS (
     SELECT *
-    FROM caaspp_elpac_results
-    WHERE ReportingMethod IN ('Overall Scale Score', 'Scale Score')
+    FROM caaspp
+    WHERE ReportingMethod = 'Scale Score'
 ),
 
 dfs AS (
     SELECT *
-    FROM caaspp_elpac_results
-    WHERE ReportingMethod='Distance From Standard'
+    FROM caaspp
+    WHERE ReportingMethod = 'Distance From Standard'
 ),
 
 schools AS (
@@ -58,3 +58,4 @@ LEFT JOIN scale_scores AS ss
 ON l.AssessmentId = ss.AssessmentId
 LEFT JOIN dfs
 ON l.AssessmentId = dfs.AssessmentId
+WHERE l.AssessmentId IS NOT NULL
