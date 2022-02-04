@@ -51,3 +51,4 @@ FROM {{ ref('rpt_StudentAssessment')}}
 WHERE
   AssessmentName IN ('Star Reading', 'Star Math')
   AND ReportingMethod LIKE 'SGP%'
+  AND ReportingMethod != 'SGP (current)'
