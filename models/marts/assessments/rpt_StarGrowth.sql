@@ -17,7 +17,7 @@ SELECT
     WHEN
       AdministrationDate >= '2021-08-01' AND
       AdministrationDate <= '2021-08-11'
-    THEN 'Fall (early'
+    THEN 'Fall (early)'
     WHEN
       AdministrationDate >= '2021-08-11' AND
       AdministrationDate <= '2021-09-30'
