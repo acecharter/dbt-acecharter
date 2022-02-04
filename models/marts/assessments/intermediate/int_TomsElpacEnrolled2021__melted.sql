@@ -9,8 +9,7 @@ elpac_keys_2021 AS(
     TestedSchoolId,
     '2020-21' AS SchoolYear,
     CONCAT('2021-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
-    --FinalTestCompletedDate AS AssessmentDate,
-    CAST(GradeAssessed AS STRING) AS AssessedGradeLevel
+    GradeAssessed AS AssessedGradeLevel
   FROM elpac
 ),
 
@@ -20,7 +19,7 @@ scale_score_2021 AS (
     RecordType,
     'Overall Scale Score' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(OverallScaleScore AS STRING) AS StudentResult
+    OverallScaleScore AS StudentResult
   FROM elpac
 ),
 
@@ -30,7 +29,7 @@ achievement_level_2021 AS (
     RecordType,
     'Overall Performance Level' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(OverallPL AS STRING) AS StudentResult
+    OverallPL AS StudentResult
   FROM elpac
 ),
 
@@ -38,11 +37,10 @@ elpac_keys_2020 AS(
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    TestedSchoolId,
+    CAST(NULL AS STRING) AS TestedSchoolId,
     '2019-20' AS SchoolYear,
     CONCAT('2020-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
-    --FinalTestCompletedDate AS AssessmentDate,
-    CAST(GradeAssessedMinus1 AS STRING) AS AssessedGradeLevel
+    GradeAssessedMinus1 AS AssessedGradeLevel
   FROM elpac
 ),
 
@@ -52,7 +50,7 @@ scale_score_2020 AS (
     RecordType,
     'Overall Scale Score' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(OverallScaleScoreMinus1 AS STRING) AS StudentResult
+    OverallScaleScoreMinus1 AS StudentResult
   FROM elpac
 ),
 
@@ -62,7 +60,7 @@ achievement_level_2020 AS (
     RecordType,
     'Overall Performance Level' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(OverallPLMinus1 AS STRING) AS StudentResult
+    OverallPLMinus1 AS StudentResult
   FROM elpac
 ),
 
@@ -70,11 +68,10 @@ elpac_keys_2019 AS(
   SELECT
     AceAssessmentId,
     StateUniqueId,
-    TestedSchoolId,
+    CAST(NULL AS STRING) AS TestedSchoolId,
     '2018-19' AS SchoolYear,
     CONCAT('2019-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
-    --FinalTestCompletedDate AS AssessmentDate,
-    CAST(GradeAssessedMinus1 AS STRING) AS AssessedGradeLevel
+    GradeAssessedMinus2 AS AssessedGradeLevel
   FROM elpac
 ),
 
@@ -84,7 +81,7 @@ scale_score_2019 AS (
     RecordType,
     'Overall Scale Score' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(OverallScaleScoreMinus2 AS STRING) AS StudentResult
+    OverallScaleScoreMinus2 AS StudentResult
   FROM elpac
 ),
 
@@ -94,7 +91,7 @@ achievement_level_2019 AS (
     RecordType,
     'Overall Performance Level' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
-    CAST(OverallPLMinus2 AS STRING) AS StudentResult
+    OverallPLMinus2 AS StudentResult
   FROM elpac
 ),
 
