@@ -25,7 +25,7 @@ SELECT
       ExitWithdrawDate,
       ExitWithdrawReason
     ),
-  a.* EXCEPT (StateUniqueId, SchoolId)
+  a.* EXCEPT (StateUniqueId, TestedSchoolId)
 FROM current_students AS cs
 LEFT JOIN assessments AS a
 ON cs.StateUniqueId = a.StateUniqueId
