@@ -137,16 +137,128 @@ unioned AS (
     SELECT * FROM hs
 ),
 
-final AS (
+results_with_assessment_id AS (
   SELECT
     a.AceAssessmentId,
     a.AssessmentName,
-    u.*
+    u.EnrolledSchoolId,
+    u.TestedSchoolId,
+    u.RecordType,
+    u.SSID AS StateUniqueId,
+    u.GradeAssessed,
+    CASE
+      WHEN u.Attemptedness = 'false' THEN 'N'
+      WHEN u.Attemptedness = 'true' THEN 'Y'
+      ELSE u.Attemptedness
+    END AS Attemptedness,
+    CASE
+      WHEN u.IncludeIndicator = 'false' THEN 'N'
+      WHEN u.IncludeIndicator = 'true' THEN 'Y'
+      ELSE u.IncludeIndicator
+    END AS IncludeIndicator,
+    CASE
+      WHEN u.OverallScaleScore='NS' THEN NULL 
+      ELSE u.OverallScaleScore 
+    END AS OverallScaleScore,
+    CASE 
+      WHEN u.OralLanguageScaleScore='NS' THEN NULL
+      ELSE u.OralLanguageScaleScore 
+    END AS OralLanguageScaleScore,
+    CASE 
+      WHEN u.WrittenLanguageScaleScore='NS' THEN NULL
+      ELSE u.WrittenLanguageScaleScore
+    END AS WrittenLanguageScaleScore,
+    CASE
+      WHEN u.OverallPL='NS' THEN NULL
+      ELSE u.OverallPL 
+    END AS OverallPL,
+    CASE
+      WHEN u.OralLanguagePL='NS' THEN NULL 
+      ELSE u.OralLanguagePL 
+    END AS OralLanguagePL,
+    CASE
+      WHEN u.WrittenLanguagePL='NS' THEN NULL
+      ELSE u.WrittenLanguagePL
+    END AS WrittenLanguagePL,
+    CASE
+      WHEN u.ListeningPL='NS' THEN NULL
+      ELSE u.ListeningPL
+    END AS ListeningPL,
+    CASE
+      WHEN u.SpeakingPL='NS' THEN NULL
+      ELSE u.SpeakingPL
+    END AS SpeakingPL,
+    CASE
+      WHEN u.ReadingPL='NS' THEN NULL
+      ELSE u.ReadingPL
+    END AS ReadingPL,
+    CASE
+      WHEN u.WritingPL='NS' THEN NULL
+      ELSE u.WritingPL
+    END AS WritingPL,
+    CASE
+      WHEN u.AttemptednessMinus1='NS' THEN NULL
+      ELSE u.AttemptednessMinus1
+    END AS AttemptednessMinus1,
+    CASE
+      WHEN u.GradeAssessedMinus1='NS' THEN NULL
+      ELSE u.GradeAssessedMinus1
+    END AS GradeAssessedMinus1,
+    CASE
+      WHEN u.OverallScaleScoreMinus1='NS' THEN NULL
+      ELSE u.OverallScaleScoreMinus1
+    END AS OverallScaleScoreMinus1,
+    CASE
+      WHEN u.OverallPLMinus1='NS' THEN NULL
+      ELSE u.OverallPLMinus1
+    END AS OverallPLMinus1,
+    CASE
+      WHEN u.AttemptednessMinus2='NS' THEN NULL
+      ELSE u.AttemptednessMinus2
+    END AS AttemptednessMinus2,
+    CASE
+      WHEN u.GradeAssessedMinus2='NS' THEN NULL
+      ELSE u.GradeAssessedMinus2
+    END AS GradeAssessedMinus2,
+    CASE
+      WHEN u.OverallScaleScoreMinus2='NS' THEN NULL
+      ELSE u.OverallScaleScoreMinus2
+    END AS OverallScaleScoreMinus2,
+    CASE
+      WHEN u.OverallPLMinus2='NS' THEN NULL
+      ELSE u.OverallPLMinus2
+    END AS OverallPLMinus2
   FROM unioned AS u
   LEFT JOIN assessment_ids AS a  
   USING (RecordType)
-)
+),
 
+elpi_levels AS (
+  SELECT *
+  FROM {{ ref('stg_GoogleSheetData__ElpiLevels') }}
+),
+
+
+final AS(
+  SELECT
+    r.*,
+    e.ElpiLevel,
+    e1.ElpiLevel AS ElpiLevelMinus1,
+    e2.ElpiLevel AS ElpiLevelMinus2
+  FROM results_with_assessment_id AS r
+  LEFT JOIN elpi_levels AS e
+  ON 
+    r.GradeAssessed = CAST(e.GradeLevel AS STRING) AND
+    CAST(r.OverallScaleScore AS INT64) BETWEEN CAST(e.MinScaleScore AS INT64) AND CAST(e.MaxScaleScore AS INT64)
+  LEFT JOIN elpi_levels AS e1
+  ON 
+    r.GradeAssessedMinus1 = CAST(e1.GradeLevel AS STRING) AND
+    CAST(r.OverallScaleScoreMinus1 AS INT64) BETWEEN CAST(e1.MinScaleScore AS INT64) AND CAST(e1.MaxScaleScore AS INT64)
+  LEFT JOIN elpi_levels AS e2
+  ON 
+    r.GradeAssessedMinus2 = CAST(e2.GradeLevel AS STRING) AND
+    CAST(r.OverallScaleScoreMinus2 AS INT64) BETWEEN CAST(e2.MinScaleScore AS INT64) AND CAST(e2.MaxScaleScore AS INT64)
+)
 
 SELECT
   AceAssessmentId,
@@ -154,89 +266,30 @@ SELECT
   RecordType,
   EnrolledSchoolId,
   TestedSchoolId,
-  SSID AS StateUniqueId,
+  StateUniqueId,
   GradeAssessed,
-  CASE
-    WHEN Attemptedness = 'false' THEN 'N'
-    WHEN Attemptedness = 'true' THEN 'Y'
-    ELSE Attemptedness
-  END AS Attemptedness,
-  CASE
-    WHEN IncludeIndicator = 'false' THEN 'N'
-    WHEN IncludeIndicator = 'true' THEN 'Y'
-    ELSE IncludeIndicator
-  END AS IncludeIndicator,
-  CASE
-    WHEN OverallScaleScore='NS' THEN NULL 
-    ELSE OverallScaleScore 
-  END AS OverallScaleScore,
-  CASE 
-    WHEN OralLanguageScaleScore='NS' THEN NULL
-    ELSE OralLanguageScaleScore 
-  END AS OralLanguageScaleScore,
-  CASE 
-    WHEN WrittenLanguageScaleScore='NS' THEN NULL
-    ELSE WrittenLanguageScaleScore
-  END AS WrittenLanguageScaleScore,
-  CASE
-    WHEN OverallPL='NS' THEN NULL
-    ELSE OverallPL 
-  END AS OverallPL,
-  CASE
-    WHEN OralLanguagePL='NS' THEN NULL 
-    ELSE OralLanguagePL 
-  END AS OralLanguagePL,
-  CASE
-    WHEN WrittenLanguagePL='NS' THEN NULL
-    ELSE WrittenLanguagePL
-  END AS WrittenLanguagePL,
-  CASE
-    WHEN ListeningPL='NS' THEN NULL
-    ELSE ListeningPL
-  END AS ListeningPL,
-  CASE
-    WHEN SpeakingPL='NS' THEN NULL
-    ELSE SpeakingPL
-  END AS SpeakingPL,
-  CASE
-    WHEN ReadingPL='NS' THEN NULL
-    ELSE ReadingPL
-  END AS ReadingPL,
-  CASE
-    WHEN WritingPL='NS' THEN NULL
-    ELSE WritingPL
-  END AS WritingPL,
-  CASE
-    WHEN AttemptednessMinus1='NS' THEN NULL
-    ELSE AttemptednessMinus1
-  END AS AttemptednessMinus1,
-  CASE
-    WHEN GradeAssessedMinus1='NS' THEN NULL
-    ELSE GradeAssessedMinus1
-  END AS GradeAssessedMinus1,
-  CASE
-    WHEN OverallScaleScoreMinus1='NS' THEN NULL
-    ELSE OverallScaleScoreMinus1
-  END AS OverallScaleScoreMinus1,
-  CASE
-    WHEN OverallPLMinus1='NS' THEN NULL
-    ELSE OverallPLMinus1
-  END AS OverallPLMinus1,
-  CASE
-    WHEN AttemptednessMinus2='NS' THEN NULL
-    ELSE AttemptednessMinus2
-  END AS AttemptednessMinus2,
-  CASE
-    WHEN GradeAssessedMinus2='NS' THEN NULL
-    ELSE GradeAssessedMinus2
-  END AS GradeAssessedMinus2,
-  CASE
-    WHEN OverallScaleScoreMinus2='NS' THEN NULL
-    ELSE OverallScaleScoreMinus2
-  END AS OverallScaleScoreMinus2,
-  CASE
-    WHEN OverallPLMinus2='NS' THEN NULL
-    ELSE OverallPLMinus2
-  END AS OverallPLMinus2,
+  Attemptedness,
+  IncludeIndicator,
+  OverallScaleScore,
+  OralLanguageScaleScore,
+  WrittenLanguageScaleScore,
+  OverallPL,
+  ElpiLevel,
+  OralLanguagePL,
+  WrittenLanguagePL,
+  ListeningPL,
+  SpeakingPL,
+  ReadingPL,
+  WritingPL,
+  AttemptednessMinus1,
+  GradeAssessedMinus1,
+  OverallScaleScoreMinus1,
+  OverallPLMinus1,
+  ElpiLevelMinus1,
+  AttemptednessMinus2,
+  GradeAssessedMinus2,
+  OverallScaleScoreMinus2,
+  OverallPLMinus2,
+  ElpiLevelMinus2
 
 FROM final
