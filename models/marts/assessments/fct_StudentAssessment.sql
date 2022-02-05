@@ -59,7 +59,7 @@ elpac_2021 AS (
     ReportingMethod,
     StudentResultDataType,
     StudentResult
-FROM {{ ref('int_TomsElpacEnrolled2021__melted') }}
+FROM {{ ref('int_TomsElpacEnrolled2021__melted_unioned') }}
 ),
 
 unioned_results AS (
