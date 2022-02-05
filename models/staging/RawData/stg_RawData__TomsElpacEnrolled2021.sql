@@ -166,22 +166,77 @@ SELECT
     WHEN IncludeIndicator = 'true' THEN 'Y'
     ELSE IncludeIndicator
   END AS IncludeIndicator,
-  OverallScaleScore,
-  OralLanguageScaleScore,
-  WrittenLanguageScaleScore,
-  OverallPL,
-  OralLanguagePL,
-  WrittenLanguagePL,
-  ListeningPL,
-  SpeakingPL,
-  ReadingPL,
-  WritingPL,
-  AttemptednessMinus1,
-  GradeAssessedMinus1,
-  OverallScaleScoreMinus1,
-  OverallPLMinus1,
-  AttemptednessMinus2,
-  GradeAssessedMinus2,
-  OverallScaleScoreMinus2,
-  OverallPLMinus2
+  CASE
+    WHEN OverallScaleScore='NS' THEN NULL 
+    ELSE OverallScaleScore 
+  END AS OverallScaleScore,
+  CASE 
+    WHEN OralLanguageScaleScore='NS' THEN NULL
+    ELSE OralLanguageScaleScore 
+  END AS OralLanguageScaleScore,
+  CASE 
+    WHEN WrittenLanguageScaleScore='NS' THEN NULL
+    ELSE WrittenLanguageScaleScore
+  END AS WrittenLanguageScaleScore,
+  CASE
+    WHEN OverallPL='NS' THEN NULL
+    ELSE OverallPL 
+  END AS OverallPL,
+  CASE
+    WHEN OralLanguagePL='NS' THEN NULL 
+    ELSE OralLanguagePL 
+  END AS OralLanguagePL,
+  CASE
+    WHEN WrittenLanguagePL='NS' THEN NULL
+    ELSE WrittenLanguagePL
+  END AS WrittenLanguagePL,
+  CASE
+    WHEN ListeningPL='NS' THEN NULL
+    ELSE ListeningPL
+  END AS ListeningPL,
+  CASE
+    WHEN SpeakingPL='NS' THEN NULL
+    ELSE SpeakingPL
+  END AS SpeakingPL,
+  CASE
+    WHEN ReadingPL='NS' THEN NULL
+    ELSE ReadingPL
+  END AS ReadingPL,
+  CASE
+    WHEN WritingPL='NS' THEN NULL
+    ELSE WritingPL
+  END AS WritingPL,
+  CASE
+    WHEN AttemptednessMinus1='NS' THEN NULL
+    ELSE AttemptednessMinus1
+  END AS AttemptednessMinus1,
+  CASE
+    WHEN GradeAssessedMinus1='NS' THEN NULL
+    ELSE GradeAssessedMinus1
+  END AS GradeAssessedMinus1,
+  CASE
+    WHEN OverallScaleScoreMinus1='NS' THEN NULL
+    ELSE OverallScaleScoreMinus1
+  END AS OverallScaleScoreMinus1,
+  CASE
+    WHEN OverallPLMinus1='NS' THEN NULL
+    ELSE OverallPLMinus1
+  END AS OverallPLMinus1,
+  CASE
+    WHEN AttemptednessMinus2='NS' THEN NULL
+    ELSE AttemptednessMinus2
+  END AS AttemptednessMinus2,
+  CASE
+    WHEN GradeAssessedMinus2='NS' THEN NULL
+    ELSE GradeAssessedMinus2
+  END AS GradeAssessedMinus2,
+  CASE
+    WHEN OverallScaleScoreMinus2='NS' THEN NULL
+    ELSE OverallScaleScoreMinus2
+  END AS OverallScaleScoreMinus2,
+  CASE
+    WHEN OverallPLMinus2='NS' THEN NULL
+    ELSE OverallPLMinus2
+  END AS OverallPLMinus2,
+
 FROM final
