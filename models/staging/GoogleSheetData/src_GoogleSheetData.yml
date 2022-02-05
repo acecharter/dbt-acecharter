@@ -88,7 +88,33 @@ sources:
           - name: Level4Min
             description: Minimum scale score within Level 4 range; ('N/A' if not applicable)
           - name: Notes
-
+      - name: ElpiLevels
+        description: A google sheet that provides data regarding State Dashboard English Learner Progress Indicator (ELPI) levels used to determine whether EL students are progressing
+        columns:
+          - name: AceAssessmentId
+            description: Internally created foreign key of the table (primary key for Assessments table)
+            tests:
+              - not_null
+          - name: GradeLevel
+            description: Grade level that corresponds to associated ELPI level and range
+            tests:
+              - not_null
+          - name: ElpiLevel
+            description: ELPI levels (as named in State documentation) for each grade level
+            tests:
+              - not_null
+          - name: ElpiLevelRank
+            description: Rank used to order ElpiLevels column string values
+            tests:
+              - not_null
+          - name: MinScaleScore
+            description: Minimum ELPAC summative assessment scale score associated with specified grade level ELPI level
+            tests:
+              - not_null
+          - name: MaxScaleScore
+            description: Maximum ELPAC summative assessment scale score associated with specified grade level ELPI level
+            tests:
+              - not_null
       - name: ManuallyMaintainedFilesTracker
         description: A google sheet used to track the last date that files requiring manual maintenance (i.e. files that must be continuously updated via manual uploads) were last updated in BigQuery
         columns:
