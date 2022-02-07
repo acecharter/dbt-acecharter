@@ -134,3 +134,5 @@ sources:
       - name: CersInspire
         description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Inspire
 
+      - name: StarRenaissanceMissingStudentIds
+        description: List of StudentRenaissanceIDs and corresponding StudentIdentifier and StateUniqueId values that are missing from RenaissanceStar records
