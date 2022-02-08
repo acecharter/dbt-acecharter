@@ -8,6 +8,7 @@ WITH students AS (
 testing_windows AS (
     SELECT *
     FROM {{ ref('stg_GoogleSheetData__RenaissanceStarTestingWindows')}}
+    WHERE TestingWindowStartDate < CURRENT_DATE()
 ),
 
 student_window_combos AS (
