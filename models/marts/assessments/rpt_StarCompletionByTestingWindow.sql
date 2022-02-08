@@ -11,124 +11,33 @@ schools AS (
     FROM {{ ref('dim_Schools')}}
 ),
 
-star_reading AS (
-  SELECT
-    SchoolYear,
-    AssessmentName,
-    TestedSchoolId,
-    StudentIdentifier,
-    StateUniqueId,
-    AssessmentId,
-    AceTestingWindowName,
-    StarTestingWindow,
-    DetailedTestingWindow2122
-  FROM {{ ref('stg_RenaissanceStar__Reading_v2') }}
+testing_window_eligible_students AS (
+  SELECT * FROM {{ ref('dim_StarTestingWindowEligibleStudents')}}
 ),
 
-star_math AS (
-  SELECT
-    SchoolYear,
-    AssessmentName,
-    TestedSchoolId,
-    StudentIdentifier,
-    StateUniqueId,
-    AssessmentId,
-    AceTestingWindowName,
-    StarTestingWindow,
-    DetailedTestingWindow2122
-    
-  FROM {{ ref('stg_RenaissanceStar__Math_v2') }}
-),
-
-star AS(
-  SELECT * FROM star_reading
-  UNION ALL
-  SELECT * FROM star_math
-),
-
-
-star_keys AS(
-  SELECT
-    * EXCEPT(
-        AceTestingWindowName,
-        StarTestingWindow,
-        DetailedTestingWindow2122
-      )
-  FROM star
-),
-
-ace_window AS(
-  SELECT
-    AssessmentId,
-    'ACE Testing Window' AS TestingWindowType,
-    AceTestingWindowName AS TestingWindow
-  FROM star
-  WHERE AceTestingWindowName IS NOT NULL
-),
-
-detailed_window AS(
-  SELECT
-    AssessmentId,
-    'Detailed Testing Window' AS TestingWindowType,
-    DetailedTestingWindow2122 AS TestingWindow
-  FROM star
-),
-
-star_window AS(
-  SELECT
-    AssessmentId,
-    'Star Testing Window' AS TestingWindowType,
-    StarTestingWindow AS TestingWindow
-  FROM star
-),
-
-unioned_windows AS(
-  SELECT 
-    k.*,
-    aw.* EXCEPT(AssessmentId)
-  FROM star_keys AS k
-  RIGHT JOIN ace_window AS aw
-  USING (AssessmentId)
-
-  UNION ALL
-  SELECT 
-    k.*,
-    dw.* EXCEPT(AssessmentId)
-  FROM star_keys AS k
-  RIGHT JOIN detailed_window AS dw
-  USING (AssessmentId)  
-
-  UNION ALL
-  SELECT 
-    k.*,
-    sw.* EXCEPT(AssessmentId)
-  FROM star_keys AS k
-  RIGHT JOIN star_window AS sw
-  USING (AssessmentId)
-),
-
-grouped AS(
-  SELECT
-    SchoolYear,
-    AssessmentName,
-    TestedSchoolId,
-    StudentIdentifier,
-    StateUniqueId,
-    TestingWindowType,
-    TestingWindow,
-    CASE WHEN COUNT(AssessmentId) > 0 THEN 'Yes' ELSE 'No' END AS TestedDuringWindow
-  FROM unioned_windows
-  GROUP BY 1, 2, 3, 4, 5, 6, 7
+student_result_counts AS (
+  SELECT * FROM {{ ref('fct_StudentStarResultCountsByTestingWindow')}}
 )
 
+
 SELECT
-  sc.* EXCEPT (SchoolId),
-  st.* EXCEPT (ExitWithdrawReason),
-  g.* EXCEPT (StudentIdentifier, StateUniqueId)
-
-FROM students AS st
+  sc.*,
+  st.* EXCEPT (SchoolId),
+  es.TestingWindowType,
+  es.TestingWindowName,
+  es.AceAssessmentId,
+  CASE WHEN rc.AssessmentResultCount IS NULL Then 'No' ELSE 'Yes' END AS TestedDuringWindow
+FROM testing_window_eligible_students AS es
+LEFT JOIN student_result_counts AS rc
+ON
+  es.StudentUniqueId = rc.StudentUniqueId AND
+  es.SchoolId = rc.TestedSchoolId AND
+  es.TestingWindowType = rc.TestingWindowType AND
+  es.TestingWindowName = rc.TestingWindow AND
+  es.AceAssessmentId = rc.AceAssessmentId
 LEFT JOIN schools AS sc
-ON st.SchoolId = sc.SchoolId
-LEFT JOIN grouped AS g
-ON st.StateUniqueId = g.StateUniqueId
+ON es.SchoolId = sc.SchoolId
+LEFT JOIN students AS st
+ON es.StudentUniqueId = st.StudentUniqueId
 
+  
