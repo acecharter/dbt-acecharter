@@ -20,7 +20,7 @@ star_assessments AS (
 
 ge_vs_gp AS (
     SELECT *
-    FROM {{ ref('fct_StudentStarResultsGeVsGp')}}
+    FROM {{ ref('int_StudentStarResultsGeVsGp')}}
 )
 
 SELECT
@@ -37,11 +37,11 @@ SELECT
       ),
   ge_vs_gp.* EXCEPT (AssessmentId)
 FROM students AS stu
-LEFT JOIN star_assessments AS a
-ON stu.StateUniqueId = a.StateUniqueId
 LEFT JOIN schools AS s
 ON stu.SchoolId = s.SchoolId
 LEFT JOIN ge_vs_gp
 USING (AssessmentId)
+LEFT JOIN star_assessments AS a
+ON stu.StateUniqueId = a.StateUniqueId
 WHERE a.StudentResult IS NOT NULL
 AND stu.StateUniqueId = '7041884062'
