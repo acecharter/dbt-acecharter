@@ -1,7 +1,6 @@
-WITH current_students AS (
+WITH students AS (
     SELECT *
     FROM {{ ref('dim_Students') }}
-    WHERE IsCurrentlyEnrolled = true
 ),
 
 star_assessments AS (
@@ -22,13 +21,13 @@ schools AS (
 
 SELECT
   s.* EXCEPT (SchoolId),
-  cs.* EXCEPT (
-      ExitWithdrawDate,
+  stu.* EXCEPT (
       ExitWithdrawReason
     ),
   a.* EXCEPT (StateUniqueId, TestedSchoolId)
-FROM current_students AS cs
+FROM students AS stu
 LEFT JOIN star_assessments AS a
-ON cs.StateUniqueId = a.StateUniqueId
+ON stu.StateUniqueId = a.StateUniqueId
 LEFT JOIN schools AS s
-ON cs.SchoolId = s.SchoolId
+ON stu.SchoolId = s.SchoolId
+WHERE StudentResult IS NOT NULL
