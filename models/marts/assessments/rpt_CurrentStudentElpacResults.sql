@@ -6,7 +6,7 @@ WITH current_students AS (
 
 elpac_results AS (
     SELECT
-      * EXCEPT (AdministrationDate)
+      * EXCEPT (AssessmentDate)
     FROM {{ ref('fct_StudentAssessment')}}
     WHERE
       AceAssessmentId IN ('8')

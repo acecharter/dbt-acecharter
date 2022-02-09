@@ -6,7 +6,7 @@ WITH current_students AS (
 
 caaspp_results AS (
     SELECT
-      * EXCEPT (AdministrationDate, StudentResult),
+      * EXCEPT (AssessmentDate, StudentResult),
       CAST(StudentResult AS INT64) AS StudentResult
     FROM {{ ref('fct_StudentAssessment')}}
     WHERE

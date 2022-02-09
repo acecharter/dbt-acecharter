@@ -15,36 +15,36 @@ SELECT
   END AS AtOrAboveAverageGrowth,
   CASE
     WHEN
-      AdministrationDate >= '2021-08-01' AND
-      AdministrationDate <= '2021-08-11'
+      AssessmentDate >= '2021-08-01' AND
+      AssessmentDate <= '2021-08-11'
     THEN 'Fall (early)'
     WHEN
-      AdministrationDate >= '2021-08-11' AND
-      AdministrationDate <= '2021-09-30'
+      AssessmentDate >= '2021-08-11' AND
+      AssessmentDate <= '2021-09-30'
     THEN 'Fall'
     WHEN
-      AdministrationDate >= '2021-10-01' AND
-      AdministrationDate <= '2021-11-30'
+      AssessmentDate >= '2021-10-01' AND
+      AssessmentDate <= '2021-11-30'
     THEN 'Fall (late)'
     WHEN
-      AdministrationDate >= '2021-12-01' AND
-      AdministrationDate <= '2022-01-14'
+      AssessmentDate >= '2021-12-01' AND
+      AssessmentDate <= '2022-01-14'
     THEN 'Winter'
     WHEN
-      AdministrationDate >= '2022-01-15' AND
-      AdministrationDate <= '2022-03-31'
+      AssessmentDate >= '2022-01-15' AND
+      AssessmentDate <= '2022-03-31'
     THEN 'Winter (late)'
     WHEN
-      AdministrationDate >= '2022-04-01' AND
-      AdministrationDate <= '2022-04-14'
+      AssessmentDate >= '2022-04-01' AND
+      AssessmentDate <= '2022-04-14'
     THEN 'Spring (early)'
     WHEN
-      AdministrationDate >= '2022-04-15' AND
-      AdministrationDate <= '2022-05-31'
+      AssessmentDate >= '2022-04-15' AND
+      AssessmentDate <= '2022-05-31'
     THEN 'Spring'
     WHEN
-      AdministrationDate >= '2022-06-01' AND
-      AdministrationDate <= '2022-07-31'
+      AssessmentDate >= '2022-06-01' AND
+      AssessmentDate <= '2022-07-31'
     THEN 'Spring (late)'
   END AS TestingWindow
 FROM {{ ref('rpt_StudentAssessment')}}

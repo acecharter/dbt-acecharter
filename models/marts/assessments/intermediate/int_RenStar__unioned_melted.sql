@@ -11,7 +11,7 @@ star_keys AS(
     TestedSchoolId,
     SchoolYear,
     AssessmentId,
-    AssessmentDate AS AdministrationDate,
+    AssessmentDate,
     Grade AS AssessedGradeLevel,
     GradePlacement
   FROM star_results
