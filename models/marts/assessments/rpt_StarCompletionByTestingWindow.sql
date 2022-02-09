@@ -11,6 +11,11 @@ schools AS (
     FROM {{ ref('dim_Schools')}}
 ),
 
+assessments AS (
+  SELECT *
+  FROM {{ ref('stg_GoogleSheetData__Assessments')}}
+),
+
 testing_window_eligible_students AS (
   SELECT * FROM {{ ref('dim_StarTestingWindowEligibleStudents')}}
 ),
@@ -26,6 +31,8 @@ SELECT
   es.TestingWindowType,
   es.TestingWindowName,
   es.AceAssessmentId,
+  a.AssessmentNameShort,
+  a.AssessmentSubject,
   CASE WHEN rc.AssessmentResultCount IS NULL Then 'No' ELSE 'Yes' END AS TestedDuringWindow
 FROM testing_window_eligible_students AS es
 LEFT JOIN student_result_counts AS rc
@@ -39,5 +46,7 @@ LEFT JOIN schools AS sc
 ON es.SchoolId = sc.SchoolId
 LEFT JOIN students AS st
 ON es.StudentUniqueId = st.StudentUniqueId
+LEFT JOIN assessments AS a
+ON es.AceAssessmentId = a.AceAssessmentId
 
   
