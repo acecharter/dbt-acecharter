@@ -40,3 +40,4 @@ LEFT JOIN star_assessments AS a
 ON stu.StateUniqueId = a.StateUniqueId
 LEFT JOIN ge_vs_gp AS v
 ON a.AssessmentId = v.AssessmentId
+WHERE a.AssessmentId IS NOT NULL
