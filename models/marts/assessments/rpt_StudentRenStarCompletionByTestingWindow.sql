@@ -17,11 +17,11 @@ assessments AS (
 ),
 
 testing_window_eligible_students AS (
-  SELECT * FROM {{ ref('dim_StarTestingWindowEligibleStudents')}}
+  SELECT * FROM {{ ref('dim_RenStarTestingWindowEligibleStudents')}}
 ),
 
 student_result_counts AS (
-  SELECT * FROM {{ ref('fct_StudentStarResultCountsByTestingWindow')}}
+  SELECT * FROM {{ ref('fct_StudentRenStarResultCountsByTestingWindow')}}
 )
 
 

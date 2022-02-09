@@ -19,7 +19,7 @@ star_assessments AS (
 
 ge_vs_gp AS (
     SELECT *
-    FROM {{ ref('int_StudentStarResultsGeVsGp')}}
+    FROM {{ ref('int_RenStarResultsGeVsGp')}}
 )
 
 SELECT
