@@ -3,18 +3,7 @@ WITH star_results AS (
 ),
 
 star_keys AS(
-  SELECT
-    AceAssessmentId,
-    StudentRenaissanceID,
-    StudentIdentifier,
-    StateUniqueId,
-    TestedSchoolId,
-    SchoolYear,
-    AssessmentId,
-    AssessmentDate,
-    Grade AS AssessedGradeLevel,
-    GradePlacement
-  FROM star_results
+  SELECT * FROM {{ ref('dim_RenStarStudentAssessments') }}
 ),
 
 ge AS (

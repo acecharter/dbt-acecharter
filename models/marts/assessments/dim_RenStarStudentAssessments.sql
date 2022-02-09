@@ -1,11 +1,11 @@
 SELECT
+  AssessmentId,
+  AceAssessmentId,
   StudentRenaissanceID,
-  AceAssessmentId,  
   StudentIdentifier,
   StateUniqueId,
   TestedSchoolId,
   SchoolYear,
-  AssessmentId,
   AssessmentDate,
   Grade AS AssessedGradeLevel,
   GradePlacement
