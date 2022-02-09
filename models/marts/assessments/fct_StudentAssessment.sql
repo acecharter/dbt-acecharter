@@ -14,7 +14,7 @@ star AS (
     ReportingMethod,
     StudentResultDataType,
     StudentResult
-  FROM {{ ref('int_RenaissanceStar__unioned_melted') }}
+  FROM {{ ref('int_RenStar__unioned_melted') }}
 ),
 
 caaspp_2021 AS (
