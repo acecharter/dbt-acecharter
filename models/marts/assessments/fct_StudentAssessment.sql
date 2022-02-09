@@ -2,7 +2,7 @@ WITH assessment_names AS (
   SELECT * FROM {{ ref('stg_GoogleSheetData__Assessments') }}
 ),
 
-star_math AS (    
+star AS (    
   SELECT
     AceAssessmentId,
     StateUniqueId,
@@ -14,22 +14,7 @@ star_math AS (
     ReportingMethod,
     StudentResultDataType,
     StudentResult
-  FROM {{ ref('int_StarMath__melted') }}
-),
-
-star_reading AS (
-  SELECT
-    AceAssessmentId,
-    StateUniqueId,
-    TestedSchoolId,
-    SchoolYear AS AssessmentSchoolYear,
-    AssessmentID AS AssessmentId,
-    CAST(AdministrationDate AS STRING) AS AdministrationDate,
-    AssessedGradeLevel,
-    ReportingMethod,
-    StudentResultDataType,
-    StudentResult
-  FROM {{ ref('int_StarReading__melted') }}
+  FROM {{ ref('int_RenaissanceStar__unioned_melted') }}
 ),
 
 caaspp_2021 AS (
@@ -63,9 +48,7 @@ FROM {{ ref('int_TomsElpacEnrolled2021__melted_unioned') }}
 ),
 
 unioned_results AS (
-    SELECT * FROM star_math
-    UNION ALL 
-    SELECT * FROM star_reading
+    SELECT * FROM star
     UNION ALL
     SELECT * FROM caaspp_2021
     UNION ALL
