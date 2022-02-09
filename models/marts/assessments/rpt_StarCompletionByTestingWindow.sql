@@ -33,7 +33,7 @@ SELECT
   es.AceAssessmentId,
   a.AssessmentNameShort,
   a.AssessmentSubject,
-  CASE WHEN rc.AssessmentResultCount IS NULL Then 'No' ELSE 'Yes' END AS TestedDuringWindow
+  CASE WHEN rc.AssessmentResultCount IS NULL Then 'Not Tested' ELSE 'Tested' END AS WindowTestingStatus
 FROM testing_window_eligible_students AS es
 LEFT JOIN student_result_counts AS rc
 ON
@@ -48,5 +48,4 @@ LEFT JOIN students AS st
 ON es.StudentUniqueId = st.StudentUniqueId
 LEFT JOIN assessments AS a
 ON es.AceAssessmentId = a.AceAssessmentId
-
   
