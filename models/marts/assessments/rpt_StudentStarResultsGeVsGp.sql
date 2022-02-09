@@ -14,8 +14,7 @@ students AS (
 
 star_assessments AS (
     SELECT *
-    FROM {{ ref('fct_StudentAssessment')}}
-    WHERE AceAssessmentId IN ('10', '11')
+    FROM {{ ref('dim_RenStarStudentAssessments')}}
 ),
 
 ge_vs_gp AS (
@@ -31,17 +30,13 @@ SELECT
   a.* EXCEPT (
         StateUniqueId,
         TestedSchoolId,
-        ReportingMethod,
-        StudentResultDataType,
-        StudentResult
+        GradePlacement
       ),
-  ge_vs_gp.* EXCEPT (AssessmentId)
+  v.* EXCEPT (AssessmentId)
 FROM students AS stu
 LEFT JOIN schools AS s
 ON stu.SchoolId = s.SchoolId
-LEFT JOIN ge_vs_gp
-USING (AssessmentId)
 LEFT JOIN star_assessments AS a
 ON stu.StateUniqueId = a.StateUniqueId
-WHERE a.StudentResult IS NOT NULL
-AND stu.StateUniqueId = '7041884062'
+LEFT JOIN ge_vs_gp AS v
+ON a.AssessmentId = v.AssessmentId
