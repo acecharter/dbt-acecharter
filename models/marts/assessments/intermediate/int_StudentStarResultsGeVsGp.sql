@@ -1,60 +1,53 @@
-WITH star_assessment_ids AS (
-  SELECT AssessmentId FROM {{ ref('int_RenaissanceStar__unioned')}}
+WITH results AS (
+  SELECT * FROM {{ ref('int_RenaissanceStar__unioned')}}
 ),
 
-star_results AS (
-    SELECT *
-    FROM {{ ref('fct_StudentAssessment')}}
-    WHERE AceAssessmentId IN ('10', '11')
-),
-
-ge AS (
-    SELECT
-      AssessmentId,
-      StudentResult AS GradeEquivalentScore
-    FROM star_results
-    WHERE ReportingMethod = 'Grade Equivalent'
-),
-
-gp AS (
-    SELECT
-      AssessmentId,
-      CAST(StudentResult AS FLOAT64) AS GradePlacement
-    FROM star_results
-    WHERE ReportingMethod = 'Grade Placement'
+ge_values AS (
+  SELECT
+    AssessmentId,
+    CASE
+      WHEN GradeEquivalent = '< 1' THEN 0.9
+      WHEN GradeEquivalent = '> 9' THEN 9.1
+      WHEN GradeEquivalent = '> 10' THEN 10.1
+      WHEN GradeEquivalent = '> 11' THEN 11.1
+      WHEN GradeEquivalent = '> 12' THEN 12.1
+      WHEN GradeEquivalent = '> 12.9' THEN 11.1
+      ELSE CAST(GradeEquivalent AS FLOAT64)
+    END AS GradeEquivalentValue,
+  FROM results
 ),
 
 ge_minus_gp AS (
-    SELECT
-      ge.AssessmentId,
-      CASE
-        WHEN ge.GradeEquivalentScore = '< 1' THEN 0.9 - gp.GradePlacement
-        WHEN ge.GradeEquivalentScore = '> 9' THEN 9.1 - gp.GradePlacement
-        WHEN ge.GradeEquivalentScore = '> 10' THEN 10.1 - gp.GradePlacement
-        WHEN ge.GradeEquivalentScore = '> 11' THEN 11.1 - gp.GradePlacement
-        WHEN ge.GradeEquivalentScore = '> 12' THEN 12.1 - gp.GradePlacement
-        WHEN ge.GradeEquivalentScore = '> 12.9' THEN 11.1 - gp.GradePlacement
-        ELSE CAST(ge.GradeEquivalentScore AS FLOAT64) - gp.GradePlacement
-      END AS GeScoreMinusGp
-    FROM ge
-    LEFT JOIN gp
-    USING (AssessmentId)
+  SELECT
+    r.AssessmentId,
+    ROUND(GradeEquivalentValue - r.GradePlacement, 2) AS GeMinusGp
+  FROM results AS r
+  LEFT JOIN ge_values AS gv
+  USING (AssessmentId)
+),
+
+ge_minus_gp_categories AS (
+  SELECT
+    AssessmentId,
+    CASE
+      WHEN GeMinusGp > 0 THEN 'Above GP'
+      WHEN GeMinusGp = 0 THEN 'At GP'
+      WHEN GeMinusGp < 0 THEN 'Below GP'
+    END AS GeRelativeToGpCategory
+  FROM ge_minus_gp
 )
 
 SELECT
-  a.AssessmentId,
-  ge.GradeEquivalentScore,
-  gp.GradePlacement,
-  ROUND(ge_minus_gp.GeScoreMinusGp, 2) AS GeMinusGp,
-  CASE
-    WHEN ge_minus_gp.GeScoreMinusGp > 0 THEN 'Above GP'
-    WHEN ge_minus_gp.GeScoreMinusGp = 0 THEN 'At GP'
-    WHEN ge_minus_gp.GeScoreMinusGp < 0 THEN 'Below GP'
-  END AS GeScoreRelativeToGpCategory
-FROM star_assessment_ids AS a
-LEFT JOIN ge
-ON a.AssessmentId = ge.AssessmentId
-LEFT JOIN gp
-ON a.AssessmentId = gp.AssessmentId
-LEFT JOIN ge_minus_gp
-ON a.AssessmentId = ge_minus_gp.AssessmentId
+  r.AssessmentId,
+  r.GradeEquivalent,
+  gv.GradeEquivalentValue,
+  r.GradePlacement,
+  gmg.GeMinusGp,
+  c.GeRelativeToGpCategory
+FROM results AS r
+LEFT JOIN ge_values AS gv
+ON r.AssessmentId = gv.AssessmentId
+LEFT JOIN ge_minus_gp AS gmg
+ON r.AssessmentId = gmg.AssessmentId
+LEFT JOIN ge_minus_gp_categories AS c
+ON r.AssessmentId = c.AssessmentId
