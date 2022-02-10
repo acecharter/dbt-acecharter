@@ -7,7 +7,7 @@ WITH students AS (
 
 testing_windows AS (
     SELECT *
-    FROM {{ ref('stg_GoogleSheetData__RenaissanceStarTestingWindows')}}
+    FROM {{ ref('stg_GoogleSheetData__RenStarTestingWindows')}}
     WHERE TestingWindowStartDate < CURRENT_DATE()
 ),
 
