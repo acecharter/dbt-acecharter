@@ -8,7 +8,7 @@ WITH enrollments_ranked AS (
 ),
 
 demographics AS (
-    SELECT * FROM {{ ref('int_StudentDemographics_Seis__joined')}}
+    SELECT * FROM {{ ref('stg_StarterPack__StudentDemographics')}}
 )
 
 
@@ -29,7 +29,6 @@ SELECT
     d.FrlStatus,
     d.HasIep,
     d.SeisEligibilityStatus,
-    d.IepStatusDate,
     d.Email,
     e.GradeLevel,
     d.IsCurrentlyEnrolled,
