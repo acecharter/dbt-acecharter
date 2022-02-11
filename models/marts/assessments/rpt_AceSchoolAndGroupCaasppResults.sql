@@ -13,7 +13,7 @@ caaspp_results AS (
     a.* EXCEPT(StateSchoolCode),
     c.*
   FROM ace_school_codes as a
-  LEFT JOIN {{ ref('int_CaasppSantaClaraCounty_Years_unioned')}} AS c
+  LEFT JOIN {{ ref('stg_RawData__CaasppSantaClaraCounty')}} AS c
   ON a.StateSchoolCode = c.SchoolCode
 ),
 

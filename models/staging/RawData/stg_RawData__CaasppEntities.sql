@@ -20,6 +20,7 @@ WITH caaspp_entities AS (
   FROM {{ source('RawData', 'CaasppEntities2021')}}
 )
 
+
 SELECT 
   FORMAT("%02d", County_Code) AS CountyCode,
   FORMAT("%05d", District_Code) AS DistrictCode,

@@ -1,7 +1,10 @@
-WITH
+WITH caaspp AS (
+  SELECT * FROM {{ ref('stg_RawData__CaasppSantaClaraCounty')}} 
+),
+
 schools AS (
   SELECT *
-  FROM {{ ref('int_CaasppSantaClaraCounty_Years_unioned')}}
+  FROM caaspp
   WHERE SchoolCode IN (
     '0116814', --ACE Empower
     '0125617', --ACE High School
@@ -16,7 +19,7 @@ schools AS (
 
 districts AS (
   SELECT *
-  FROM {{ ref('int_CaasppSantaClaraCounty_Years_unioned')}}
+  FROM caaspp
   WHERE
     SchoolCode = '0000000' AND
     DistrictCode IN (
@@ -30,7 +33,7 @@ districts AS (
 
 county AS (
   SELECT *
-  FROM {{ ref('int_CaasppSantaClaraCounty_Years_unioned')}}
+  FROM caaspp
   WHERE CountyCode = '43' AND DistrictCode = '00000' -- Santa Clara County
 ),
 
