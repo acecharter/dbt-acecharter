@@ -21,7 +21,7 @@ star_math AS (
     CONCAT(LEFT(School_Year, 4), '-', RIGHT(School_Year, 2)) AS SchoolYear,
     CAST(NULL AS STRING) AS StudentRenaissanceID,
     CAST(NULL AS STRING) AS StudentIdentifier,
-    Student_State_ID AS StateUniqueId,
+    CAST(Student_State_ID AS STRING) AS StateUniqueId,
     CASE
       WHEN Student_Middle_Name IS NULL THEN CONCAT(Student_Last_Name, ", ", Student_First_Name)
       ELSE CONCAT(Student_Last_Name, ", ", Student_First_Name, " ", Student_Middle_Name)
@@ -31,14 +31,14 @@ star_math AS (
     Student_Middle_Name,
     CAST(NULL AS STRING) AS Gender,
     DATE(Birthdate) AS BirthDate,
-    Current_Grade As GradeLevel,
+    CAST(Current_Grade AS STRING) As GradeLevel,
     CAST(NULL AS STRING) AS EnrollmentStatus,
     Renaissance_Activity_ID AS AssessmentId,
     DATE(Activity_Completed_Date) AS AssessmentDate,
     CAST(NULL AS INT64) AS AssessmentNumber,
     CAST(NULL AS FLOAT64) AS GradePlacement,
-    Current_Grade AS Grade,
-    Grade_Equivalent AS GradeEquivalent,
+    CAST(Current_Grade AS STRING) AS Grade,
+    CAST(Grade_Equivalent AS STRING) AS GradeEquivalent,
     Scaled_Score AS ScaledScore,
     Unified_Scale AS UnifiedScore,
     Percentile_Rank AS PercentileRank,

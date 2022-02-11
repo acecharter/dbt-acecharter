@@ -1,87 +1,34 @@
-WITH reading AS (
+WITH reading_unioned AS(
+  SELECT * FROM {{ ref('stg_RawData__RenStarReading2021')}}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_RenaissanceStar__Reading_v2')}}
+),
+
+math_unioned AS(
+  SELECT * FROM {{ ref('stg_RawData__RenStarMath2021')}}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_RenaissanceStar__Math_v2')}}
+),
+
+reading AS (
   SELECT
-    AceAssessmentId,
-    TestedSchoolId,
-    TestedSchoolName,
-    SchoolYear,
-    StudentRenaissanceID,
-    StudentIdentifier,
-    StateUniqueId,
-    DisplayName,
-    LastName,
-    FirstName,
-    MiddleName,
-    Gender,
-    BirthDate,
-    GradeLevel,
-    EnrollmentStatus,
-    AssessmentID,
-    AssessmentDate,
-    AssessmentNumber,
-    GradePlacement,
-    Grade,
-    GradeEquivalent,
-    ScaledScore,
-    UnifiedScore,
-    PercentileRank,
-    NormalCurveEquivalent,
+    * EXCEPT(
+      InstructionalReadingLevel, 
+      Lexile
+    ),
     InstructionalReadingLevel,
     Lexile,
     CAST(NULL AS STRING) AS Quantile,
-    StudentGrowthPercentileFallFall,
-    StudentGrowthPercentileFallSpring,
-    StudentGrowthPercentileFallWinter,
-    StudentGrowthPercentileSpringSpring,
-    StudentGrowthPercentileWinterSpring,
-    CurrentSGP,
-    AceTestingWindowName,
-    AceTestingWindowStartDate,
-    AceTestingWindowEndDate,
-    StarTestingWindow
-  FROM {{ ref('stg_RenaissanceStar__Reading_v2')}}
+  FROM reading_unioned
 ),
 
 math AS (
   SELECT
-    AceAssessmentId,
-    TestedSchoolId,
-    TestedSchoolName,
-    SchoolYear,
-    StudentRenaissanceID,
-    StudentIdentifier,
-    StateUniqueId,
-    DisplayName,
-    LastName,
-    FirstName,
-    MiddleName,
-    Gender,
-    BirthDate,
-    GradeLevel,
-    EnrollmentStatus,
-    AssessmentID,
-    AssessmentDate,
-    AssessmentNumber,
-    GradePlacement,
-    Grade,
-    GradeEquivalent,
-    ScaledScore,
-    UnifiedScore,
-    PercentileRank,
-    NormalCurveEquivalent,
+    * EXCEPT(Quantile),
     CAST(NULL AS STRING) AS InstructionalReadingLevel,
     CAST(NULL AS STRING) AS Lexile,
     Quantile,
-    StudentGrowthPercentileFallFall,
-    StudentGrowthPercentileFallSpring,
-    StudentGrowthPercentileFallWinter,
-    StudentGrowthPercentileSpringSpring,
-    StudentGrowthPercentileWinterSpring,
-    CurrentSGP,
-    AceTestingWindowName,
-    AceTestingWindowStartDate,
-    AceTestingWindowEndDate,
-    StarTestingWindow
-  FROM {{ ref('stg_RenaissanceStar__Math_v2')}}
+  FROM math_unioned
 )
 
 SELECT * FROM reading
