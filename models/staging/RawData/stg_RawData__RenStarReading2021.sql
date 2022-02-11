@@ -58,8 +58,7 @@ star_reading AS (
       WHEN Activity_Completed_Date BETWEEN '2020-08-01' AND '2020-11-30'THEN 'Fall'
       WHEN Activity_Completed_Date BETWEEN '2020-12-01' AND '2021-03-31' THEN 'Winter'
       WHEN Activity_Completed_Date BETWEEN '2021-04-01' AND'2021-07-31' THEN 'Spring'
-    END AS StarTestingWindow,
-    CAST(NULL AS STRING) AS DetailedTestingWindow2122  
+    END AS StarTestingWindow
 
   FROM {{ source('RawData', 'RenStarReading2021')}}
 )

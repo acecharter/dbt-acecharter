@@ -37,8 +37,7 @@ WITH reading AS (
     AceTestingWindowName,
     AceTestingWindowStartDate,
     AceTestingWindowEndDate,
-    StarTestingWindow,
-    DetailedTestingWindow2122
+    StarTestingWindow
   FROM {{ ref('stg_RenaissanceStar__Reading_v2')}}
 ),
 
@@ -81,8 +80,7 @@ math AS (
     AceTestingWindowName,
     AceTestingWindowStartDate,
     AceTestingWindowEndDate,
-    StarTestingWindow,
-    DetailedTestingWindow2122
+    StarTestingWindow
   FROM {{ ref('stg_RenaissanceStar__Math_v2')}}
 )
 
