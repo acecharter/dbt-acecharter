@@ -5,6 +5,11 @@ SELECT
   FORMAT("%05d", District_Code) AS DistrictCode,
   FORMAT("%07d", School_Code) AS SchoolCode,
   Test_Year AS TestYear,
+  CONCAT(
+    CAST(Test_Year - 1 AS STRING),
+    '-',
+    CAST(Test_Year - 2000 AS STRING)
+  ) AS SchoolYear,
   FORMAT("%02d", Type_ID) AS TypeId,
   CAST(Student_Group_ID AS STRING) AS DemographicId,
   Test_Type AS TestType,
