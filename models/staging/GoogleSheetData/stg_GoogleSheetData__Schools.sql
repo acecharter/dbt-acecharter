@@ -1,5 +1,5 @@
 SELECT
-  SchoolId,
+  CAST(SchoolId AS STRING) AS SchoolId,
   CAST(StateCdsCode AS STRING) AS StateCdsCode, 
   CAST(StateCountyCode AS STRING) AS StateCountyCode,
   CAST(StateDistrictCode AS STRING) AS StateDistrictCode,
@@ -10,6 +10,7 @@ SELECT
   SchoolType,
   MinGrade,
   MaxGrade,
+  CONCAT(CAST(MinGrade AS STRING),'-',CAST(MaxGrade AS STRING)) AS GradesServed,
   Grade5,
   Grade6,
   Grade7,
