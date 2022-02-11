@@ -44,7 +44,7 @@ comparisons AS (
 
 entities AS (
   SELECT *
-  FROM {{ ref('int_CaasppEntities_Years_unioned')}}
+  FROM {{ ref('stg_RawData__CaasppEntities')}}
 ),
 
 demographics AS (
