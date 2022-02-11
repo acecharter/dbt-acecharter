@@ -31,10 +31,10 @@ SELECT
     d.SeisEligibilityStatus,
     d.Email,
     e.GradeLevel,
-    d.IsCurrentlyEnrolled,
     e.EntryDate,
     e.ExitWithdrawDate,
-    e.ExitWithdrawReason
+    e.ExitWithdrawReason,
+    e.IsCurrentEnrollment AS IsCurrentlyEnrolled
 FROM enrollments_ranked AS e
 LEFT JOIN demographics AS d
 USING (StudentUniqueId)
