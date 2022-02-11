@@ -66,6 +66,6 @@ star_math AS (
 SELECT
   a.* EXCEPT(AssessmentType),
   s.* EXCEPT(AssessmentType)
-FROM star_math as s
-LEFT JOIN assessment_ids AS a
+FROM assessment_ids AS a
+LEFT JOIN star_math as s
 USING (AssessmentType)
