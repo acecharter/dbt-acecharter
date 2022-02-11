@@ -5,7 +5,7 @@ WITH starter_pack_schools AS (
 
 raw_data_schools AS (
   SELECT *
-  FROM {{ ref('stg_RawData__Schools') }}
+  FROM {{ ref('stg_GoogleSheetData__Schools') }}
 ),
 
 final AS (

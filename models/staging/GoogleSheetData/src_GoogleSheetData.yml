@@ -134,6 +134,23 @@ sources:
       - name: CersInspire
         description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Inspire
 
+      - name: Schools
+        description: Additional school information
+        columns:
+          - name: SchoolId
+            description: Primary key of the table, no leading zeros
+            tests:
+              - unique
+              - not_null
+          - name: StateCountyCode
+            description: State-assigned county code
+            tests:
+              - not_null
+          - name: StateDistrictCode
+            description: State-assigned district code for the authorizing district or entity
+            tests:
+              - not_null
+              
       - name: RenStarTestingWindows
         description: List of all Renaissance Star testing windows by testing window type
       

@@ -1,14 +1,15 @@
 SELECT
   SchoolId,
-  CONCAT(StateCountyCode, StateDistrictCode, StateSchoolCode) AS StateCdsCode, 
-  StateCountyCode,
-  StateDistrictCode,
-  StateSchoolCode,
+  CAST(StateCdsCode AS STRING) AS StateCdsCode, 
+  CAST(StateCountyCode AS STRING) AS StateCountyCode,
+  CAST(StateDistrictCode AS STRING) AS StateDistrictCode,
+  FORMAT("%07d", StateSchoolCode) AS StateSchoolCode,
   SchoolNameFull,
   SchoolNameMid,
   SchoolNameShort,
   SchoolType,
-  GradesServed,
+  MinGrade,
+  MaxGrade,
   Grade5,
   Grade6,
   Grade7,
@@ -21,4 +22,4 @@ SELECT
   PreviousRenewalYears,
   DATE(CurrentCharterTermStartDate) AS CurrentCharterTermStartDate,
   DATE(CurrentCharterTermEndDate) AS CurrentCharterTermEndDate
-FROM {{ source('RawData', 'Schools')}}
+FROM {{ source('GoogleSheetData', 'Schools')}}
