@@ -6,6 +6,10 @@ sources:
     database: landing-zone-acecharter
     schema: RawData
     tables:
+      - name: RenStarMath2021
+        description: Renaissance Star Math Enterprise Assessment results from school year 2020-21
+      - name: RenStarReading2021
+        description: Renaissance Star Reading Enterprise Assessment results from school year 2020-21
       - name: SeisEmpower
         description: An extract from SEIS (Special Education Information System) listing Empower students with SEIS records
         columns:
