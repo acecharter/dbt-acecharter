@@ -151,6 +151,9 @@ sources:
             tests:
               - not_null
               
+      - name: RenStarGradePlacementByDayRange
+        description: List of  Renaissance Star Grade Placement (GP) decimal values and corresponding assessment date info. Used to calculate GP for 20-21 Star Results
+        
       - name: RenStarTestingWindows
         description: List of all Renaissance Star testing windows by testing window type
       

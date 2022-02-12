@@ -7,6 +7,45 @@ WITH assessment_ids AS (
   WHERE AssessmentNameShort = 'Star Math'
 ),
 
+grade_placement_2021_dates AS (
+  SELECT
+    'Star Math Enterprise Tests' AS Activity_Type,
+    * EXCEPT (DayRangeEnd),
+    CASE
+      WHEN DayRangeEnd = 31 THEN
+        CASE
+          WHEN MonthNumber = 2 THEN 28
+          WHEN MonthNumber IN (4, 6, 9, 11) THEN 30
+          ELSE DayRangeEnd
+        END
+      ELSE DayRangeEnd
+    END AS DayRangeEnd
+  FROM {{ ref('stg_GoogleSheetData__RenStarGradePlacementByDayRange')}}
+),
+
+grade_placement AS (
+  SELECT
+    *,
+    CASE
+      WHEN MonthNumber >= 8 THEN CONCAT('2020-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeStart))
+      ELSE CONCAT('2021-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeStart))
+    END AS StartDate,
+    CASE
+      WHEN MonthNumber >= 8 THEN CONCAT('2020-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeEnd))
+      ELSE CONCAT('2021-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeEnd))
+    END AS EndDate
+  FROM grade_placement_2021_dates
+),
+star_math_with_gp_added AS (
+  SELECT
+    s.*,
+    CAST(CONCAT(s.Current_Grade, '.', gp.GradePlacementDecimalValue) AS FLOAT64) AS GradePlacement
+  FROM {{ source('RawData', 'RenStarMath2021')}} AS s
+  LEFT JOIN grade_placement AS gp
+  USING (Activity_Type)
+  WHERE DATE(s.Activity_Completed_Date) BETWEEN DATE(StartDate) AND DATE(EndDate)
+),
+
 star_math AS (
   SELECT
     Activity_Type AS AssessmentType,
@@ -36,7 +75,7 @@ star_math AS (
     Renaissance_Activity_ID AS AssessmentId,
     DATE(Activity_Completed_Date) AS AssessmentDate,
     CAST(NULL AS INT64) AS AssessmentNumber,
-    CAST(NULL AS FLOAT64) AS GradePlacement,
+    GradePlacement,
     CAST(Current_Grade AS STRING) AS Grade,
     CAST(Grade_Equivalent AS STRING) AS GradeEquivalent,
     Scaled_Score AS ScaledScore,
@@ -59,12 +98,16 @@ star_math AS (
       WHEN Activity_Completed_Date BETWEEN '2021-04-01' AND'2021-07-31' THEN 'Spring'
     END AS StarTestingWindow
 
-  FROM {{ source('RawData', 'RenStarMath2021')}}
+  FROM star_math_with_gp_added
+),
+
+final AS(
+  SELECT
+    a.* EXCEPT(AssessmentType),
+    s.* EXCEPT(AssessmentType)
+  FROM assessment_ids AS a
+  LEFT JOIN star_math as s
+  USING (AssessmentType)
 )
 
-SELECT
-  a.* EXCEPT(AssessmentType),
-  s.* EXCEPT(AssessmentType)
-FROM assessment_ids AS a
-LEFT JOIN star_math as s
-USING (AssessmentType)
+SELECT * FROM final
