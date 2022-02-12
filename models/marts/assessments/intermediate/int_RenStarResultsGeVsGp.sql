@@ -6,12 +6,12 @@ ge_values AS (
   SELECT
     AssessmentId,
     CASE
-      WHEN GradeEquivalent = '< 1' THEN 0.9
+      WHEN GradeEquivalent = '<1' OR GradeEquivalent = '< 1' THEN 0.9
       WHEN GradeEquivalent = '> 9' THEN 9.1
       WHEN GradeEquivalent = '> 10' THEN 10.1
       WHEN GradeEquivalent = '> 11' THEN 11.1
       WHEN GradeEquivalent = '> 12' THEN 12.1
-      WHEN GradeEquivalent = '> 12.9' THEN 11.1
+      WHEN GradeEquivalent = '> 12.9' THEN 13.0
       ELSE CAST(GradeEquivalent AS FLOAT64)
     END AS GradeEquivalentValue,
   FROM results
