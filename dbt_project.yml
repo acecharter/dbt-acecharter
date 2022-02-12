@@ -37,7 +37,7 @@ models:
       assessments:
         +materialized: table
         intermediate:
-          +materialized: table
+          +materialized: view
       core:
         +materialized: table
         intermediate:

@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH caaspp AS (
   SELECT
     AceAssessmentId,

@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH reading_unioned AS(
   SELECT * FROM {{ ref('stg_RawData__RenStarReading2021')}}
   UNION ALL

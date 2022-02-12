@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH elpac AS (
   SELECT
     AceAssessmentId,
