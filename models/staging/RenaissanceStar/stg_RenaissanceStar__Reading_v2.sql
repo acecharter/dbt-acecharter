@@ -76,6 +76,7 @@ star_reading AS (
     StudentGrowthPercentileSpringSpring,
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
+    CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
     ScreeningPeriodWindowName AS AceTestingWindowName,
     DATE(ScreeningWindowStartDate) AS AceTestingWindowStartDate,
     DATE(ScreeningWindowEndDate) AS AceTestingWindowEndDate,

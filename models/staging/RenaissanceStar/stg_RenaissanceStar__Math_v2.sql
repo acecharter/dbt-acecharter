@@ -73,6 +73,7 @@ star_math AS (
     StudentGrowthPercentileSpringSpring,
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
+    CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
     Quantile,
     ScreeningPeriodWindowName AS AceTestingWindowName,
     DATE(ScreeningWindowStartDate) AS AceTestingWindowStartDate,

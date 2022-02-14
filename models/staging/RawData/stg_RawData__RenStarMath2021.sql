@@ -88,6 +88,7 @@ star_math AS (
     CASE WHEN Current_SGP_Vector = 'SPRING_SPRING' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileSpringSpring,
     CASE WHEN Current_SGP_Vector = 'WINTER_SPRING' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileWinterSpring,
     Current_SGP AS CurrentSGP,
+    CAST(RIGHT(State_Benchmark_Category, 1) AS INT64) AS StateBenchmarkCategoryLevel,
     Quantile_Measure AS Quantile,
     CAST(NULL AS STRING) AS AceTestingWindowName,
     CAST(NULL AS DATE) AS AceTestingWindowStartDate,

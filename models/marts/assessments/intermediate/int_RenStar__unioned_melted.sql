@@ -96,6 +96,15 @@ sgp_current AS (
   FROM star_results
 ),
 
+state_benchmark AS (
+  SELECT
+    AssessmentID,
+    'State Benchmark Level' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
+    CAST(StateBenchmarkCategoryLevel AS STRING) AS StudentResult
+  FROM star_results
+),
+
 results_unioned AS(
   SELECT * FROM ge
   UNION ALL
@@ -116,6 +125,8 @@ results_unioned AS(
   SELECT * FROM sgp_winter_spring
   UNION ALL
   SELECT * FROM sgp_current
+  UNION ALL
+  SELECT * FROM state_benchmark
 
 )
 
