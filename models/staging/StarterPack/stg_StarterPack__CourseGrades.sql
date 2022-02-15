@@ -3,7 +3,6 @@
     - PerformanceBaseConversionDescriptor (all NULL)
 */
 
-
 SELECT
   SchoolId,
   NameOfInstitution AS SchoolName,
