@@ -16,6 +16,9 @@ sources:
       - name: CourseEnrollments_v2
         description: Provides current year course enrollments for all students and schools.
 
+      - name: CourseGrades
+        description: Grade marks for all grading periods for the current school year.
+
       - name: DisciplineActions
         description: Information related to student discipline actions for the current academic year.
 
