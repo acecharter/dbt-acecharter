@@ -4,16 +4,25 @@ WITH final_grades AS (
     WHERE GradeTypeDescriptor = 'Final'
 ),
 
+schools AS (
+  SELECT * FROM {{ref('dim_Schools')}}
+),
+
 student_demographics AS (
     SELECT *
     FROM {{ ref('dim_Students') }}
 )
 
 SELECT
- g.* Except(LastSurname, FirstName),
- d.* EXCEPT(SchoolId, StudentUniqueId)
+  s.SchoolName,
+  s.SchoolNameMid,
+  s.SchoolNameShort,
+  g.* Except(SchoolName, LastSurname, FirstName),
+  d.* EXCEPT(SchoolId, StudentUniqueId)
 FROM final_grades AS g
 LEFT JOIN student_demographics AS d
 ON
   g.StudentUniqueId = d.StudentUniqueId
   AND g.SchoolId = d.SchoolId
+LEFT JOIN schools AS s
+ON g.SchoolId = s.SchoolId
