@@ -7,11 +7,11 @@
 SELECT
   SchoolId,
   NameOfInstitution AS SchoolName,
-  StudentUniqueId
+  StudentUniqueId,
   LastSurname,
   FirstName,
   SessionName,
-  SectionIdentifier
+  SectionIdentifier,
   StaffUniqueId,
   StaffDisplayName,
   ClassPeriodName,
