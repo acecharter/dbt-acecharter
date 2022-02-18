@@ -6,7 +6,7 @@ WITH star_math AS (
     AssessmentId,
     AceTestingWindowName,
     StarTestingWindow
-  FROM {{ref('stg_RenaissanceStar__Math_v2')}}
+  FROM {{ref('stg_RS__Math_v2')}}
 ),
 
 star_reading AS (
@@ -17,7 +17,7 @@ star_reading AS (
     AssessmentId,
     AceTestingWindowName,
     StarTestingWindow
-  FROM {{ ref('stg_RenaissanceStar__Reading_v2')}}
+  FROM {{ ref('stg_RS__Reading_v2')}}
 ),
 
 star AS(

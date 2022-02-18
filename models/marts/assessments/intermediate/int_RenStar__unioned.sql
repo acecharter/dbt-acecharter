@@ -3,15 +3,15 @@
 )}}
 
 WITH reading_unioned AS(
-  SELECT * FROM {{ ref('stg_RawData__RenStarReading2021')}}
+  SELECT * FROM {{ ref('stg_RD__RenStarReading2021')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RenaissanceStar__Reading_v2')}}
+  SELECT * FROM {{ ref('stg_RS__Reading_v2')}}
 ),
 
 math_unioned AS(
-  SELECT * FROM {{ ref('stg_RawData__RenStarMath2021')}}
+  SELECT * FROM {{ ref('stg_RD__RenStarMath2021')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RenaissanceStar__Math_v2')}}
+  SELECT * FROM {{ ref('stg_RS__Math_v2')}}
 ),
 
 reading AS (

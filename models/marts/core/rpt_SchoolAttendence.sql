@@ -3,7 +3,7 @@ WITH schools AS (
 ),
 
 ada AS (
-    SELECT * FROM {{ ref('stg_StarterPack__AverageDailyAttendance_v3') }}
+    SELECT * FROM {{ ref('stg_SP__AverageDailyAttendance_v3') }}
 )
 
 SELECT

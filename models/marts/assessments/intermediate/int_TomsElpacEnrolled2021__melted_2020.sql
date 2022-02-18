@@ -14,7 +14,7 @@ WITH elpac AS (
     OverallScaleScoreMinus1 AS OverallScaleScore,
     OverallPLMinus1 AS OverallPL,
     ElpiLevelMinus1 AS ElpiLevel
-  FROM {{ ref('stg_RawData__TomsElpacEnrolled2021') }}
+  FROM {{ ref('stg_RD__TomsElpacEnrolled2021') }}
 ),
 
 elpac_keys AS(

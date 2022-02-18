@@ -3,8 +3,8 @@ WITH assessment_ids AS (
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
     'Enterprise' AS AssessmentType
-  FROM {{ ref('stg_GoogleSheetData__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Math'
+  FROM {{ ref('stg_GSD__Assessments') }}
+  WHERE AssessmentNameShort = 'Star Reading'
 ),
 
 missing_student_ids AS (
@@ -12,10 +12,10 @@ missing_student_ids AS (
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId
-  FROM {{ ref('stg_GoogleSheetData__RenStarMissingStudentIds')}}
+  FROM {{ ref('stg_GSD__RenStarMissingStudentIds')}}
 ),
 
-star_math_with_missing_ids AS (
+star_reading_with_missing_ids AS (
   SELECT
     s.* EXCEPT(StudentIdentifier, StateUniqueId),
     CASE
@@ -26,12 +26,13 @@ star_math_with_missing_ids AS (
       WHEN s.StateUniqueId IS NULL THEN m.StateUniqueId
       ELSE s.StateUniqueId
     END AS StateUniqueId,
-  FROM {{ source('RenaissanceStar', 'Math_v2')}} AS s
+  FROM {{ source('RenaissanceStar', 'Reading_v2')}} AS s
   LEFT JOIN missing_student_ids AS m
   USING (StudentRenaissanceID)
 ),
 
-star_math AS (
+
+star_reading AS (
   SELECT
     AssessmentType,
     CASE
@@ -55,7 +56,7 @@ star_math AS (
     MiddleName,
     Gender,
     DATE(Birthdate) AS BirthDate,
-    Gradelevel As GradeLevel,
+    Gradelevel AS GradeLevel,
     EnrollmentStatus,
     AssessmentID,
     DATE(CompletedDateLocal) AS AssessmentDate,
@@ -67,6 +68,8 @@ star_math AS (
     UnifiedScore,
     PercentileRank,
     NormalCurveEquivalent,
+    InstructionalReadingLevel,
+    Lexile,
     StudentGrowthPercentileFallFall,
     StudentGrowthPercentileFallSpring,
     StudentGrowthPercentileFallWinter,
@@ -74,7 +77,6 @@ star_math AS (
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
     CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
-    Quantile,
     ScreeningPeriodWindowName AS AceTestingWindowName,
     DATE(ScreeningWindowStartDate) AS AceTestingWindowStartDate,
     DATE(ScreeningWindowEndDate) AS AceTestingWindowEndDate,
@@ -92,14 +94,13 @@ star_math AS (
         CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
       THEN 'Spring'
     END AS StarTestingWindow
-    
- FROM star_math_with_missing_ids
+
+FROM star_reading_with_missing_ids
 )
 
 SELECT
   a.* EXCEPT(AssessmentType),
   s.* EXCEPT(AssessmentType)
-FROM star_math as s
+FROM star_reading as s
 LEFT JOIN assessment_ids AS a
 USING (AssessmentType)
-

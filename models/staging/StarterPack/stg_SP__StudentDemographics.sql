@@ -35,7 +35,7 @@ WITH student_demographics AS (
 ),
 
 students_with_iep AS (
-    SELECT * FROM {{ ref('stg_RawData__Seis')}}
+    SELECT * FROM {{ ref('stg_RD__Seis')}}
     WHERE StudentEligibilityStatus = 'Eligible/Previously Eligible'
 )
 

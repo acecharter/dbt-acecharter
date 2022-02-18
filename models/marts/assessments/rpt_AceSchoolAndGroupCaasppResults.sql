@@ -5,7 +5,7 @@ ace_school_codes AS (
     SchoolNameMid,
     SchoolNameShort,
     StateSchoolCode
-  FROM {{ ref('stg_GoogleSheetData__Schools')}}
+  FROM {{ ref('stg_GSD__Schools')}}
 ),
 
 caaspp_results AS (
@@ -13,13 +13,13 @@ caaspp_results AS (
     a.* EXCEPT(StateSchoolCode),
     c.*
   FROM ace_school_codes as a
-  LEFT JOIN {{ ref('stg_RawData__CaasppSantaClaraCounty')}} AS c
+  LEFT JOIN {{ ref('stg_RD__CaasppSantaClaraCounty')}} AS c
   ON a.StateSchoolCode = c.SchoolCode
 ),
 
 demographics AS (
   SELECT *
-  FROM {{ ref('stg_RawData__CaasppStudentGroups')}}
+  FROM {{ ref('stg_RD__CaasppStudentGroups')}}
 )
 
 SELECT

@@ -3,7 +3,7 @@ WITH assessment_ids AS (
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
     SystemOrVendorAssessmentId AS RecordType,
-  FROM {{ ref('stg_GoogleSheetData__Assessments') }}
+  FROM {{ ref('stg_GSD__Assessments') }}
   WHERE AssessmentNameShort='Summative ELPAC'
 ),
 
@@ -235,7 +235,7 @@ results_with_assessment_id AS (
 
 elpi_levels AS (
   SELECT *
-  FROM {{ ref('stg_GoogleSheetData__ElpiLevels') }}
+  FROM {{ ref('stg_GSD__ElpiLevels') }}
 ),
 
 

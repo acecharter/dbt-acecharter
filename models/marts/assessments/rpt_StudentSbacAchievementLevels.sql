@@ -24,7 +24,7 @@ assessment_info AS (
       AssessmentSubject,
       AssessmentFamilyNameShort,
       SystemOrVendorName
-    FROM {{ ref('stg_GoogleSheetData__Assessments')}}
+    FROM {{ ref('stg_GSD__Assessments')}}
 ),
 
 sbac_results AS (

@@ -1,6 +1,6 @@
 WITH final_grades AS (
     SELECT *
-    FROM {{ ref('stg_StarterPack__CourseGrades') }}
+    FROM {{ ref('stg_SP__CourseGrades') }}
     WHERE GradeTypeDescriptor = 'Final'
 ),
 

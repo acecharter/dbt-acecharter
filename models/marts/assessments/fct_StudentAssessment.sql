@@ -1,5 +1,5 @@
 WITH assessment_names AS (
-  SELECT * FROM {{ ref('stg_GoogleSheetData__Assessments') }}
+  SELECT * FROM {{ ref('stg_GSD__Assessments') }}
 ),
 
 star AS (    

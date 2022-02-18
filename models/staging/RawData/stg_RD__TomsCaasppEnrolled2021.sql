@@ -3,7 +3,7 @@ WITH assessment_ids AS (
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
     CAST(SystemOrVendorAssessmentId AS STRING) AS RecordType,
-  FROM {{ ref('stg_GoogleSheetData__Assessments') }}
+  FROM {{ ref('stg_GSD__Assessments') }}
   WHERE SystemOrVendorName='CAASPP'
 ),
 

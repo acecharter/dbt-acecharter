@@ -2,14 +2,15 @@ WITH assessment_ids AS (
   SELECT 
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName,
-    'Star Math Enterprise Tests' AS AssessmentType
-  FROM {{ ref('stg_GoogleSheetData__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Math'
+    'Star Reading Enterprise Tests' AS AssessmentType
+  FROM {{ ref('stg_GSD__Assessments') }}
+  WHERE AssessmentNameShort = 'Star Reading'
 ),
+
 
 grade_placement_2021_dates AS (
   SELECT
-    'Star Math Enterprise Tests' AS Activity_Type,
+    'Star Reading Enterprise Tests' AS Activity_Type,
     * EXCEPT (DayRangeEnd),
     CASE
       WHEN DayRangeEnd = 31 THEN
@@ -20,7 +21,7 @@ grade_placement_2021_dates AS (
         END
       ELSE DayRangeEnd
     END AS DayRangeEnd
-  FROM {{ ref('stg_GoogleSheetData__RenStarGradePlacementByDayRange')}}
+  FROM {{ ref('stg_GSD__RenStarGradePlacementByDayRange')}}
 ),
 
 grade_placement AS (
@@ -36,17 +37,18 @@ grade_placement AS (
     END AS EndDate
   FROM grade_placement_2021_dates
 ),
-star_math_with_gp_added AS (
+
+star_reading_with_gp_added AS (
   SELECT
     s.*,
     CAST(CONCAT(s.Current_Grade, '.', gp.GradePlacementDecimalValue) AS FLOAT64) AS GradePlacement
-  FROM {{ source('RawData', 'RenStarMath2021')}} AS s
+  FROM {{ source('RawData', 'RenStarReading2021')}} AS s
   LEFT JOIN grade_placement AS gp
   USING (Activity_Type)
   WHERE DATE(s.Activity_Completed_Date) BETWEEN DATE(StartDate) AND DATE(EndDate)
 ),
 
-star_math AS (
+star_reading AS (
   SELECT
     Activity_Type AS AssessmentType,
     CASE
@@ -82,6 +84,8 @@ star_math AS (
     Unified_Scale AS UnifiedScore,
     Percentile_Rank AS PercentileRank,
     Normal_Curve_Equivalent AS NormalCurveEquivalent,
+    CAST(Instructional_Reading_Level AS STRING) AS InstructionalReadingLevel,
+    Lexile_Score AS Lexile,
     CASE WHEN Current_SGP_Vector = 'FALL_FALL' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileFallFall,
     CASE WHEN Current_SGP_Vector = 'FALL_SPRING' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileFallSpring,
     CASE WHEN Current_SGP_Vector = 'FALL_WINTER' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileFallWinter,
@@ -89,7 +93,6 @@ star_math AS (
     CASE WHEN Current_SGP_Vector = 'WINTER_SPRING' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileWinterSpring,
     Current_SGP AS CurrentSGP,
     CAST(RIGHT(State_Benchmark_Category, 1) AS INT64) AS StateBenchmarkCategoryLevel,
-    Quantile_Measure AS Quantile,
     CAST(NULL AS STRING) AS AceTestingWindowName,
     CAST(NULL AS DATE) AS AceTestingWindowStartDate,
     CAST(NULL AS DATE) AS AceTestingWindowEndDate,
@@ -99,7 +102,7 @@ star_math AS (
       WHEN Activity_Completed_Date BETWEEN '2021-04-01' AND'2021-07-31' THEN 'Spring'
     END AS StarTestingWindow
 
-  FROM star_math_with_gp_added
+  FROM star_reading_with_gp_added
 ),
 
 final AS(
@@ -107,7 +110,7 @@ final AS(
     a.* EXCEPT(AssessmentType),
     s.* EXCEPT(AssessmentType)
   FROM assessment_ids AS a
-  LEFT JOIN star_math as s
+  LEFT JOIN star_reading as s
   USING (AssessmentType)
 )
 

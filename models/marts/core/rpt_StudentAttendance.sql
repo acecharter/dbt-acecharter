@@ -23,7 +23,7 @@ attendance AS (
     CountOfDaysEnrolled,
     IsChronicallyAbsent,
     AttendanceRateGroup  
-  FROM {{ ref('stg_StarterPack__StudentAttendance_v2') }}
+  FROM {{ ref('stg_SP__StudentAttendance_v2') }}
 )
 
 SELECT

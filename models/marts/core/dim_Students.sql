@@ -4,11 +4,11 @@ WITH enrollments_ranked AS (
             PARTITION BY SchoolId, StudentUniqueId 
             ORDER BY SchoolId, StudentUniqueId, EntryDate DESC
         ) Rank
-    FROM {{ ref('stg_StarterPack__StudentEnrollments') }}
+    FROM {{ ref('stg_SP__StudentEnrollments') }}
 ),
 
 demographics AS (
-    SELECT * FROM {{ ref('stg_StarterPack__StudentDemographics')}}
+    SELECT * FROM {{ ref('stg_SP__StudentDemographics')}}
 )
 
 

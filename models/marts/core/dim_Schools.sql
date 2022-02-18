@@ -1,11 +1,11 @@
 WITH starter_pack_schools AS (
   SELECT * 
-  FROM {{ ref('stg_StarterPack__Schools') }}
+  FROM {{ ref('stg_SP__Schools') }}
 ),
 
 raw_data_schools AS (
   SELECT *
-  FROM {{ ref('stg_GoogleSheetData__Schools') }}
+  FROM {{ ref('stg_GSD__Schools') }}
 ),
 
 final AS (

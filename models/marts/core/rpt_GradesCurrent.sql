@@ -1,6 +1,6 @@
 WITH current_grades AS (
   SELECT *
-  FROM {{ ref('stg_StarterPack__CourseGrades') }}
+  FROM {{ ref('stg_SP__CourseGrades') }}
   WHERE
     IsCurrentGradingPeriod = true
     AND IsCurrentCourseEnrollment = true

@@ -1,5 +1,5 @@
 WITH caaspp AS (
-  SELECT * FROM {{ ref('stg_RawData__CaasppSantaClaraCounty')}} 
+  SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty')}} 
 ),
 
 schools AS (
@@ -47,12 +47,12 @@ comparisons AS (
 
 entities AS (
   SELECT *
-  FROM {{ ref('stg_RawData__CaasppEntities')}}
+  FROM {{ ref('stg_RD__CaasppEntities')}}
 ),
 
 demographics AS (
   SELECT *
-  FROM {{ ref('stg_RawData__CaasppStudentGroups')}}
+  FROM {{ ref('stg_RD__CaasppStudentGroups')}}
 )
 
 SELECT

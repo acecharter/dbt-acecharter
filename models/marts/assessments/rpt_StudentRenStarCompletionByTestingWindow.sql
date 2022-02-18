@@ -13,7 +13,7 @@ schools AS (
 
 assessments AS (
   SELECT *
-  FROM {{ ref('stg_GoogleSheetData__Assessments')}}
+  FROM {{ ref('stg_GSD__Assessments')}}
 ),
 
 testing_window_eligible_students AS (

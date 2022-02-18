@@ -15,7 +15,7 @@ WITH caaspp AS (
     AchievementLevelMinus2 AS AchievementLevel,
     DistanceFromStandardMinus2 AS DistanceFromStandard,
     ScaleScoreMinus2 AS ScaleScore
-  FROM {{ ref('stg_RawData__TomsCaasppEnrolled2021') }}
+  FROM {{ ref('stg_RD__TomsCaasppEnrolled2021') }}
   WHERE GradeAssessedMinus2 IS NOT NULL
 ),
 
