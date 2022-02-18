@@ -1,5 +1,3 @@
--- No fields dropped from source table
-
 SELECT
   SchoolId,
   NameOfInstitution AS SchoolName,

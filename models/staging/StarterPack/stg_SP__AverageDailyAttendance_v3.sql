@@ -1,8 +1,6 @@
--- No fields dropped from source table
-
 SELECT
   SchoolId,
-  NameOfInstitution AS SchoolName,
+  NameOfInstitution
   WeekOf,
   CAST(GradeLevel AS int64) AS GradeLevel,
   Month,

@@ -1,5 +1,3 @@
--- No fields dropped from source table
-
 SELECT
   SchoolId,
   NameOfInstitution AS SchoolName,
@@ -7,6 +5,6 @@ SELECT
   LastSurname,
   FirstName,
   EventDate,
-  CASE WHEN AttendanceEventCategoryDescriptor = 'Unreconciled' THEN 'Absent' ELSE 'Other' END AS AttendanceEventCategoryDescriptor,
+  CASE WHEN AttendanceEventCategoryDescriptor = 'Unreconciled' THEN 'Absent' ELSE NULL END AS AttendanceEventCategoryDescriptor,
   EventDuration
 FROM {{ source('StarterPack', 'StudentAttendanceByDate')}}
