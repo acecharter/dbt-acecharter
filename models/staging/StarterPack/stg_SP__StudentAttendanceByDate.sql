@@ -1,6 +1,6 @@
 SELECT
   SchoolId,
-  NameOfInstitution AS SchoolName,
+  NameOfInstitution,
   StudentUniqueId,
   LastSurname,
   FirstName,
