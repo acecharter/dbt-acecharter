@@ -113,5 +113,5 @@ WITH
   )
   
 SELECT * FROM unioned
-WHERE CohortStudents IS NULL
+WHERE CohortStudents IS NOT NULL
 

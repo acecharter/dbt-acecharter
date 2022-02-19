@@ -12,7 +12,7 @@ WITH
   grad_outcomes AS (
     SELECT * FROM {{ ref('fct_CohortOutcomes')}}
     WHERE
-      OutcomeType = 'Cohort Grad Outcome'
+      OutcomeType = 'Cohort Graduate Outcome'
       AND Outcome != 'Regular HS Diploma'
   ),
 
@@ -41,11 +41,11 @@ WITH
       o.Outcome AS GradOutcome,
       o.OutcomeCount,
       CASE
-        WHEN o.OutcomeCount = 0 OR o.OutcomeCount IS NULL THEN NULL
+        WHEN o.OutcomeCount IS NULL THEN NULL
         ELSE ROUND(o.OutcomeCount/g.OutcomeCount, 4)
       END AS CohortGradOutcomeRate,
       CASE
-        WHEN o.OutcomeCount = 0 OR o.OutcomeCount IS NULL THEN NULL
+        WHEN o.OutcomeCount IS NULL THEN NULL
         ELSE ROUND(o.OutcomeCount/c.CohortStudents, 4) 
       END AS OverallCohortOutcomeRate      
     FROM cohorts AS c
@@ -70,3 +70,4 @@ WITH
   )
 
 SELECT * FROM final
+WHERE GradOutcome IS NOT NULL

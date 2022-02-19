@@ -197,3 +197,4 @@ final AS (
 
 
 SELECT * FROM final
+WHERE OutcomeCount > 0

@@ -49,3 +49,4 @@ WITH
   )
 
 SELECT * FROM final
+WHERE OutcomeCount IS NOT NULL
