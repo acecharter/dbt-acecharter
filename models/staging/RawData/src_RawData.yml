@@ -10,6 +10,10 @@ sources:
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
         columns:
+          - name: "SchoolYear || '-' || ReportingPeriodType || '-' || ReportingPeriodNumber"
+            description: The combination of the above columns should be unique
+            tests:
+              - unique
           - name: SchoolYear
             tests:
               - not_null
