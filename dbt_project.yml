@@ -38,6 +38,8 @@ models:
         +materialized: table
         intermediate:
           +materialized: view
+      attendance:
+        +materialized: table
       core:
         +materialized: table
         intermediate:
