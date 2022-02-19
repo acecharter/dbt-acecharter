@@ -38,18 +38,23 @@ models:
         +materialized: table
         intermediate:
           +materialized: view
+
       attendance:
         +materialized: table
+
+      cohort_outcomes:
+        +materialized: table
+
       core:
         +materialized: table
         intermediate:
           +materialized: view
+          
       courses:
         +materialized: table
         intermediate:
           +materialized: view
-      graduation:
-        +materialized: table
+
         
     # Applies to all files under models/staging/
     staging:
