@@ -105,7 +105,8 @@ WITH
       IsCurrentStaffAssociation,
       StudentUniqueId,
       BeginDate,
-      EndDate
+      EndDate,
+      IsCurrentCourseEnrollment
     FROM joined
   )
 
