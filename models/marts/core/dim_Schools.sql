@@ -15,7 +15,7 @@ final AS (
     rd.StateCountyCode,
     rd.StateDistrictCode,
     rd.StateSchoolCode,
-    sp.SchoolName,
+    rd.SchoolNameFull AS SchoolName,
     rd.SchoolNameMid,
     rd.SchoolNameShort,
     rd.SchoolType,

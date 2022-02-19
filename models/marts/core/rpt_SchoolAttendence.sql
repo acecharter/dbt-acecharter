@@ -8,7 +8,7 @@ ada AS (
 
 SELECT
   a.SchoolId,
-  a.SchoolName,
+  s.SchoolName,
   s.SchoolNameShort,
   a.* EXCEPT(SchoolId, SchoolName),
   ROUND(a.Apportionment / a.Possible, 4) AS DailyAttendanceRate
