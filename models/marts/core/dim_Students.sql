@@ -5,7 +5,7 @@ WITH
       RANK() OVER (
         PARTITION BY SchoolId, StudentUniqueId 
         ORDER BY SchoolId, StudentUniqueId, EntryDate DESC
-      ) Rank
+      ) AS Rank
     FROM {{ ref('dim_StudentEnrollments') }}
   ),
 

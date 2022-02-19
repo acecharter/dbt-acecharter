@@ -1,0 +1,255 @@
+version: 2
+
+models:
+
+  - name: dim_CourseEnrollments
+    description: Student course enrollment information for each unique enrollment of a student in a course. Staff information is for the most recent staff identified as a Teacher of Record associated with the course and the BeginDate and EndDate correspond to the student's most recent enrollment in the course section.
+    columns:
+      - name: "SchoolId || '-' || SessionName || '-' || SectionIdentifier || '-' || ClassPeriodName || '-' || StudentUniqueId"
+        description: No existing primary key, but each combination of the above columns should be unique
+        tests:
+          - unique
+
+      - name: SchoolId
+        description: The unique ID of the school where the student is taking a section of the course.
+        tests:
+          - not_null
+
+      - name: AcademicSubject
+        description: The academic subject for the course from CourseSubjects google sheet data.
+        tests:
+          - not_null
+          
+      - name: CourseCode
+        description: The local course code from PowerSchool SIS and primary key for this model.
+        tests:
+          - not_null
+      
+      - name: CourseTitle
+        description: The course title from PowerSchool SIS.
+        tests:
+          - not_null
+      
+      - name: CourseGpaApplicability
+        description: Indicates whether a course counts towards a student's GPA and if it is weighted.
+        tests:
+          - not_null
+          
+      - name: SessionName
+        description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
+        tests:
+          - not_null
+
+      - name: SectionIdentifier
+        description: The ID of the section of a course from PowerSchool SIS.
+        tests:
+          - not_null
+
+      - name: ClassPeriodName
+        description: The timeblock when section occurs.
+        tests:
+          - not_null
+
+      - name: Room
+        description: The physical location (room) for the section of the course.
+
+      - name: AvailableCredits
+        description: The course credits that are being attempted for the grading period.
+
+      - name: CourseSectionBeginDate
+        description: Month, day, and year of the start of the course section. (Extracted from the earliest StaffBeginDate associated with the course section.)
+
+      - name: CourseSectionEndDate
+        description: Month, day, and year of the end of the course section. (Extracted from the latest StaffEndDate associated with the course section.)
+
+      - name: StaffUniqueId
+        description: The unique ID of any staff member associated with a section of a course.
+        tests:
+          - not_null
+
+      - name: StaffClassroomPosition
+        description: The classroom position of the staff member referred to by StaffUniqueId. A value of 'Teacher of Record' typically indicates the primary teacher for a section.
+        tests:
+          - not_null
+
+      - name: StaffBeginDate
+        description: Month, day, and year of the beginning of the staff member's association with the section indicated by SectionIdentifier.
+        tests:
+          - not_null
+
+      - name: StaffEndDate
+        description: Month, day, and year of the ending of the staff member's association with the section indicated by SectionIdentifier.
+        tests:
+          - not_null
+
+      - name: IsCurrentStaffAssociation
+        description: Whether or not the staff member's association with the section is currently active or was active at the end of the section's session. If the staff member's association with the section ended prior to the end of the section, then this will show False.  Note that sometimes when session end dates are changed in the SIS, they can get out of alignment with default staff section end dates and this may show as False from that mismatch.
+          - not_null
+
+      - name: StudentUniqueId
+        description: The unique ID of the student.
+        tests:
+          - not_null
+
+      - name: BeginDate
+        description: Month, day, and year of the Student's entry or assignment to the Section.
+        tests:
+          - not_null
+
+      - name: EndDate
+        description: Month, day, and year of the withdrawal or exit of the Student from the Section.
+        tests:
+          - not_null
+
+  - name: dim_Courses
+    description: Course codes and associated course-specific information
+    columns:
+
+      - name: CourseCode
+        description: The local course code from PowerSchool SIS and primary key for this model.
+        tests:
+          - unique
+          - not_null
+      
+      - name: CourseTitle
+        description: The course title from PowerSchool SIS.
+        tests:
+          - not_null
+      
+      - name: CourseGpaApplicability
+        description: Indicates whether a course counts towards a student's GPA and if it is weighted.
+        tests:
+          - not_null
+          
+      - name: AcademicSubject
+        description: The academic subject for the course from CourseSubjects google sheet data.
+        tests:
+          - not_null
+
+  - name: dim_CourseSectionEnrollments
+    description: All student course enrollments. A student could potentially have multiple rows associated with a single course if they exited and subsequently re-enrolled, but BeginDate and EndDate should be unique and not overlap.
+    columns:
+
+      - name: SchoolId
+        description: The unique ID of the school where the student is taking a section of the course.
+        tests:
+          - not_null
+
+      - name: SessionName
+        description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
+        tests:
+          - not_null
+
+      - name: SectionIdentifier
+        description: The ID of the section of a course from PowerSchool SIS.
+        tests:
+          - not_null
+
+      - name: ClassPeriodName
+        description: The timeblock when section occurs.
+        tests:
+          - not_null
+
+      - name: StudentUniqueId
+        description: The unique ID of the student.
+        tests:
+          - not_null
+
+      - name: BeginDate
+        description: Month, day, and year of the Student's entry or assignment to the Section.
+        tests:
+          - not_null
+
+      - name: EndDate
+        description: Month, day, and year of the withdrawal or exit of the Student from the Section.
+        tests:
+          - not_null
+
+  - name: dim_CourseSections
+    description: Unique sections for each course at each school.
+    columns:
+
+      - name: SchoolId
+        description: The unique ID of the school where the course section exists.
+        tests:
+          - not_null
+
+      - name: SessionName
+        description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
+        tests:
+          - not_null
+
+      - name: SectionIdentifier
+        description: The ID of the section of a course from PowerSchool SIS.
+        tests:
+          - not_null
+
+      - name: CourseCode
+        description: The local course code from PowerSchool SIS and foreign key for the dim_Courses model.
+        tests:
+          - not_null
+
+      - name: ClassPeriodName
+        description: The timeblock when section occurs.
+        tests:
+          - not_null
+
+      - name: Room
+        description: The physical location (room) for the section of the course.
+
+      - name: AvailableCredits
+        description: The course credits that are being attempted for the grading period.
+
+      - name: CourseSectionBeginDate
+        description: Month, day, and year of the start of the course section. (Extracted from the earliest StaffBeginDate associated with the course section.)
+
+      - name: CourseSectionEndDate
+        description: Month, day, and year of the end of the course section. (Extracted from the latest StaffEndDate associated with the course section.)
+
+  - name: dim_CourseSectionStaff
+    description: All student course enrollments. A student could potentially have multiple rows associated with a single course if they exited and subsequently re-enrolled, but BeginDate and EndDate should be unique and not overlap.
+    columns:
+
+      - name: SchoolId
+        description: The unique ID of the school where the student is taking a section of the course.
+        tests:
+          - not_null
+
+      - name: SessionName
+        description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
+        tests:
+          - not_null
+
+      - name: SectionIdentifier
+        description: The ID of the section of a course from PowerSchool SIS.
+        tests:
+          - not_null
+
+      - name: ClassPeriodName
+        description: The timeblock when section occurs.
+        tests:
+          - not_null
+
+      - name: StaffUniqueId
+        description: The unique ID of any staff member associated with a section of a course.
+        tests:
+          - not_null
+
+      - name: StaffClassroomPosition
+        description: The classroom position of the staff member referred to by StaffUniqueId. A value of 'Teacher of Record' typically indicates the primary teacher for a section.
+        tests:
+          - not_null
+
+      - name: StaffBeginDate
+        description: Month, day, and year of the beginning of the staff member's association with the section indicated by SectionIdentifier.
+        tests:
+          - not_null
+
+      - name: StaffEndDate
+        description: Month, day, and year of the ending of the staff member's association with the section indicated by SectionIdentifier.
+        tests:
+          - not_null
+
+      - name: IsCurrentStaffAssociation
+        description: Whether or not the staff member's association with the section is currently active or was active at the end of the section's session. If the staff member's association with the section ended prior to the end of the section, then this will show False.  Note that sometimes when session end dates are changed in the SIS, they can get out of alignment with default staff section end dates and this may show as False from that mismatch.
+          - not_null

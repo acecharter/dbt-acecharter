@@ -42,6 +42,10 @@ models:
         +materialized: table
         intermediate:
           +materialized: view
+      courses:
+        +materialized: table
+        intermediate:
+          +materialized: view
     # Applies to all files under models/staging/
     staging:
       +materialized: view
