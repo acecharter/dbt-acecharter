@@ -12,7 +12,7 @@ WITH
   grad_outcomes AS (
     SELECT * FROM {{ ref('fct_CohortOutcomes')}}
     WHERE
-      OutcomeType = 'Cohort Outcome'
+      OutcomeType = 'Cohort Grad Outcome'
       AND Outcome != 'Regular HS Diploma'
   ),
 
@@ -30,6 +30,7 @@ WITH
         WHEN c.AggregateLevel = 'S' THEN 'School'
       END AS EntityType,
       c.EntityCode,
+      c.EntityName,
       c.CharterSchool,
       c.DASS,
       c.ReportingCategory,
@@ -40,10 +41,13 @@ WITH
       o.Outcome AS GradOutcome,
       o.OutcomeCount,
       CASE
-        WHEN g.OutcomeCount = 0 THEN NULL
+        WHEN o.OutcomeCount = 0 OR o.OutcomeCount IS NULL THEN NULL
         ELSE ROUND(o.OutcomeCount/g.OutcomeCount, 4)
       END AS CohortGradOutcomeRate,
-      ROUND(o.OutcomeCount/c.CohortStudents, 4) AS OverallCohortOutcomeRate      
+      CASE
+        WHEN o.OutcomeCount = 0 OR o.OutcomeCount IS NULL THEN NULL
+        ELSE ROUND(o.OutcomeCount/c.CohortStudents, 4) 
+      END AS OverallCohortOutcomeRate      
     FROM cohorts AS c
     LEFT JOIN reporting_categories AS r
     ON c.ReportingCategory = r.ReportingCategoryCode
