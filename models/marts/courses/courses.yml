@@ -149,17 +149,15 @@ models:
         tests:
           - not_null
 
-      - name: GradeType
-        description: The grade type (either 'Numeric Grade' or 'Letter Grade')
+      - name: NumericGradeEarned
+        description: The numeric value of the grade earned by the student for the section and respective grading period.
         tests:
-          - not_null
-          - accepted_values:
-              values: ['Numeric Grade','Letter Grade']
+            - not_null
 
-      - name: GradeEarned
-        description: The grade type grade earned by the student for the section and respective grading period.
+      - name: LetterGradeEarned
+        description: The letter grade of the grade earned by the student for the section and respective grading period.
         tests:
-          - not_null
+            - not_null
 
   - name: dim_Courses
     description: Course codes and associated course-specific information
