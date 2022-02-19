@@ -6,10 +6,34 @@ sources:
     database: landing-zone-acecharter
     schema: RawData
     tables:
+
+      - name: AttendanceReportingPeriods
+        description: Attendance reporting period date information
+        columns:
+          - name: SchoolYear
+            tests:
+              - not_null
+          - name: ReportingPeriodType
+            tests:
+              - not_null
+          - name: ReportingPeriodNumber
+            tests:
+              - not_null
+          - name: StartDate
+            description: First day of the reporting period.
+            tests:
+              - not_null
+          - name: EndDate
+            description: Last day of the reporting period.
+            tests:
+              - not_null
+
       - name: RenStarMath2021
         description: Renaissance Star Math Enterprise Assessment results from school year 2020-21
+
       - name: RenStarReading2021
         description: Renaissance Star Reading Enterprise Assessment results from school year 2020-21
+
       - name: SeisEmpower
         description: An extract from SEIS (Special Education Information System) listing Empower students with SEIS records
         columns:
@@ -23,6 +47,7 @@ sources:
             tests:
               - unique
               - not_null
+
       - name: SeisEsperanza
         description: An extract from SEIS listing Esperanza students with SEIS records
         columns:
@@ -36,6 +61,7 @@ sources:
             tests:
               - unique
               - not_null
+
       - name: SeisHighSchool
         description: An extract from SEIS listing ACE High School students with SEIS records
         columns:
@@ -49,6 +75,7 @@ sources:
             tests:
               - unique
               - not_null
+
       - name: SeisInspire
         description: An extract from SEIS listing Inspire students with SEIS records
         columns:
@@ -61,6 +88,7 @@ sources:
             description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
               - unique
               - not_null
+
       - name: CaasppEntities2015
       - name: CaasppEntities2016
       - name: CaasppEntities2017
