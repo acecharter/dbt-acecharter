@@ -32,6 +32,21 @@ sources:
             tests:
               - not_null
 
+      - name: CdeAdjustedCohortOutcomes2017
+        description: 2016-17 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
+
+      - name: CdeAdjustedCohortOutcomes2018
+        description: 2017-18 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
+
+      - name: CdeAdjustedCohortOutcomes2019
+        description: 2018-19 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
+
+      - name: CdeAdjustedCohortOutcomes2020
+        description: 2019-20 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
+
+      - name: CdeAdjustedCohortOutcomes2021
+        description: 2020-21 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
+        
       - name: RenStarMath2021
         description: Renaissance Star Math Enterprise Assessment results from school year 2020-21
 

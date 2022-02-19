@@ -48,6 +48,9 @@ models:
         +materialized: table
         intermediate:
           +materialized: view
+      graduation:
+        +materialized: table
+        
     # Applies to all files under models/staging/
     staging:
       +materialized: view

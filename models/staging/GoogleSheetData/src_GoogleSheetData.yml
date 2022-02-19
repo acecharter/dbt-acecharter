@@ -89,7 +89,14 @@ sources:
           - name: Level4Min
             description: Minimum scale score within Level 4 range; ('N/A' if not applicable)
           - name: Notes
-      
+
+      - name: CdeReportingCategories
+        description: Student group reporting category codes and descriptors used in many CDE downloadable data files.
+        columns:
+          - name: ReportingCategoryCode
+          - name: ReportingCategory
+          - name: ReportingCategoryType
+
       - name: ElpiLevels
         description: A google sheet that provides data regarding State Dashboard English Learner Progress Indicator (ELPI) levels used to determine whether EL students are progressing
         columns:
