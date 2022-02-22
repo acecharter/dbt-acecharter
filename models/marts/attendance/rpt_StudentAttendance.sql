@@ -24,7 +24,7 @@ WITH
       SchoolId,
       StudentUniqueId,
       AverageDailyAttendance,
-      AbsenceRate,
+      ROUND(CountOfDaysAbsent/CountOfDaysEnrolled, 4) AS AbsenceRate,
       CountOfDaysAbsent,
       CountOfDaysInAttendance,
       CountOfDaysEnrolled,
