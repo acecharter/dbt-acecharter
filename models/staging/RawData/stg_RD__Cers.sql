@@ -7,9 +7,9 @@ WITH
       AssessmentNameShort AS AceAssessmentName,
       CASE
         WHEN AssessmentNameShort = 'SB ELA' THEN 'ELA SUM'
-        WHEN AssessmentNameShort = 'SB Math' THEN ' Math SUM'
-        WHEN AssessmentNameShort = 'CAA ELA' THEN 'CAAELA'
-        WHEN AssessmentNameShort = 'CAA Math' THEN 'CAAMath'
+        WHEN AssessmentNameShort = 'SB Math' THEN 'Math SUM'
+        WHEN AssessmentNameShort = 'CAA ELA' THEN 'CAAELA SUM'
+        WHEN AssessmentNameShort = 'CAA Math' THEN 'CAAMATH SUM'
         WHEN AssessmentNameShort = 'CAST' THEN 'CAST SUM'
         WHEN AssessmentNameShort = 'CSA' THEN 'CSA SUM'
         WHEN AssessmentNameShort = 'SB ELA IAB' THEN 'ELA IAB'
