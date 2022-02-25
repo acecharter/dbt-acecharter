@@ -1,6 +1,30 @@
 --HS file for 2122 is currently excluded since file was blank as of last update
 
 WITH
+  assessment_ids AS (
+    SELECT 
+      AceAssessmentId,
+      AssessmentNameShort AS AssessmentName,
+      CASE
+        WHEN AssessmentNameShort = 'SB ELA' THEN 'ELA SUM'
+        WHEN AssessmentNameShort = 'SB Math' THEN ' Math SUM'
+        WHEN AssessmentNameShort = 'CAA ELA' THEN 'CAAELA'
+        WHEN AssessmentNameShort = 'CAA Math' THEN 'CAAMath'
+        WHEN AssessmentNameShort = 'CAST' THEN 'CAST-SUM'
+        WHEN AssessmentNameShort = 'CSA' THEN 'CSA SUM'
+        WHEN AssessmentNameShort = 'SB ELA IAB' THEN 'ELA IAB'
+        WHEN AssessmentNameShort = 'SB Math IAB' THEN 'Math IAB'
+        WHEN AssessmentNameShort = 'SB ELA ICA' THEN 'ELA ICA'
+        WHEN AssessmentNameShort = 'SB Math ICA' THEN 'Math ICA'
+        WHEN AssessmentNameShort = 'Summative ELPAC' THEN 'ELPAC SUM'
+        ELSE 'ERROR'
+      END AS SubjectAssessmentSubType
+    FROM {{ ref('stg_GSD__Assessments') }}
+    WHERE 
+      SystemOrVendorName = 'CAASPP' 
+      OR SystemOrVendorName = 'ELPAC'
+  ),
+
   cers_empower_2122 AS (
     SELECT
       '116814' AS CurrentSchoolId,
@@ -60,7 +84,7 @@ WITH
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -97,7 +121,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -142,7 +166,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -179,7 +203,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -216,7 +240,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -253,7 +277,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -300,7 +324,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -337,7 +361,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -374,7 +398,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -411,7 +435,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -458,7 +482,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -495,7 +519,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -532,7 +556,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -569,7 +593,7 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
       ScaleScore,
-CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
       CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
       CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
@@ -602,6 +626,18 @@ CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
     SELECT * FROM cers_1920
     UNION ALL
     SELECT * FROM cers_1819    
+  ),
+
+  final AS (
+    SELECT
+      a.AceAssessmentId,
+      a.AssessmentName,
+      c.*
+    FROM cers_all AS c
+    LEFT JOIN assessment_ids AS a
+    ON CONCAT(c.Subject, ' ', c.AssessmentSubType) = a.SubjectAssessmentSubType
+
+
   )
 
-SELECT * FROM cers_all
+SELECT * FROM final
