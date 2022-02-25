@@ -1,8 +1,8 @@
 SELECT
   CAST(SchoolId AS STRING) AS SchoolId,
-  CAST(StateCdsCode AS STRING) AS StateCdsCode, 
-  CAST(StateCountyCode AS STRING) AS StateCountyCode,
-  CAST(StateDistrictCode AS STRING) AS StateDistrictCode,
+  FORMAT("%014d", StateCdsCode) AS StateCdsCode,
+  FORMAT("%02d", StateCountyCode) AS StateCountyCode,
+  FORMAT("%02d", StateDistrictCode) AS StateDistrictCode,
   FORMAT("%07d", StateSchoolCode) AS StateSchoolCode,
   SchoolNameFull,
   SchoolNameMid,

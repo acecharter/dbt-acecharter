@@ -125,15 +125,6 @@ sources:
             tests:
               - not_null
 
-      - name: CersEmpower
-        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Empower
-
-      - name: CersEsperanza
-        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Esperanza
-
-      - name: CersInspire
-        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Inspire
-
       - name: CourseSubjects
         description: A google sheet containing courses categorized by academic subject.
 

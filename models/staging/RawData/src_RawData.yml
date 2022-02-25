@@ -46,7 +46,52 @@ sources:
 
       - name: CdeAdjustedCohortOutcomes2021
         description: 2020-21 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
-        
+
+      - name: CersEmpower2122
+        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 CAASPP assessment results for students enrolled at Empower
+
+      - name: CersEsperanza2122
+        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 CAASPP assessment results for students enrolled at Esperanza
+
+      - name: CersInspire2122
+        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 CAASPP assessment results for students enrolled at Inspire
+
+      - name: CersEmpower2021
+        description: An extract from CERS (California Educator Reporting System) listing all 2020-21 CAASPP assessment results for students enrolled at Empower
+
+      - name: CersEsperanza2021
+        description: An extract from CERS (California Educator Reporting System) listing all 2020-21 CAASPP assessment results for students enrolled at Esperanza
+
+      - name: CersInspire2021
+        description: An extract from CERS (California Educator Reporting System) listing all 2020-21 CAASPP assessment results for students enrolled at Inspire
+
+      - name: CersHighSchool2021
+        description: An extract from CERS (California Educator Reporting System) listing all 2020-21 CAASPP assessment results for students enrolled at ACE High School
+
+      - name: CersEmpower1920
+        description: An extract from CERS (California Educator Reporting System) listing all 2019-20 CAASPP assessment results for students enrolled at Empower
+
+      - name: CersEsperanza1920
+        description: An extract from CERS (California Educator Reporting System) listing all 2019-20 CAASPP assessment results for students enrolled at Esperanza
+
+      - name: CersInspire1920
+        description: An extract from CERS (California Educator Reporting System) listing all 2019-20 CAASPP assessment results for students enrolled at Inspire
+
+      - name: CersHighSchool1920
+        description: An extract from CERS (California Educator Reporting System) listing all 2019-20 CAASPP assessment results for students enrolled at ACE High School
+
+      - name: CersEmpower1819
+        description: An extract from CERS (California Educator Reporting System) listing all 2018-19 CAASPP assessment results for students enrolled at Empower
+
+      - name: CersEsperanza1819
+        description: An extract from CERS (California Educator Reporting System) listing all 2018-19 CAASPP assessment results for students enrolled at Esperanza
+
+      - name: CersInspire1819
+        description: An extract from CERS (California Educator Reporting System) listing all 2018-19 CAASPP assessment results for students enrolled at Inspire
+
+      - name: CersHighSchool1819
+        description: An extract from CERS (California Educator Reporting System) listing all 2018-19 CAASPP assessment results for students enrolled at ACE High School
+
       - name: RenStarMath2021
         description: Renaissance Star Math Enterprise Assessment results from school year 2020-21
 

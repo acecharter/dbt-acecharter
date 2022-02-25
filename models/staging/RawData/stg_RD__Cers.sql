@@ -1,87 +1,607 @@
-WITH cers_update_dates AS (
-  SELECT
-    CASE
-      WHEN TableName = 'CersEmpower' THEN 'ACE Empower Academy'
-      WHEN TableName = 'CersEsperanza' THEN 'ACE Esperanza Middle'
-      WHEN TableName = 'CersInspire' THEN 'ACE Inspire Academy'
-    END AS SchoolName,
-    DateTableLastUpdated
-  FROM {{ source('GoogleSheetData', 'ManuallyMaintainedFilesTracker')}}
-),
-  
-cers AS (
-  SELECT
-    'ACE Empower Academy' AS SchoolNameEnrolled,
-    CAST(DistrictId AS STRING) AS DistrictId,
-    DistrictName AS DistrictWhereTested,
-    CAST(SchoolId AS STRING) AS StateCdsCode,
-    SchoolName AS SchoolWhereTestedName,
-    CAST(StudentIdentifier AS STRING) AS StateUniqueId,
-    FirstName,
-    LastOrSurname AS LastName,
-    DATE(SubmitDateTime) AS TestDate,
-    SchoolYear,
-    TestSessionId,
-    AssessmentType,
-    AssessmentSubType,
-    AssessmentName,
-    Subject,
-    GradeLevelWhenAssessed,
-    Completeness,
-    ScaleScoreAchievementLevel,
-    ScaleScore
-  FROM {{ source('GoogleSheetData', 'CersEmpower')}}
+--HS file for 2122 is currently excluded since file was blank as of last update
 
-  UNION ALL
-  SELECT
-    'ACE Esperanza Middle' AS SchoolNameEnrolled,
-    CAST(DistrictId AS STRING) AS DistrictId,
-    DistrictName AS DistrictWhereTested,
-    CAST(SchoolId AS STRING) AS StateCdsCode,
-    SchoolName AS SchoolWhereTestedName,
-    CAST(StudentIdentifier AS STRING) AS StateUniqueId,
-    FirstName,
-    LastOrSurname AS LastName,
-    DATE(SubmitDateTime) AS TestDate,
-    SchoolYear,
-    TestSessionId,
-    AssessmentType,
-    AssessmentSubType,
-    AssessmentName,
-    Subject,
-    GradeLevelWhenAssessed,
-    Completeness,
-    ScaleScoreAchievementLevel,
-    ScaleScore
-  FROM {{ source('GoogleSheetData', 'CersEsperanza')}}
-  
-  UNION ALL
-  SELECT
-    'ACE Inspire Academy' AS SchoolNameEnrolled,
-    CAST(DistrictId AS STRING) AS DistrictId,
-    DistrictName AS DistrictWhereTested,
-    CAST(SchoolId AS STRING) AS StateCdsCode,
-    SchoolName AS SchoolWhereTestedName,
-    CAST(StudentIdentifier AS STRING) AS StateUniqueId,
-    FirstName,
-    LastOrSurname AS LastName,
-    DATE(SubmitDateTime) AS TestDate,
-    SchoolYear,
-    TestSessionId,
-    AssessmentType,
-    AssessmentSubType,
-    AssessmentName,
-    Subject,
-    GradeLevelWhenAssessed,
-    Completeness,
-    ScaleScoreAchievementLevel,
-    ScaleScore
-  FROM {{ source('GoogleSheetData', 'CersInspire')}}
-)
+WITH
+  cers_empower_2122 AS (
+    SELECT
+      '116814' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEmpower2122')}}
+  ),
 
-SELECT
-  c.*,
-  d.DateTableLastUpdated AS CersExtractDate
-FROM cers AS c
-LEFT JOIN cers_update_dates AS d
-on c.SchoolNameEnrolled = d.SchoolName
+  cers_esperanza_2122 AS (
+    SELECT
+      '129247' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEsperanza2122')}}
+  ),
+
+  cers_inspire_2122 AS (
+    SELECT
+      '131656' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersInspire2122')}}
+  ),
+
+  cers_2122 AS(
+    SELECT * FROM cers_empower_2122
+    UNION ALL
+    SELECT * FROM cers_esperanza_2122
+    UNION ALL
+    SELECT * FROM cers_inspire_2122
+  ),
+
+  cers_empower_2021 AS (
+    SELECT
+      '116814' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEmpower2021')}}
+  ),
+
+  cers_esperanza_2021 AS (
+    SELECT
+      '129247' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEsperanza2021')}}
+  ),
+
+  cers_inspire_2021 AS (
+    SELECT
+      '131656' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersInspire2021')}}
+  ),
+
+  cers_hs_2021 AS (
+    SELECT
+      '125617' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersHighSchool2021')}}
+  ),
+
+  cers_2021 AS(
+    SELECT * FROM cers_empower_2021
+    UNION ALL
+    SELECT * FROM cers_esperanza_2021
+    UNION ALL
+    SELECT * FROM cers_inspire_2021
+    UNION ALL
+    SELECT * FROM cers_hs_2021
+  ),
+
+  cers_empower_1920 AS (
+    SELECT
+      '116814' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEmpower1920')}}
+  ),
+
+  cers_esperanza_1920 AS (
+    SELECT
+      '129247' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEsperanza1920')}}
+  ),
+
+  cers_inspire_1920 AS (
+    SELECT
+      '131656' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersInspire1920')}}
+  ),
+
+  cers_hs_1920 AS (
+    SELECT
+      '125617' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersHighSchool1920')}}
+  ),
+
+  cers_1920 AS(
+    SELECT * FROM cers_empower_1920
+    UNION ALL
+    SELECT * FROM cers_esperanza_1920
+    UNION ALL
+    SELECT * FROM cers_inspire_1920
+    UNION ALL
+    SELECT * FROM cers_hs_1920
+  ),
+  
+  cers_empower_1819 AS (
+    SELECT
+      '116814' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEmpower1819')}}
+  ),
+
+  cers_esperanza_1819 AS (
+    SELECT
+      '129247' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersEsperanza1819')}}
+  ),
+
+  cers_inspire_1819 AS (
+    SELECT
+      '131656' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersInspire1819')}}
+  ),
+
+  cers_hs_1819 AS (
+    SELECT
+      '125617' AS CurrentSchoolId,
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS TestDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
+      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
+      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
+      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
+      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
+      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersHighSchool1819')}}
+  ),
+
+  cers_1819 AS(
+    SELECT * FROM cers_empower_1819
+    UNION ALL
+    SELECT * FROM cers_esperanza_1819
+    UNION ALL
+    SELECT * FROM cers_inspire_1819
+    UNION ALL
+    SELECT * FROM cers_hs_1819
+  ),
+
+  cers_all AS (
+    SELECT * FROM cers_2122
+    UNION ALL
+    SELECT * FROM cers_2021
+    UNION ALL
+    SELECT * FROM cers_1920
+    UNION ALL
+    SELECT * FROM cers_1819    
+  )
+
+SELECT * FROM cers_all
