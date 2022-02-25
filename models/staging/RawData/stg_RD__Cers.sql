@@ -4,7 +4,7 @@ WITH
   assessment_ids AS (
     SELECT 
       AceAssessmentId,
-      AssessmentNameShort AS AssessmentName,
+      AssessmentNameShort AS AceAssessmentName,
       CASE
         WHEN AssessmentNameShort = 'SB ELA' THEN 'ELA SUM'
         WHEN AssessmentNameShort = 'SB Math' THEN ' Math SUM'
@@ -631,7 +631,7 @@ WITH
   final AS (
     SELECT
       a.AceAssessmentId,
-      a.AssessmentName,
+      a.AceAssessmentName,
       c.*
     FROM cers_all AS c
     LEFT JOIN assessment_ids AS a
