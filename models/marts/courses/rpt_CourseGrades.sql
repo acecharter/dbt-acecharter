@@ -16,7 +16,7 @@ WITH
   ),
 
   teachers AS (
-    SELECT * FROM {{ ref('dim_Staff') }}
+    SELECT * FROM {{ ref('dim_CourseStaff') }}
   ),
 
   final AS (
