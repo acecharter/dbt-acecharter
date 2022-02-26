@@ -532,4 +532,4 @@ WITH
     ON CONCAT(c.Subject, ' ', c.AssessmentSubType) = a.SubjectAssessmentSubType
   )
 
-SELECT * FROM final
+SELECT DISTINCT * FROM final
