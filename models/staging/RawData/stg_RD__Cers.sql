@@ -26,7 +26,6 @@ WITH
 
   cers_empower_2122 AS (
     SELECT
-      '116814' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS TestDistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -57,7 +56,6 @@ WITH
 
   cers_esperanza_2122 AS (
     SELECT
-      '129247' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -88,7 +86,6 @@ WITH
 
   cers_inspire_2122 AS (
     SELECT
-      '131656' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -127,7 +124,6 @@ WITH
 
   cers_empower_2021 AS (
     SELECT
-      '116814' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -158,7 +154,6 @@ WITH
 
   cers_esperanza_2021 AS (
     SELECT
-      '129247' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -189,7 +184,6 @@ WITH
 
   cers_inspire_2021 AS (
     SELECT
-      '131656' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -220,7 +214,6 @@ WITH
 
   cers_hs_2021 AS (
     SELECT
-      '125617' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -261,7 +254,6 @@ WITH
 
   cers_empower_1920 AS (
     SELECT
-      '116814' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -292,7 +284,6 @@ WITH
 
   cers_esperanza_1920 AS (
     SELECT
-      '129247' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -323,7 +314,6 @@ WITH
 
   cers_inspire_1920 AS (
     SELECT
-      '131656' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -354,7 +344,6 @@ WITH
 
   cers_hs_1920 AS (
     SELECT
-      '125617' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -395,7 +384,6 @@ WITH
   
   cers_empower_1819 AS (
     SELECT
-      '116814' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -426,7 +414,6 @@ WITH
 
   cers_esperanza_1819 AS (
     SELECT
-      '129247' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -457,7 +444,6 @@ WITH
 
   cers_inspire_1819 AS (
     SELECT
-      '131656' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -488,7 +474,6 @@ WITH
 
   cers_hs_1819 AS (
     SELECT
-      '125617' AS CurrentSchoolId,
       FORMAT("%014d", DistrictId) AS DistrictId,
       DistrictName AS TestDistrictName,
       FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
@@ -545,8 +530,6 @@ WITH
     FROM cers_all AS c
     LEFT JOIN assessment_ids AS a
     ON CONCAT(c.Subject, ' ', c.AssessmentSubType) = a.SubjectAssessmentSubType
-
-
   )
 
 SELECT * FROM final
