@@ -6,7 +6,7 @@ WITH
   cers AS (
     SELECT
       *,
-      CONCAT(AssessmentName, '-', StateUniqueId, '-', TestDate) AS AssessmentId,
+      CONCAT(AssessmentName, '-', StateUniqueId, '-', AssessmentDate) AS AssessmentId,
     FROM {{ ref('stg_RD__Cers') }}
     WHERE Completeness='Complete'
   ),
@@ -18,7 +18,7 @@ WITH
       AceAssessmentName AS AssessmentName,
       TestSchoolCdsCode AS TestedSchoolId,
       StateUniqueId,
-      TestDate,
+      AssessmentDate,
       CONCAT(
         CAST(CAST(TestSchoolYear AS INT64) - 1 AS STRING),
         "-",

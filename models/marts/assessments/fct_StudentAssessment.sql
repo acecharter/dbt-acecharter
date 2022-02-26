@@ -18,38 +18,6 @@ star AS (
   FROM {{ ref('int_RenStar__unioned_melted') }}
 ),
 
-caaspp_2021 AS (
-  SELECT
-    AceAssessmentId,
-    StateUniqueId,
-    TestedSchoolId,
-    SchoolYear AS AssessmentSchoolYear,
-    AssessmentId,
-    CAST(NULL AS STRING) AS AssessmentDate,
-    AssessedGradeLevel,
-    AssessmentObjective,
-    ReportingMethod,
-    StudentResultDataType,
-    StudentResult
-  FROM {{ ref('int_TomsCaasppEnrolled2021__melted_unioned') }}
-),
-
-elpac_2021 AS (
-  SELECT
-    AceAssessmentId,
-    StateUniqueId,
-    TestedSchoolId,
-    SchoolYear AS AssessmentSchoolYear,
-    AssessmentId,
-    CAST(NULL AS STRING) AS AssessmentDate,
-    AssessedGradeLevel,
-    AssessmentObjective,
-    ReportingMethod,
-    StudentResultDataType,
-    StudentResult
-FROM {{ ref('int_TomsElpacEnrolled2021__melted_unioned') }}
-),
-
 cers AS (
   SELECT
     AceAssessmentId,
@@ -57,7 +25,7 @@ cers AS (
     TestedSchoolId,
     SchoolYear AS AssessmentSchoolYear,
     AssessmentId,
-    CAST(TestDate AS STRING) AS AssessmentDate,
+    CAST(AssessmentDate AS STRING) AS AssessmentDate,
     AssessedGradeLevel,
     AssessmentObjective,
     ReportingMethod,
@@ -68,10 +36,6 @@ FROM {{ ref('int_Cers__melted') }}
 
 unioned_results AS (
     SELECT * FROM star
-    UNION ALL
-    SELECT * FROM caaspp_2021
-    UNION ALL
-    SELECT * FROM elpac_2021
     UNION ALL
     SELECT * FROM cers
 ),
