@@ -48,16 +48,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEmpower2122')}}
   ),
 
@@ -85,16 +79,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEsperanza2122')}}
   ),
 
@@ -122,16 +110,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersInspire2122')}}
   ),
 
@@ -167,16 +149,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
       CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEmpower2021')}}
   ),
 
@@ -204,16 +180,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEsperanza2021')}}
   ),
 
@@ -241,16 +211,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersInspire2021')}}
   ),
 
@@ -278,16 +242,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersHighSchool2021')}}
   ),
 
@@ -325,16 +283,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEmpower1920')}}
   ),
 
@@ -362,16 +314,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEsperanza1920')}}
   ),
 
@@ -399,16 +345,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersInspire1920')}}
   ),
 
@@ -436,16 +376,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersHighSchool1920')}}
   ),
 
@@ -483,16 +417,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEmpower1819')}}
   ),
 
@@ -520,16 +448,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersEsperanza1819')}}
   ),
 
@@ -557,16 +479,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersInspire1819')}}
   ),
 
@@ -594,16 +510,10 @@ WITH
       ScaleScore,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
-      CAST(Alt3ScoreAchievementLevel AS STRING) AS Alt3ScoreAchievementLevel,
-      CAST(Alt4ScoreAchievementLevel AS STRING) AS Alt4ScoreAchievementLevel,
-      CAST(Alt5ScoreAchievementLevel AS STRING) AS Alt5ScoreAchievementLevel,
-      CAST(Alt6ScoreAchievementLevel AS STRING) AS Alt6ScoreAchievementLevel,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
-      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel,
-      CAST(Claim5ScoreAchievementLevel AS STRING) AS Claim5ScoreAchievementLevel,
-      CAST(Claim6ScoreAchievementLevel AS STRING) AS Claim6ScoreAchievementLevel
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
     FROM {{ source('RawData', 'CersHighSchool1819')}}
   ),
 
