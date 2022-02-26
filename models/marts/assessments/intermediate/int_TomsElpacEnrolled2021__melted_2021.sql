@@ -32,7 +32,8 @@ scale_score AS (
   SELECT
     AssessmentId,
     RecordType,
-    'Overall Scale Score' AS ReportingMethod,
+    'Overall' AS AssessmentObjective,
+    'Scale Score' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
     OverallScaleScore AS StudentResult
   FROM elpac
@@ -42,7 +43,8 @@ performance_level AS (
   SELECT
     AssessmentId,
     RecordType,
-    'Overall Performance Level' AS ReportingMethod,
+    'Overall' AS AssessmentObjective,
+    'Performance Level' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
     OverallPL AS StudentResult
   FROM elpac
@@ -52,6 +54,7 @@ elpi_level AS (
   SELECT
     AssessmentId,
     RecordType,
+    'Overall' AS AssessmentObjective,
     'ELPI Level' AS ReportingMethod,
     'STRING' AS StudentResultDataType,
     ElpiLevel AS StudentResult

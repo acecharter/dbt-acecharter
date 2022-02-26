@@ -11,6 +11,7 @@ star AS (
     AssessmentID AS AssessmentId,
     CAST(AssessmentDate AS STRING) AS AssessmentDate,
     AssessedGradeLevel,
+    AssessmentObjective,
     ReportingMethod,
     StudentResultDataType,
     StudentResult
@@ -26,6 +27,7 @@ caaspp_2021 AS (
     AssessmentId,
     CAST(NULL AS STRING) AS AssessmentDate,
     AssessedGradeLevel,
+    AssessmentObjective,
     ReportingMethod,
     StudentResultDataType,
     StudentResult
@@ -41,10 +43,27 @@ elpac_2021 AS (
     AssessmentId,
     CAST(NULL AS STRING) AS AssessmentDate,
     AssessedGradeLevel,
+    AssessmentObjective,
     ReportingMethod,
     StudentResultDataType,
     StudentResult
 FROM {{ ref('int_TomsElpacEnrolled2021__melted_unioned') }}
+),
+
+cers AS (
+  SELECT
+    AceAssessmentId,
+    StateUniqueId,
+    TestedSchoolId,
+    SchoolYear AS AssessmentSchoolYear,
+    AssessmentId,
+    CAST(TestDate AS STRING) AS AssessmentDate,
+    AssessedGradeLevel,
+    AssessmentObjective,
+    ReportingMethod,
+    StudentResultDataType,
+    StudentResult
+FROM {{ ref('int_Cers__melted') }}
 ),
 
 unioned_results AS (
@@ -53,7 +72,8 @@ unioned_results AS (
     SELECT * FROM caaspp_2021
     UNION ALL
     SELECT * FROM elpac_2021
-
+    UNION ALL
+    SELECT * FROM cers
 ),
 
 final AS (
@@ -66,6 +86,7 @@ final AS (
     r.AssessmentId,
     r.AssessmentDate,
     r.AssessedGradeLevel,
+    r.AssessmentObjective,
     r.ReportingMethod,
     r.StudentResultDataType,
     r.StudentResult

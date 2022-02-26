@@ -3,7 +3,10 @@ WITH star_results AS (
 ),
 
 star_keys AS(
-  SELECT * FROM {{ ref('dim_RenStarStudentAssessments') }}
+  SELECT
+    *,
+    'Overall' AS AssessmentObjective,
+  FROM {{ ref('dim_RenStarStudentAssessments') }}
 ),
 
 ge AS (

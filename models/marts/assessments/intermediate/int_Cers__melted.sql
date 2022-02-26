@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH
   cers AS (
     SELECT
@@ -12,7 +16,7 @@ WITH
       AssessmentId,
       AceAssessmentId,
       AceAssessmentName AS AssessmentName,
-      CurrentSchoolId,
+      TestSchoolCdsCode AS TestedSchoolId,
       StateUniqueId,
       TestDate,
       CONCAT(
@@ -21,7 +25,7 @@ WITH
         RIGHT(CAST(TestSchoolYear AS STRING), 2)
       ) AS SchoolYear,
       AssessmentName AS GradeAssessmentName,
-      GradeLevelWhenAssessed AS TestGradeLevel,
+      AssessedGradeLevel,
       AdministrationCondition
     FROM cers
   ),

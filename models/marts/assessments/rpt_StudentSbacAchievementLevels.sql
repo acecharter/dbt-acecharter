@@ -37,6 +37,7 @@ sbac_results AS (
       i.SystemOrVendorName,
       r.AssessmentId,
       r.AssessedGradeLevel,
+      r.AssessmentObjective,
       CAST(r.StudentResult AS INT64) AS AchievementLevel,
       CASE
         WHEN r.StudentResult = '1' THEN 'Not Met'
@@ -50,6 +51,7 @@ sbac_results AS (
     WHERE 
       i.SystemOrVendorName = 'CAASPP' AND 
       i.AssessmentFamilyNameShort = 'SBAC' AND
+      r.AssessmentObjective = 'Overall' AND
       r.ReportingMethod = 'Achievement Level' AND
       CAST(r.StudentResult AS INT64) <= 4
 

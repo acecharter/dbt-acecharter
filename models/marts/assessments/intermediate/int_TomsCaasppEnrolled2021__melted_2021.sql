@@ -33,6 +33,7 @@ caaspp_keys AS(
 scale_score AS (
   SELECT
     AssessmentId,
+    'Overall' AS AssessmentObjective,
     'Scale Score' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
     ScaleScore AS StudentResult
@@ -42,6 +43,7 @@ scale_score AS (
 achievement_level AS (
   SELECT
     AssessmentId,
+    'Overall' AS AssessmentObjective,
     'Achievement Level' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
     AchievementLevel AS StudentResult
@@ -51,6 +53,7 @@ achievement_level AS (
 dfs AS(
   SELECT
     AssessmentId,
+    'Overall' AS AssessmentObjective,
     'Distance From Standard' AS ReportingMethod,
     'INT64' AS StudentResultDataType,
     DistanceFromStandard AS StudentResult

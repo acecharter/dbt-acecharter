@@ -14,11 +14,8 @@ SELECT
   AssessmentId,
   AssessedGradeLevel,
   RecordType,
-  CASE
-    WHEN ReportingMethod='Overall Performance Level' THEN 'Performance Level'
-    WHEN ReportingMethod='Overall Scale Score' THEN 'Scale Score'
-    ELSE ReportingMethod
-  END AS ReportingMethod,
+  AssessmentObjective,
+  ReportingMethod,
   StudentResultDataType,
   StudentResult
 FROM final
