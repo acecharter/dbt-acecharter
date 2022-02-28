@@ -22,8 +22,8 @@ WITH
     SELECT *
     FROM caaspp
     WHERE
-      SchoolCode = '0000000' AND
-      DistrictCode IN (
+      SchoolCode = '0000000'
+      AND DistrictCode IN (
         '10439', -- Santa Clara County Office of Education
         '69369', -- Alum Rock Union
         '69450', -- Franklin-McKinley
@@ -35,7 +35,9 @@ WITH
   county AS (
     SELECT *
     FROM caaspp
-    WHERE CountyCode = '43' AND DistrictCode = '00000' -- Santa Clara County
+    WHERE
+      DistrictCode = '00000' 
+      AND CountyCode = '43'-- Santa Clara County
   ),
 
   unioned AS (
