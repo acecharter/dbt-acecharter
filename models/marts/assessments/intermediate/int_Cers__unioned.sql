@@ -1,5 +1,3 @@
---NOTE: HS file for 2122 is currently excluded since file was blank as of last update
-
 {{ config(
     materialized='table'
 )}}
