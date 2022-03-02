@@ -31,7 +31,7 @@ cers AS (
     ReportingMethod,
     StudentResultDataType,
     StudentResult
-FROM {{ ref('int_Cers__melted') }}
+FROM {{ ref('int_Cers__unioned_melted') }}
 ),
 
 unioned_results AS (
