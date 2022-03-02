@@ -92,14 +92,15 @@ WITH
       SectionBeginDate,
       SectionEndDate,
       StaffUniqueId,
+      StaffDisplayName,
       StaffClassroomPosition,
       StaffBeginDate,
       StaffEndDate,
       IsCurrentStaffAssociation,
       StudentUniqueId,
-      BeginDate AS StudentCourseEnrollmentBeginDate,
-      EndDate AS StudentCourseEnrollmentEndDate,
-      IsCurrentCourseEnrollment
+      BeginDate AS StudentSectionEnrollmentBeginDate,
+      EndDate AS StudentSectionEnrollmentEndDate,
+      IsCurrentSectionEnrollment
     FROM joined
   )
 

@@ -15,10 +15,6 @@ WITH
     SELECT * FROM {{ ref('dim_Students') }}
   ),
 
-  teachers AS (
-    SELECT * FROM {{ ref('dim_CourseStaff') }}
-  ),
-
   final AS (
     SELECT
       e.SchoolId,
@@ -36,7 +32,7 @@ WITH
       e.SectionBeginDate,
       e.SectionEndDate,
       e.StaffUniqueId,
-      t.StaffDisplayName,
+      e.StaffDisplayName,
       e.StaffClassroomPosition,
       e.StudentUniqueId,
       st.StateUniqueId,
@@ -56,7 +52,7 @@ WITH
       st.IsCurrentlyEnrolled,
       e.BeginDate AS CourseEnrollmentBeginDate,
       e.EndDate As CourseEnrollmentEndDate,
-      e.IsCurrentCourseEnrollment,
+      e.IsCurrentSectionEnrollment,
       g.GradingPeriodDescriptor,
       g.GradeTypeDescriptor,
       g.IsCurrentGradingPeriod,
@@ -72,8 +68,6 @@ WITH
       AND e.StudentUniqueId = g.StudentUniqueId
     LEFT JOIN schools AS sc
     ON e.SchoolId = sc.SchoolId
-    LEFT JOIN teachers AS t
-    ON e.StaffUniqueId = t.StaffUniqueId
     LEFT JOIN students AS st
     ON
       e.SchoolId = st.SchoolId
