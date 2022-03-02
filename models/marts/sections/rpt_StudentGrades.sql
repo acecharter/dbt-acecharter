@@ -4,7 +4,7 @@ WITH
   ),
 
   course_grades AS (
-    SELECT * FROM {{ ref('fct_CourseGrades')}}
+    SELECT * FROM {{ ref('fct_StudentGrades')}}
   ),
 
   schools AS (
@@ -33,8 +33,8 @@ WITH
       e.SectionIdentifier,
       e.ClassPeriodName,
       e.AvailableCredits,
-      e.CourseSectionBeginDate,
-      e.CourseSectionEndDate,
+      e.SectionBeginDate,
+      e.SectionEndDate,
       e.StaffUniqueId,
       t.StaffDisplayName,
       e.StaffClassroomPosition,

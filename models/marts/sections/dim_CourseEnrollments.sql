@@ -41,7 +41,7 @@ WITH
           StudentUniqueId,
           EndDate DESC
       ) AS Rank
-    FROM {{ ref('dim_SectionEnrollments') }}  
+    FROM {{ ref('fct_StudentSectionEnrollments') }}  
   ),
 
   joined AS (
