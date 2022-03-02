@@ -1,6 +1,6 @@
 WITH 
   caaspp AS (
-    SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty')}} 
+    SELECT * FROM {{ ref('int_Caaspp__unioned')}} 
   ),
 
   schools AS (

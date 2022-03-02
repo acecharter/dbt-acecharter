@@ -1,6 +1,6 @@
 WITH 
   caaspp_filtered AS (
-    SELECT * FROM {{ ref('int_Caaspp__filtered')}} 
+    SELECT * FROM {{ ref('int_Caaspp__unioned_filtered')}} 
   ),
 
   entities AS (
