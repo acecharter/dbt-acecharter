@@ -1,10 +1,6 @@
 WITH
-  courses AS (
-    SELECT * FROM {{ ref('dim_Courses') }}
-  ),
-
-  course_sections AS (
-    SELECT * FROM {{ ref('dim_CourseSections') }}  
+  sections AS (
+    SELECT * FROM {{ ref('dim_Sections') }}  
   ),
 
   teachers_ranked AS (
@@ -23,7 +19,7 @@ WITH
           ClassPeriodName,
           StaffEndDate DESC
       ) AS Rank
-    FROM {{ ref('dim_CourseSectionStaff') }} 
+    FROM {{ ref('dim_SectionStaff') }} 
     WHERE StaffClassroomPosition = 'Teacher of Record' 
   ),
 
@@ -45,13 +41,12 @@ WITH
           StudentUniqueId,
           EndDate DESC
       ) AS Rank
-    FROM {{ ref('dim_CourseSectionEnrollments') }}  
+    FROM {{ ref('dim_SectionEnrollments') }}  
   ),
 
   joined AS (
     SELECT
-      c.*,
-      s.* EXCEPT(CourseCode),
+      s.*,
       t.* EXCEPT(
         SchoolId,
         SessionName,
@@ -64,9 +59,7 @@ WITH
         SectionIdentifier,
         ClassPeriodName,
         Rank),
-    FROM courses AS c
-    LEFT JOIN course_sections AS s
-      ON c.CourseCode = s.CourseCode
+    FROM sections AS s
     LEFT JOIN teachers_ranked AS t
       ON
         s.SchoolId = t.SchoolId
@@ -96,8 +89,8 @@ WITH
       ClassPeriodName,
       Room,
       AvailableCredits,
-      CourseSectionBeginDate,
-      CourseSectionEndDate,
+      SectionBeginDate,
+      SectionEndDate,
       StaffUniqueId,
       StaffClassroomPosition,
       StaffBeginDate,
