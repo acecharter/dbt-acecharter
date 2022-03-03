@@ -6,7 +6,7 @@ WITH
         PARTITION BY SchoolId, StudentUniqueId 
         ORDER BY SchoolId, StudentUniqueId, EntryDate DESC
       ) AS Rank
-    FROM {{ ref('dim_StudentEnrollments') }}
+    FROM {{ ref('fct_StudentSchoolEnrollments') }}
   ),
 
   demographics AS (
