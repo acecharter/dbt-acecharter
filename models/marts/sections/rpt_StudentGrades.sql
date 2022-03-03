@@ -1,9 +1,5 @@
 WITH
-  course_enrollments AS (
-    SELECT * FROM {{ ref('dim_CourseEnrollments')}}
-  ),
-
-  course_grades AS (
+  grades AS (
     SELECT * FROM {{ ref('fct_StudentGrades')}}
   ),
 
@@ -14,26 +10,71 @@ WITH
   students AS (
     SELECT * FROM {{ ref('dim_Students') }}
   ),
+  
+  sections AS (
+    SELECT * FROM {{ ref('dim_Sections') }}  
+  ),
+
+  teachers_ranked AS (
+    SELECT
+      *,
+      RANK() OVER (
+        PARTITION BY 
+          SchoolId,
+          SessionName,
+          SectionIdentifier,
+          ClassPeriodName
+        ORDER BY
+          SchoolId,
+          SessionName,
+          SectionIdentifier,
+          ClassPeriodName,
+          StaffEndDate DESC
+      ) AS Rank
+    FROM {{ ref('dim_SectionStaff') }} 
+    WHERE StaffClassroomPosition = 'Teacher of Record'
+  ),
+
+  enrollments_ranked AS (
+    SELECT
+      *,
+      RANK() OVER (
+        PARTITION BY 
+          SchoolId,
+          SessionName,
+          SectionIdentifier,
+          ClassPeriodName,
+          StudentUniqueId
+        ORDER BY
+          SchoolId,
+          SessionName,
+          SectionIdentifier,
+          ClassPeriodName,
+          StudentUniqueId,
+          EndDate DESC
+      ) AS Rank
+    FROM {{ ref('fct_StudentSectionEnrollments') }}
+  ),
 
   final AS (
     SELECT
-      e.SchoolId,
+      s.SchoolId,
       sc.SchoolName,
       sc.SchoolNameMid,
       sc.SchoolNameShort,
-      e.CourseCode,
-      e.CourseTitle,
-      e.CourseGpaApplicability,
-      e.AcademicSubject,
-      e.SessionName,
-      e.SectionIdentifier,
-      e.ClassPeriodName,
-      e.AvailableCredits,
-      e.SectionBeginDate,
-      e.SectionEndDate,
-      e.StaffUniqueId,
-      e.StaffDisplayName,
-      e.StaffClassroomPosition,
+      s.CourseCode,
+      s.CourseTitle,
+      s.CourseGpaApplicability,
+      s.AcademicSubject,
+      s.SessionName,
+      s.SectionIdentifier,
+      s.ClassPeriodName,
+      s.AvailableCredits,
+      s.SectionBeginDate,
+      s.SectionEndDate,
+      t.StaffUniqueId,
+      t.StaffDisplayName,
+      t.StaffClassroomPosition,
       e.StudentUniqueId,
       st.StateUniqueId,
       st.DisplayName AS StudentName,
@@ -50,16 +91,28 @@ WITH
       st.ExitWithdrawDate,
       st.ExitWithdrawReason,
       st.IsCurrentlyEnrolled,
-      e.BeginDate AS CourseEnrollmentBeginDate,
-      e.EndDate As CourseEnrollmentEndDate,
+      e.BeginDate AS SectionEnrollmentBeginDate,
+      e.EndDate As SectionEnrollmentEndDate,
       e.IsCurrentSectionEnrollment,
       g.GradingPeriodDescriptor,
       g.GradeTypeDescriptor,
       g.IsCurrentGradingPeriod,
       g.NumericGradeEarned,
       g.LetterGradeEarned
-    FROM course_enrollments AS e
-    LEFT JOIN course_grades AS g
+    FROM sections AS s
+    LEFT JOIN teachers_ranked AS t
+      ON
+        s.SchoolId = t.SchoolId
+        AND s.SessionName = t.SessionName
+        AND s.SectionIdentifier = t.SectionIdentifier
+        AND s.ClassPeriodName = t.ClassPeriodName
+    LEFT JOIN enrollments_ranked AS e
+      ON 
+        s.SchoolId = e.SchoolId
+        AND s.SessionName = e.SessionName
+        AND s.SectionIdentifier = e.SectionIdentifier
+        AND s.ClassPeriodName = e.ClassPeriodName
+    LEFT JOIN grades AS g
     ON
       e.SchoolId = g.SchoolId
       AND e.SessionName = g.SessionName
@@ -72,6 +125,9 @@ WITH
     ON
       e.SchoolId = st.SchoolId
       AND e.StudentUniqueId = st.StudentUniqueId
+    WHERE
+      e.Rank = 1
+      AND t.Rank = 1
   )
 
 SELECT * FROM final
