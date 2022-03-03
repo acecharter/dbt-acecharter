@@ -1,8 +1,7 @@
 WITH assessment_ids AS (
   SELECT 
     AceAssessmentId,
-    AssessmentNameShort AS AssessmentName,
-    'Enterprise' AS AssessmentType
+    AssessmentNameShort AS AssessmentName
   FROM {{ ref('stg_GSD__Assessments') }}
   WHERE AssessmentNameShort = 'Star Reading'
 ),
@@ -34,7 +33,6 @@ star_reading_with_missing_ids AS (
 
 star_reading AS (
   SELECT
-    AssessmentType,
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
       WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247'
@@ -61,6 +59,7 @@ star_reading AS (
     AssessmentID,
     DATE(CompletedDateLocal) AS AssessmentDate,
     CAST(AssessmentNumber AS INT64) AS AssessmentNumber,
+    AssessmentType,
     GradePlacement,
     Grade,
     GradeEquivalent,
@@ -99,8 +98,7 @@ FROM star_reading_with_missing_ids
 )
 
 SELECT
-  a.* EXCEPT(AssessmentType),
-  s.* EXCEPT(AssessmentType)
+  a.*,
+  s.*
 FROM star_reading as s
-LEFT JOIN assessment_ids AS a
-USING (AssessmentType)
+CROSS JOIN assessment_ids AS a

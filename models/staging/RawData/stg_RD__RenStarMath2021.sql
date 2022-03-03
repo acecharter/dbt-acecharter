@@ -1,8 +1,7 @@
 WITH assessment_ids AS (
   SELECT 
     AceAssessmentId,
-    AssessmentNameShort AS AssessmentName,
-    'Star Math Enterprise Tests' AS AssessmentType
+    AssessmentNameShort AS AssessmentName
   FROM {{ ref('stg_GSD__Assessments') }}
   WHERE AssessmentNameShort = 'Star Math'
 ),
@@ -48,7 +47,6 @@ star_math_with_gp_added AS (
 
 star_math AS (
   SELECT
-    Activity_Type AS AssessmentType,
     CASE
       WHEN School_Id='gs_4e804ecc-4623-46b4-a91a-fe2acb88cbb3' THEN '116814'
       WHEN School_Id='gs_e8341d4c-4366-43e1-99b5-71f66cec337a' THEN '129247'
@@ -75,6 +73,7 @@ star_math AS (
     Renaissance_Activity_ID AS AssessmentId,
     DATE(Activity_Completed_Date) AS AssessmentDate,
     CAST(NULL AS INT64) AS AssessmentNumber,
+    Activity_Type AS AssessmentType,
     GradePlacement,
     CAST(Current_Grade AS STRING) AS Grade,
     CAST(Grade_Equivalent AS STRING) AS GradeEquivalent,
@@ -104,11 +103,10 @@ star_math AS (
 
 final AS(
   SELECT
-    a.* EXCEPT(AssessmentType),
-    s.* EXCEPT(AssessmentType)
+    a.*,
+    s.*
   FROM assessment_ids AS a
-  LEFT JOIN star_math as s
-  USING (AssessmentType)
+  CROSS JOIN star_math as s
 )
 
 SELECT * FROM final
