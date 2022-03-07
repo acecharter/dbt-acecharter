@@ -160,4 +160,6 @@ SELECT
 FROM cers_keys AS k
 LEFT JOIN results_unioned AS r
 USING (AssessmentId)
-WHERE StudentResult IS NOT NULL
+WHERE
+  StudentResult IS NOT NULL
+  AND StudentResult != ''
