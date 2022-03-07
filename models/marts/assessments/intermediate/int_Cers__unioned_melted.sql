@@ -16,7 +16,11 @@ WITH
       AssessmentId,
       AceAssessmentId,
       AceAssessmentName AS AssessmentName,
-      TestSchoolCdsCode AS TestedSchoolId,
+      CAST(
+        CAST(
+          RIGHT(TestSchoolCdsCode,7) 
+        AS INT64)
+      AS STRING) AS TestedSchoolId,
       StateUniqueId,
       AssessmentDate,
       CONCAT(
