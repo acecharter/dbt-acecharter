@@ -41,6 +41,17 @@ WITH
     WHERE MeanScaleScore IS NOT NULL
   ),
 
+  mean_dfs AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Mean Distrance From Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(MeanDistanceFromStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE MeanDistanceFromStandard IS NOT NULL
+  ),
+
   pct_met_and_above AS (
     SELECT
       AssessmentId,
@@ -100,6 +111,8 @@ WITH
   results_unioned AS(
     SELECT * FROM mean_scale_score
     UNION ALL
+    SELECT * FROM mean_dfs
+    UNION ALL
     SELECT * FROM pct_met_and_above
     UNION ALL
     SELECT * FROM pct_exceeded
@@ -116,7 +129,7 @@ WITH
       k.*,
       r.* EXCEPT (AssessmentID),
       CASE
-        WHEN r.ReportingMethod = 'Mean Scale Score' THEN NULL 
+        WHEN r.ReportingMethod LIKE 'Mean%' THEN NULL 
         ELSE ROUND(StudentsWithScores * CAST(SchoolResult AS FLOAT64), 0)
       END AS StudentWithResultCount
     FROM caaspp_keys AS k

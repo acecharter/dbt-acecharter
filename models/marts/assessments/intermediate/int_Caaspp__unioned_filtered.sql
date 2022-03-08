@@ -52,12 +52,30 @@ WITH
     SELECT * FROM county
   ),
 
+  min_met_scores AS (
+    SELECT
+      AceAssessmentId,
+      GradeLevel,
+      MinStandardMetScaleScore
+    FROM {{ ref('fct_CaasppMinMetScaleScores') }}
+    WHERE Area='Overall'
+  ),
+
   final AS (
-    SELECT *
-    FROM unioned
+    SELECT
+      u.*,
+      CASE
+        WHEN u.MeanScaleScore IS NOT NULL THEN ROUND(u.MeanScaleScore - m.MinStandardMetScaleScore, 1)
+        ELSE NULL
+      END AS MeanDistanceFromStandard
+    FROM unioned AS u
+    LEFT JOIN min_met_scores AS m
+    ON
+      u.AceAssessmentId = m.AceAssessmentId
+      AND CAST(u.GradeLevel AS STRING) = m.GradeLevel
     WHERE
-      GradeLevel >= 5 AND
-      DemographicId IN (
+      u.GradeLevel >= 5 AND
+      u.DemographicId IN (
         '1',   --All Students
         '128', --Reported Disabilities
         '31',  --Economic disadvantaged
