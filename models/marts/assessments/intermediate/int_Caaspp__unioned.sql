@@ -1,5 +1,14 @@
 -- Columns dropped: Filler
-WITH 
+WITH
+  assessment_ids AS (
+    SELECT 
+      AceAssessmentId,
+      AssessmentNameShort AS AceAssessmentName,
+      SystemOrVendorAssessmentId
+    FROM {{ ref('stg_GSD__Assessments') }}
+    WHERE SystemOrVendorName = 'CAASPP'
+  ),
+  
   caaspp_2015 AS (
     SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2015')}} 
   ),
@@ -23,7 +32,7 @@ WITH
     SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2021')}} 
   ),
 
-  caaspp_unioned AS (
+  unioned AS (
     SELECT * FROM caaspp_2015
     UNION ALL
     SELECT * FROM caaspp_2016
@@ -37,7 +46,7 @@ WITH
     SELECT * FROM caaspp_2021
   ),
 
-  final AS (
+  formatted AS (
     SELECT
       FORMAT("%02d", County_Code) AS CountyCode,
       FORMAT("%05d", District_Code) AS DistrictCode,
@@ -77,7 +86,17 @@ WITH
       ROUND(Area_4_Percentage_Near_Standard/100, 4) AS Area4PctNearStandard,
       ROUND(Area_4_Percentage_Below_Standard/100, 4) AS Area4PctBelowStandard
 
-    FROM caaspp_unioned
+    FROM unioned
+  ),
+
+  final AS (
+    SELECT
+      a.AceAssessmentId,
+      a.AceAssessmentName,
+      f.*
+    FROM formatted AS f
+    LEFT JOIN assessment_ids AS a
+    ON f.TestId = a.SystemOrVendorAssessmentId
   )
 
 SELECT * FROM final

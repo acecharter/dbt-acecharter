@@ -20,11 +20,11 @@ WITH
       TestSubject,
       StudentsEnrolled,
       StudentsWithScores,
-      PctStudentsWithScores,
-      MeanScaleScore,
-      StudentsStandardMetAndAbove,
-      PctStandardMetAndAbove      
-    FROM {{ ref('int_Caaspp__unioned_filtered_joined')}} 
+      ReportingMethod,
+      ResultDataType,
+      Result,
+      StudentWithResultCount
+    FROM {{ ref('fct_SchoolCaaspp')}} 
   ),
 
   final AS (

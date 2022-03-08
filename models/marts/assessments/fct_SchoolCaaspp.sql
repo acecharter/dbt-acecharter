@@ -1,6 +1,6 @@
 WITH 
-  caaspp_filtered AS (
-    SELECT * FROM {{ ref('int_Caaspp__unioned_filtered')}} 
+  caaspp AS (
+    SELECT * FROM {{ ref('int_Caaspp__unioned_filtered_melted')}} 
   ),
 
   entities AS (
@@ -34,11 +34,11 @@ WITH
       END AS TestSubject,
       c.StudentsEnrolled,
       c.StudentsWithScores,
-      ROUND(c.StudentsWithScores / c.StudentsEnrolled, 4) AS PctStudentsWithScores,
-      c.MeanScaleScore,
-      ROUND(c.PctStandardMetAndAbove * c.StudentsWithScores, 0) AS StudentsStandardMetAndAbove,
-      c.PctStandardMetAndAbove
-    FROM caaspp_filtered AS c
+      c.ReportingMethod,
+      c.ResultDataType,
+      c.Result,
+      c.StudentWithResultCount
+    FROM caaspp AS c
     LEFT JOIN entities AS e
     ON
       c.CountyCode = e.CountyCode AND

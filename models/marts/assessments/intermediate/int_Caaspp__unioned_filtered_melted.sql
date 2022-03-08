@@ -1,0 +1,128 @@
+{{ config(
+    materialized='table'
+)}}
+
+WITH
+  caaspp AS (
+    SELECT
+      CONCAT(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', DemographicId, '-', GradeLevel, '-', TestId) AS AssessmentId,
+      *
+    FROM {{ ref('int_Caaspp__unioned_filtered') }}
+  ),
+
+  caaspp_keys AS(
+    SELECT
+      AssessmentId,
+      AceAssessmentId,
+      AceAssessmentName,
+      CAST(CAST(SchoolCode AS INT64) AS STRING) AS SchoolId,
+      CountyCode,
+      DistrictCode,
+      SchoolCode,
+      TestYear,
+      SchoolYear,
+      TypeId,
+      DemographicId,
+      GradeLevel,
+      TestId,
+      StudentsEnrolled,
+      StudentsWithScores
+    FROM caaspp
+  ),
+
+  mean_scale_score AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Mean Scale Score' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(MeanScaleScore AS STRING) AS Result
+    FROM caaspp
+    WHERE MeanScaleScore IS NOT NULL
+  ),
+
+  pct_met_and_above AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Percent Met and Above' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(PctStandardMetAndAbove AS STRING) AS Result
+    FROM caaspp
+    WHERE PctStandardMetAndAbove IS NOT NULL
+  ),
+
+  pct_exceeded AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Percent Exceeded' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(PctStandardExceeded AS STRING) AS Result
+    FROM caaspp
+    WHERE PctStandardExceeded IS NOT NULL
+  ),
+
+  pct_met AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Percent Met' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(PctStandardMet AS STRING) AS Result
+    FROM caaspp
+    WHERE PctStandardMet IS NOT NULL
+  ),
+
+
+  pct_nearly_met AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Percent Nearly Met' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(PctStandardNearlyMet AS STRING) AS Result
+    FROM caaspp
+    WHERE PctStandardNearlyMet IS NOT NULL
+  ),
+
+  pct_not_met AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Percent Not Met' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(PctStandardNotMet AS STRING) AS Result
+    FROM caaspp
+    WHERE PctStandardNotMet IS NOT NULL
+  ),
+
+  results_unioned AS(
+    SELECT * FROM mean_scale_score
+    UNION ALL
+    SELECT * FROM pct_met_and_above
+    UNION ALL
+    SELECT * FROM pct_exceeded
+    UNION ALL
+    SELECT * FROM pct_met
+    UNION ALL
+    SELECT * FROM pct_nearly_met
+    UNION ALL
+    SELECT * FROM pct_not_met
+  ),
+
+  final AS (
+    SELECT
+      k.*,
+      r.* EXCEPT (AssessmentID),
+      CASE
+        WHEN r.ReportingMethod = 'Mean Scale Score' THEN NULL 
+        ELSE ROUND(StudentsWithScores * CAST(Result AS FLOAT64), 0)
+      END AS StudentWithResultCount
+    FROM caaspp_keys AS k
+    LEFT JOIN results_unioned AS r
+    USING (AssessmentId)
+  )
+
+
+SELECT * FROM final
