@@ -36,7 +36,7 @@ WITH
       c.StudentsWithScores,
       c.ReportingMethod,
       c.ResultDataType,
-      c.Result,
+      c.SchoolResult,
       c.StudentWithResultCount
     FROM caaspp AS c
     LEFT JOIN entities AS e

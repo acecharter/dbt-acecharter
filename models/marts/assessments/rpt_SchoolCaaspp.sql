@@ -22,7 +22,7 @@ WITH
       StudentsWithScores,
       ReportingMethod,
       ResultDataType,
-      Result,
+      SchoolResult,
       StudentWithResultCount
     FROM {{ ref('fct_SchoolCaaspp')}} 
   ),

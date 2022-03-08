@@ -36,7 +36,7 @@ WITH
       'Overall' AS AssessmentObjective,
       'Mean Scale Score' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(MeanScaleScore AS STRING) AS Result
+      CAST(MeanScaleScore AS STRING) AS SchoolResult
     FROM caaspp
     WHERE MeanScaleScore IS NOT NULL
   ),
@@ -47,7 +47,7 @@ WITH
       'Overall' AS AssessmentObjective,
       'Percent Met and Above' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(PctStandardMetAndAbove AS STRING) AS Result
+      CAST(PctStandardMetAndAbove AS STRING) AS SchoolResult
     FROM caaspp
     WHERE PctStandardMetAndAbove IS NOT NULL
   ),
@@ -58,7 +58,7 @@ WITH
       'Overall' AS AssessmentObjective,
       'Percent Exceeded' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(PctStandardExceeded AS STRING) AS Result
+      CAST(PctStandardExceeded AS STRING) AS SchoolResult
     FROM caaspp
     WHERE PctStandardExceeded IS NOT NULL
   ),
@@ -69,7 +69,7 @@ WITH
       'Overall' AS AssessmentObjective,
       'Percent Met' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(PctStandardMet AS STRING) AS Result
+      CAST(PctStandardMet AS STRING) AS SchoolResult
     FROM caaspp
     WHERE PctStandardMet IS NOT NULL
   ),
@@ -81,7 +81,7 @@ WITH
       'Overall' AS AssessmentObjective,
       'Percent Nearly Met' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(PctStandardNearlyMet AS STRING) AS Result
+      CAST(PctStandardNearlyMet AS STRING) AS SchoolResult
     FROM caaspp
     WHERE PctStandardNearlyMet IS NOT NULL
   ),
@@ -92,7 +92,7 @@ WITH
       'Overall' AS AssessmentObjective,
       'Percent Not Met' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(PctStandardNotMet AS STRING) AS Result
+      CAST(PctStandardNotMet AS STRING) AS SchoolResult
     FROM caaspp
     WHERE PctStandardNotMet IS NOT NULL
   ),
@@ -117,7 +117,7 @@ WITH
       r.* EXCEPT (AssessmentID),
       CASE
         WHEN r.ReportingMethod = 'Mean Scale Score' THEN NULL 
-        ELSE ROUND(StudentsWithScores * CAST(Result AS FLOAT64), 0)
+        ELSE ROUND(StudentsWithScores * CAST(SchoolResult AS FLOAT64), 0)
       END AS StudentWithResultCount
     FROM caaspp_keys AS k
     LEFT JOIN results_unioned AS r
