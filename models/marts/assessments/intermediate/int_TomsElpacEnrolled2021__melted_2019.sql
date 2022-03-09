@@ -1,0 +1,91 @@
+{{ config(
+    materialized='table'
+)}}
+
+WITH elpac AS (
+  SELECT
+    AceAssessmentId,
+    RecordType,
+    StateUniqueId,
+    CAST(NULL AS STRING) AS TestedSchoolId,
+    '2018-19' AS SchoolYear,
+    CONCAT('2019-', AceAssessmentId, '-', StateUniqueId) AS AssessmentId,
+    GradeAssessedMinus2 AS AssessedGradeLevel,
+    OverallScaleScoreMinus2 AS OverallScaleScore,
+    OverallPLMinus2 AS OverallPL,
+    ElpiLevelMinus2 AS ElpiLevel
+  FROM {{ ref('stg_RD__TomsElpacEnrolled2021') }}
+),
+
+elpac_keys AS(
+  SELECT
+    AceAssessmentId,
+    StateUniqueId,
+    TestedSchoolId,
+    SchoolYear,
+    AssessmentId,
+    AssessedGradeLevel
+  FROM elpac
+),
+
+scale_score AS (
+  SELECT
+    AssessmentId,
+    RecordType,
+    'Overall' AS AssessmentObjective,
+    'Scale Score' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
+    OverallScaleScore AS StudentResult
+  FROM elpac
+),
+
+performance_level AS (
+  SELECT
+    AssessmentId,
+    RecordType,
+    'Overall' AS AssessmentObjective,
+    'Performance Level' AS ReportingMethod,
+    'INT64' AS StudentResultDataType,
+    OverallPL AS StudentResult
+  FROM elpac
+),
+
+elpi_level AS (
+  SELECT
+    AssessmentId,
+    RecordType,
+    'Overall' AS AssessmentObjective,
+    'ELPI Level' AS ReportingMethod,
+    'STRING' AS StudentResultDataType,
+    ElpiLevel AS StudentResult
+  FROM elpac
+),
+
+unioned_merged AS (
+  SELECT 
+    k.*,
+    s.* EXCEPT(AssessmentId)
+  FROM elpac_keys AS k
+  LEFT JOIN scale_score AS s
+  USING (AssessmentId)
+
+  UNION ALL
+  SELECT 
+    k.*,
+    p.* EXCEPT(AssessmentId)
+  FROM elpac_keys AS k
+  LEFT JOIN performance_level AS p
+  USING (AssessmentId)
+
+  UNION ALL
+  SELECT 
+    k.*,
+    a.* EXCEPT(AssessmentId)
+  FROM elpac_keys AS k
+  LEFT JOIN elpi_level AS a
+  USING (AssessmentId)
+)
+
+SELECT *
+FROM unioned_merged
+WHERE StudentResult IS NOT NULL

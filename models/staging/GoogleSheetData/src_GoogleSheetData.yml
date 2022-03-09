@@ -6,6 +6,145 @@ sources:
     database: landing-zone-acecharter
     schema: GoogleSheetData
     tables:
+      - name: Assessments
+        description: A google sheet listing assessments used by ACE and corresponding assessment information
+        columns:
+        
+          - name: AceAssessmentId
+            description: Internally created primary key of the table.
+            tests:
+              - unique
+              - not_null
+
+          - name: AssessmentNameShort
+            description: Abbreviated assessment name
+            tests:
+              - not_null
+
+          - name: AssessmentName
+            description: Full assessment name
+            tests:
+              - not_null
+
+          - name: AssessmentFamilyNameShort
+            description: Abbreviated assessment family name
+            tests:
+              - not_null
+
+          - name: AssessmentFamilyName
+            description: Full assessment family name
+            tests:
+              - not_null
+
+          - name: SystemOrVendor
+            description: Name of the assessment vendor or system of assessments that the assessment is a part of
+            tests:
+              - not_null
+
+          - name: SysemOrVendorAssessmentId
+            description: Optional additional assessment ID field; only applicable if the assessment has a system- or vendor-specific ID
+
+      - name: AssessmentScaleScoreRanges
+        description: A google sheet containing assessment- and grade-specific scale score ranges for assessments used by ACE.
+        columns:
+
+          - name: "AceAssessmentUniqueId || '-' || Area || '-' || GradeLevel"
+            description: Table does not have a primary key, but the combination of these columns should be unique
+            tests:
+              - unique
+
+          - name: AceAssessmentUniqueId
+            description: Foreign key from Assessments table unique to each assessment (but not grade level)
+            tests:
+              - not_null
+
+          - name: AssessmentNameShort
+            description: Name of assessment associated with scale score range
+
+          - name: Area
+            description: Assessment ares to which scale score range applies. Default value is 'Overall'.
+            tests:
+              - not_null
+
+          - name: GradeLevel
+            description: Grade level to which scale score range applies. Default value is 'All' if range is not grade specific.
+            tests:
+              - not_null
+
+          - name: Level1Max
+            description: Maximum scale score within Level 1 range
+
+          - name: Level2Min
+            description: Minimum scale score within Level 2 range
+
+          - name: Level2Max
+            description: Maximum scale score within Level 2 range
+
+          - name: Level3Min
+            description: Minimum scale score within Level 3 range
+
+          - name: Level3Max
+            description: Maximum scale score within Level 3 range
+            
+          - name: Level4Min
+            description: Minimum scale score within Level 4 range; ('N/A' if not applicable)
+          - name: Notes
+
+      - name: CdeReportingCategories
+        description: Student group reporting category codes and descriptors used in many CDE downloadable data files.
+        columns:
+          - name: ReportingCategoryCode
+          - name: ReportingCategory
+          - name: ReportingCategoryType
+
+      - name: ElpiLevels
+        description: A google sheet that provides data regarding State Dashboard English Learner Progress Indicator (ELPI) levels used to determine whether EL students are progressing
+        columns:
+          - name: AceAssessmentId
+            description: Internally created foreign key of the table (primary key for Assessments table)
+            tests:
+              - not_null
+          - name: GradeLevel
+            description: Grade level that corresponds to associated ELPI level and range
+            tests:
+              - not_null
+          - name: ElpiLevel
+            description: ELPI levels (as named in State documentation) for each grade level
+            tests:
+              - not_null
+          - name: ElpiLevelRank
+            description: Rank used to order ElpiLevels column string values
+            tests:
+              - not_null
+          - name: MinScaleScore
+            description: Minimum ELPAC summative assessment scale score associated with specified grade level ELPI level
+            tests:
+              - not_null
+          - name: MaxScaleScore
+            description: Maximum ELPAC summative assessment scale score associated with specified grade level ELPI level
+            tests:
+              - not_null
+
+      - name: CourseSubjects
+        description: A google sheet containing courses categorized by academic subject.
+
+      - name: Schools
+        description: Additional school information
+        columns:
+          - name: SchoolId
+            description: Primary key of the table, no leading zeros
+            tests:
+              - unique
+              - not_null
+          - name: StateCountyCode
+            description: State-assigned county code
+            tests:
+              - not_null
+          - name: StateDistrictCode
+            description: State-assigned district code for the authorizing district or entity
+            tests:
+              - not_null
+
       - name: ManuallyMaintainedFilesTracker
         description: A google sheet used to track the last date that files requiring manual maintenance (i.e. files that must be continuously updated via manual uploads) were last updated in BigQuery
         columns:
@@ -15,9 +154,12 @@ sources:
             description: Name of the table that is manually maintained
           - name: DateOfLastUpdate
             description: Date that each listed table was last updated
-      - name: CersEmpower
-        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Empower
-      - name: CersEsperanza
-        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Esperanza
-      - name: CersInspire
-        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 SBAC assessment results for students enrolled at Inspire
+       
+      - name: RenStarGradePlacementByDayRange
+        description: List of  Renaissance Star Grade Placement (GP) decimal values and corresponding assessment date info. Used to calculate GP for 20-21 Star Results
+        
+      - name: RenStarTestingWindows
+        description: List of all Renaissance Star testing windows by testing window type
+      
+      - name: RenStarMissingStudentIds
+        description: List of StudentRenaissanceIDs and corresponding StudentIdentifier and StateUniqueId values that are missing from RenaissanceStar records

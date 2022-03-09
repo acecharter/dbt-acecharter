@@ -34,10 +34,28 @@ models:
   ace_charter:
     # Applies to all files under models/marts/
     marts:
+      assessments:
+        +materialized: table
+        intermediate:
+          +materialized: view
+
+      attendance:
+        +materialized: table
+
+      cohort_outcomes:
+        +materialized: table
+
       core:
         +materialized: table
         intermediate:
           +materialized: view
+          
+      sections:
+        +materialized: table
+        intermediate:
+          +materialized: view
+
+        
     # Applies to all files under models/staging/
     staging:
       +materialized: view

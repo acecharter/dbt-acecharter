@@ -1,11 +1,11 @@
 WITH starter_pack_schools AS (
   SELECT * 
-  FROM {{ ref('stg_StarterPack__Schools') }}
+  FROM {{ ref('stg_SP__Schools') }}
 ),
 
 raw_data_schools AS (
   SELECT *
-  FROM {{ ref('stg_RawData__Schools') }}
+  FROM {{ ref('stg_GSD__Schools') }}
 ),
 
 final AS (
@@ -15,7 +15,7 @@ final AS (
     rd.StateCountyCode,
     rd.StateDistrictCode,
     rd.StateSchoolCode,
-    sp.SchoolName,
+    rd.SchoolNameFull AS SchoolName,
     rd.SchoolNameMid,
     rd.SchoolNameShort,
     rd.SchoolType,

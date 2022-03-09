@@ -1,11 +1,48 @@
 version: 2
 
 models:
-  - name: dim_CaasppAceComparisons
-    description: "Publicly available CAASPP results data for ACE schools and select comparison schools and districts, and Santa Clara County"
-    config:
-      materialized: table
+
+  - name: dim_Schools
+    description: School-level information for each school
     columns:
-      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
+      - name: SchoolId
+        description: Primary key of table
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_StudentDemographics
+    description: Student demographic information for each unique student
+    columns:
+      - name: StudentUniqueId
+        description: Primary key of table
+        tests:
+          - unique
+          - not_null
+      - name: StateUniqueId
+        description: Statewide Student Identifier (SSID); though new students may have a null value, any non-null values should be unique
+        tests:
+          - unique
+
+  - name: dim_StudentEnrollments
+    description: Student enrollment information for each unique enrollment of a student in a school. A student could have multiple enrollments in a school if they exited and subsequently re-enrolled, but the entry and exit dates of each should be unique and not overlapping with subsequent enrollments.
+    columns:
+      - name: "SchoolId || '-' || StudentUniqueId || '-' || EntryDate"
+        description: No existing primary key, but each school-student combo should have a unique EntryDate
+        tests:
+          - unique
+      - name: SchoolId
+      - name: StudentUniqueId
+      - name: GradeLevel
+      - name: EntryDate
+      - name: ExitWithdrawDate
+      - name: ExitWithdrawReason
+      - name: IsCurrentEnrollment
+
+  - name: dim_Students
+    description: Student demographic and enrollment information for the most recent enrollment of a student in each school. A student may have multiple records for enrollments in different schools.
+    columns:
+      - name: "SchoolId || '-' || StudentUniqueId"
+        description: No true primary key, but each school-student combo should be unique
         tests:
           - unique

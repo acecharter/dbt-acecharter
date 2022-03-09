@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_StarMath__melted
+    description: Student Star Math results reshaped to long, narrow table in preparation to be added to the student assessment results fact table
+    config:
+      materialized: table
+    columns:
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
+        tests:
+          - unique
+          
+  - name: int_CaasppSantaClaraCounty_Years_unioned
+    description: "Publicly available CAASPP results data for all Santa Clara County schools for all years with corresponding staging files"
+    config:
+      materialized: view
+    columns:
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
+        tests:
+          - unique
+
+  - name: int_CaasppEntities_Years_unioned
+    description: "Publicly available CAASPP entities data for all California schools for all years with corresponding staging files"
+    config:
+      materialized: view
+    columns:
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear"
+        tests:
+          - unique
