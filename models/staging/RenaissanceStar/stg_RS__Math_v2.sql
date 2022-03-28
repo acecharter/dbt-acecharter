@@ -74,7 +74,20 @@ star_math AS (
     CurrentSGP,
     CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
     Quantile,
-    ScreeningPeriodWindowName AS AceTestingWindowName,
+    CASE
+      WHEN
+        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-11')) AND
+        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-09-30'))
+      THEN 'Fall'
+      WHEN
+        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-12-01')) AND
+        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-01-24'))
+      THEN 'Winter'
+      WHEN
+        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-04-15')) AND
+        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-05-31'))
+      THEN 'Spring'
+    END AS AceTestingWindowName,
     DATE(ScreeningWindowStartDate) AS AceTestingWindowStartDate,
     DATE(ScreeningWindowEndDate) AS AceTestingWindowEndDate,
     CASE
