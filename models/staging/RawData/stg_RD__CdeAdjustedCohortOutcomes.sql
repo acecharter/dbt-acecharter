@@ -48,7 +48,7 @@ WITH
       DistrictName,
       SchoolName,
       CharterSchool,
-      DASS,
+      TRIM(DASS),
       ReportingCategory,
       CohortStudents,
       Regular_HS_Diploma_Graduates__Count_ AS RegularHsDiplomaGraduatesCount,
