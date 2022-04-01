@@ -1,5 +1,5 @@
 --This script identifies "eligible" students for each testing window
--- A student is considered eligible if they enrolled at least 2 weeks before the testing window end date and did not exit prior to the end date
+-- A student is considered eligible if they were enrolled anytime during testing window
 
 WITH students AS (
   SELECT * FROM {{ ref('dim_Students')}}
@@ -20,8 +20,8 @@ student_window_combos AS (
     FROM students AS s
     CROSS JOIN testing_windows AS w
     WHERE
-        s.EntryDate <= w.EnrollmentEligibilityCutoffDate AND
-        s.ExitWithdrawDate >= w.TestingWindowEndDate
+        s.EntryDate <= w.TestingWindowEndDate AND
+        s.ExitWithdrawDate >= w.TestingWindowStartDate
     ORDER BY SchoolId, StudentUniqueId, TestingWindowType, TestingWindowName
 ),
 
