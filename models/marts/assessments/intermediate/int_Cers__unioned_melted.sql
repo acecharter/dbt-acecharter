@@ -38,7 +38,8 @@ WITH
     SELECT
       AssessmentId,
       CASE
-        WHEN AceAssessmentId IN ('15', '16') THEN REGEXP_EXTRACT(AssessmentName, '.+(ELA.+|Math.+)')
+        WHEN AceAssessmentId = '15' THEN REGEXP_EXTRACT(AssessmentName, '.+(ELA.+)')
+        WHEN AceAssessmentId = '16' THEN REGEXP_EXTRACT(AssessmentName, '.+(Math.+)')
         ELSE 'Overall'
       END AS AssessmentObjective,
       'Achievement Level' AS ReportingMethod,
@@ -52,7 +53,8 @@ WITH
     SELECT
       AssessmentId,
       CASE
-        WHEN AceAssessmentId IN ('15', '16') THEN REGEXP_EXTRACT(AssessmentName, '.+(ELA.+|Math.+)')
+        WHEN AceAssessmentId = '15' THEN REGEXP_EXTRACT(AssessmentName, '.+(ELA.+)')
+        WHEN AceAssessmentId = '16' THEN REGEXP_EXTRACT(AssessmentName, '.+(Math.+)')
         ELSE 'Overall'
       END AS AssessmentObjective,
       'Scale Score' AS ReportingMethod,
@@ -173,4 +175,3 @@ USING (AssessmentId)
 WHERE
   StudentResult IS NOT NULL
   AND StudentResult != ''
-  AND AceAssessmentId = '15' AND ReportingMethod = 'Achievement Level'
