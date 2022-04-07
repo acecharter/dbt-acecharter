@@ -28,6 +28,7 @@ WITH
       a.AssessmentId,
       a.AssessmentDate,
       a.AssessedGradeLevel,
+      a.AssessmentSubject,
       a.AssessmentObjective,
       a.ReportingMethod,
       a.StudentResultDataType,
