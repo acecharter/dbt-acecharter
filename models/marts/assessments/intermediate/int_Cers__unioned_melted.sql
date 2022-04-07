@@ -37,11 +37,7 @@ WITH
   achievement_level AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '15' THEN REGEXP_EXTRACT(AssessmentName, '.+(ELA.+)')
-        WHEN AceAssessmentId = '16' THEN REGEXP_EXTRACT(AssessmentName, '.+(Math.+)')
-        ELSE 'Overall'
-      END AS AssessmentObjective,
+      'Overall' AS AssessmentObjective,
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(ScaleScoreAchievementLevel AS STRING) AS StudentResult
@@ -52,11 +48,7 @@ WITH
   scale_score AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '15' THEN REGEXP_EXTRACT(AssessmentName, '.+(ELA.+)')
-        WHEN AceAssessmentId = '16' THEN REGEXP_EXTRACT(AssessmentName, '.+(Math.+)')
-        ELSE 'Overall'
-      END AS AssessmentObjective,
+      'Overall' AS AssessmentObjective,
       'Scale Score' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(ScaleScore AS STRING) AS StudentResult
