@@ -7,6 +7,7 @@ WITH
     SELECT
       s.AceAssessmentId,
       a.AssessmentNameShort AS AssessmentName,
+      a.AssessmentSubject,
       s.StateUniqueId,
       s.TestedSchoolId,
       s.SchoolYear AS AssessmentSchoolYear,
@@ -29,6 +30,7 @@ WITH
         WHEN c.AceAssessmentId IN ('15', '16', '17', '18') THEN c.GradeAssessmentName
         ELSE a.AssessmentNameShort 
       END AS AssessmentName,
+      a.AssessmentSubject,
       c.StateUniqueId,
       c.TestedSchoolId,
       c.SchoolYear AS AssessmentSchoolYear,
@@ -60,6 +62,7 @@ WITH
       r.AssessmentId,
       r.AssessmentDate,
       r.AssessedGradeLevel,
+      r.AssessmentSubject,
       r.AssessmentObjective,
       r.ReportingMethod,
       r.StudentResultDataType,
