@@ -27,8 +27,8 @@ WITH
     SELECT
       c.AceAssessmentId,
       CASE
-        WHEN AceAssessmentId = '15' THEN CONCAT('SB ', REGEXP_EXTRACT(c.GradeAssessmentName, '.+(ELA.+)'))
-        WHEN AceAssessmentId = '16' THEN CONCAT('SB ', REGEXP_EXTRACT(c.GradeAssessmentName, '.+(Math.+)'))
+        WHEN AceAssessmentId = '15' THEN CONCAT('SB ELA', REGEXP_EXTRACT(c.GradeAssessmentName, '.+(\\s\\-\\s.+)'))
+        WHEN AceAssessmentId = '16' THEN CONCAT('SB Math', REGEXP_EXTRACT(c.GradeAssessmentName, '.+(\\s\\-\\s.+)'))
         ELSE a.AssessmentNameShort 
       END AS AssessmentName,
       a.AssessmentSubject,
