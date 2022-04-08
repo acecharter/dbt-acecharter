@@ -4,9 +4,18 @@ WITH star_results AS (
 
 star_keys AS(
   SELECT
-    *,
-    'Overall' AS AssessmentObjective,
-  FROM {{ ref('dim_RenStarStudentAssessments') }}
+    AssessmentId,
+    AceAssessmentId,
+    StudentRenaissanceID,
+    StudentIdentifier,
+    StateUniqueId,
+    TestedSchoolId,
+    SchoolYear,
+    AssessmentDate,
+    GradeLevel,
+    AssessmentGradeLevel,
+    GradePlacement
+  FROM star_results
 ),
 
 ge AS (

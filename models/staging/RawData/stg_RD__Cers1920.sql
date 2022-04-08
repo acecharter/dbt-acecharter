@@ -4,14 +4,14 @@ WITH
       AceAssessmentId,
       AssessmentNameShort AS AceAssessmentName,
       CASE
-        WHEN AssessmentNameShort = 'SB ELA' THEN 'ELA SUM'
-        WHEN AssessmentNameShort = 'SB Math' THEN 'Math SUM'
+        WHEN AssessmentNameShort = 'SB ELA Summative' THEN 'ELA SUM'
+        WHEN AssessmentNameShort = 'SB Math Summative' THEN 'Math SUM'
         WHEN AssessmentNameShort = 'CAA ELA' THEN 'CAAELA SUM'
         WHEN AssessmentNameShort = 'CAA Math' THEN 'CAAMATH SUM'
         WHEN AssessmentNameShort = 'CAST' THEN 'CAST SUM'
         WHEN AssessmentNameShort = 'CSA' THEN 'CSA SUM'
-        WHEN AssessmentNameShort = 'SB ELA IAB' THEN 'ELA IAB'
-        WHEN AssessmentNameShort = 'SB Math IAB' THEN 'Math IAB'
+        WHEN AssessmentNameShort = 'SB ELA IAB/FIAB' THEN 'ELA IAB'
+        WHEN AssessmentNameShort = 'SB Math IAB/FIAB' THEN 'Math IAB'
         WHEN AssessmentNameShort = 'SB ELA ICA' THEN 'ELA ICA'
         WHEN AssessmentNameShort = 'SB Math ICA' THEN 'Math ICA'
         WHEN AssessmentNameShort = 'Summative ELPAC' THEN 'ELPAC SUM'
@@ -38,7 +38,7 @@ WITH
       AssessmentSubType,
       AssessmentName,
       Subject,
-      CAST(GradeLevelWhenAssessed AS STRING) AS AssessedGradeLevel,
+      CAST(GradeLevelWhenAssessed AS STRING) AS GradeLevel,
       Completeness,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
@@ -68,7 +68,7 @@ WITH
       AssessmentSubType,
       AssessmentName,
       Subject,
-      CAST(GradeLevelWhenAssessed AS STRING) AS AssessedGradeLevel,
+      CAST(GradeLevelWhenAssessed AS STRING) AS GradeLevel,
       Completeness,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
@@ -98,7 +98,7 @@ WITH
       AssessmentSubType,
       AssessmentName,
       Subject,
-      CAST(GradeLevelWhenAssessed AS STRING) AS AssessedGradeLevel,
+      CAST(GradeLevelWhenAssessed AS STRING) AS GradeLevel,
       Completeness,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
@@ -128,7 +128,7 @@ WITH
       AssessmentSubType,
       AssessmentName,
       Subject,
-      CAST(GradeLevelWhenAssessed AS STRING) AS AssessedGradeLevel,
+      CAST(GradeLevelWhenAssessed AS STRING) AS GradeLevel,
       Completeness,
       AdministrationCondition,
       ScaleScoreAchievementLevel,

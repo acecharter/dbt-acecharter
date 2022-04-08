@@ -15,7 +15,11 @@ WITH
     SELECT
       AssessmentId,
       AceAssessmentId,
-      AceAssessmentName AS AssessmentName,
+      CASE
+        WHEN AceAssessmentId = '15' THEN CONCAT('SB ELA', REGEXP_EXTRACT(AssessmentName, '.+(\\s\\-\\s.+)'))
+        WHEN AceAssessmentId = '16' THEN CONCAT('SB Math', REGEXP_EXTRACT(AssessmentName, '.+(\\s\\-\\s.+)'))
+        ELSE AceAssessmentName 
+      END AS AssessmentName,
       CAST(
         CAST(
           RIGHT(TestSchoolCdsCode,7) 
@@ -28,8 +32,12 @@ WITH
         "-",
         RIGHT(CAST(TestSchoolYear AS STRING), 2)
       ) AS SchoolYear,
-      AssessmentName AS GradeAssessmentName,
-      AssessedGradeLevel,
+      GradeLevel,
+      CASE
+        WHEN STARTS_WITH(AssessmentName, 'High') OR STARTS_WITH(AssessmentName, 'Grade H') THEN 'High School'
+        WHEN STARTS_WITH(AssessmentName, 'Grade') THEN REGEXP_EXTRACT(AssessmentName, 'Grade (\\S+)')
+        ELSE AssessmentName
+      END AS AssessmentGradeLevel,
       AdministrationCondition
     FROM cers
   ),
