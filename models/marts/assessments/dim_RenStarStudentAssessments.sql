@@ -7,6 +7,6 @@ SELECT
   TestedSchoolId,
   SchoolYear,
   AssessmentDate,
-  Grade AS AssessedGradeLevel,
+  GradeLevel,
   GradePlacement
 FROM {{ ref('int_RenStar__unioned') }}

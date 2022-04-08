@@ -13,8 +13,9 @@ WITH
       s.SchoolYear AS AssessmentSchoolYear,
       s.AssessmentID AS AssessmentId,
       CAST(s.AssessmentDate AS STRING) AS AssessmentDate,
-      s.AssessedGradeLevel,
-      s.AssessmentObjective,
+      s.GradeLevel,
+      s.AssessmentGradeLevel,
+      'Overall' AS AssessmentObjective,
       s.ReportingMethod,
       s.StudentResultDataType,
       s.StudentResult
@@ -27,8 +28,8 @@ WITH
     SELECT
       c.AceAssessmentId,
       CASE
-        WHEN AceAssessmentId = '15' THEN CONCAT('SB ELA', REGEXP_EXTRACT(c.GradeAssessmentName, '.+(\\s\\-\\s.+)'))
-        WHEN AceAssessmentId = '16' THEN CONCAT('SB Math', REGEXP_EXTRACT(c.GradeAssessmentName, '.+(\\s\\-\\s.+)'))
+        WHEN AceAssessmentId = '15' THEN CONCAT('SB ELA', REGEXP_EXTRACT(c.AssessmentName, '.+(\\s\\-\\s.+)'))
+        WHEN AceAssessmentId = '16' THEN CONCAT('SB Math', REGEXP_EXTRACT(c.AssessmentName, '.+(\\s\\-\\s.+)'))
         ELSE a.AssessmentNameShort 
       END AS AssessmentName,
       a.AssessmentSubject,
@@ -37,7 +38,8 @@ WITH
       c.SchoolYear AS AssessmentSchoolYear,
       c.AssessmentId,
       CAST(c.AssessmentDate AS STRING) AS AssessmentDate,
-      c.AssessedGradeLevel,
+      c.GradeLevel,
+      c.AssessmentGradeLevel,
       c.AssessmentObjective,
       c.ReportingMethod,
       c.StudentResultDataType,
@@ -62,7 +64,8 @@ WITH
       r.AssessmentSchoolYear,
       r.AssessmentId,
       r.AssessmentDate,
-      r.AssessedGradeLevel,
+      r.GradeLevel AS GradeLevelWhenAssessed,
+      r.AssessmentGradeLevel,
       r.AssessmentSubject,
       r.AssessmentObjective,
       r.ReportingMethod,

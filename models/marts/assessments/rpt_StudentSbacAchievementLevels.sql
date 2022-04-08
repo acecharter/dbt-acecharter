@@ -36,7 +36,8 @@ sbac_results AS (
       i.AssessmentSubject,
       i.SystemOrVendorName,
       r.AssessmentId,
-      r.AssessedGradeLevel,
+      r.GradeLevelWhenAssessed,
+      r.AssessmentGradeLevel,
       r.AssessmentObjective,
       CAST(r.StudentResult AS INT64) AS AchievementLevel,
       CASE

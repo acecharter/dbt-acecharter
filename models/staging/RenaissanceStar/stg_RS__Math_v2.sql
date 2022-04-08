@@ -60,7 +60,7 @@ star_math AS (
     CAST(AssessmentNumber AS INT64) AS AssessmentNumber,
     AssessmentType,
     GradePlacement,
-    Grade,
+    Grade AS AssessmentGradeLevel,
     GradeEquivalent,
     ScaledScore,
     UnifiedScore,

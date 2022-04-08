@@ -75,7 +75,7 @@ star_math AS (
     CAST(NULL AS INT64) AS AssessmentNumber,
     Activity_Type AS AssessmentType,
     GradePlacement,
-    CAST(Current_Grade AS STRING) AS Grade,
+    CAST(Current_Grade AS STRING) AS AssessmentGradeLevel,
     CAST(Grade_Equivalent AS STRING) AS GradeEquivalent,
     Scaled_Score AS ScaledScore,
     Unified_Scale AS UnifiedScore,
