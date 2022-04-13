@@ -1,1 +1,0 @@
-SELECT * FROM {{ source('RawData', 'CdeEnr15')}}
