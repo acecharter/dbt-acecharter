@@ -1,4 +1,8 @@
 WITH
+  school_names AS (
+    SELECT * FROM {{ ref('dim_CdeCensusEnrollmentSchools') }}
+  ),
+
   enr AS (
     SELECT
       CONCAT(
@@ -8,44 +12,46 @@ WITH
         RaceEthnicCode,
         Gender
       ) AS UniqueEnrId,
-      LEFT(CdsCode, 2) AS CountyCode,
-      SUBSTR(CdsCode, 3, 5) AS DistrictCode,
-      RIGHT(CdsCode, 7) AS SchoolCode,
       *      
     FROM {{ ref('stg_RD__CdeEnr') }}
   ),
 
   enr_keys AS(
     SELECT
-      UniqueEnrId,
-      Year,
+      e.UniqueEnrId,
+      e.Year,
       CONCAT(
-        CAST(Year AS STRING), 
+        CAST(e.Year AS STRING), 
         '-', 
-        FORMAT("%02d", Year - 1999)
+        FORMAT("%02d", e.Year - 1999)
       ) AS SchoolYear,
-      CdsCode,
-      CountyCode,
-      DistrictCode,
-      SchoolCode,
-      County,
-      District,
-      School,
-      RaceEthnicCode,
+      e.CdsCode,
+      e.CountyCode,
+      e.DistrictCode,
+      e.SchoolCode,
+      e.County,
+      e.District,
       CASE
-        WHEN RaceEthnicCode = '0' THEN 'Not Reported'
-        WHEN RaceEthnicCode = '1' THEN 'American Indian or Alaska Native'
-        WHEN RaceEthnicCode = '2' THEN 'Asian'
-        WHEN RaceEthnicCode = '3' THEN 'Pacific Islander'
-        WHEN RaceEthnicCode = '4' THEN 'Filipino'
-        WHEN RaceEthnicCode = '5' THEN 'Hispanic or Latino'
-        WHEN RaceEthnicCode = '6' THEN 'African American'
-        WHEN RaceEthnicCode = '7' THEN 'White'
-        WHEN RaceEthnicCode = '8' THEN 'Multiple or No Response (old/pre-2009)'
-        WHEN RaceEthnicCode = '9' THEN 'Two or More Races'
+        WHEN e.SchoolCode IN ('0000000', '0000001') THEN e.School
+        ELSE n.School 
+      END AS School,
+      e.RaceEthnicCode,
+      CASE
+        WHEN e.RaceEthnicCode = '0' THEN 'Not Reported'
+        WHEN e.RaceEthnicCode = '1' THEN 'American Indian or Alaska Native'
+        WHEN e.RaceEthnicCode = '2' THEN 'Asian'
+        WHEN e.RaceEthnicCode = '3' THEN 'Pacific Islander'
+        WHEN e.RaceEthnicCode = '4' THEN 'Filipino'
+        WHEN e.RaceEthnicCode = '5' THEN 'Hispanic or Latino'
+        WHEN e.RaceEthnicCode = '6' THEN 'African American'
+        WHEN e.RaceEthnicCode = '7' THEN 'White'
+        WHEN e.RaceEthnicCode = '8' THEN 'Multiple or No Response (old/pre-2009)'
+        WHEN e.RaceEthnicCode = '9' THEN 'Two or More Races'
       END AS RaceEthnicity, 
-      Gender
-    FROM enr
+      e.Gender
+    FROM enr AS e
+    LEFT JOIN school_names AS n
+    USING (SchoolCode)
   ),
 
   kinder AS (
@@ -225,6 +231,5 @@ WITH
       DistrictCode,
       SchoolCode
   )
-
 
 SELECT * FROM final

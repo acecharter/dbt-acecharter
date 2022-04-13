@@ -145,6 +145,9 @@ WITH
     SELECT
       Year,
       FORMAT("%014d", CDS_CODE) AS CdsCode,
+      LEFT(CAST(CDS_CODE AS STRING), 2) AS CountyCode,
+      SUBSTR(CAST(CDS_CODE AS STRING), 3, 5) AS DistrictCode,
+      RIGHT(CAST(CDS_CODE AS STRING), 7) AS SchoolCode,
       COUNTY AS County,
       DISTRICT AS District,
       SCHOOL AS School,
