@@ -5,7 +5,7 @@ WITH
         CAST(Year AS STRING),
         CdsCode,
         School,
-        EthnicCode,
+        RaceEthnicCode,
         Gender
       ) AS UniqueEnrId,
       LEFT(CdsCode, 2) AS CountyCode,
@@ -22,7 +22,7 @@ WITH
       CONCAT(
         CAST(Year AS STRING), 
         '-', 
-        CAST(Year - 1999 AS STRING)
+        FORMAT("%02d", Year - 1999)
       ) AS SchoolYear,
       CdsCode,
       CountyCode,
@@ -31,7 +31,18 @@ WITH
       County,
       District,
       School,
-      EthnicCode,
+      RaceEthnicCode,
+      CASE
+        WHEN RaceEthnicCode = '0' THEN 'Not Reported'
+        WHEN RaceEthnicCode = '1' THEN 'American Indian or Alaska Native'
+        WHEN RaceEthnicCode = '2' THEN 'Asian'
+        WHEN RaceEthnicCode = '3' THEN 'Pacific Islander'
+        WHEN RaceEthnicCode = '4' THEN 'Filipino'
+        WHEN RaceEthnicCode = '5' THEN 'Hispanic or Latino'
+        WHEN RaceEthnicCode = '6' THEN 'African American'
+        WHEN RaceEthnicCode = '7' THEN 'White'
+        WHEN RaceEthnicCode = '9' THEN 'Two or More Races'
+      END AS RaceEthnicity, 
       Gender
     FROM enr
   ),
@@ -207,8 +218,12 @@ WITH
     LEFT JOIN enr_unioned AS e
     USING (UniqueEnrId)
     WHERE e.Enrollment > 0
+    ORDER BY
+      SchoolYear DESC,
+      CountyCode,
+      DistrictCode,
+      SchoolCode
   )
 
 
-SELECT *
-FROM final
+SELECT * FROM final

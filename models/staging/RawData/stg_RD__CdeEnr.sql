@@ -148,7 +148,7 @@ WITH
       COUNTY AS County,
       DISTRICT AS District,
       SCHOOL AS School,
-      ETHNIC AS EthnicCode,
+      CAST(ETHNIC AS STRING) AS RaceEthnicCode,
       GENDER AS Gender,
       * EXCEPT (
           Year,
