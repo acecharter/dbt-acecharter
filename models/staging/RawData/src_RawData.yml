@@ -47,6 +47,48 @@ sources:
       - name: CdeAdjustedCohortOutcomes2021
         description: 2020-21 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
 
+      - name: CdeEnr08
+        description: 2008 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr09
+        description: 2009 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr10
+        description: 2010 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr11
+        description: 2011 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr12
+        description: 2012 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+        
+      - name: CdeEnr13
+        description: 2013 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr14
+        description: 2014 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr15
+        description: 2015 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)      
+
+      - name: CdeEnr16
+        description: 2016 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)      
+      
+      - name: CdeEnr17
+        description: 2017 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)      
+
+      - name: CdeEnr18
+        description: 2018 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr19
+        description: 2019 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr20
+        description: 2020 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeEnr21
+        description: 2021 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
       - name: CersEmpower2122
         description: An extract from CERS (California Educator Reporting System) listing all 2021-22 CAASPP assessment results for students enrolled at Empower
 
