@@ -41,6 +41,7 @@ WITH
         WHEN RaceEthnicCode = '5' THEN 'Hispanic or Latino'
         WHEN RaceEthnicCode = '6' THEN 'African American'
         WHEN RaceEthnicCode = '7' THEN 'White'
+        WHEN RaceEthnicCode = '8' THEN 'Multiple or No Response (old/pre-2009)'
         WHEN RaceEthnicCode = '9' THEN 'Two or More Races'
       END AS RaceEthnicity, 
       Gender
