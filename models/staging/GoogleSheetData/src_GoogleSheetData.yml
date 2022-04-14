@@ -90,6 +90,9 @@ sources:
             description: Minimum scale score within Level 4 range; ('N/A' if not applicable)
           - name: Notes
 
+      - name: CdeEnrBySubgroup
+        description: Official CDE census enrollment data for key student groups copied from School Enrollment by Subgroup report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
+        
       - name: CdeReportingCategories
         description: Student group reporting category codes and descriptors used in many CDE downloadable data files.
         columns:
