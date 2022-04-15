@@ -15,24 +15,12 @@ WITH
     SELECT * FROM {{ ref('dim_Sections') }}  
   ),
 
-  teachers_ranked AS (
-    SELECT
-      *,
-      RANK() OVER (
-        PARTITION BY 
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName
-        ORDER BY
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName,
-          StaffEndDate DESC
-      ) AS Rank
+  teachers AS (
+    SELECT *
     FROM {{ ref('dim_SectionStaff') }} 
-    WHERE StaffClassroomPosition = 'Teacher of Record'
+    WHERE 
+      StaffClassroomPosition = 'Teacher of Record'
+      AND IsCurrentStaffAssociation=TRUE
   ),
 
   enrollments_ranked AS (
@@ -101,7 +89,7 @@ WITH
       g.NumericGradeEarned,
       g.LetterGradeEarned
     FROM sections AS s
-    LEFT JOIN teachers_ranked AS t
+    LEFT JOIN teachers AS t
       ON
         s.SchoolId = t.SchoolId
         AND s.SessionName = t.SessionName
@@ -126,9 +114,7 @@ WITH
     ON
       e.SchoolId = st.SchoolId
       AND e.StudentUniqueId = st.StudentUniqueId
-    WHERE
-      e.Rank = 1
-      AND t.Rank = 1
+    WHERE e.Rank = 1
   )
 
 SELECT * FROM final

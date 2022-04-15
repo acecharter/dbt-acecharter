@@ -3,24 +3,13 @@ WITH
     SELECT * FROM {{ ref('dim_Sections') }}  
   ),
 
-  teachers_ranked AS (
+  teachers AS (
     SELECT
-      *,
-      RANK() OVER (
-        PARTITION BY 
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName
-        ORDER BY
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName,
-          StaffEndDate DESC
-      ) AS Rank
+      *
     FROM {{ ref('dim_SectionStaff') }} 
-    WHERE StaffClassroomPosition = 'Teacher of Record' 
+    WHERE
+      StaffClassroomPosition = 'Teacher of Record'
+      AND IsCurrentStaffAssociation = TRUE
   ),
 
   enrollments_ranked AS (
@@ -51,8 +40,7 @@ WITH
         SchoolId,
         SessionName,
         SectionIdentifier,
-        ClassPeriodName,
-        Rank),
+        ClassPeriodName),
       e.* EXCEPT(
         SchoolId,
         SessionName,
@@ -60,7 +48,7 @@ WITH
         ClassPeriodName,
         Rank),
     FROM sections AS s
-    LEFT JOIN teachers_ranked AS t
+    LEFT JOIN teachers AS t
       ON
         s.SchoolId = t.SchoolId
         AND s.SessionName = t.SessionName
@@ -72,9 +60,7 @@ WITH
         AND s.SessionName = e.SessionName
         AND s.SectionIdentifier = e.SectionIdentifier
         AND s.ClassPeriodName = e.ClassPeriodName
-    WHERE 
-      t.Rank = 1
-      AND e.Rank = 1
+    WHERE e.Rank = 1
   ),
 
   final AS (
@@ -94,12 +80,12 @@ WITH
       StaffUniqueId,
       StaffDisplayName,
       StaffClassroomPosition,
-      StaffBeginDate,
-      StaffEndDate,
+      SectionStaffBeginDate,
+      SectionStaffEndDate,
       IsCurrentStaffAssociation,
       StudentUniqueId,
-      BeginDate AS StudentSectionEnrollmentBeginDate,
-      EndDate AS StudentSectionEnrollmentEndDate,
+      BeginDate AS StudentSectionBeginDate,
+      EndDate AS StudentSectionEndDate,
       IsCurrentSectionEnrollment
     FROM joined
   )
