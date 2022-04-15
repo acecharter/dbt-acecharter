@@ -163,7 +163,7 @@ models:
       - name: SectionEndDate
         description: Month, day, and year of the end of the section. (Extracted from the latest StaffEndDate associated with the section.)
 
- - name: dim_SectionStaff
+  - name: dim_SectionStaff
     description: All student course enrollments. A student could potentially have multiple rows associated with a single course if they exited and subsequently re-enrolled, but BeginDate and EndDate should be unique and not overlap.
     columns:
 
@@ -217,63 +217,62 @@ models:
           - not_null
 
   - name: fct_StudentGrades
-      description: Grade marks for all grading periods for the current school year. One row per grade per grading period per course enrollment per student. Excludes gradebook grades for completed periods.
-      columns:
-        - name: SchoolId
-          description: The unique ID of the school where the student is taking a section of the course.
-          tests:
+    description: Grade marks for all grading periods for the current school year. One row per grade per grading period per course enrollment per student. Excludes gradebook grades for completed periods.
+    columns:
+      - name: SchoolId
+        description: The unique ID of the school where the student is taking a section of the course.
+        tests:
+          - not_null
+
+      - name: SessionName
+        description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
+        tests:
+          - not_null
+
+      - name: SectionIdentifier
+        description: The ID of the section of a course from PowerSchool SIS.
+        tests:
+          - not_null
+
+      - name: ClassPeriodName
+        description: The timeblock when section occurs.
+        tests:
+          - not_null
+
+      - name: StudentUniqueId
+        description: The unique ID of the student.
+        tests:
+          - not_null
+
+      - name: GradingPeriodDescriptor
+        description: The grading period descriptor to which the student's grade applies.
+        tests:
+          - not_null
+      
+      - name: GradingPeriod
+        description: Grading period abbreviation from PowerSchool (i.e. Q1-Q4 for grading periods, S1-S2 for semesters)
+        tests:
+          - not_null
+
+      - name: GradeTypeDescriptor
+        description: The type of grade reported (e.g. Exam, Final, Grading Period).
+        tests:
+          - not_null
+          
+      - name: IsCurrentGradingPeriod
+        description: Whether this grade record is part of a currently active grading period.  Before the first day of school and after the last day of school, this value will be False for all records.  
+        tests:
+          - not_null
+
+      - name: NumericGradeEarned
+        description: The numeric value of the grade earned by the student for the section and respective grading period.
+        tests:
             - not_null
 
-        - name: SessionName
-          description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
-          tests:
+      - name: LetterGradeEarned
+        description: The letter grade of the grade earned by the student for the section and respective grading period.
+        tests:
             - not_null
-
-        - name: SectionIdentifier
-          description: The ID of the section of a course from PowerSchool SIS.
-          tests:
-            - not_null
-
-        - name: ClassPeriodName
-          description: The timeblock when section occurs.
-          tests:
-            - not_null
-
-        - name: StudentUniqueId
-          description: The unique ID of the student.
-          tests:
-            - not_null
-
-        - name: GradingPeriodDescriptor
-          description: The grading period descriptor to which the student's grade applies.
-          tests:
-            - not_null
-        
-        - name: GradingPeriod
-          description: Grading period abbreviation from PowerSchool (i.e. Q1-Q4 for grading periods, S1-S2 for semesters)
-          tests:
-            - not_null
-
-        - name: GradeTypeDescriptor
-          description: The type of grade reported (e.g. Exam, Final, Grading Period).
-          tests:
-            - not_null
-            
-        - name: IsCurrentGradingPeriod
-          description: Whether this grade record is part of a currently active grading period.  Before the first day of school and after the last day of school, this value will be False for all records.  
-          tests:
-            - not_null
-
-        - name: NumericGradeEarned
-          description: The numeric value of the grade earned by the student for the section and respective grading period.
-          tests:
-              - not_null
-
-        - name: LetterGradeEarned
-          description: The letter grade of the grade earned by the student for the section and respective grading period.
-          tests:
-              - not_null
-
 
   - name: fct_StudentSectionEnrollments
     description: All student course section enrollments. A student could potentially have multiple rows associated with a single section if they exited and subsequently re-enrolled, but BeginDate and EndDate should be unique and not overlap.
