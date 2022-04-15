@@ -95,6 +95,7 @@ WITH
       e.EndDate As SectionEnrollmentEndDate,
       e.IsCurrentSectionEnrollment,
       g.GradingPeriodDescriptor,
+      g.GradingPeriod,
       g.GradeTypeDescriptor,
       g.IsCurrentGradingPeriod,
       g.NumericGradeEarned,
