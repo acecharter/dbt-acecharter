@@ -17,8 +17,10 @@ WITH
       ClassPeriodName,
       Room,
       AvailableCredits,
-      MIN(StaffBeginDate) AS SectionBeginDate,
-      MAX(StaffEndDate) AS SectionEndDate  
+      MIN(BeginDate) AS SectionBeginDate,
+      MAX(EndDate) AS SectionEndDate,
+      MIN(StaffBeginDate) AS SectionStaffBeginDate,
+      MAX(StaffEndDate) AS SectionStaffEndDate
     FROM {{ ref('stg_SP__CourseEnrollments_v2') }}
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
   ),
@@ -36,7 +38,9 @@ WITH
       s.Room,
       s.AvailableCredits,
       s.SectionBeginDate,
-      s.SectionEndDate  
+      s.SectionEndDate,
+      s.SectionStaffBeginDate,
+      s.SectionStaffEndDate
     FROM sections AS s
     LEFT JOIN academic_subjects AS a
     USING (CourseCode)

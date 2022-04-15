@@ -157,11 +157,17 @@ models:
       - name: AvailableCredits
         description: The course credits that are being attempted for the grading period.
 
-      - name: SectionBeginDate
-        description: Month, day, and year of the start of the section. (Extracted from the earliest StaffBeginDate associated with the section.)
+      - name: SectionStaffBeginDate
+        description: Earliest starting month, day, and year of staff associated with this section.
 
       - name: SectionEndDate
-        description: Month, day, and year of the end of the section. (Extracted from the latest StaffEndDate associated with the section.)
+        description: Latest end month, day, and year of staff associated with this section.
+
+      - name: SectionBeginDate
+        description: Earliest month, day, and year of student enrollment start dates associated with this section.
+
+      - name: SectionEndDate
+        description: Latest month, day, and year of student enrollment end dates associated with this section.
 
   - name: dim_SectionStaff
     description: All student course enrollments. A student could potentially have multiple rows associated with a single course if they exited and subsequently re-enrolled, but BeginDate and EndDate should be unique and not overlap.
