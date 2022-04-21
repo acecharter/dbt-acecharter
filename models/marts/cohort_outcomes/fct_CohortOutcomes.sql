@@ -6,8 +6,8 @@ WITH
         WHEN EntityType = 'State' THEN '0'
         WHEN EntityType = 'County' THEN CountyCode
         WHEN EntityType = 'District' THEN DistrictCode
-        WHEN EntityType = 'State' THEN SchoolCode
-      END AS EntityCode,     
+        WHEN EntityType = 'School' THEN SchoolCode
+       END AS EntityCode,     
     FROM {{ ref('stg_RD__CdeAdjustedCohortOutcomes')}}
   ),
 
