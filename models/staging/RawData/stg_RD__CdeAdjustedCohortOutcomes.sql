@@ -53,7 +53,7 @@ WITH
       CountyName,
       DistrictName,
       SchoolName,
-      CharterSchool,
+      TRIM(CharterSchool) AS CharterSchool,
       TRIM(DASS) AS DASS,
       ReportingCategory,
       CohortStudents,
