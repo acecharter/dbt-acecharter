@@ -41,6 +41,12 @@ WITH
     SELECT
       AcademicYear,
       AggregateLevel,
+      CASE
+        WHEN AggregateLevel = 'T' THEN 'State'
+        WHEN AggregateLevel = 'C' THEN 'County'
+        WHEN AggregateLevel = 'D' THEN 'District'
+        WHEN AggregateLevel = 'S' THEN 'School'
+      END AS EntityType,
       FORMAT("%02d", CAST(CountyCode AS INT64)) AS CountyCode,
       FORMAT("%05d", CAST(DistrictCode AS INT64)) AS DistrictCode,
       FORMAT("%07d", CAST(SchoolCode AS INT64)) AS SchoolCode,
