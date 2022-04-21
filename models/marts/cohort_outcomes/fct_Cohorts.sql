@@ -5,6 +5,7 @@ WITH
 
   entity_names_ranked AS (
     SELECT
+      AcademicYear,
       AggregateLevel,
       CountyCode,
       DistrictCode,
@@ -17,21 +18,15 @@ WITH
           AggregateLevel, 
           CountyCode,
           DistrictCode, 
-          SchoolCode,
-          CountyName, 
-          DistrictName, 
-          SchoolName
-        ORDER BY 
-          AggregateLevel, 
-          CountyCode,
-          DistrictCode, 
-          SchoolCode,
-          CountyName, 
-          DistrictName, 
-          SchoolName,
+          SchoolCode
+        ORDER BY
           AcademicYear DESC
       ) AS Rank
     FROM cohort_outcomes
+    WHERE
+      CharterSchool = 'All'
+      AND DASS = 'All'
+      AND ReportingCategory = 'TA'
   ),
 
   cohort_state AS (
@@ -39,7 +34,7 @@ WITH
       AcademicYear,
       AggregateLevel,
       '0' AS EntityCode,
-      'State of California' AS EntityName,
+      'State' AS EntityName,
       CharterSchool,
       DASS,
       ReportingCategory,
@@ -63,6 +58,7 @@ WITH
     USING(CountyCode)
     WHERE
       o.AggregateLevel = 'C'
+      AND n.AggregateLevel = 'C'
       AND n.Rank = 1
   ),
 
@@ -81,6 +77,7 @@ WITH
     USING(DistrictCode)
     WHERE
       o.AggregateLevel = 'D'
+      AND n.AggregateLevel = 'D'
       AND n.Rank = 1
   ),
 
@@ -99,6 +96,7 @@ WITH
     USING(SchoolCode)
     WHERE
       o.AggregateLevel = 'S'
+      AND n.AggregateLevel = 'S'
       AND n.Rank = 1
   ),
 
