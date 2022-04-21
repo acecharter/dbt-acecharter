@@ -23,12 +23,7 @@ WITH
   final AS (
     SELECT
       c.AcademicYear,
-      CASE
-        WHEN c.AggregateLevel = 'T' THEN 'State'
-        WHEN c.AggregateLevel = 'C' THEN 'County'
-        WHEN c.AggregateLevel = 'D' THEN 'District'
-        WHEN c.AggregateLevel = 'S' THEN 'School'
-      END AS EntityType,
+      c.EntityType,
       c.EntityCode,
       c.EntityName,
       c.CharterSchool,
@@ -54,7 +49,7 @@ WITH
     LEFT JOIN grads AS g
     ON
       c.AcademicYear = g.AcademicYear
-      AND c.AggregateLevel = g.AggregateLevel
+      AND c.EntityType = g.EntityType
       AND c.EntityCode = g.EntityCode
       AND c.CharterSchool = g.CharterSchool
       AND c.DASS = g.DASS
@@ -62,7 +57,7 @@ WITH
     LEFT JOIN grad_outcomes AS o
     ON
       c.AcademicYear = o.AcademicYear
-      AND c.AggregateLevel = o.AggregateLevel
+      AND c.EntityType = o.EntityType
       AND c.EntityCode = o.EntityCode
       AND c.CharterSchool = o.CharterSchool
       AND c.DASS = o.DASS

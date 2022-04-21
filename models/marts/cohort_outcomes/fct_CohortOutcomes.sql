@@ -3,10 +3,10 @@ WITH
     SELECT
       *,
        CASE
-        WHEN AggregateLevel = 'T' THEN '0'
-        WHEN AggregateLevel = 'C' THEN CountyCode
-        WHEN AggregateLevel = 'D' THEN DistrictCode
-        WHEN AggregateLevel = 'S' THEN SchoolCode
+        WHEN EntityType = 'State' THEN '0'
+        WHEN EntityType = 'County' THEN CountyCode
+        WHEN EntityType = 'District' THEN DistrictCode
+        WHEN EntityType = 'State' THEN SchoolCode
       END AS EntityCode,     
     FROM {{ ref('stg_RD__CdeAdjustedCohortOutcomes')}}
   ),
@@ -14,7 +14,7 @@ WITH
   reg_grad AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -28,7 +28,7 @@ WITH
   met_uc_csu AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -42,7 +42,7 @@ WITH
   seal_of_biliteracy AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -56,7 +56,7 @@ WITH
   golden_state_seal AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -70,7 +70,7 @@ WITH
   chspe_competer AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -84,7 +84,7 @@ WITH
   adult_ed AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -98,7 +98,7 @@ WITH
   sped AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -112,7 +112,7 @@ WITH
   ged AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -126,7 +126,7 @@ WITH
   other AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -140,7 +140,7 @@ WITH
   dropout AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
@@ -154,7 +154,7 @@ WITH
   still_enrolled AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       EntityCode,
       CharterSchool,
       DASS,

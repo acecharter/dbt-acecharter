@@ -5,7 +5,8 @@ WITH
 
   entity_names_ranked AS (
     SELECT
-      AggregateLevel,
+      AcademicYear,
+      EntityType,
       CountyCode,
       DistrictCode,
       SchoolCode,
@@ -14,44 +15,38 @@ WITH
       SchoolName,
       RANK() OVER (
         PARTITION BY
-          AggregateLevel, 
+          EntityType, 
           CountyCode,
           DistrictCode, 
-          SchoolCode,
-          CountyName, 
-          DistrictName, 
-          SchoolName
-        ORDER BY 
-          AggregateLevel, 
-          CountyCode,
-          DistrictCode, 
-          SchoolCode,
-          CountyName, 
-          DistrictName, 
-          SchoolName,
+          SchoolCode
+        ORDER BY
           AcademicYear DESC
       ) AS Rank
     FROM cohort_outcomes
+    WHERE
+      CharterSchool = 'All'
+      AND DASS = 'All'
+      AND ReportingCategory = 'TA'
   ),
 
   cohort_state AS (
     SELECT
       AcademicYear,
-      AggregateLevel,
+      EntityType,
       '0' AS EntityCode,
-      'State of California' AS EntityName,
+      'State' AS EntityName,
       CharterSchool,
       DASS,
       ReportingCategory,
       CohortStudents
     FROM cohort_outcomes
-    WHERE AggregateLevel = 'T'
+    WHERE EntityType = 'State'
   ),
 
   cohort_county AS (
     SELECT
       o.AcademicYear,
-      o.AggregateLevel,
+      o.EntityType,
       o.CountyCode AS EntityCode,
       n.CountyName AS EntityName,
       o.CharterSchool,
@@ -62,14 +57,15 @@ WITH
     LEFT JOIN entity_names_ranked AS n
     USING(CountyCode)
     WHERE
-      o.AggregateLevel = 'C'
+      o.EntityType = 'County'
+      AND n.EntityType = 'County'
       AND n.Rank = 1
   ),
 
   cohort_district AS (
     SELECT
       o.AcademicYear,
-      o.AggregateLevel,
+      o.EntityType,
       o.DistrictCode AS EntityCode,
       n.DistrictName AS EntityName,
       o.CharterSchool,
@@ -80,14 +76,15 @@ WITH
     LEFT JOIN entity_names_ranked AS n
     USING(DistrictCode)
     WHERE
-      o.AggregateLevel = 'D'
+      o.EntityType = 'District'
+      AND n.EntityType = 'District'
       AND n.Rank = 1
   ),
 
   cohort_school AS (
     SELECT
       o.AcademicYear,
-      o.AggregateLevel,
+      o.EntityType,
       o.SchoolCode AS EntityCode,
       n.SchoolName AS EntityName,
       o.CharterSchool,
@@ -98,7 +95,8 @@ WITH
     LEFT JOIN entity_names_ranked AS n
     USING(SchoolCode)
     WHERE
-      o.AggregateLevel = 'S'
+      o.EntityType = 'School'
+      AND n.EntityType = 'School'
       AND n.Rank = 1
   ),
 
@@ -114,4 +112,3 @@ WITH
   
 SELECT * FROM unioned
 WHERE CohortStudents IS NOT NULL
-
