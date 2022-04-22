@@ -14,12 +14,12 @@ WITH
   reg_grad AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'Regular HS Diploma' AS Outcome,
       RegularHsDiplomaGraduatesCount AS OutcomeCount
     FROM outcomes
@@ -28,12 +28,12 @@ WITH
   met_uc_csu AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Graduate Outcome' AS OutcomeType,
+      RegularHsDiplomaGraduatesCount AS OutcomeDenominator,
       'Met UC/CSU Grad Requirements' AS Outcome,
       MetUcCsuGradReqsCount AS OutcomeCount
     FROM outcomes
@@ -42,12 +42,12 @@ WITH
   seal_of_biliteracy AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Graduate Outcome' AS OutcomeType,
+      RegularHsDiplomaGraduatesCount AS OutcomeDenominator,
       'Seal of Biliteracy' AS Outcome,
       SealOfBiliteracyCount AS OutcomeCount
     FROM outcomes
@@ -56,12 +56,12 @@ WITH
   golden_state_seal AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Graduate Outcome' AS OutcomeType,
+      RegularHsDiplomaGraduatesCount AS OutcomeDenominator,
       'Golden State Seal Merit Diploma' AS Outcome,
       GoldenStateSealMeritDiplomaCount AS OutcomeCount
     FROM outcomes
@@ -70,12 +70,12 @@ WITH
   chspe_competer AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'CHSPE Completer' AS Outcome,
       ChspeCompleterCount AS OutcomeCount
     FROM outcomes
@@ -84,12 +84,12 @@ WITH
   adult_ed AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'Adult Ed HS Diploma' AS Outcome,
       AdultEdHsDiplomaCount AS OutcomeCount
     FROM outcomes
@@ -98,12 +98,12 @@ WITH
   sped AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'SPED Certificate' AS Outcome,
       SpedCertificateCount AS OutcomeCount
     FROM outcomes
@@ -112,12 +112,12 @@ WITH
   ged AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'GED Completer' AS Outcome,
       GedCompleterCount AS OutcomeCount
     FROM outcomes
@@ -126,12 +126,12 @@ WITH
   other AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'Other Transfer' AS Outcome,
       OtherTransferCount AS OutcomeCount
     FROM outcomes
@@ -140,12 +140,12 @@ WITH
   dropout AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'Dropout' AS Outcome,
       DropoutCount AS OutcomeCount
     FROM outcomes
@@ -154,12 +154,12 @@ WITH
   still_enrolled AS (
     SELECT
       AcademicYear,
-      EntityType,
       EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
       'Cohort Outcome' AS OutcomeType,
+      CohortStudents AS OutcomeDenominator,
       'Still Enrolled' AS Outcome,
       StillEnrolledCount AS OutcomeCount
     FROM outcomes
@@ -190,11 +190,13 @@ WITH
   ),
 
 final AS (
-  SELECT *
+  SELECT
+    *,
+    ROUND(OutcomeCount/OutcomeDenominator, 4) AS OutcomeRate
   FROM unioned
+  WHERE OutcomeDenominator > 0
   ORDER BY 1, 2, 3, 4, 5, 6, 7
 )
 
 
 SELECT * FROM final
-WHERE OutcomeCount > 0

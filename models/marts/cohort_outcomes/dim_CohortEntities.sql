@@ -29,30 +29,27 @@ WITH
       AND ReportingCategory = 'TA'
   ),
 
-  cohort_state AS (
+  state AS (
     SELECT
-      AcademicYear,
-      EntityType,
+      o.AcademicYear,
+      o.EntityType,
       '0' AS EntityCode,
-      'State' AS EntityName,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      CohortStudents
-    FROM cohort_outcomes
-    WHERE EntityType = 'State'
+      n.CountyName AS EntityName
+    FROM cohort_outcomes AS o
+    LEFT JOIN entity_names_ranked AS n
+    USING(CountyCode)
+    WHERE
+      o.EntityType = 'State'
+      AND n.EntityType = 'State'
+      AND n.Rank = 1
   ),
 
-  cohort_county AS (
+  county AS (
     SELECT
       o.AcademicYear,
       o.EntityType,
       o.CountyCode AS EntityCode,
-      n.CountyName AS EntityName,
-      o.CharterSchool,
-      o.DASS,
-      o.ReportingCategory,
-      o.CohortStudents
+      n.CountyName AS EntityName
     FROM cohort_outcomes AS o
     LEFT JOIN entity_names_ranked AS n
     USING(CountyCode)
@@ -62,16 +59,12 @@ WITH
       AND n.Rank = 1
   ),
 
-  cohort_district AS (
+  district AS (
     SELECT
       o.AcademicYear,
       o.EntityType,
       o.DistrictCode AS EntityCode,
-      n.DistrictName AS EntityName,
-      o.CharterSchool,
-      o.DASS,
-      o.ReportingCategory,
-      o.CohortStudents
+      n.DistrictName AS EntityName
     FROM cohort_outcomes AS o
     LEFT JOIN entity_names_ranked AS n
     USING(DistrictCode)
@@ -81,16 +74,12 @@ WITH
       AND n.Rank = 1
   ),
 
-  cohort_school AS (
+  school AS (
     SELECT
       o.AcademicYear,
       o.EntityType,
       o.SchoolCode AS EntityCode,
-      n.SchoolName AS EntityName,
-      o.CharterSchool,
-      o.DASS,
-      o.ReportingCategory,
-      o.CohortStudents
+      n.SchoolName AS EntityName
     FROM cohort_outcomes AS o
     LEFT JOIN entity_names_ranked AS n
     USING(SchoolCode)
@@ -101,14 +90,18 @@ WITH
   ),
 
   unioned AS (
-    SELECT * FROM cohort_state
+    SELECT * FROM state
     UNION ALL
-    SELECT * FROM cohort_county
+    SELECT * FROM county
     UNION ALL
-    SELECT * FROM cohort_district
+    SELECT * FROM district
     UNION ALL
-    SELECT * FROM cohort_school
+    SELECT * FROM school
   )
   
-SELECT * FROM unioned
-WHERE CohortStudents IS NOT NULL
+SELECT DISTINCT
+  EntityType,
+  EntityCode,
+  EntityName
+FROM unioned
+ORDER BY 1, 2

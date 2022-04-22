@@ -1,47 +1,37 @@
 WITH
-  cohorts AS (
-    SELECT * FROM {{ ref('fct_Cohorts')}}
-  ),
-
-  outcomes AS (
-    SELECT * FROM {{ ref('fct_CohortOutcomes')}}
-    WHERE OutcomeType = 'Cohort Outcome'
+  entities AS (
+    SELECT * FROM {{ ref('dim_CohortEntities')}}
   ),
 
   reporting_categories AS (
     SELECT * FROM {{ ref('stg_GSD__CdeReportingCategories')}}
   ),
 
+  outcomes AS (
+    SELECT * FROM {{ ref('fct_CohortOutcomes')}}
+  ),
+
   final AS (
     SELECT
-      c.AcademicYear,
-      c.EntityType,
-      c.EntityCode,
-      c.EntityName,
-      c.CharterSchool,
-      c.DASS,
-      c.ReportingCategory,
+      o.AcademicYear,
+      e.EntityType,
+      o.EntityCode,
+      e.EntityName,
+      o.CharterSchool,
+      o.DASS,
+      o.ReportingCategory,
       r.ReportingCategory AS ReportingCategoryName,
       r.ReportingCategoryType,
-      c.CohortStudents,
+      o.OutcomeType,
+      o.OutcomeDenominator,
       o.Outcome,
       o.OutcomeCount,
-      CASE
-        WHEN o.OutcomeCount = 0 OR o.OutcomeCount IS NULL THEN NULL
-        ELSE ROUND(o.OutcomeCount/c.CohortStudents, 4)
-      END AS CohortOutcomeRate
-    FROM cohorts AS c
+      o.OutcomeRate
+    FROM outcomes AS o
+    LEFT JOIN entities AS e
+    ON o.EntityCode = e.EntityCode
     LEFT JOIN reporting_categories AS r
-    ON c.ReportingCategory = r.ReportingCategoryCode
-    LEFT JOIN outcomes AS o
-    ON
-      c.AcademicYear = o.AcademicYear
-      AND c.EntityType = o.EntityType
-      AND c.EntityCode = o.EntityCode
-      AND c.CharterSchool = o.CharterSchool
-      AND c.DASS = o.DASS
-      AND c.ReportingCategory = o.ReportingCategory
+    ON o.ReportingCategory = r.ReportingCategoryCode
   )
 
 SELECT * FROM final
-WHERE OutcomeCount IS NOT NULL
