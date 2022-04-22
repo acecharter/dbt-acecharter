@@ -100,6 +100,38 @@ sources:
           - name: ReportingCategory
           - name: ReportingCategoryType
 
+      - name: ComparisonEntities
+        description: Entity (i.e. state, county, district, and schools) information for non-ACE entities to include in comparisons. One row per comparison (e.g. State listed 4 times, once for each ACE school).
+        columns:
+          - name: EntityCode
+            description: State entity-specific code (e.g. county code for counties, district code for districts, etc.) State code = '0'.
+            tests:
+              - not_null
+
+          - name: EntityType
+            description: Entity type (i.e. State, County, District, or School).
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['State', 'County', 'District', 'School']
+
+          - name: EntityName
+            description: Full entity name
+            tests:
+              - not_null
+
+          - name: EntityNameShort
+            description: Abbreviated entity name
+            tests:
+              - not_null
+
+          - name: AceComparisonSchoolCode
+            description: ACE school state-assigned school code for school to be compared to the specified entity 
+            tests:
+              - not_null
+
+          - name: Notes
+
       - name: ElpiLevels
         description: A google sheet that provides data regarding State Dashboard English Learner Progress Indicator (ELPI) levels used to determine whether EL students are progressing
         columns:
