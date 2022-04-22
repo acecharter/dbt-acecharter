@@ -49,7 +49,10 @@ models:
         +materialized: table
         intermediate:
           +materialized: view
-          
+
+      enrollment:
+        +materialized: table
+
       sections:
         +materialized: table
         intermediate:
