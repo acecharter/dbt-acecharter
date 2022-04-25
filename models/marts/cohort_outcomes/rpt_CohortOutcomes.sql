@@ -1,4 +1,8 @@
 WITH
+  outcomes AS (
+    SELECT * FROM {{ ref('fct_CohortOutcomes')}}
+  ),
+
   entities AS (
     SELECT * FROM {{ ref('dim_CohortEntities')}}
   ),
@@ -7,8 +11,9 @@ WITH
     SELECT * FROM {{ ref('stg_GSD__CdeReportingCategories')}}
   ),
 
-  outcomes AS (
-    SELECT * FROM {{ ref('fct_CohortOutcomes')}}
+  comparison_entities AS (
+    SELECT * FROM {{ ref('stg_GSD__ComparisonEntities')}}
+    WHERE AceComparisonSchoolCode = '0125617'
   ),
 
   final AS (
@@ -32,6 +37,9 @@ WITH
     ON o.EntityCode = e.EntityCode
     LEFT JOIN reporting_categories AS r
     ON o.ReportingCategory = r.ReportingCategoryCode
+    WHERE
+      o.EntityCode = '0125617' OR
+      o.EntityCode IN (SELECT EntityCode FROM comparison_entities)
   )
 
 SELECT * FROM final
