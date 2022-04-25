@@ -65,7 +65,7 @@ WITH
       t.StaffClassroomPosition,
       e.StudentUniqueId,
       st.StateUniqueId,
-      st.DisplayName AS StudentName,
+      st.DisplayName,
       st.Gender,
       st.RaceEthnicity,
       st.IsEll,
