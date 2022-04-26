@@ -194,19 +194,18 @@ sources:
             description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
               - unique
               - not_null
-
+      - name: Caaspp2015
+      - name: Caaspp2016
+      - name: Caaspp2017
+      - name: Caaspp2018
+      - name: Caaspp2019
+      - name: Caaspp2021
       - name: CaasppEntities2015
       - name: CaasppEntities2016
       - name: CaasppEntities2017
       - name: CaasppEntities2018
       - name: CaasppEntities2019
       - name: CaasppEntities2021
-      - name: CaasppSantaClaraCounty2015
-      - name: CaasppSantaClaraCounty2016
-      - name: CaasppSantaClaraCounty2017
-      - name: CaasppSantaClaraCounty2018
-      - name: CaasppSantaClaraCounty2019
-      - name: CaasppSantaClaraCounty2021
       - name: CaasppStudentGroups
       - name: CaasppTests
       - name: TomsCaasppEnrolled2021Empower

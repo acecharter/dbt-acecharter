@@ -33,7 +33,7 @@ WITH
     SELECT
       o.AcademicYear,
       o.EntityType,
-      '0' AS EntityCode,
+      '00' AS EntityCode,
       n.CountyName AS EntityName
     FROM cohort_outcomes AS o
     LEFT JOIN entity_names_ranked AS n
