@@ -10,26 +10,33 @@ WITH
   ),
   
   caaspp_2015 AS (
-    SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2015')}} 
+    SELECT * FROM {{ ref('stg_RD__Caaspp2015')}}
+    WHERE County_Code IN (0, 43)
   ),
 
   caaspp_2016 AS (
-    SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2016')}} 
+    SELECT * FROM {{ ref('stg_RD__Caaspp2016')}}
+    WHERE County_Code IN (0, 43)
   ),
 
   caaspp_2017 AS (
-    SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2017')}} 
+    SELECT * FROM {{ ref('stg_RD__Caaspp2017')}}
+    WHERE County_Code IN (0, 43)
   ),
 
   caaspp_2018 AS (
-    SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2018')}} 
+    SELECT * FROM {{ ref('stg_RD__Caaspp2018')}}
+    WHERE County_Code IN (0, 43)
   ),
 
   caaspp_2019 AS (
-    SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2019')}}   ),
+    SELECT * FROM {{ ref('stg_RD__Caaspp2019')}}
+    WHERE County_Code IN (0, 43)
+  ),
 
   caaspp_2021 AS (
-    SELECT * FROM {{ ref('stg_RD__CaasppSantaClaraCounty2021')}} 
+    SELECT * FROM {{ ref('stg_RD__Caaspp2021')}}
+    WHERE County_Code IN (0, 43)
   ),
 
   unioned AS (
@@ -58,7 +65,7 @@ WITH
         CAST(Test_Year - 2000 AS STRING)
       ) AS SchoolYear,
       TypeId,
-      CAST(Subgroup_ID AS STRING) AS DemographicId,
+      CAST(Student_Group_ID AS STRING) AS DemographicId,
       Test_Type AS TestType,
       Total_Tested_At_Reporting_Level AS TotalTestedAtReportingLevel,
       Total_Tested_with_Scores_at_Reporting_Level AS TotalTestedWithScoresAtReportingLevel,

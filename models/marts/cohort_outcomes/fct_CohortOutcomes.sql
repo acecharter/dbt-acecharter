@@ -3,7 +3,7 @@ WITH
     SELECT
       *,
        CASE
-        WHEN EntityType = 'State' THEN '0'
+        WHEN EntityType = 'State' THEN '00'
         WHEN EntityType = 'County' THEN CountyCode
         WHEN EntityType = 'District' THEN DistrictCode
         WHEN EntityType = 'School' THEN SchoolCode

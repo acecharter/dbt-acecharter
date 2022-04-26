@@ -44,12 +44,21 @@ WITH
       AND CountyCode = '43'-- Santa Clara County
   ),
 
+  state AS (
+    SELECT *
+    FROM caaspp
+    WHERE
+      CountyCode = '00'-- State of California
+  ),
+
   unioned AS (
     SELECT * FROM schools
     UNION ALL
     SELECT * FROM districts
     UNION ALL
     SELECT * FROM county
+    UNION ALL
+    SELECT * FROM state
   ),
 
   min_met_scores AS (
