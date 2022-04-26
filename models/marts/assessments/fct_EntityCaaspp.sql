@@ -15,6 +15,8 @@ WITH
 
   final AS (
     SELECT
+      e.EntityType, 
+      e.EntityCode,
       e.TypeId,
       e.CountyCode,
       e.DistrictCode,
@@ -41,9 +43,7 @@ WITH
     FROM caaspp AS c
     LEFT JOIN entities AS e
     ON
-      c.CountyCode = e.CountyCode AND
-      c.DistrictCode = e.DistrictCode AND
-      c.SchoolCode = e.SchoolCode AND
+      c.EntityCode = e.EntityCode AND
       c.TestYear = e.TestYear
     LEFT JOIN demographics AS d
     ON c.DemographicId = d.DemographicId
