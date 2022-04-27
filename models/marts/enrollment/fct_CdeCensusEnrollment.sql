@@ -34,7 +34,7 @@ WITH
       CASE
         WHEN e.SchoolCode IN ('0000000', '0000001') THEN e.School
         ELSE n.School 
-      END AS School,
+      END AS SchoolName,
       e.RaceEthnicCode,
       CASE
         WHEN e.RaceEthnicCode = '0' THEN 'Not Reported'

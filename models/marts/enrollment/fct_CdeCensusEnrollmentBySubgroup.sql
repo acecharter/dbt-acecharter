@@ -15,7 +15,7 @@ WITH
       s.StateCountyCode,
       s.StateDistrictCode,
       s.SchoolNameFull,
-      s.SchoolNameMid,
+      s.SchoolNameMid AS SchoolName,
       s.SchoolNameShort,
       e.* EXCEPT (SchoolCode, SchoolName)
     FROM schools AS s
