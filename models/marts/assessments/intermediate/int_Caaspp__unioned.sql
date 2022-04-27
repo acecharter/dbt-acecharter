@@ -56,12 +56,6 @@ WITH
         WHEN u.SchoolCode = '0000000' THEN u.DistrictCode
         ELSE u.SchoolCode
       END AS EntityCode,
-      CASE
-        WHEN u.CountyCode = '00' THEN 'State'
-        WHEN u.CountyCode = '43' AND u.DistrictCode = '00000' THEN 'County'
-        WHEN u.SchoolCode = '0000000' THEN 'District'
-        ELSE 'School'
-      END AS EntityType,
       u.* EXCEPT (Filler)
     FROM unioned AS u
     LEFT JOIN assessment_ids AS a
