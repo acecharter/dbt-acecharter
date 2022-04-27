@@ -3,64 +3,33 @@
 )}}
 
 WITH 
+  ace_schools AS (
+    SELECT * FROM {{ ref('stg_GSD__Schools')}}
+  ),
+  
+  comparison_entities AS (
+    SELECT * FROM {{ ref('stg_GSD__ComparisonEntities')}} 
+  ),
+
   caaspp AS (
-    SELECT * FROM {{ ref('int_Caaspp__unioned')}} 
-  ),
-
-  schools AS (
     SELECT *
-    FROM caaspp
-    WHERE SchoolCode IN (
-      '0116814', --ACE Empower
-      '0125617', --ACE High School
-      '0129247', --ACE Esperanza
-      '0131656', --ACE Inspire
-      '6046197', --Lee Mathson Middle (ARUSD)
-      '6047229', --Bridges Academy (FMSD)
-      '6062103', --Muwekma Ohlone Middle (SJUSD)
-      '4330031'  --Independence High (ESUHSD)
-    )
-  ),
-
-  districts AS (
-    SELECT *
-    FROM caaspp
+    FROM {{ ref('int_Caaspp__unioned')}}
     WHERE
-      SchoolCode = '0000000'
-      AND DistrictCode IN (
-        '10439', -- Santa Clara County Office of Education
-        '69369', -- Alum Rock Union
-        '69450', -- Franklin-McKinley
-        '69666', -- San Jose Unified
-        '69427'  -- East Side Union
+      GradeLevel >= 5
+      AND (
+        EntityCode IN (SELECT StateSchoolCode FROM ace_schools)
+        OR EntityCode IN (SELECT EntityCode FROM comparison_entities)    
+      )
+      AND DemographicId IN (
+        '1',   --All Students
+        '128', --Reported Disabilities
+        '31',  --Economic disadvantaged
+        '160', --EL (English learner)
+        '78',  --Hispanic or Latino
+        '204'  --Economically disadvantaged Hispanic or Latino
       )
   ),
-
-  county AS (
-    SELECT *
-    FROM caaspp
-    WHERE
-      DistrictCode = '00000' 
-      AND CountyCode = '43'-- Santa Clara County
-  ),
-
-  state AS (
-    SELECT *
-    FROM caaspp
-    WHERE
-      CountyCode = '00'-- State of California
-  ),
-
-  unioned AS (
-    SELECT * FROM schools
-    UNION ALL
-    SELECT * FROM districts
-    UNION ALL
-    SELECT * FROM county
-    UNION ALL
-    SELECT * FROM state
-  ),
-
+  
   min_met_scores AS (
     SELECT
       AceAssessmentId,
@@ -72,26 +41,18 @@ WITH
 
   final AS (
     SELECT
-      u.*,
-      CASE
-        WHEN u.MeanScaleScore IS NOT NULL THEN ROUND(u.MeanScaleScore - m.MinStandardMetScaleScore, 1)
-        ELSE NULL
-      END AS MeanDistanceFromStandard
-    FROM unioned AS u
+      c.*,
+      CAST(
+        CASE
+          WHEN c.MeanScaleScore IS NOT NULL THEN ROUND(c.MeanScaleScore - m.MinStandardMetScaleScore, 1)
+          ELSE NULL
+        END AS STRING
+      ) AS MeanDistanceFromStandard
+    FROM caaspp AS c
     LEFT JOIN min_met_scores AS m
     ON
-      u.AceAssessmentId = m.AceAssessmentId
-      AND CAST(u.GradeLevel AS STRING) = m.GradeLevel
-    WHERE
-      u.GradeLevel >= 5 AND
-      u.DemographicId IN (
-        '1',   --All Students
-        '128', --Reported Disabilities
-        '31',  --Economic disadvantaged
-        '160', --EL (English learner)
-        '78',  --Hispanic or Latino
-        '204'  --Economically disadvantaged Hispanic or Latino
-      )
+      c.AceAssessmentId = m.AceAssessmentId
+      AND CAST(c.GradeLevel AS STRING) = m.GradeLevel
   )
 
 SELECT * FROM final

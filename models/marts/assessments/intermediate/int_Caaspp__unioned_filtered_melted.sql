@@ -15,7 +15,8 @@ WITH
       AssessmentId,
       AceAssessmentId,
       AceAssessmentName,
-      CAST(CAST(SchoolCode AS INT64) AS STRING) AS SchoolId,
+      EntityCode,
+      EntityType,
       CountyCode,
       DistrictCode,
       SchoolCode,
@@ -139,3 +140,4 @@ WITH
 
 
 SELECT * FROM final
+
