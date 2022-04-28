@@ -68,3 +68,5 @@ WITH
     UNION ALL
     SELECT * FROM ace_hs    
   )
+
+SELECT * FROM final
