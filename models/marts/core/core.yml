@@ -1,6 +1,22 @@
 version: 2
 
 models:
+  - name: dim_ComparisonEntities
+    description: Entity information for the state and each school, district, and county to include in comparison entity models
+    columns:
+      - name: EntityCode
+        description: Entity-level state code (e.g. 2-digit county code for state and county entities, 5-digit district code for district entities, 7-digit school code for school entities)
+        tests:
+          - not_null
+      - name: EntityType
+        description: Type of entity (either State, County, District, or School)
+        tests:
+          - accepted_values:
+              values: ['State', 'County', 'District', 'School']
+      - name: EntityName
+        description: Full/long version of entity name of
+      - name: EntityNameMid
+      - name: EntityNameShort
 
   - name: dim_Schools
     description: School-level information for each school
