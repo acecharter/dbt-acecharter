@@ -22,3 +22,4 @@ WHERE
   AssessmentName IN ('Star Reading', 'Star Math')
   AND ReportingMethod LIKE 'SGP%'
   AND ReportingMethod != 'SGP (current)'
+  AND IsCurrentlyEnrolled = TRUE
