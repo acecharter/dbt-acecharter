@@ -208,6 +208,9 @@ sources:
       - name: CaasppEntities2021
       - name: CaasppStudentGroups
       - name: CaasppTests
+      - name: Elpac2018
+      - name: Elpac2019
+      - name: Elpac2021
       - name: TomsCaasppEnrolled2021Empower
         description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsCaasppEnrolled2021Esperanza
