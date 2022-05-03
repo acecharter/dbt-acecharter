@@ -1,12 +1,13 @@
+--Dropped CharterNumber column due to problems where it was being detected as int, but contained non-int values
 SELECT
   FORMAT("%02d", CountyCode) AS CountyCode,
   FORMAT("%05d", DistrictCode) AS DistrictCode,
   FORMAT("%07d", SchoolCode) AS SchoolCode,
   FORMAT("%02d", RecordType) AS RecordType,
-  CharterNumber,
+  CAST(CharterNumber AS STRING) AS CharterNumber,
   CAST(TestYear AS INT64) AS TestYear,
   CAST(StudentGroupID AS STRING) AS DemographicId,
-  AssessmentType,
+  CAST(CASE WHEN AssessmentType = 2 THEN 21 END AS STRING) AS AssessmentType,
   CAST(NULLIF(TotalEnrolled, '*') AS INT64) AS TotalEnrolled,
   CAST(CASE WHEN TotalTested NOT IN ('*','') THEN TotalTested END AS INT64) AS TotalTested,
   CAST(NULL AS INT64) AS TotalTestedWithScores,
