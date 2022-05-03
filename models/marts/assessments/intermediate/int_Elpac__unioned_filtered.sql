@@ -14,7 +14,7 @@ WITH
     WHERE
       GradeLevel >= 5
       AND EntityCode IN (SELECT EntityCode FROM comparison_entities)
-      AND DemographicId IN (
+      AND StudentGroupId IN (
         '160', --All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
         '120', --ELs enrolled less than 12 months
         '142', --ELs enrolled 12 months or more
@@ -30,7 +30,10 @@ WITH
   final AS (
     SELECT
       e.*,
-      c.* EXCEPT (EntityCode),
+      c.* EXCEPT (EntityCode), 
+      CONCAT(
+        CAST(TestYear - 1 AS STRING), '-', CAST(TestYear - 2000 AS STRING)
+      ) AS SchoolYear,
     FROM elpac AS e
     LEFT JOIN comparison_entities AS c
     ON e.EntityCode = c.EntityCode

@@ -7,7 +7,7 @@ SELECT
   FORMAT("%02d", RecordType) AS RecordType,
   CAST(CharterNumber AS STRING) AS CharterNumber,
   CAST(TestYear AS INT64) AS TestYear,
-  CAST(StudentGroupID AS STRING) AS DemographicId,
+  CAST(StudentGroupID AS STRING) AS StudentGroupId,
   CAST(AssessmentType AS STRING) AS AssessmentType,
   CAST(NULLIF(TotalEnrolled, '*') AS INT64) AS TotalEnrolled,
   CAST(NULLIF(TotalTested, '*') AS INT64) AS TotalTested,
