@@ -39,12 +39,15 @@ WITH
     LEFT JOIN schools AS sc
     ON c.SchoolId = sc.SchoolId
     LEFT JOIN students AS st
-    ON c.StudentUniqueId = st.StudentUniqueId
+    ON
+      c.StudentUniqueId = st.StudentUniqueId
+      AND c.SchoolId = st.SchoolId
     LEFT JOIN assessments AS a
     ON c.AceAssessmentId = a.AceAssessmentId
   )
 
-SELECT * FROM final
+SELECT *
+FROM final
 ORDER BY
   SchoolId,
   StudentUniqueId,
