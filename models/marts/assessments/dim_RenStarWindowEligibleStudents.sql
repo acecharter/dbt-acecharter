@@ -10,7 +10,7 @@ WITH
     SELECT 
       * EXCEPT(EligibleStudentsEnrollmentDate),
       CASE
-        WHEN EligibleStudentsEnrollmentDate < CURRENT_DATE() THEN CURRENT_DATE()
+        WHEN EligibleStudentsEnrollmentDate > CURRENT_DATE() THEN CURRENT_DATE()
         ELSE EligibleStudentsEnrollmentDate
       END AS EligibleStudentsEnrollmentDate
     FROM {{ ref('stg_GSD__RenStarTestingWindows')}}
@@ -46,3 +46,4 @@ WITH
 
 SELECT * FROM final
 ORDER BY 1, 2, 3, 4, 5
+
