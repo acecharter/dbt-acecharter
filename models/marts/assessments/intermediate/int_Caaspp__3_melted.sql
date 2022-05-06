@@ -7,7 +7,7 @@ WITH
     SELECT
       CONCAT(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', DemographicId, '-', GradeLevel, '-', TestId) AS AssessmentId,
       *
-    FROM {{ ref('int_Caaspp__unioned_filtered') }}
+    FROM {{ ref('int_Caaspp__2_filtered') }}
   ),
 
   caaspp_keys AS(

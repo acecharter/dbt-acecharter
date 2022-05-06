@@ -4,7 +4,7 @@ WITH
   ),
 
   cers AS (
-    SELECT * FROM {{ ref('int_Cers__unioned_melted')}}
+    SELECT * FROM {{ ref('int_Cers__2_melted')}}
   ),
 
   elpac_scale_scores AS (

@@ -7,7 +7,7 @@ WITH
     SELECT
       CONCAT(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', StudentGroupId, '-', GradeLevel, '-', AssessmentType) AS AssessmentId,
       *
-    FROM {{ ref('int_Elpac__unioned_filtered') }}
+    FROM {{ ref('int_Elpac__2_filtered') }}
   ),
 
   elpac_keys AS(
