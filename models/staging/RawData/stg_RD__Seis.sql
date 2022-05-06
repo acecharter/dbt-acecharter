@@ -28,11 +28,16 @@ seis AS (
     CAST(SEIS_ID AS STRING) AS SeisUniqueId,
     Last_Name AS LastName,
     First_Name AS FirstName,
+    CAST(Student_SSID AS STRING) AS StateUniqueId,
     Date_of_Birth AS BirthDate,
     School_of_Attendance AS SchoolName,
-    CAST(Student_SSID AS STRING) AS StateUniqueId,
     Grade_Code AS GradeLevel,
-    Student_Eligibility_Status AS StudentEligibilityStatus
+    Student_Eligibility_Status AS StudentEligibilityStatus,
+    Date_of_original_SpEd_Entry AS SpedEntryDate,
+    Disability_1_Code AS Disability1Code,
+    Disability_1 AS Disability1,
+    Disability_2_Code AS Disability2Code,
+    Disability_2 AS Disability2
   FROM seis_unioned
 )
 

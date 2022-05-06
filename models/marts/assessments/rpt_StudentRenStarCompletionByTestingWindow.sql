@@ -1,51 +1,57 @@
-WITH students AS (
-  SELECT * FROM {{ ref('dim_Students') }}
-),
+WITH
+  students AS (
+    SELECT * FROM {{ ref('dim_Students') }}
+  ),
 
-schools AS (
+  schools AS (
+      SELECT
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+      FROM {{ ref('dim_Schools')}}
+  ),
+
+  assessments AS (
+    SELECT *
+    FROM {{ ref('stg_GSD__Assessments')}}
+  ),
+
+  student_result_counts AS (
+    SELECT * FROM {{ ref('fct_StudentRenStarWindowResultCounts')}}
+  ),
+
+  final AS (
     SELECT
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ ref('dim_Schools')}}
-),
+      sc.*,
+      st.* EXCEPT (SchoolId),
+      c.AceAssessmentId,
+      a.AssessmentNameShort,
+      a.AssessmentSubject,
+      c.SchoolYear,
+      c.TestingWindow,
+      c.ResultCount,
+      CASE
+        WHEN c.ResultCount > 0 THEN 'Tested'
+        WHEN c.ResultCount = 0 THEN 'Not Tested' 
+      END AS WindowTestingStatus
+    FROM student_result_counts AS c
+    LEFT JOIN schools AS sc
+    ON c.SchoolId = sc.SchoolId
+    LEFT JOIN students AS st
+    ON c.StudentUniqueId = st.StudentUniqueId
+    LEFT JOIN assessments AS a
+    ON c.AceAssessmentId = a.AceAssessmentId
+  )
 
-assessments AS (
-  SELECT *
-  FROM {{ ref('stg_GSD__Assessments')}}
-),
-
-testing_window_eligible_students AS (
-  SELECT * FROM {{ ref('dim_RenStarTestingWindowEligibleStudents')}}
-),
-
-student_result_counts AS (
-  SELECT * FROM {{ ref('fct_StudentRenStarResultCountsByTestingWindow')}}
-)
+SELECT * FROM final
+ORDER BY
+  SchoolId,
+  StudentUniqueId,
+  AceAssessmentId,
+  SchoolYear,
+  TestingWindow
 
 
-SELECT
-  sc.*,
-  st.* EXCEPT (SchoolId),
-  es.TestingWindowType,
-  es.TestingWindowName,
-  es.AceAssessmentId,
-  a.AssessmentNameShort,
-  a.AssessmentSubject,
-  CASE WHEN rc.AssessmentResultCount IS NULL Then 'Not Tested' ELSE 'Tested' END AS WindowTestingStatus
-FROM testing_window_eligible_students AS es
-LEFT JOIN student_result_counts AS rc
-ON
-  es.StudentUniqueId = rc.StudentUniqueId AND
-  es.SchoolId = rc.TestedSchoolId AND
-  es.TestingWindowType = rc.TestingWindowType AND
-  es.TestingWindowName = rc.TestingWindow AND
-  es.AceAssessmentId = rc.AceAssessmentId
-LEFT JOIN schools AS sc
-ON es.SchoolId = sc.SchoolId
-LEFT JOIN students AS st
-ON es.StudentUniqueId = st.StudentUniqueId
-LEFT JOIN assessments AS a
-ON es.AceAssessmentId = a.AceAssessmentId
+
   
