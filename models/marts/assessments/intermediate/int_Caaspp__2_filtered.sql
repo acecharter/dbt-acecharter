@@ -10,7 +10,7 @@ WITH
 
   caaspp AS (
     SELECT *
-    FROM {{ ref('int_Caaspp__unioned')}}
+    FROM {{ ref('int_Caaspp__1_unioned')}}
     WHERE
       GradeLevel >= 5
       AND EntityCode IN (SELECT EntityCode FROM comparison_entities)

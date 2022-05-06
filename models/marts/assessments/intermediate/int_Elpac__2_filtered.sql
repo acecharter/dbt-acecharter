@@ -10,7 +10,7 @@ WITH
 
   elpac AS (
     SELECT *
-    FROM {{ ref('int_Elpac__unioned')}}
+    FROM {{ ref('int_Elpac__1_unioned')}}
     WHERE
       GradeLevel >= 5
       AND EntityCode IN (SELECT EntityCode FROM comparison_entities)

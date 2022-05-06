@@ -19,7 +19,7 @@ WITH
       s.ReportingMethod,
       s.StudentResultDataType,
       s.StudentResult
-    FROM {{ ref('int_RenStar__unioned_melted') }} AS s
+    FROM {{ ref('int_RenStar__2_melted') }} AS s
     LEFT JOIN assessment_names AS a
     USING (AceAssessmentId)
   ),
@@ -44,7 +44,7 @@ WITH
       c.ReportingMethod,
       c.StudentResultDataType,
       c.StudentResult
-    FROM {{ ref('int_Cers__unioned_melted_elpiAdded') }} AS c
+    FROM {{ ref('int_Cers__3_elpi_added') }} AS c
     LEFT JOIN assessment_names AS a
     USING (AceAssessmentId)
   ),
