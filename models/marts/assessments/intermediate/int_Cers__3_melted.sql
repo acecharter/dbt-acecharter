@@ -7,7 +7,7 @@ WITH
     SELECT
       *,
       CONCAT(AssessmentName, '-', StateUniqueId, '-', AssessmentDate) AS AssessmentId,
-    FROM {{ ref('int_Cers__1_unioned') }}
+    FROM {{ ref('int_Cers__2_elpi_added') }}
     WHERE Completeness='Complete'
   ),
 
@@ -148,6 +148,17 @@ WITH
     WHERE Claim4ScoreAchievementLevel IS NOT NULL
   ),
 
+  elpi_level AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'ELPI Level' AS ReportingMethod,
+      'INT64' AS StudentResultDataType,
+      CAST(ElpiLevel AS STRING) AS StudentResult
+    FROM cers
+    WHERE ElpiLevel IS NOT NULL
+  ),
+
 results_unioned AS(
   SELECT * FROM achievement_level
   UNION ALL
@@ -164,6 +175,8 @@ results_unioned AS(
   SELECT * FROM claim3_level
   UNION ALL
   SELECT * FROM claim4_level
+  UNION ALL
+  SELECT * FROM elpi_level
 )
 
 SELECT

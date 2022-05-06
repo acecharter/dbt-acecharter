@@ -44,7 +44,7 @@ WITH
       c.ReportingMethod,
       c.StudentResultDataType,
       c.StudentResult
-    FROM {{ ref('int_Cers__3_elpi_added') }} AS c
+    FROM {{ ref('int_Cers__3_melted') }} AS c
     LEFT JOIN assessment_names AS a
     USING (AceAssessmentId)
   ),
