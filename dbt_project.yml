@@ -49,6 +49,11 @@ models:
         +materialized: table
         intermediate:
           +materialized: view
+      
+      discipline:
+        +materialized: table
+        intermediate:
+          +materialized: view
 
       enrollment:
         +materialized: table

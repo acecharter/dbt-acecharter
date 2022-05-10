@@ -1,0 +1,1 @@
+SELECT * FROM {{ ref('fct_Suspension')}}
