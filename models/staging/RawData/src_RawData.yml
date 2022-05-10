@@ -47,6 +47,18 @@ sources:
       - name: CdeAdjustedCohortOutcomes2021
         description: 2020-21 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
 
+      - name: CdeChronicAbsenteeism1617
+        description: 2016-17 CDE Chronic Absenteeism Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesabd.asp)
+
+      - name: CdeChronicAbsenteeism1718
+        description: 2017-18 CDE Chronic Absenteeism Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesabd.asp)
+
+      - name: CdeChronicAbsenteeism1819
+        description: 2018-19 CDE Chronic Absenteeism Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesabd.asp)
+
+      - name: CdeChronicAbsenteeism2021
+        description: 2020-21 CDE Chronic Absenteeism Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesabd.asp)
+
       - name: CdeEnr08
         description: 2008 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
 
@@ -88,6 +100,18 @@ sources:
 
       - name: CdeEnr21
         description: 2021 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
+      - name: CdeSuspension1718
+        description: 2017-18 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
+
+      - name: CdeSuspension1819
+        description: 2018-19 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
+
+      - name: CdeSuspension1920
+        description: 2019-20 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
+
+      - name: CdeSuspension2021
+        description: 2020-21 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
 
       - name: CersEmpower2122
         description: An extract from CERS (California Educator Reporting System) listing all 2021-22 CAASPP assessment results for students enrolled at Empower
