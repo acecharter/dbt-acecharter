@@ -46,7 +46,7 @@ WITH
       CountyName,
       DistrictName,
       SchoolName,
-      CharterYN AS CharterSchool,
+      TRIM(CharterYN) AS CharterSchool,
       ReportingCategory,
       CAST(NULLIF(Cumulative_Enrollment, '*') AS INT64) AS CumulativeEnrollment,
       CAST(NULLIF(Total_Suspensions, '*') AS INT64) AS TotalSuspensions,
