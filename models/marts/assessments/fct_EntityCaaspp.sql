@@ -29,6 +29,7 @@ WITH
       END AS TestSubject,
       c.StudentsEnrolled,
       c.StudentsWithScores,
+      c.AssessmentObjective,
       c.ReportingMethod,
       c.ResultDataType,
       c.SchoolResult,

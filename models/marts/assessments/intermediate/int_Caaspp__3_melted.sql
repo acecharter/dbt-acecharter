@@ -112,6 +112,171 @@ WITH
     WHERE PctStandardNotMet IS NOT NULL
   ),
 
+  area_1_above AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Reading' 
+        WHEN AceAssessmentId = '2' THEN 'Concepts & Procedures'
+      END AS AssessmentObjective,
+      'Percent Above Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area1PctAboveStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area1PctAboveStandard IS NOT NULL  
+  ),
+
+  area_1_near AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Reading' 
+        WHEN AceAssessmentId = '2' THEN 'Concepts & Procedures'
+      END AS AssessmentObjective,
+      'Percent Near Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area1PctNearStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area1PctNearStandard IS NOT NULL  
+  ),
+
+  area_1_below AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Reading' 
+        WHEN AceAssessmentId = '2' THEN 'Concepts & Procedures'
+      END AS AssessmentObjective,
+      'Percent Below Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area1PctBelowStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area1PctBelowStandard IS NOT NULL  
+  ),
+
+  area_2_above AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Writing' 
+        WHEN AceAssessmentId = '2' THEN 'Problem Solving and Modeling & Data Analysis'
+      END AS AssessmentObjective,
+      'Percent Above Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area2PctAboveStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area2PctAboveStandard IS NOT NULL  
+  ),
+
+  area_2_near AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Writing' 
+        WHEN AceAssessmentId = '2' THEN 'Problem Solving and Modeling & Data Analysis'
+      END AS AssessmentObjective,
+      'Percent Near Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area2PctNearStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area2PctNearStandard IS NOT NULL  
+  ),
+
+  area_2_below AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Writing' 
+        WHEN AceAssessmentId = '2' THEN 'Problem Solving and Modeling & Data Analysis'
+      END AS AssessmentObjective,
+      'Percent Below Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area2PctBelowStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area2PctBelowStandard IS NOT NULL  
+  ),
+
+  area_3_above AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Listening' 
+        WHEN AceAssessmentId = '2' THEN 'Communicating Reasoning'
+      END AS AssessmentObjective,
+      'Percent Above Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area3PctAboveStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area3PctAboveStandard IS NOT NULL  
+  ),
+
+  area_3_near AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Listening' 
+        WHEN AceAssessmentId = '2' THEN 'Communicating Reasoning'
+      END AS AssessmentObjective,
+      'Percent Near Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area3PctNearStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area3PctNearStandard IS NOT NULL  
+  ),
+
+  area_3_below AS (
+    SELECT
+      AssessmentId,
+      CASE
+        WHEN AceAssessmentId = '1' THEN 'Listening' 
+        WHEN AceAssessmentId = '2' THEN 'Communicating Reasoning'
+      END AS AssessmentObjective,
+      'Percent Below Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area3PctBelowStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE Area3PctBelowStandard IS NOT NULL  
+  ),
+
+  area_4_above AS (
+    SELECT
+      AssessmentId,
+      'Research/Inquiry' AS AssessmentObjective,
+      'Percent Above Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area4PctAboveStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE
+      Area4PctAboveStandard IS NOT NULL
+      AND AceAssessmentId = '1'
+  ),
+
+  area_4_near AS (
+    SELECT
+      AssessmentId,
+      'Research/Inquiry' AS AssessmentObjective,
+      'Percent Near Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area4PctNearStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE
+      Area4PctNearStandard IS NOT NULL
+      AND AceAssessmentId = '1'
+  ),
+
+  area_4_below AS (
+    SELECT
+      AssessmentId,
+      'Research/Inquiry' AS AssessmentObjective,
+      'Percent Below Standard' AS ReportingMethod,
+      'FLOAT64' AS ResultDataType,
+      CAST(Area4PctBelowStandard AS STRING) AS SchoolResult
+    FROM caaspp
+    WHERE
+      Area4PctBelowStandard IS NOT NULL
+      AND AceAssessmentId = '1'
+  ),
+
   results_unioned AS(
     SELECT * FROM mean_scale_score
     UNION ALL
@@ -126,6 +291,30 @@ WITH
     SELECT * FROM pct_nearly_met
     UNION ALL
     SELECT * FROM pct_not_met
+    UNION ALL
+    SELECT * FROM area_1_above
+    UNION ALL
+    SELECT * FROM area_1_near
+    UNION ALL
+    SELECT * FROM area_1_below
+    UNION ALL
+    SELECT * FROM area_2_above
+    UNION ALL
+    SELECT * FROM area_2_near
+    UNION ALL
+    SELECT * FROM area_2_below
+    UNION ALL
+    SELECT * FROM area_3_above
+    UNION ALL
+    SELECT * FROM area_3_near
+    UNION ALL
+    SELECT * FROM area_3_below
+    UNION ALL
+    SELECT * FROM area_4_above
+    UNION ALL
+    SELECT * FROM area_4_near
+    UNION ALL
+    SELECT * FROM area_4_below
   ),
 
   final AS (

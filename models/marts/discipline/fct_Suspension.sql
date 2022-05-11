@@ -25,7 +25,7 @@ WITH
       s.AcademicYear,
       e.EntityType,
       s.EntityCode,
-      e.EntityName,
+      e.EntityNameShort AS EntityName,
       s.CharterSchool,
       s.ReportingCategory,
       r.ReportingCategory AS ReportingCategoryName,
