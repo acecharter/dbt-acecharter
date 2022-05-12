@@ -40,7 +40,7 @@ WITH
     ON e.EntityCode = enr.EntityCode
     WHERE
       e.AceComparisonSchoolCode = '0116814'
-      AND GradeLevel IN ('5', '6', '7', '8')
+      AND GradeLevel IN ('5', '6', '7', '8', 'All')
   ),
 
   esperanza AS (
@@ -53,7 +53,7 @@ WITH
     ON e.EntityCode = enr.EntityCode
     WHERE
       e.AceComparisonSchoolCode = '0129247'
-      AND GradeLevel IN ('5', '6', '7', '8')
+      AND GradeLevel IN ('5', '6', '7', '8', 'All')
   ),
 
   inspire AS (
@@ -66,7 +66,7 @@ WITH
     ON e.EntityCode = enr.EntityCode
     WHERE
       e.AceComparisonSchoolCode = '0131656'
-      AND GradeLevel IN ('5', '6', '7', '8')
+      AND GradeLevel IN ('5', '6', '7', '8', 'All')
   ),
 
   ace_hs AS (
@@ -79,7 +79,7 @@ WITH
     ON e.EntityCode = enr.EntityCode
     WHERE
       e.AceComparisonSchoolCode = '0125617'
-      AND GradeLevel IN ('9', '10', '11', '12')
+      AND GradeLevel IN ('9', '10', '11', '12', 'All')
   ),
   
   final AS (
