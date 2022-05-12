@@ -1,57 +1,46 @@
 WITH
-  school_names AS (
-    SELECT * FROM {{ ref('dim_CdeCensusEnrollmentSchools') }}
-  ),
-
   enr AS (
     SELECT
       CONCAT(
         CAST(Year AS STRING),
-        CdsCode,
-        School,
+        EntityCode,
         RaceEthnicCode,
-        Gender
+        Gender,
+        Subgroup,
+        SchoolType
       ) AS UniqueEnrId,
       *      
-    FROM {{ ref('stg_RD__CdeEnr') }}
+    FROM {{ ref('int_CdeEnrByRaceAndGrade__2_filtered') }}
   ),
 
   enr_keys AS(
     SELECT
-      e.UniqueEnrId,
-      e.Year,
+      UniqueEnrId,
+      Year,
       CONCAT(
-        CAST(e.Year AS STRING), 
+        CAST(Year AS STRING), 
         '-', 
-        FORMAT("%02d", e.Year - 1999)
+        FORMAT("%02d", Year - 1999)
       ) AS SchoolYear,
-      e.CdsCode,
-      e.CountyCode,
-      e.DistrictCode,
-      e.SchoolCode,
-      e.County,
-      e.District,
+      EntityCode,
+      EntityType,
+      EntityName,
+      SchoolType,
+      RaceEthnicCode,
       CASE
-        WHEN e.SchoolCode IN ('0000000', '0000001') THEN e.School
-        ELSE n.School 
-      END AS SchoolName,
-      e.RaceEthnicCode,
-      CASE
-        WHEN e.RaceEthnicCode = '0' THEN 'Not Reported'
-        WHEN e.RaceEthnicCode = '1' THEN 'American Indian or Alaska Native'
-        WHEN e.RaceEthnicCode = '2' THEN 'Asian'
-        WHEN e.RaceEthnicCode = '3' THEN 'Pacific Islander'
-        WHEN e.RaceEthnicCode = '4' THEN 'Filipino'
-        WHEN e.RaceEthnicCode = '5' THEN 'Hispanic or Latino'
-        WHEN e.RaceEthnicCode = '6' THEN 'African American'
-        WHEN e.RaceEthnicCode = '7' THEN 'White'
-        WHEN e.RaceEthnicCode = '8' THEN 'Multiple or No Response (old/pre-2009)'
-        WHEN e.RaceEthnicCode = '9' THEN 'Two or More Races'
+        WHEN RaceEthnicCode = '0' THEN 'Not Reported'
+        WHEN RaceEthnicCode = '1' THEN 'American Indian or Alaska Native'
+        WHEN RaceEthnicCode = '2' THEN 'Asian'
+        WHEN RaceEthnicCode = '3' THEN 'Pacific Islander'
+        WHEN RaceEthnicCode = '4' THEN 'Filipino'
+        WHEN RaceEthnicCode = '5' THEN 'Hispanic or Latino'
+        WHEN RaceEthnicCode = '6' THEN 'African American'
+        WHEN RaceEthnicCode = '7' THEN 'White'
+        WHEN RaceEthnicCode = '8' THEN 'Multiple or No Response (pre-2009)'
+        WHEN RaceEthnicCode = '9' THEN 'Two or More Races'
       END AS RaceEthnicity, 
-      e.Gender
-    FROM enr AS e
-    LEFT JOIN school_names AS n
-    USING (SchoolCode)
+      Gender
+    FROM enr
   ),
 
   kinder AS (
@@ -73,7 +62,7 @@ WITH
   gr2 AS (
     SELECT
       UniqueEnrId,
-      'K2' AS GradeLevel,
+      '2' AS GradeLevel,
       GR_2 AS Enrollment
     FROM enr
   ),
@@ -182,7 +171,18 @@ WITH
     FROM enr
   ),
 
-  enr_unioned AS(
+  total AS (
+    SELECT
+      Year,
+      EntityCode,
+      SchoolType,
+      SUM(ENR_TOTAL) AS Enrollment
+    FROM enr
+    WHERE Subgroup = 'All Students'
+    GROUP BY 1, 2, 3
+  ),
+
+  enr_unioned AS (
     SELECT * FROM kinder
     UNION ALL
     SELECT * FROM gr1
@@ -216,7 +216,7 @@ WITH
     SELECT * FROM adult
   ),
 
-  final AS (
+  enr_final AS (
     SELECT
       k.* EXCEPT (UniqueEnrId),
       e.GradeLevel,
@@ -227,9 +227,29 @@ WITH
     WHERE e.Enrollment > 0
     ORDER BY
       SchoolYear DESC,
-      CountyCode,
-      DistrictCode,
-      SchoolCode
+      EntityCode,
+      RaceEthnicCode,
+      Gender,
+      GradeLevel
+  ),
+
+  final AS (
+    SELECT
+      e.*,
+      ROUND(e.Enrollment / t.Enrollment, 4) AS PctOfTotalEnrollment
+    FROM enr_final AS e
+    LEFT JOIN total AS t
+    ON
+      e.Year = t.Year
+      AND e.EntityCode = t.EntityCode
+      AND e.SchoolType = t.SchoolType
   )
 
-SELECT * FROM final
+SELECT * 
+FROM final
+ORDER BY
+  Year, 
+  EntityCode, 
+  RaceEthnicCode, 
+  Gender, 
+  GradeLevel
