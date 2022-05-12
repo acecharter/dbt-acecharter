@@ -31,7 +31,6 @@ WITH
   )
 
 SELECT * FROM final
-WHERE EntityCode = '00'
 
 ORDER BY 1, 3, 6, 7, 8
   
