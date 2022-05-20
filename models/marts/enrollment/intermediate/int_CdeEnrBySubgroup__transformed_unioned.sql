@@ -9,7 +9,7 @@ WITH
       SchoolYear,
       EntityCode,
       Subgroup,
-      'Charter School Enrollment' AS EnrollmentType,
+      'Charter Schools' AS EnrollmentType,
       CharterSchoolEnrollment AS Enrollment
     FROM entity_enr
   ),
@@ -19,7 +19,7 @@ WITH
       SchoolYear,
       EntityCode,
       Subgroup,
-      'Non-Charter School Enrollment' AS EnrollmentType,
+      'Non-Charter Schools' AS EnrollmentType,
       NonCharterSchoolEnrollment AS Enrollment
     FROM entity_enr
   ),
@@ -29,7 +29,7 @@ WITH
       SchoolYear,
       EntityCode,
       Subgroup,
-      'Total Enrollment' AS EnrollmentType,
+      'All Schools' AS EnrollmentType,
       TotalEnrollment AS Enrollment
     FROM entity_enr
   ),
@@ -75,7 +75,7 @@ WITH
       s.SchoolYear,
       s.SchoolCode AS EntityCode,
       s.Subgroup,
-      'Total Enrollment' AS EnrollmentType,
+      'All Schools' AS EnrollmentType,
       s.Enrollment,
       ROUND(s.Enrollment / a.Enrollment, 4) AS PctOfTotalEnrollment
     FROM school_enr AS s
