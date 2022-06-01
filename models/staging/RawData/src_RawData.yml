@@ -122,6 +122,9 @@ sources:
       - name: CersInspire2122
         description: An extract from CERS (California Educator Reporting System) listing all 2021-22 CAASPP assessment results for students enrolled at Inspire
 
+      - name: CersHighSchool2122
+        description: An extract from CERS (California Educator Reporting System) listing all 2021-22 CAASPP assessment results for students enrolled at ACE High School
+
       - name: CersEmpower2021
         description: An extract from CERS (California Educator Reporting System) listing all 2020-21 CAASPP assessment results for students enrolled at Empower
 

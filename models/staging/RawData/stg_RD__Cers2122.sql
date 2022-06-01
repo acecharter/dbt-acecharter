@@ -114,12 +114,44 @@ WITH
     FROM {{ source('RawData', 'CersInspire2122')}}
   ),
 
+  hs AS (
+    SELECT
+      FORMAT("%014d", DistrictId) AS DistrictId,
+      DistrictName AS TestDistrictName,
+      FORMAT("%014d", SchoolId) AS TestSchoolCdsCode,
+      SchoolName AS TestSchoolName,
+      CAST(StudentIdentifier AS STRING) AS StateUniqueId,
+      FirstName,
+      LastOrSurname AS LastSurname,
+      DATE(SubmitDateTime) AS AssessmentDate,
+      SchoolYear AS TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      CAST(GradeLevelWhenAssessed AS STRING) AS GradeLevel,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+      CAST(Alt1ScoreAchievementLevel AS STRING) AS Alt1ScoreAchievementLevel,
+      CAST(Alt2ScoreAchievementLevel AS STRING) AS Alt2ScoreAchievementLevel,
+      CAST(Claim1ScoreAchievementLevel AS STRING) AS Claim1ScoreAchievementLevel,
+      CAST(Claim2ScoreAchievementLevel AS STRING) AS Claim2ScoreAchievementLevel,
+      CAST(Claim3ScoreAchievementLevel AS STRING) AS Claim3ScoreAchievementLevel,
+      CAST(Claim4ScoreAchievementLevel AS STRING) AS Claim4ScoreAchievementLevel
+    FROM {{ source('RawData', 'CersHighSchool2122')}}
+  ),
+
   cers_unioned AS (
     SELECT * FROM empower
     UNION ALL
     SELECT * FROM esperanza
     UNION ALL
     SELECT * FROM inspire
+    UNION ALL
+    SELECT * FROM hs
   ),
 
   final AS (
