@@ -60,6 +60,7 @@ star_reading AS (
     DATE(CompletedDateLocal) AS AssessmentDate,
     CAST(AssessmentNumber AS INT64) AS AssessmentNumber,
     AssessmentType,
+    TotalTimeInSeconds,
     GradePlacement,
     Grade AS AssessmentGradeLevel,
     GradeEquivalent,

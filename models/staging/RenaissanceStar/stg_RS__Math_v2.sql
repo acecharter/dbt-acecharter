@@ -59,6 +59,7 @@ star_math AS (
     DATE(CompletedDateLocal) AS AssessmentDate,
     CAST(AssessmentNumber AS INT64) AS AssessmentNumber,
     AssessmentType,
+    TotalTimeInSeconds,
     GradePlacement,
     Grade AS AssessmentGradeLevel,
     GradeEquivalent,
