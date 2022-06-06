@@ -76,6 +76,7 @@ star_reading AS (
     DATE(Activity_Completed_Date) AS AssessmentDate,
     CAST(NULL AS INT64) AS AssessmentNumber,
     Activity_Type AS AssessmentType,
+    NULL AS TotalTimeInSeconds,
     GradePlacement,
     CAST(Current_Grade AS STRING) AS AssessmentGradeLevel,
     CAST(Grade_Equivalent AS STRING) AS GradeEquivalent,
