@@ -21,3 +21,10 @@ sources:
             description: (StudentStateID in source documentation) Student's state ID in Renaissance. Blank if not provided.
       - name: Reading_v2
         description: Student-level Renaissance Star Reading Enterprise Assessment (English) data. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
+      
+      - name: MathSpanish_v2
+        description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data.
+      
+      - name: ReadingSpanish_v2
+        description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data.
+
