@@ -6,12 +6,16 @@ WITH reading_unioned AS(
   SELECT * FROM {{ ref('stg_RD__RenStarReading2021')}}
   UNION ALL
   SELECT * FROM {{ ref('stg_RS__Reading_v2')}}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_RS__ReadingSpanish_v2')}}
 ),
 
 math_unioned AS(
   SELECT * FROM {{ ref('stg_RD__RenStarMath2021')}}
   UNION ALL
   SELECT * FROM {{ ref('stg_RS__Math_v2')}}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_RS__MathSpanish_v2')}}
 ),
 
 reading AS (
