@@ -3,17 +3,14 @@ WITH
     SELECT * FROM {{ ref('fct_CollegeGoingRate')}}
   ),
 
-  entities AS (
-    SELECT * FROM {{ ref('dim_CgrEntities')}}
+  comparison_entities AS (
+    SELECT * FROM {{ ref('stg_GSD__ComparisonEntities')}}
+    WHERE AceComparisonSchoolCode = '0125617'
   ),
 
   reporting_categories AS (
     SELECT * FROM {{ ref('stg_GSD__CdeReportingCategories')}}
-  ),
-
-  comparison_entities AS (
-    SELECT * FROM {{ ref('stg_GSD__ComparisonEntities')}}
-    WHERE AceComparisonSchoolCode = '0125617'
+    
   ),
 
   final AS (
@@ -22,6 +19,7 @@ WITH
       e.EntityType,
       c.EntityCode,
       e.EntityName,
+      e.EntityNameShort,
       c.CharterSchool,
       c.DASS,
       c.ReportingCategory,
@@ -48,13 +46,10 @@ WITH
       c.EnrolledOutOfState4YearCollegePublicPrivate,
       c.EnrolledOutOfState2YearCollegePublicPrivate
     FROM cgr AS c
-    LEFT JOIN entities AS e
+    LEFT JOIN comparison_entities AS e
     ON c.EntityCode = e.EntityCode
     LEFT JOIN reporting_categories AS r
     ON c.ReportingCategory = r.ReportingCategoryCode
-    WHERE
-      c.EntityCode = '0125617' OR
-      c.EntityCode IN (SELECT EntityCode FROM comparison_entities)
   )
 
 SELECT * FROM final
