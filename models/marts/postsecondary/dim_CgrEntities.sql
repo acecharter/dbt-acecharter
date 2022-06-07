@@ -3,9 +3,8 @@ WITH
     SELECT * FROM {{ ref('stg_RD__CdeCgr12Month')}}
   ),
 
-  entity_names_ranked AS (
+  entity_names AS (
     SELECT
-      AcademicYear,
       EntityType,
       CountyCode,
       DistrictCode,
@@ -13,80 +12,46 @@ WITH
       CountyName,
       DistrictName,
       SchoolName,
-      RANK() OVER (
-        PARTITION BY
-          EntityType, 
-          CountyCode,
-          DistrictCode, 
-          SchoolCode
-        ORDER BY
-          AcademicYear DESC
-      ) AS Rank
+      MAX(AcademicYear) AS MaxAcademicYear
     FROM cgr
-    WHERE
-      CharterSchool = 'All'
-      AND DASS = 'All'
-      AND ReportingCategory = 'TA'
+
+    GROUP BY 1, 2, 3, 4, 5, 6, 7
   ),
 
   state AS (
     SELECT
-      c.AcademicYear,
-      c.EntityType,
+      EntityType,
       '00' AS EntityCode,
-      n.CountyName AS EntityName
-    FROM cgr AS c
-    LEFT JOIN entity_names_ranked AS n
-    USING(CountyCode)
-    WHERE
-      c.EntityType = 'State'
-      AND n.EntityType = 'State'
-      AND n.Rank = 1
+      CountyName AS EntityName
+    FROM entity_names
+    WHERE EntityType = 'State'
   ),
 
   county AS (
     SELECT
-      c.AcademicYear,
-      c.EntityType,
-      c.CountyCode AS EntityCode,
-      n.CountyName AS EntityName
-    FROM cgr AS c
-    LEFT JOIN entity_names_ranked AS n
-    USING(CountyCode)
-    WHERE
-      c.EntityType = 'County'
-      AND n.EntityType = 'County'
-      AND n.Rank = 1
+      EntityType,
+      CountyCode AS EntityCode,
+      CountyName AS EntityName
+    FROM entity_names
+    WHERE EntityType = 'County'
   ),
 
   district AS (
     SELECT
-      c.AcademicYear,
-      c.EntityType,
-      c.DistrictCode AS EntityCode,
-      n.DistrictName AS EntityName
-    FROM cgr AS c
-    LEFT JOIN entity_names_ranked AS n
-    USING(DistrictCode)
-    WHERE
-      c.EntityType = 'District'
-      AND n.EntityType = 'District'
-      AND n.Rank = 1
+      EntityType,
+      DistrictCode AS EntityCode,
+      DistrictName AS EntityName
+    FROM entity_names
+    WHERE EntityType = 'District'
   ),
 
   school AS (
     SELECT
-      c.AcademicYear,
-      c.EntityType,
-      c.SchoolCode AS EntityCode,
-      n.SchoolName AS EntityName
-    FROM cgr AS c
-    LEFT JOIN entity_names_ranked AS n
-    USING(SchoolCode)
-    WHERE
-      c.EntityType = 'School'
-      AND n.EntityType = 'School'
-      AND n.Rank = 1
+      EntityType,
+      SchoolCode AS EntityCode,
+      SchoolName AS EntityName
+    FROM entity_names
+    WHERE EntityType = 'School'
   ),
 
   unioned AS (
@@ -97,11 +62,12 @@ WITH
     SELECT * FROM district
     UNION ALL
     SELECT * FROM school
-  )
+  ),
   
-SELECT DISTINCT
-  EntityType,
-  EntityCode,
-  EntityName
-FROM unioned
+  final AS (
+    SELECT * FROM unioned
+  )
+
+SELECT *
+FROM final
 ORDER BY 1, 2
