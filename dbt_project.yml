@@ -58,6 +58,9 @@ models:
       enrollment:
         +materialized: table
 
+      postsecondary:
+        +materialized: table
+
       sections:
         +materialized: table
         intermediate:
