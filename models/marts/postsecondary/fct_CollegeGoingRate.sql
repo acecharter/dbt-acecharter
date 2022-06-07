@@ -28,16 +28,11 @@ WITH
     FROM {{ ref('stg_RD__CdeCgr12Month')}}
   ),
 
-  unioned AS (
-    SELECT * FROM twelve
-  ),
-
   final AS (
     SELECT *
-    FROM unioned
+    FROM twelve
     WHERE HighSchoolCompleters IS NOT NULL
     ORDER BY 1, 2, 3, 4, 5, 6, 7
   )
-
 
 SELECT * FROM final
