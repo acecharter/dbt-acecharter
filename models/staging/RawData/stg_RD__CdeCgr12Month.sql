@@ -38,7 +38,7 @@ WITH
       CompleterType,
       CAST(NULLIF(High_School_Completers, '*') AS INT64) AS HighSchoolCompleters,
       CAST(NULLIF(Enrolled_In_College___Total__12_Months_, '*') AS INT64) AS EnrolledInCollegeTotal12Months,
-      ROUND(CAST(NULLIF(College_Going_Rate___Total__12_Months_, '*')/100, 3) AS FLOAT64) AS CollegeGoingRateTotal12Months,
+      ROUND(CAST(NULLIF(College_Going_Rate___Total__12_Months_, '*') AS FLOAT64)/100, 3) AS CollegeGoingRateTotal12Months,
       CAST(NULLIF(Enrolled_In_State__12_Months_, '*') AS INT64) AS EnrolledInState12Months,
       CAST(NULLIF(Enrolled_Out_of_State__12_Months_, '*') AS INT64) AS EnrolledOutOfState12Months,
       CAST(NULLIF(Not_Enrolled_In_College__12_Months_, '*') AS INT64) AS NotEnrolledInCollege12Months,
