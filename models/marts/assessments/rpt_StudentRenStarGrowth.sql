@@ -19,7 +19,7 @@ SELECT
   END AS AtOrAboveAverageGrowth
 FROM {{ ref('rpt_StudentAssessment')}}
 WHERE
-  AssessmentName IN ('Star Reading', 'Star Math')
+  AceAssessmentId IN ('10', '11', '12', '13')
   AND ReportingMethod LIKE 'SGP%'
   AND ReportingMethod != 'SGP (current)'
   AND IsCurrentlyEnrolled = TRUE
