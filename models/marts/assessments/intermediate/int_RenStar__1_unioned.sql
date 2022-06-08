@@ -37,8 +37,12 @@ math AS (
     CAST(NULL AS STRING) AS Lexile,
     Quantile,
   FROM math_unioned
+),
+
+final AS (
+  SELECT * FROM reading
+  UNION ALL
+  SELECT * FROM math
 )
 
-SELECT * FROM reading
-UNION ALL
-SELECT * FROM math
+SELECT * FROM final

@@ -99,15 +99,6 @@ sgp_winter_spring AS (
   FROM star_results
 ),
 
-sgp_current AS (
-  SELECT
-    AssessmentID,
-    'SGP (current)' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(CurrentSGP AS STRING) AS StudentResult
-  FROM star_results
-),
-
 state_benchmark AS (
   SELECT
     AssessmentID,
@@ -135,8 +126,6 @@ results_unioned AS(
   SELECT * FROM sgp_spring_spring
   UNION ALL
   SELECT * FROM sgp_winter_spring
-  UNION ALL
-  SELECT * FROM sgp_current
   UNION ALL
   SELECT * FROM state_benchmark
 
