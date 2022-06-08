@@ -25,7 +25,7 @@ star_reading_with_missing_ids AS (
       WHEN s.StateUniqueId IS NULL THEN m.StateUniqueId
       ELSE s.StateUniqueId
     END AS StateUniqueId,
-  FROM {{ source('RenaissanceStar', 'Reading_v2')}} AS s
+  FROM {{ source('RenaissanceStar', 'ReadingSpanish_v2')}} AS s
   LEFT JOIN missing_student_ids AS m
   USING (StudentRenaissanceID)
 ),
