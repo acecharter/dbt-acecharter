@@ -49,7 +49,7 @@ WITH
     SELECT
       AssessmentId,
       'Overall' AS AssessmentObjective,
-      'Mean Distrance From Standard' AS ReportingMethod,
+      'Mean Distance From Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(MeanDistanceFromStandard AS STRING) AS SchoolResult
     FROM caaspp
