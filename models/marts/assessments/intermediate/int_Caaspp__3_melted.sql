@@ -49,7 +49,7 @@ WITH
     SELECT
       AssessmentId,
       'Overall' AS AssessmentObjective,
-      'Mean Distrance From Standard' AS ReportingMethod,
+      'Mean Distance From Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(MeanDistanceFromStandard AS STRING) AS SchoolResult
     FROM caaspp
@@ -322,7 +322,7 @@ WITH
       k.*,
       r.* EXCEPT (AssessmentID),
       CASE
-        WHEN r.ReportingMethod LIKE 'Mean%' THEN NULL 
+        WHEN r.ReportingMethod LIKE 'Mean%' THEN StudentsWithScores 
         ELSE ROUND(StudentsWithScores * CAST(SchoolResult AS FLOAT64), 0)
       END AS StudentWithResultCount
     FROM caaspp_keys AS k
@@ -332,4 +332,3 @@ WITH
 
 
 SELECT * FROM final
-
