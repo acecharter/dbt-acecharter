@@ -12,13 +12,28 @@ WITH
     SELECT * FROM {{ref('fct_SchoolEnrollmentByDate')}}
   ),
 
+  reporting_periods AS (
+    SELECT
+      e.CalendarDate,
+      p.ReportingPeriod
+    FROM enrollment AS e
+    CROSS JOIN {{ ref('stg_RD__AttendanceReportingPeriods')}} AS p
+    WHERE e.CalendarDate BETWEEN p.StartDate AND p.EndDate
+    GROUP BY 1, 2
+    ORDER BY e.CalendarDate
+  ),
+
   final AS (
     SELECT
       s.*,
+      p.ReportingPeriod,
       e.* EXCEPT(SchoolId)
     FROM schools AS s
     RIGHT JOIN enrollment AS e
-    USING (SchoolId)
+    ON s.SchoolId = e.SchoolId
+    LEFT JOIN reporting_periods AS p
+    ON e.CalendarDate = p.CalendarDate
+    ORDER BY s.SchoolName, e.CalendarDate
   )
 
 SELECT * FROM final
