@@ -2,7 +2,7 @@ version: 2
 
 models:
           
-  - name: int_Caaspp__unioned
+  - name: int_Caaspp__1_unioned
     description: "Unioned CAASPP research file data for the State and all Santa Clara County entities for corresponding annual CAASPP staging files"
     config:
       materialized: view

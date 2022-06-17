@@ -47,13 +47,9 @@ models:
 
       core:
         +materialized: table
-        intermediate:
-          +materialized: view
       
       discipline:
         +materialized: table
-        intermediate:
-          +materialized: view
 
       enrollment:
         +materialized: table
@@ -63,8 +59,6 @@ models:
 
       sections:
         +materialized: table
-        intermediate:
-          +materialized: view
 
         
     # Applies to all files under models/staging/
