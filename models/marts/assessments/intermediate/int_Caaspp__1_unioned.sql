@@ -1,4 +1,3 @@
-
 WITH
   assessment_ids AS (
     SELECT 

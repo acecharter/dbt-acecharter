@@ -40,7 +40,15 @@ models:
         tests:
           - unique
 
-  - name: dim_StudentEnrollments
+  - name: dim_Students
+    description: Student demographic and enrollment information for the most recent enrollment of a student in each school. A student may have multiple records for enrollments in different schools.
+    columns:
+      - name: "SchoolId || '-' || StudentUniqueId"
+        description: No true primary key, but each school-student combo should be unique
+        tests:
+          - unique
+
+  - name: fct_StudentSchoolEnrollments
     description: Student enrollment information for each unique enrollment of a student in a school. A student could have multiple enrollments in a school if they exited and subsequently re-enrolled, but the entry and exit dates of each should be unique and not overlapping with subsequent enrollments.
     columns:
       - name: "SchoolId || '-' || StudentUniqueId || '-' || EntryDate"
@@ -54,11 +62,3 @@ models:
       - name: ExitWithdrawDate
       - name: ExitWithdrawReason
       - name: IsCurrentEnrollment
-
-  - name: dim_Students
-    description: Student demographic and enrollment information for the most recent enrollment of a student in each school. A student may have multiple records for enrollments in different schools.
-    columns:
-      - name: "SchoolId || '-' || StudentUniqueId"
-        description: No true primary key, but each school-student combo should be unique
-        tests:
-          - unique
