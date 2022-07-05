@@ -1,9 +1,6 @@
 WITH
   completion_by_window AS (
-    SELECT
-      *,
-      'Yes' AS IncludeInCompletionRate
-    FROM {{ref('fct_StudentRenStarCompletionByWindow')}}
+    SELECT * FROM {{ref('fct_StudentRenStarCompletionByWindow')}}
   ),
 
   student_testing AS (
@@ -37,18 +34,10 @@ WITH
     SELECT
       t.*,
       'Fall to Spring' AS TestingPeriod,
-      CASE
-        WHEN (
-          (f.TestingStatus = 'Tested') 
-          AND (s.TestingStatus = 'Tested')
-        ) THEN 'Yes' ELSE 'No'
-      END AS CompletedPreAndPostTest,
-      CASE
-        WHEN (
-          (f.IncludeInCompletionRate = 'Yes') 
-          AND (s.IncludeInCompletionRate = 'Yes')
-        ) THEN 'Yes' ELSE 'No'
-      END AS IncludeInPeriodCompletionRate,
+      f.TestingStatus AS PreTestStatus,
+      s.TestingStatus AS PostTestStatus,
+      f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
+      s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
     LEFT JOIN fall AS f
     ON
@@ -68,18 +57,10 @@ WITH
     SELECT
       t.*,
       'Fall to Winter' AS TestingPeriod,
-      CASE
-        WHEN (
-          (f.TestingStatus = 'Tested') 
-          AND (w.TestingStatus = 'Tested')
-        ) THEN 'Yes' ELSE 'No'
-      END AS CompletedPreAndPostTest,
-      CASE
-        WHEN (
-          (f.IncludeInCompletionRate = 'Yes') 
-          AND (w.IncludeInCompletionRate = 'Yes')
-        ) THEN 'Yes' ELSE 'No'
-      END AS IncludeInPeriodCompletionRate,
+      f.TestingStatus AS PreTestStatus,
+      w.TestingStatus AS PostTestStatus,
+      f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
+      w.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
     LEFT JOIN fall AS f
     ON
@@ -99,18 +80,10 @@ WITH
     SELECT
       t.*,
       'Winter to Spring' AS TestingPeriod,
-      CASE
-        WHEN (
-          (w.TestingStatus = 'Tested') 
-          AND (s.TestingStatus = 'Tested')
-        ) THEN 'Yes' ELSE 'No'
-      END AS CompletedPreAndPostTest,
-      CASE
-        WHEN (
-          (w.IncludeInCompletionRate = 'Yes') 
-          AND (s.IncludeInCompletionRate = 'Yes')
-        ) THEN 'Yes' ELSE 'No'
-      END AS IncludeInPeriodCompletionRate,
+      w.TestingStatus AS PreTestStatus,
+      s.TestingStatus AS PostTestStatus,
+      w.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
+      s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
     LEFT JOIN winter AS w
     ON
@@ -132,7 +105,21 @@ WITH
     SELECT * FROM fall_winter
     UNION ALL
     SELECT * FROM winter_spring
+  ),
+
+  final AS (
+    SELECT
+      *,
+      CASE WHEN PreTestRequired = 'Yes' AND PostTestRequired = 'Yes' THEN 'Yes' ELSE 'No' END AS PreAndPostTestRequired,
+      CASE WHEN PreTestStatus = 'Tested' AND PostTestStatus = 'Tested' THEN 'Yes' ELSE 'No' END AS CompletedPreAndPostTest,
+      CASE
+        WHEN
+          (PreTestRequired = 'Yes' OR PreTestStatus = 'Tested')
+          AND (PostTestRequired = 'Yes' OR PostTestStatus = 'Tested')
+        THEN 'Yes' ELSE 'No'
+      END AS IncludeInPeriodCompletionRate,
+    FROM unioned
   )
 
 
-SELECT * FROM unioned
+SELECT * FROM final
