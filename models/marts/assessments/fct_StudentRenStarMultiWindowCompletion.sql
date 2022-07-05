@@ -1,6 +1,9 @@
 WITH
   completion_by_window AS (
-    SELECT * FROM {{ref('fct_StudentRenStarCompletionByWindow')}}
+    SELECT
+      *,
+      'Yes' AS IncludeInCompletionRate
+    FROM {{ref('fct_StudentRenStarCompletionByWindow')}}
   ),
 
   student_testing AS (
