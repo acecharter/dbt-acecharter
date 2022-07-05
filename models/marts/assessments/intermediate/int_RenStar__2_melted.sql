@@ -45,6 +45,15 @@ percentile_rank AS (
   FROM star_results
 ),
 
+normal_curve_equivalent AS (
+  SELECT
+    AssessmentID,
+    'Normal Curve Equivalent' AS ReportingMethod,
+    'FLOAT64' AS StudentResultDataType,
+    CAST(NormalCurveEquivalent AS STRING) AS StudentResult
+  FROM star_results
+),
+
 lexile AS (
   SELECT
     AssessmentID,
@@ -112,6 +121,8 @@ results_unioned AS(
   SELECT * FROM ge
   UNION ALL
   SELECT * FROM unified_score
+  UNION ALL
+  SELECT * FROM normal_curve_equivalent
   UNION ALL
   SELECT * FROM percentile_rank
   UNION ALL
