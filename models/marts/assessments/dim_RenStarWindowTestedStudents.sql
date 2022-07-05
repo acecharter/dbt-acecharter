@@ -1,6 +1,6 @@
 SELECT DISTINCT
   SchoolYear,
-  TestedSchoolId,
+  TestedSchoolId AS SchoolId,
   StudentIdentifier AS StudentUniqueId,
   AceAssessmentId,
   AssessmentName,
