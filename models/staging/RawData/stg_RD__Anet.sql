@@ -367,7 +367,7 @@ WITH
 
   final AS (
     SELECT
-      '0125617' AS StateSchoolCode,
+      CASE WHEN school_id = 100966 THEN '0125617' END AS StateSchoolCode,
       *,
       CASE WHEN item_type = 'Open Response' THEN 'Teacher' ELSE 'Machine' END AS scored_by
     FROM unioned
