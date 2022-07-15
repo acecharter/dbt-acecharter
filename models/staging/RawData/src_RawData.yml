@@ -6,14 +6,27 @@ sources:
     database: landing-zone-acecharter
     schema: RawData
     tables:
-
       - name: Anet2021Cycle1ElaMachineScored
+        description: Achievement Network (ANET) interim data export for 2021-22 ELA Cycle 1. Machine-scored questions only. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+      
       - name: Anet2021Cycle1MathMachineScored
+        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 1. Machine-scored questions only. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+      
       - name: Anet2021Cycle2ElaMachineScored
+        description: Achievement Network (ANET) interim data export for 2021-22 ELA Cycle 2. Machine-scored questions only. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+      
       - name: Anet2021Cycle2MathMachineScored
+        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 2. Machine-scored questions only. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+      
       - name: Anet2021Cycle3ElaMachineScored
+        description: Achievement Network (ANET) interim data export for 2021-22 ELA Cycle 3. Machine-scored questions only. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+      
       - name: Anet2021Cycle3MathMachineScored
+        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 3. Machine-scored questions only. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+      
       - name: Anet2021Cycle4MathMachineScored
+        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 4. Machine-scored questions only. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+      
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
         columns:
