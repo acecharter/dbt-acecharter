@@ -7,6 +7,13 @@ sources:
     schema: RawData
     tables:
 
+      - name: Anet2021Cycle1ElaMachineScored
+      - name: Anet2021Cycle1MathMachineScored
+      - name: Anet2021Cycle2ElaMachineScored
+      - name: Anet2021Cycle2MathMachineScored
+      - name: Anet2021Cycle3ElaMachineScored
+      - name: Anet2021Cycle3MathMachineScored
+      - name: Anet2021Cycle4MathMachineScored
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
         columns:
