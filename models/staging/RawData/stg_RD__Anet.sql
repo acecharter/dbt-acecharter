@@ -379,7 +379,7 @@ WITH
       i.AceAssessmentId,
       i.AceAssessmentName,
       CASE WHEN u.school_id = 100966 THEN '0125617' END AS StateSchoolCode,
-      *,
+      u.*,
       CASE WHEN u.item_type = 'Open Response' THEN 'Teacher' ELSE 'Machine' END AS scored_by
     FROM unioned AS u
     LEFT JOIN assessment_ids as i

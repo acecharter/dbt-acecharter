@@ -7,6 +7,8 @@ WITH
 
   final AS (
     SELECT
+      AceAssessmentId,
+      AceAssessmentName,
       school_year AS Year,
       CONCAT(CAST(school_year AS STRING), "-", CAST(school_year - 1999 AS STRING)) AS SchoolYear,
       StateSchoolCode,
