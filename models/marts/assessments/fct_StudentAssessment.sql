@@ -52,19 +52,19 @@ WITH
   anet AS (
     SELECT
       AceAssessmentId,
-      AceAssessmentName AS AssessmentName,
+      CONCAT(AceAssessmentName, ' (Cycle ', CAST(Cycle AS STRING), ')') AS AssessmentName,
+      Subject AS AssessmentSubject,
       StateUniqueId,
       StateSchoolCode AS TestedSchoolId,
       SchoolYear AS AssessmentSchoolYear,
-      CONCAT(AceAssessmentName,'-',StateUniqueId) AS AssessmentId,
-      NULL AS AssessmentDate,
+      CONCAT(AssessmentName,'-',StateUniqueId) AS AssessmentId,
+      CAST(NULL AS STRING) AS AssessmentDate,
       GradeLevel AS GradeLevelWhenAssessed,
       GradeLevel AS AssessmentGradeLevel,
-      Subject AS AssessmentSubject,
       'Overall' AS AssessmentObjective,
       'Percent Score' AS ReportingMethod,
       'FLOAT64' AS StudentResultDataType,
-      Score AS StudentResult
+      CAST(Score AS STRING) AS StudentResult
     FROM {{ ref('int_Anet__aggregated') }} AS c 
   ),
 
@@ -98,3 +98,4 @@ WITH
   )
 
 SELECT * FROM final
+WHERE AceAssessmentId = '14'
