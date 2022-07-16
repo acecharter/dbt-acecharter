@@ -1,4 +1,13 @@
 WITH
+  assessment_ids AS (
+    SELECT 
+      AceAssessmentId,
+      AssessmentNameShort AS AceAssessmentName,
+      AssessmentSubject
+    FROM {{ ref('stg_GSD__Assessments') }}
+    WHERE AssessmentFamilyName = 'Achievement Network'
+  ),
+
   ela_2021_c1_ms AS (
     SELECT
       CAST(school_year AS INT64) AS school_year,
@@ -367,10 +376,14 @@ WITH
 
   final AS (
     SELECT
-      CASE WHEN school_id = 100966 THEN '0125617' END AS StateSchoolCode,
+      i.AceAssessmentId,
+      i.AceAssessmentName,
+      CASE WHEN u.school_id = 100966 THEN '0125617' END AS StateSchoolCode,
       *,
-      CASE WHEN item_type = 'Open Response' THEN 'Teacher' ELSE 'Machine' END AS scored_by
-    FROM unioned
+      CASE WHEN u.item_type = 'Open Response' THEN 'Teacher' ELSE 'Machine' END AS scored_by
+    FROM unioned AS u
+    LEFT JOIN assessment_ids as i
+    ON u.Subject = i.AssessmentSubject
   )
 
   SELECT * FROM final
