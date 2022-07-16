@@ -49,10 +49,31 @@ WITH
     USING (AceAssessmentId)
   ),
 
+  anet AS (
+    SELECT
+      AceAssessmentId,
+      AceAssessmentName AS AssessmentName,
+      StateUniqueId,
+      StateSchoolCode AS TestedSchoolId,
+      SchoolYear AS AssessmentSchoolYear,
+      CONCAT(AceAssessmentName,'-',StateUniqueId) AS AssessmentId,
+      NULL AS AssessmentDate,
+      GradeLevel AS GradeLevelWhenAssessed,
+      GradeLevel AS AssessmentGradeLevel,
+      Subject AS AssessmentSubject,
+      'Overall' AS AssessmentObjective,
+      'Percent Score' AS ReportingMethod,
+      'FLOAT64' AS StudentResultDataType,
+      Score AS StudentResult
+    FROM {{ ref('int_Anet__aggregated') }} AS c 
+  ),
+
   unioned_results AS (
     SELECT * FROM star
     UNION ALL
     SELECT * FROM cers
+    UNION ALL
+    SELECT * FROM anet
   ),
 
   final AS (

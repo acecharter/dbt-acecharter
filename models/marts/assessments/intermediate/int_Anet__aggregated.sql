@@ -13,8 +13,8 @@ WITH
       CONCAT(CAST(school_year AS STRING), "-", CAST(school_year - 1999 AS STRING)) AS SchoolYear,
       StateSchoolCode,
       school_name AS SchoolName,
-      sas_id AS StateUniqueId,
-      sis_id AS StudentUniqueId,
+      CAST(sas_id AS STRING) AS StateUniqueId,
+      CAST(sis_id AS STRING) AS StudentUniqueId,
       student_first_name AS FirstName,
       student_middle_name AS MiddleName,
       student_last_name AS LastName,
@@ -31,7 +31,7 @@ WITH
       SUM(points_possible) AS PointsPossible,
       ROUND(SUM(points_received)/SUM(points_possible), 3) AS Score
     FROM anet_m
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
   )
 
 SELECT *
