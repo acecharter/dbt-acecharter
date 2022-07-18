@@ -98,4 +98,3 @@ WITH
   )
 
 SELECT * FROM final
-WHERE AceAssessmentId = '14'
