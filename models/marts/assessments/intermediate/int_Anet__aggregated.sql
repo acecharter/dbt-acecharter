@@ -36,7 +36,7 @@ WITH
       assessment_name AS AssessmentName,
       SUM(points_received) AS PointsReceived,
       SUM(points_possible) AS PointsPossible,
-      ROUND(SUM(points_received)/SUM(points_possible), 3) AS Score
+      ROUND(SUM(points_received)/SUM(points_possible), 2) AS Score
     FROM anet_m
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
   )
