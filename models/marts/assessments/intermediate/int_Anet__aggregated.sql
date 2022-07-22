@@ -19,7 +19,14 @@ WITH
       student_middle_name AS MiddleName,
       student_last_name AS LastName,
       enrollment_grade AS GradeLevel,
-      course AS Course,
+      CASE
+        WHEN course = 'english_i' THEN 'English I'
+        WHEN course = 'english_ii' THEN 'English II'
+        WHEN course = 'english_iii' THEN 'English III'
+        WHEN course = 'algebra_i' THEN 'Algebra I'
+        WHEN course = 'geometry' THEN 'Geometry'
+        ELSE course
+      END AS Course,
       period AS Period,
       teacher_first_name AS TeacherFirstName,
       teacher_last_name AS TeacherLastName,
