@@ -31,7 +31,7 @@ SELECT
   caa_level3_num AS CaaLevel3Num,
   caa_level3_pct AS CaaLevel3_Pct,
   reportingyear AS ReportingYear
-FROM {{ source('RawData', 'CaDashEla2018')}}
+FROM {{ source('RawData', 'CaDashMath2018')}}
 WHERE 
     rtype = 'X'
     OR rtype = 'D' AND cds = 43693690000000 --ARUSD
