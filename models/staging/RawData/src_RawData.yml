@@ -70,6 +70,27 @@ sources:
       - name: CaDashSusp2018
         description: 2018 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 
+      - name: CaDashCci2019
+        description: 2019 CA School Dashboard College/Career indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashChronic2019
+        description: 2019 CA School Dashboard Chronic Absenteeism Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashEla2019
+        description: 2019 CA School Dashboard ELA indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashElpi2019
+        description: 2019 CA School Dashboard English Learner Progress indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashGrad2019
+        description: 2019 CA School Dashboard Graduation Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashMath2019
+        description: 2019 CA School Dashboard Math data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashSusp2019
+        description: 2019 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
       - name: CdeAdjustedCohortOutcomes2017
         description: 2016-17 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
 
