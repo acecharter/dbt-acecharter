@@ -1,8 +1,8 @@
 WITH 
-  math_2018 AS (
+  grad_2018 AS (
     SELECT
       Cds,
-      Rtype,
+      RType,
       SchoolName,
       DistrictName,
       CountyName,
@@ -10,28 +10,27 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
+      NULL AS FiveYrNumer,
+      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      CAST(NULL AS BOOL) AS NoTestFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashMath2018')}} 
+    FROM {{ ref('stg_RD__CaDashGrad2018')}} 
   ),
 
-  math_2019 AS (
+  grad_2019 AS (
     SELECT
       Cds,
-      Rtype,
+      RType,
       SchoolName,
       DistrictName,
       CountyName,
@@ -39,28 +38,27 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
+      FiveYrNumer,
+      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      NoTestFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashMath2019')}} 
+  FROM {{ ref('stg_RD__CaDashGrad2019')}} 
   ),
 
   unioned AS (
-    SELECT * FROM math_2018
+    SELECT * FROM grad_2018
     UNION ALL
-    SELECT * FROM math_2019
+    SELECT * FROM grad_2019
   )
 
 SELECT * FROM unioned

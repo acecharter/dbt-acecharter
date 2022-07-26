@@ -2,12 +2,12 @@
 WITH
   cgr_2017 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeCollegeGoingRate12Month2017')}}
+    FROM {{ source('RawData', 'CdeCgr12Mo2017')}}
   ),
   
   cgr_2018 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeCollegeGoingRate12Month2018')}}
+    FROM {{ source('RawData', 'CdeCgr12Mo2018')}}
   ),
 
   unioned AS (

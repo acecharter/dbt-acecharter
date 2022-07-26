@@ -2,22 +2,22 @@
 WITH
   susp_1718 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeSuspension1718')}}
+    FROM {{ source('RawData', 'CdeSusp1718')}}
   ),
 
   susp_1819 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeSuspension1819')}}
+    FROM {{ source('RawData', 'CdeSusp1819')}}
   ),
 
   susp_1920 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeSuspension1920')}}
+    FROM {{ source('RawData', 'CdeSusp1920')}}
   ),
 
   susp_2021 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeSuspension2021')}}
+    FROM {{ source('RawData', 'CdeSusp2021')}}
   ),
 
   unioned AS (
