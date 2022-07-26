@@ -148,16 +148,16 @@ sources:
       - name: CdeEnr21
         description: 2021 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
 
-      - name: CdeSuspension1718
+      - name: CdeSusp1718
         description: 2017-18 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
 
-      - name: CdeSuspension1819
+      - name: CdeSusp1819
         description: 2018-19 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
 
-      - name: CdeSuspension1920
+      - name: CdeSusp1920
         description: 2019-20 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
 
-      - name: CdeSuspension2021
+      - name: CdeSusp2021
         description: 2020-21 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
 
       - name: CersEmpower2122
