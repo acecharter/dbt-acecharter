@@ -2,17 +2,17 @@
 WITH
   chrabs_1617 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeChronicAbsenteeism1617')}}
+    FROM {{ source('RawData', 'CdeChrAbs1617')}}
   ),
 
   chrabs_1718 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeChronicAbsenteeism1718')}}
+    FROM {{ source('RawData', 'CdeChrAbs1718')}}
   ),
 
   chrabs_1819 AS (
     SELECT *
-    FROM {{ source('RawData', 'CdeChronicAbsenteeism1819')}}
+    FROM {{ source('RawData', 'CdeChrAbs1819')}}
   ),
   
   --Note: no 2019-20 chronic absenteeism file due to the pandemic
@@ -32,7 +32,7 @@ WITH
       ChronicAbsenteeismEligibleCumula,
       ChronicAbsenteeismCount,
       ChronicAbsenteeismRate
-    FROM {{ source('RawData', 'CdeChronicAbsenteeism2021')}}
+    FROM {{ source('RawData', 'CdeChrAbs2021')}}
   ),
 
   unioned AS (
