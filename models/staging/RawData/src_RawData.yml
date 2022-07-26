@@ -6,27 +6,9 @@ sources:
     database: landing-zone-acecharter
     schema: RawData
     tables:
-      - name: Anet2021Cycle1ElaMachineScored
-        description: Achievement Network (ANET) interim data export for 2021-22 ELA Cycle 1 machine-scored questions. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
-      - name: Anet2021Cycle1MathMachineScored
-        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 1 machine-scored questions. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
-      - name: Anet2021Cycle2ElaMachineScored
-        description: Achievement Network (ANET) interim data export for 2021-22 ELA Cycle 2 machine-scored questions. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
-      - name: Anet2021Cycle2MathMachineScored
-        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 2 machine-scored questions. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
-      - name: Anet2021Cycle3ElaMachineScored
-        description: Achievement Network (ANET) interim data export for 2021-22 ELA Cycle 3 machine-scored questions. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
-      - name: Anet2021Cycle3MathMachineScored
-        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 3 machine-scored questions. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
-      - name: Anet2021Cycle4MathMachineScored
-        description: Achievement Network (ANET) interim data export for 2021-22 Math Cycle 4 machine-scored questions. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
+      - name: Anet2021MachineScored
+        description: Achievement Network (ANET) interim data for 2021-22 machine-scored questions. Subject/Cycle-specific export files merged manually prior to uploading to BigQuery. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
+
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
         columns:
@@ -69,6 +51,27 @@ sources:
 
       - name: CaDashSusp2018
         description: 2018 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashCci2019
+        description: 2019 CA School Dashboard College/Career indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashChronic2019
+        description: 2019 CA School Dashboard Chronic Absenteeism Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashEla2019
+        description: 2019 CA School Dashboard ELA indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashElpi2019
+        description: 2019 CA School Dashboard English Learner Progress indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashGrad2019
+        description: 2019 CA School Dashboard Graduation Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashMath2019
+        description: 2019 CA School Dashboard Math data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashSusp2019
+        description: 2019 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 
       - name: CdeAdjustedCohortOutcomes2017
         description: 2016-17 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
