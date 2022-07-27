@@ -1,5 +1,5 @@
 WITH 
-  susp_2018 AS (
+  math_2019 AS (
     SELECT
       Cds,
       RType,
@@ -9,26 +9,26 @@ WITH
       CharterFlag,
       CoeFlag,
       DassFlag,
-      Type,
       StudentGroup,
-      CurrNumer,
       CurrDenom,
       CurrStatus,
-      PriorNumer,
       PriorDenom,
       PriorStatus,
-      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      CertifyFlag,
+      HsCutPoints,
+      CurrAdjustment,
+      PriorAdjustment,
+      PairShareMethod,
+      NoTestFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashSusp2018')}} 
+  FROM {{ ref('stg_RD__CaDashMath2019')}} 
   ),
-
-  susp_2019 AS (
+  
+  math_2018 AS (
     SELECT
       Cds,
       RType,
@@ -38,29 +38,41 @@ WITH
       CharterFlag,
       CoeFlag,
       DassFlag,
-      Type,
       StudentGroup,
-      CurrNumer,
       CurrDenom,
       CurrStatus,
-      PriorNumer,
       PriorDenom,
       PriorStatus,
-      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      CertifyFlag,
+      HsCutPoints,
+      CurrAdjustment,
+      PriorAdjustment,
+      PairShareMethod,
+      CAST(NULL AS BOOL) AS NoTestFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashSusp2019')}} 
+    FROM {{ ref('stg_RD__CaDashMath2018')}} 
   ),
 
   unioned AS (
-    SELECT * FROM susp_2018
+    SELECT * FROM math_2018
     UNION ALL
-    SELECT * FROM susp_2019
+    SELECT * FROM math_2019
+  ),
+
+  final AS (
+    SELECT
+      'Math' AS IndicatorName,
+      CASE
+        WHEN RType = 'X' THEN '00'
+        WHEN RType = 'D' THEN SUBSTR(cds, 3, 5)
+        WHEN RType = 'S' THEN SUBSTR(cds, LENGTH(cds)-6, 7)
+      END AS EntityCode,
+      *
+    FROM unioned
   )
 
-SELECT * FROM unioned
+SELECT * FROM final

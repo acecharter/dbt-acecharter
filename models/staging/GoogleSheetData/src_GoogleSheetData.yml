@@ -90,21 +90,25 @@ sources:
             description: Minimum scale score within Level 4 range; ('N/A' if not applicable)
           - name: Notes
 
+
+      - name: CaDashCodes
+        description: Generic codes and corresponding values (i.e. codes/values that are consistent across all indicators) for certain fields in California School Dashboard files as documented on record layout pages found at https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp. 
+
       - name: CdeEnrByRaceAndGradeEntities
         description: Official CDE census non-school entity (i.e. district, county, state) enrollment data for grade and race/ethnicity groups copied from Enrollment by Ethnicity and Grade report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
       
-      - name: CdeEnrBySubgroupSchools
-        description: Official CDE census school enrollment data for key student groups copied from School Enrollment by Subgroup report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
-      
       - name: CdeEnrBySubgroupEntities
         description: Official CDE census non-school entity (i.e. district, county, state) enrollment data for key student groups copied from Enrollment by Subgroup report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
+      
+      - name: CdeEnrBySubgroupSchools
+        description: Official CDE census school enrollment data for key student groups copied from School Enrollment by Subgroup report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
                 
       - name: CdeReportingCategories
         description: Student group reporting category codes and descriptors used in many CDE downloadable data files.
         columns:
-          - name: ReportingCategoryCode
+          - name: Code
           - name: ReportingCategory
-          - name: ReportingCategoryType
+          - name: Type
 
       - name: ComparisonEntities
         description: Entity (i.e. state, county, district, and schools) information for non-ACE entities to include in comparisons. One row per comparison (e.g. State listed 4 times, once for each ACE school).
@@ -138,6 +142,10 @@ sources:
 
           - name: Notes
 
+
+      - name: CourseSubjects
+        description: A google sheet containing courses categorized by academic subject.
+
       - name: ElpiLevels
         description: A google sheet that provides data regarding State Dashboard English Learner Progress Indicator (ELPI) levels used to determine whether EL students are progressing
         columns:
@@ -166,8 +174,24 @@ sources:
             tests:
               - not_null
 
-      - name: CourseSubjects
-        description: A google sheet containing courses categorized by academic subject.
+      - name: ManuallyMaintainedFilesTracker
+        description: A google sheet used to track the last date that files requiring manual maintenance (i.e. files that must be continuously updated via manual uploads) were last updated in BigQuery
+        columns:
+          - name: DatasetName
+            description: Name of the dataset where each table is located
+          - name: TableName
+            description: Name of the table that is manually maintained
+          - name: DateOfLastUpdate
+            description: Date that each listed table was last updated
+       
+      - name: RenStarGradePlacementByDayRange
+        description: List of Renaissance Star Grade Placement (GP) decimal values and corresponding assessment date info. Used to calculate GP for 20-21 Star Results
+      
+      - name: RenStarMissingStudentIds
+        description: List of StudentRenaissanceIDs and corresponding StudentIdentifier and StateUniqueId values that are missing from RenaissanceStar records
+
+      - name: RenStarTestingWindows
+        description: List of Renaissance Star testing windows and key dates for determining eligiblity and completion rates
 
       - name: Schools
         description: Additional school information
@@ -185,22 +209,3 @@ sources:
             description: State-assigned district code for the authorizing district or entity
             tests:
               - not_null
-
-      - name: ManuallyMaintainedFilesTracker
-        description: A google sheet used to track the last date that files requiring manual maintenance (i.e. files that must be continuously updated via manual uploads) were last updated in BigQuery
-        columns:
-          - name: DatasetName
-            description: Name of the dataset where each table is located
-          - name: TableName
-            description: Name of the table that is manually maintained
-          - name: DateOfLastUpdate
-            description: Date that each listed table was last updated
-       
-      - name: RenStarGradePlacementByDayRange
-        description: List of Renaissance Star Grade Placement (GP) decimal values and corresponding assessment date info. Used to calculate GP for 20-21 Star Results
-
-      - name: RenStarTestingWindows
-        description: List of Renaissance Star testing windows and key dates for determining eligiblity and completion rates
-      
-      - name: RenStarMissingStudentIds
-        description: List of StudentRenaissanceIDs and corresponding StudentIdentifier and StateUniqueId values that are missing from RenaissanceStar records

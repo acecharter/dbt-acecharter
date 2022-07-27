@@ -1,5 +1,5 @@
 WITH 
-  chronic_2018 AS (
+  susp_2019 AS (
     SELECT
       Cds,
       RType,
@@ -9,6 +9,7 @@ WITH
       CharterFlag,
       CoeFlag,
       DassFlag,
+      Type,
       StudentGroup,
       CurrNumer,
       CurrDenom,
@@ -16,19 +17,18 @@ WITH
       PriorNumer,
       PriorDenom,
       PriorStatus,
-      Change,
       SafetyNet,
+      Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
       CertifyFlag,
-      CAST(NULL AS BOOL) AS DataErrorFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashChronic2018')}} 
+  FROM {{ ref('stg_RD__CaDashSusp2019')}} 
   ),
-
-  chronic_2019 AS (
+  
+  susp_2018 AS (
     SELECT
       Cds,
       RType,
@@ -38,6 +38,7 @@ WITH
       CharterFlag,
       CoeFlag,
       DassFlag,
+      Type,
       StudentGroup,
       CurrNumer,
       CurrDenom,
@@ -45,22 +46,33 @@ WITH
       PriorNumer,
       PriorDenom,
       PriorStatus,
-      Change,
       SafetyNet,
+      Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
       CertifyFlag,
-      DataErrorFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashChronic2019')}} 
+    FROM {{ ref('stg_RD__CaDashSusp2018')}} 
   ),
 
   unioned AS (
-    SELECT * FROM chronic_2018
+    SELECT * FROM susp_2018
     UNION ALL
-    SELECT * FROM chronic_2019
+    SELECT * FROM susp_2019
+  ),
+
+  final AS (
+    SELECT
+      'Suspension Rate' AS IndicatorName,
+      CASE
+        WHEN RType = 'X' THEN '00'
+        WHEN RType = 'D' THEN SUBSTR(cds, 3, 5)
+        WHEN RType = 'S' THEN SUBSTR(cds, LENGTH(cds)-6, 7)
+      END AS EntityCode,
+      *
+    FROM unioned
   )
 
-SELECT * FROM unioned
+SELECT * FROM final

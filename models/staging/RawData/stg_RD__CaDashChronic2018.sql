@@ -5,7 +5,7 @@ SELECT
   districtname AS DistrictName,
   countyname AS CountyName,
   charter_flag AS CharterFlag,
-  coe_flag AS CoeFlag,
+  CAST(coe_flag AS BOOL) AS CoeFlag,
   dass_flag AS DassFlag,
   studentgroup AS StudentGroup,
   currnumer AS CurrNumer,

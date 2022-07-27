@@ -25,6 +25,18 @@ WITH
 
   unioned AS (
     SELECT * FROM elpi_2019
+  ),
+
+  final AS (
+    SELECT
+      'EL Progress' AS IndicatorName,
+      CASE
+        WHEN RType = 'X' THEN '00'
+        WHEN RType = 'D' THEN SUBSTR(cds, 3, 5)
+        WHEN RType = 'S' THEN SUBSTR(cds, LENGTH(cds)-6, 7)
+      END AS EntityCode,
+      *
+    FROM unioned
   )
 
-SELECT * FROM unioned
+SELECT * FROM final
