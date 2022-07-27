@@ -1,1 +1,5 @@
-SELECT * FROM {{ source('GoogleSheetData', 'CdeReportingCategories')}}
+SELECT
+  Code AS ReportingCategoryCode,
+  ReportingCategory,
+  Type AS ReportingCategoryType
+FROM {{ source('GoogleSheetData', 'CdeReportingCategories')}}

@@ -5,7 +5,7 @@ SELECT
   districtname AS DistrictName,
   countyname AS CountyName,
   charter_flag AS CharterFlag,
-  coe_flag AS CoeFlag,
+  CAST(coe_flag AS BOOL) AS CoeFlag,
   dass_flag AS DassFlag,
   studentgroup AS StudentGroup,
   currnumer AS CurrNumer,
@@ -33,6 +33,6 @@ WHERE
   OR rtype = 'S' AND cds = 43693690107763 --Renaissance Academy
   OR rtype = 'S' AND cds = 43696666062103 --Muwekma Ohlone Middle
   OR rtype = 'S' AND cds = 43694506062103 --Bridges Academy
-  OR rtype = 'S' AND cds = 43693690116814 --ACE Empower
+  OR rtype = 'S' AND cds = 43104390116814 --ACE Empower
   OR rtype = 'S' AND cds = 43696660131656 --ACE Inspire
   OR rtype = 'S' AND cds = 43694500129247 --ACE Esperanza
