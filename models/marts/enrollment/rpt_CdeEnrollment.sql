@@ -1,7 +1,6 @@
 WITH
-  entity_info AS (
-    SELECT DISTINCT * EXCEPT (AceComparisonSchoolCode,AceComparisonSchoolName)
-    FROM {{ ref('dim_ComparisonEntities')}}
+  entities AS (
+    SELECT * FROM {{ ref('dim_Entities')}}
   ),
   
   enrollment AS (
@@ -23,7 +22,7 @@ WITH
       e.Enrollment,
       e.PctOfTotalEnrollment
     FROM enrollment AS e
-    LEFT JOIN entity_info AS i
+    LEFT JOIN entities AS i
     ON e.EntityCode = i.EntityCode
     WHERE
       i.EntityCode IS NOT NULL

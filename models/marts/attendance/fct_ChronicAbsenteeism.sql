@@ -1,7 +1,6 @@
-WITH 
+WITH
   entities AS (
-    SELECT DISTINCT * EXCEPT (AceComparisonSchoolCode,AceComparisonSchoolName)
-    FROM {{ ref('dim_ComparisonEntities')}}
+    SELECT * FROM {{ ref('dim_Entities')}}
   ),
 
   chrabs AS (

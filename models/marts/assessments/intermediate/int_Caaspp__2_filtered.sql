@@ -2,9 +2,9 @@
     materialized='table'
 )}}
 
-WITH 
+WITH
   entities AS (
-    SELECT DISTINCT * FROM {{ ref('dim_Entities')}}
+    SELECT * FROM {{ ref('dim_Entities')}}
   ),
 
   caaspp AS (

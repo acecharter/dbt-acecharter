@@ -2,10 +2,9 @@
     materialized='table'
 )}}
 
-WITH 
-  comparison_entities AS (
-    SELECT DISTINCT * EXCEPT(AceComparisonSchoolCode, AceComparisonSchoolName)
-    FROM {{ ref('dim_ComparisonEntities')}}
+WITH
+  entities AS (
+    SELECT * FROM {{ ref('dim_Entities')}}
   ),
 
   elpac AS (

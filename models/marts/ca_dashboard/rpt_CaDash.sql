@@ -2,10 +2,9 @@ WITH
   dash AS (
     SELECT * FROM {{ref ('int_CaDashAll')}}
   ),
-
+  
   entities AS (
-    SELECT DISTINCT * EXCEPT (AceComparisonSchoolCode,AceComparisonSchoolName)
-    FROM {{ ref('dim_ComparisonEntities')}}
+    SELECT * FROM {{ ref('dim_Entities')}}
   ),
 
   codes AS (
