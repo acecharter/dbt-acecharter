@@ -3,9 +3,8 @@
 )}}
 
 WITH 
-  comparison_entities AS (
-    SELECT DISTINCT * EXCEPT(AceComparisonSchoolCode, AceComparisonSchoolName)
-    FROM {{ ref('dim_ComparisonEntities')}}
+  entities AS (
+    SELECT DISTINCT * FROM {{ ref('dim_Entities')}}
   ),
 
   caaspp AS (
@@ -13,7 +12,7 @@ WITH
     FROM {{ ref('int_Caaspp__1_unioned')}}
     WHERE
       GradeLevel >= 5
-      AND EntityCode IN (SELECT EntityCode FROM comparison_entities)
+      AND EntityCode IN (SELECT EntityCode FROM entities)
       AND DemographicId IN (
         '1',   --All Students
         '128', --Reported Disabilities
@@ -44,7 +43,7 @@ WITH
         CASE WHEN c.MeanScaleScore IS NOT NULL THEN ROUND(c.MeanScaleScore - m.MinStandardMetScaleScore, 1) ELSE NULL END AS STRING
       ) AS MeanDistanceFromStandard
     FROM caaspp AS c
-    LEFT JOIN comparison_entities AS e
+    LEFT JOIN entities AS e
     ON c.EntityCode = e.EntityCode
     LEFT JOIN min_met_scores AS m
     ON
