@@ -21,7 +21,6 @@ WITH
       StatusLevel,
       NULL AS ChangeLevel,
       NULL AS Color,
-      ColorName,
       NULL AS Box,
       Flag95Pct,
       NSizeMet,
