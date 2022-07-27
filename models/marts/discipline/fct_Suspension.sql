@@ -29,7 +29,7 @@ WITH
       s.CharterSchool,
       s.ReportingCategory,
       r.ReportingCategory AS ReportingCategoryName,
-      r.Type AS ReportingCategoryType,
+      r.ReportingCategoryType,
       s.CumulativeEnrollment,
       s.TotalSuspensions,
       s.UnduplicatedCountOfStudentsSuspendedTotal AS UnduplicatedCountOfStudentsSuspended,
