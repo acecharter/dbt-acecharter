@@ -77,7 +77,7 @@ WITH
       CoeFlag,
       DassFlag,
       CAST(NULL AS STRING) AS StudentGroup,
-      StudentGroupName,
+      CAST(NULL AS STRING) AS StudentGroupName,
       CurrDenom,
       CurrStatus,
       PriorDenom,
