@@ -3,6 +3,9 @@ WITH
     SELECT
       IndicatorName,
       EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameShort,
       Cds,
       RType,
       SchoolName,
@@ -12,6 +15,7 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      StudentGroupName,
       CurrDenom,
       CurrStatus,
       PriorDenom,
@@ -20,6 +24,7 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      ColorName,
       Box,
       ReportingYear
     FROM {{ ref('int_CaDashEla')}} 
@@ -29,6 +34,9 @@ WITH
     SELECT
       IndicatorName,
       EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameShort,
       Cds,
       RType,
       SchoolName,
@@ -38,6 +46,7 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      StudentGroupName,
       CurrDenom,
       CurrStatus,
       PriorDenom,
@@ -46,6 +55,7 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      ColorName,
       Box,
       ReportingYear
     FROM {{ ref('int_CaDashMath')}} 
@@ -55,6 +65,9 @@ WITH
     SELECT
       IndicatorName,
       EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameShort,
       Cds,
       RType,
       SchoolName,
@@ -64,15 +77,17 @@ WITH
       CoeFlag,
       DassFlag,
       CAST(NULL AS STRING) AS StudentGroup,
+      StudentGroupName,
       CurrDenom,
       CurrStatus,
-      NULL AS PriorDenom,
-      NULL AS PriorStatus,
-      NULL AS Change,
+      PriorDenom,
+      PriorStatus,
+      Change,
       StatusLevel,
-      NULL AS ChangeLevel,
-      NULL AS Color,
-      NULL AS Box,
+      ChangeLevel,
+      Color,
+      ColorName,
+      Box,
       ReportingYear
     FROM {{ ref('int_CaDashElpi')}}
   ),
@@ -81,6 +96,9 @@ WITH
     SELECT
       IndicatorName,
       EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameShort,
       Cds,
       RType,
       SchoolName,
@@ -90,6 +108,7 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      StudentGroupName,
       CurrDenom,
       CurrStatus,
       PriorDenom,
@@ -98,15 +117,19 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      ColorName,
       Box,
       ReportingYear
     FROM {{ ref('int_CaDashCci')}}
   ),
 
   chronic AS (
-    SELECT 
+    SELECT
       IndicatorName,
       EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameShort,
       Cds,
       RType,
       SchoolName,
@@ -116,6 +139,7 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      StudentGroupName,
       CurrDenom,
       CurrStatus,
       PriorDenom,
@@ -124,6 +148,7 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      ColorName,
       Box,
       ReportingYear
     FROM {{ ref('int_CaDashChronic')}}
@@ -133,6 +158,9 @@ WITH
     SELECT
       IndicatorName,
       EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameShort,
       Cds,
       RType,
       SchoolName,
@@ -142,6 +170,7 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      StudentGroupName,
       CurrDenom,
       CurrStatus,
       PriorDenom,
@@ -150,6 +179,7 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      ColorName,
       Box,
       ReportingYear
     FROM {{ ref('int_CaDashSusp')}}
@@ -159,6 +189,9 @@ WITH
     SELECT
       IndicatorName,
       EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameShort,
       Cds,
       RType,
       SchoolName,
@@ -168,6 +201,7 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      StudentGroupName,
       CurrDenom,
       CurrStatus,
       PriorDenom,
@@ -176,6 +210,7 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      ColorName,
       Box,
       ReportingYear
     FROM {{ ref('int_CaDashGrad')}}
