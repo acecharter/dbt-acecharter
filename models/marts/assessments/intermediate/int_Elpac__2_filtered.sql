@@ -12,7 +12,7 @@ WITH
     FROM {{ ref('int_Elpac__1_unioned')}}
     WHERE
       GradeLevel >= 5
-      AND EntityCode IN (SELECT EntityCode FROM comparison_entities)
+      AND EntityCode IN (SELECT EntityCode FROM entities)
       AND StudentGroupId IN (
         '160', --All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
         '120', --ELs enrolled less than 12 months
@@ -28,14 +28,14 @@ WITH
 
   final AS (
     SELECT
-      e.*,
-      c.* EXCEPT (EntityCode), 
+      elpac.*,
+      entities.* EXCEPT (EntityCode), 
       CONCAT(
-        CAST(TestYear - 1 AS STRING), '-', CAST(TestYear - 2000 AS STRING)
+        CAST(elpac.TestYear - 1 AS STRING), '-', CAST(elpac.TestYear - 2000 AS STRING)
       ) AS SchoolYear,
-    FROM elpac AS e
-    LEFT JOIN comparison_entities AS c
-    ON e.EntityCode = c.EntityCode
+    FROM elpac
+    LEFT JOIN entities
+    ON elpac.EntityCode = entities.EntityCode
 
   )
 
