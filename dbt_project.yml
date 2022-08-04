@@ -65,6 +65,6 @@ models:
     # Applies to all files under models/staging/
     staging:
       +materialized: view
-      
+
       base:
         +materialized: ephemeral
