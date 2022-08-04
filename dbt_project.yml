@@ -35,7 +35,6 @@ models:
     # Applies to all files under models/marts/
     marts:
       +materialized: table
-      
       assessments:
         +materialized: table
 
@@ -66,5 +65,6 @@ models:
         
     # Applies to all files under models/staging/
     staging:
-      base:
-        +materialized: table
+      RawData:
+        base:
+          +materialized: ephemeral
