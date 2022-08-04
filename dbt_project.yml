@@ -34,8 +34,11 @@ models:
   ace_charter:
     # Applies to all files under models/marts/
     marts:
+      +materialized: table
+      
       assessments:
         +materialized: table
+
         intermediate:
           +materialized: view
 
@@ -64,3 +67,6 @@ models:
     # Applies to all files under models/staging/
     staging:
       +materialized: view
+
+      base:
+        +materialized: ephemeral
