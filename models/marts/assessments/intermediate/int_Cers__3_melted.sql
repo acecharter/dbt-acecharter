@@ -7,7 +7,7 @@ WITH
     SELECT
       *,
       CONCAT(AssessmentName, '-', StateUniqueId, '-', AssessmentDate) AS AssessmentId,
-    FROM {{ ref('int_Cers__2_elpi_added') }}
+    FROM {{ ref('int_Cers__2_elpi_and_dfs_added') }}
     WHERE Completeness='Complete'
   ),
 
