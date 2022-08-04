@@ -36,6 +36,7 @@ models:
     marts:
       assessments:
         +materialized: table
+
         intermediate:
           +materialized: view
 
@@ -64,3 +65,6 @@ models:
     # Applies to all files under models/staging/
     staging:
       +materialized: view
+      
+      base:
+        +materialized: ephemeral
