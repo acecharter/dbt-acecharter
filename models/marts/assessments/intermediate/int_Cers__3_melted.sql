@@ -159,6 +159,17 @@ WITH
     WHERE ElpiLevel IS NOT NULL
   ),
 
+  dfs AS (
+    SELECT
+      AssessmentId,
+      'Overall' AS AssessmentObjective,
+      'Distance From Standard' AS ReportingMethod,
+      'INT64' AS StudentResultDataType,
+      CAST(DistanceFromStandard AS STRING) AS StudentResult
+    FROM cers
+    WHERE DistanceFromStandard IS NOT NULL
+  ),
+
 results_unioned AS(
   SELECT * FROM achievement_level
   UNION ALL
@@ -177,6 +188,8 @@ results_unioned AS(
   SELECT * FROM claim4_level
   UNION ALL
   SELECT * FROM elpi_level
+  UNION ALL
+  SELECT * FROM dfs
 )
 
 SELECT
