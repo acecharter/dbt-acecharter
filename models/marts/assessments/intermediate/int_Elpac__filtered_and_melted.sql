@@ -22,8 +22,7 @@ WITH
         '247' --EL - 6+ years in program
       )
   ),
-  ),
-
+  
   elpac_keys AS(
     SELECT
       AssessmentId,
