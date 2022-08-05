@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH
   assessment_ids AS (
     SELECT 
