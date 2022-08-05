@@ -83,10 +83,10 @@ WITH
       EntityName,
       EntityNameMid,
       EntityNameShort,
-      SchoolYear,
       CountyCode,
       DistrictCode,
       SchoolCode,
+      SchoolYear,
       TestYear,
       DemographicId,
       TestType,
@@ -115,7 +115,8 @@ WITH
       Area4PctAboveStandard,
       Area4PctNearStandard,
       Area4PctBelowStandard,
-      TypeId
+      TypeId,
+      MeanDistanceFromStandard
     FROM caaspp_sy_and_dfs_added
   )
 
