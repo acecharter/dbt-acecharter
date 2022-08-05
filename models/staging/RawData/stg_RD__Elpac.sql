@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH
   entities AS (
     SELECT * FROM {{ ref('dim_Entities')}}
@@ -42,16 +46,49 @@ WITH
       
   ),
 
-  final AS (
+  elpac_sy_entity_info_added AS (
     SELECT
-      elpac.*,
       entities.* EXCEPT (EntityCode), 
       CONCAT(
-        CAST(elpac.TestYear - 1 AS STRING), '-', CAST(elpac.TestYear - 2000 AS STRING)
+        CAST(e.TestYear - 1 AS STRING), '-', CAST(e.TestYear - 2000 AS STRING)
       ) AS SchoolYear,
-    FROM elpac
+      e.*
+    FROM elpac_filtered AS e
     LEFT JOIN entities
-    ON elpac.EntityCode = entities.EntityCode
+    ON e.EntityCode = entities.EntityCode
+  ),
+
+  final AS (
+    SELECT
+      AceAssessmentId,
+      AceAssessmentName,
+      EntityCode,
+      EntityType,
+      EntityName,
+      EntityNameMid,
+      EntityNameShort,
+      CountyCode,
+      DistrictCode,
+      SchoolCode,
+      RecordType,
+      CharterNumber,
+      SchoolYear,
+      * EXCEPT(
+        AceAssessmentId,
+        AceAssessmentName,
+        EntityCode,
+        EntityType,
+        EntityName,
+        EntityNameMid,
+        EntityNameShort,
+        CountyCode,
+        DistrictCode,
+        SchoolCode,
+        RecordType,
+        CharterNumber,
+        SchoolYear
+      )
+    FROM elpac_sy_entity_info_added
   )
 
 SELECT * FROM final
