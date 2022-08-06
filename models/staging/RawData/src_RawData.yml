@@ -286,6 +286,7 @@ sources:
       - name: Elpac2019
       - name: Elpac2021
       - name: ElpacStudentGroups
+      
       - name: TomsCaasppEnrolled2021Empower
         description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsCaasppEnrolled2021Esperanza
@@ -294,6 +295,16 @@ sources:
         description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsCaasppEnrolled2021Inspire
         description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+      
+      - name: TomsCaasppTested2022Empower
+        description: Student-level CAASPP results exported from TOMS for students tested at Empower in 2022
+      - name: TomsCaasppTested2022Esperanza
+        description: Student-level CAASPP results exported from TOMS for students tested at Esperanza in 2022
+      - name: TomsCaasppTested2022Inspire
+        description: Student-level CAASPP results exported from TOMS for students tested at Inspire in 2022
+      - name: TomsCaasppTested2022HighSchool
+        description: Student-level CAASPP results exported from TOMS for students tested at ACE High School in 2022
+        
       - name: TomsElpacEnrolled2021Empower
         description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsElpacEnrolled2021Esperanza
@@ -302,4 +313,5 @@ sources:
         description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsElpacEnrolled2021Inspire
         description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+
 
