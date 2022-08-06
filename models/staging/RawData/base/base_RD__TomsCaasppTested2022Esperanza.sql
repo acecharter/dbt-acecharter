@@ -41,15 +41,15 @@ SELECT
   CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
   CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
   CAST(GrowthScore AS STRING) AS GrowthScore,
-  CAST(ScaleScore AS STRING) AS ScaleScore,
-  CAST(AchievementLevels AS STRING) AS AchievementLevels,
+  CAST(ScaleScore AS INT64) AS ScaleScore,
+  CAST(AchievementLevels AS INT64) AS AchievementLevels,
   CAST(GradeAssessedMinus1 AS STRING) AS GradeAssessedMinus1,
-  CAST(ScaleScoreMinus1 AS STRING) AS ScaleScoreMinus1,
-  CAST(AchievementLevelMinus1 AS STRING) AS AchievementLevelMinus1,
+  CAST(ScaleScoreMinus1 AS INT64) AS ScaleScoreMinus1,
+  CAST(AchievementLevelMinus1 AS INT64) AS AchievementLevelMinus1,
   CAST(GradeAssessedMinus2 AS STRING) AS GradeAssessedMinus2,
-  CAST(ScaleScoreMinus2 AS STRING) AS ScaleScoreMinus2,
-  CAST(AchievementLevelMinus2 AS STRING) AS AchievementLevelMinus2,
+  CAST(ScaleScoreMinus2 AS INT64) AS ScaleScoreMinus2,
+  CAST(AchievementLevelMinus2 AS INT64) AS AchievementLevelMinus2,
   CAST(GradeAssessedMinus3 AS STRING) AS GradeAssessedMinus3,
-  CAST(ScaleScoreMinus3 AS STRING) AS ScaleScoreMinus3,
-  CAST(AchievementLevelMinus3 AS STRING) AS AchievementLevelMinus3
+  CAST(ScaleScoreMinus3 AS INT64) AS ScaleScoreMinus3,
+  CAST(AchievementLevelMinus3 AS INT64) AS AchievementLevelMinus3
 FROM {{ source('RawData', 'TomsCaasppTested2022Esperanza')}}
