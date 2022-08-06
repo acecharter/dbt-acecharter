@@ -38,7 +38,7 @@ SELECT
   StudentRemovedCALPADSFileDate,
   Attemptedness,
   ScoreStatus,
-  IncludeIndicator,
+  CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
   CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
   CAST(GrowthScore AS STRING) AS GrowthScore,
   CAST(ScaleScore AS STRING) AS ScaleScore,
