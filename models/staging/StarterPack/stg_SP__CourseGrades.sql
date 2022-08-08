@@ -1,6 +1,6 @@
 SELECT *
 FROM {{ source('StarterPack', 'CourseGrades')}}
 WHERE
-  --DATE(_PARTITIONTIME) = CURRENT_DATE('America/Los_Angeles')
-  DATE(_PARTITIONTIME) = '2022-06-15' --This is temporary code until the start of the 22-23 school year
+  DATE(_PARTITIONTIME) = CURRENT_DATE('America/Los_Angeles')
+  --DATE(_PARTITIONTIME) = '2022-06-15' --Update the date and use this line in lieu of the preceding line to keep grades dashboard updated over the summer
   AND LetterGradeEarned IS NOT NULL

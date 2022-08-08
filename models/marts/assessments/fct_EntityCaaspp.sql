@@ -1,6 +1,6 @@
 WITH 
   caaspp AS (
-    SELECT * FROM {{ ref('int_Caaspp__3_melted')}} 
+    SELECT * FROM {{ ref('int_Caaspp__filtered_and_melted')}} 
   ),
 
   demographics AS (

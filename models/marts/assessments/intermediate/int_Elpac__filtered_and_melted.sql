@@ -7,9 +7,22 @@ WITH
     SELECT
       CONCAT(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', StudentGroupId, '-', GradeLevel, '-', AssessmentType) AS AssessmentId,
       *
-    FROM {{ ref('int_Elpac__2_filtered') }}
+    FROM {{ ref('stg_RD__Elpac') }}
+    WHERE
+      GradeLevel >= 5
+      AND StudentGroupId IN (
+        '160', --All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
+        '120', --ELs enrolled less than 12 months
+        '142', --ELs enrolled 12 months or more
+        '242', --EL - 1 year in program
+        '243', --EL - 2 years in program
+        '244', --EL - 3 years in program
+        '245', --EL - 4 years in program
+        '246', --EL - 5 years in program
+        '247' --EL - 6+ years in program
+      )
   ),
-
+  
   elpac_keys AS(
     SELECT
       AssessmentId,
