@@ -59,7 +59,7 @@ WITH
     FROM caaspp AS c
     LEFT JOIN assessment_ids AS a
     ON c.RecordType = a.SystemOrVendorAssessmentId
-    FROM race_ethnicity AS r
+    LEFT JOIN race_ethnicity AS r
     ON c.ReportingEthnicity = r.RaceEthnicityCode
   ),
 
