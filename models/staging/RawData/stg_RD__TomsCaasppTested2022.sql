@@ -1,4 +1,8 @@
 WITH
+  race_ethnicity AS (
+    SELECT * FROM {{ ref('stg_RD__TomsEthnicityCodes')}}
+  ),
+
   empower AS (
     SELECT * FROM {{ ref('base_RD__TomsCaasppTested2022Empower')}}
   ),
@@ -50,10 +54,13 @@ WITH
       a.AceAssessmentName,
       a.AssessmentSubject,
       '2021-22' AS SchoolYear,
-      c.*
+      c.*,
+      r.RaceEthnicity
     FROM caaspp AS c
     LEFT JOIN assessment_ids AS a
     ON c.RecordType = a.SystemOrVendorAssessmentId
+    LEFT JOIN race_ethnicity AS r
+    ON c.ReportingEthnicity = r.RaceEthnicityCode
   ),
 
   final AS (

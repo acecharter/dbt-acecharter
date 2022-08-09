@@ -313,5 +313,6 @@ sources:
         description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
       - name: TomsElpacEnrolled2021Inspire
         description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-
+      - name: TomsEthnicityCodes
+        description: Race/ethnicity codes and names for Reporting Ethnicity field in TOMS CAASPP Student Data Files
 
