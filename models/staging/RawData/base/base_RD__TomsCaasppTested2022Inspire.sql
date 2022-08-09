@@ -2,7 +2,7 @@ SELECT
   CAST(RecordType AS STRING) AS RecordType,
   CAST(SSID AS STRING) AS SSID,
   StudentLastName,
-  StudentFirstName
+  StudentFirstName,
   StudentMiddleName,
   DateofBirth,
   Gender,
