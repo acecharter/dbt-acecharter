@@ -60,17 +60,17 @@ WITH
     SELECT
       c.*,
       CAST(
-        CASE WHEN c.ScaleScore IS NOT NULL THEN ROUND(c.ScaleScore - m.MinStandardMetScaleScore, 0) ELSE NULL END AS STRING
-      ) AS DistanceFromStandard,
+        CASE WHEN c.ScaleScore IS NOT NULL THEN ROUND(c.ScaleScore - m.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
+      ) AS Dfs,
       CAST(
-        CASE WHEN c.ScaleScoreMinus1 IS NOT NULL THEN ROUND(c.ScaleScoreMinus1 - m1.MinStandardMetScaleScore, 0) ELSE NULL END AS STRING
-      ) AS DistanceFromStandardMinus1,
+        CASE WHEN c.ScaleScoreMinus1 IS NOT NULL THEN ROUND(c.ScaleScoreMinus1 - m1.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
+      ) AS DfsMinus1,
       CAST(
-        CASE WHEN c.ScaleScoreMinus2 IS NOT NULL THEN ROUND(c.ScaleScoreMinus2 - m2.MinStandardMetScaleScore, 0) ELSE NULL END AS STRING
-      ) AS DistanceFromStandardMinus2,
+        CASE WHEN c.ScaleScoreMinus2 IS NOT NULL THEN ROUND(c.ScaleScoreMinus2 - m2.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
+      ) AS DfsMinus2,
       CAST(
-        CASE WHEN c.ScaleScoreMinus3 IS NOT NULL THEN ROUND(c.ScaleScoreMinus3 - m3.MinStandardMetScaleScore, 0) ELSE NULL END AS STRING
-      ) AS DistanceFromStandardMinus3,
+        CASE WHEN c.ScaleScoreMinus3 IS NOT NULL THEN ROUND(c.ScaleScoreMinus3 - m3.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
+      ) AS DfsMinus3,
     FROM caaspp_id_yr_added AS c
     LEFT JOIN min_met_scores AS m
     ON
