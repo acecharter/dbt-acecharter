@@ -9,7 +9,7 @@ WITH
       AssessmentNameShort AS AceAssessmentName,
       SystemOrVendorAssessmentId
     FROM {{ ref('stg_GSD__Assessments') }}
-    WHERE SystemOrVendorName = 'CAASPP'
+    WHERE AssessmentNameShort = 'CAST'
   ),
   
   entities AS (
@@ -31,18 +31,14 @@ WITH
     SELECT * FROM {{ ref('base_RD__Cast2021')}}
   ),
 
-  cast_entity_and_test_codes_added AS (
+  cast_entity_codes_added AS (
     SELECT
-      * EXCEPT(TestId),
+      *,
       CASE
         WHEN DistrictCode = '00000' THEN CountyCode
         WHEN SchoolCode = '0000000' THEN DistrictCode
         ELSE SchoolCode
-      END AS EntityCode,
-      CASE
-        WHEN TestId = '17' THEN '6'
-        ELSE TestId
-      END AS TestId
+      END AS EntityCode
     FROM cast_unioned
   ),
 
@@ -52,9 +48,8 @@ WITH
       a.AceAssessmentName,
       e.*,
       c.* EXCEPT(EntityCode, Filler)
-    FROM cast_entity_and_test_codes_added AS c
-    LEFT JOIN assessment_ids AS a
-    ON c.TestId = a.SystemOrVendorAssessmentId
+    FROM cast_entity_codes_added AS c
+    CROSS JOIN assessment_ids AS a
     LEFT JOIN entities as e
     ON c.EntityCode = e.EntityCode
     WHERE c.EntityCode IN (SELECT EntityCode FROM entities)
