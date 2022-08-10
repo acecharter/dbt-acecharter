@@ -7,7 +7,7 @@ WITH
     SELECT 
       AceAssessmentId,
       AssessmentNameShort AS AceAssessmentName,
-      SystemOrVendorAssessmentId
+      AssessmentSubject
     FROM {{ ref('stg_GSD__Assessments') }}
     WHERE AssessmentNameShort = 'CAST'
   ),
@@ -73,6 +73,7 @@ WITH
     SELECT
       AceAssessmentId,
       AceAssessmentName,
+      AssessmentSubject,
       EntityCode,
       EntityType,
       EntityName,

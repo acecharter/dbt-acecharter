@@ -54,6 +54,7 @@ WITH
     SELECT
       a.AceAssessmentId,
       a.AceAssessmentName,
+      a.AssessmentSubject,
       e.*,
       c.* EXCEPT(EntityCode, Filler)
     FROM caaspp_entity_codes_added AS c
@@ -82,6 +83,7 @@ WITH
     SELECT
       AceAssessmentId,
       AceAssessmentName,
+      AssessmentSubject,
       EntityCode,
       EntityType,
       EntityName,
