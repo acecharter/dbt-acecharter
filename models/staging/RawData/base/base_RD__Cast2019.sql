@@ -7,7 +7,7 @@ SELECT
   CAST(Demographic_ID AS STRING) AS DemographicId,
   Test_Type AS TestType,
   CAST(NULLIF(Total_Number_Tested_At_Entity_Level_and_Demographic, '*') AS INT64) AS TotalTestedAtReportingLevel,
-  CAST(NULLIF(Total_Tested_at_this_Demographic_with_Valid_Scores, '*') AS INT64) AS TotalTestedWithScoresAtReportingLevel,
+  CAST(NULLIF(Total_Number_Tested_at_this_Demographic_with_Valid_Scores, '*') AS INT64) AS TotalTestedWithScoresAtReportingLevel,
   CAST(Grade AS INT64) GradeLevel,
   CAST(Test_ID AS STRING) AS TestId,
   CAST(NULLIF(CAST_Reported_Enrollment, '*') AS INT64) AS StudentsEnrolled,
@@ -27,6 +27,6 @@ SELECT
   ROUND(CAST(NULLIF(Physical_Sciences_Domain_Percent_Above_Standard, '*') AS FLOAT64)/100, 4) AS PhysicalSciencesDomainPercentAboveStandard,
   ROUND(CAST(NULLIF(Earth_and_Space_Sciences_Domain_Percent_Below_Standard, '*') AS FLOAT64)/100, 4) AS EarthAndSpaceSciencesDomainPercentBelowStandard,
   ROUND(CAST(NULLIF(Earth_and_Space_Sciences_Domain_Percent_Near_Standard, '*') AS FLOAT64)/100, 4) AS EarthAndSpaceSciencesDomainPercentNearStandard,
-  ROUND(CAST(NULLIF(Earth_and_Space_Sciences_Domain_Percent_Above_Standard, '*') AS FLOAT64)/100, 4) AS EarthAndSpaceSciencesDomainPercentAboveStandard
-  CAST(NULL AS STRING) AS TypeId,
+  ROUND(CAST(NULLIF(Earth_and_Space_Sciences_Domain_Percent_Above_Standard, '*') AS FLOAT64)/100, 4) AS EarthAndSpaceSciencesDomainPercentAboveStandard,
+  CAST(NULL AS STRING) AS TypeId
 FROM {{ source('RawData', 'Cast2019')}}
