@@ -119,6 +119,8 @@ WITH
       e.EntityName,
       e.EntityNameShort,
       g.StudentGroupName,
+      sl.StatusLevelName,
+      cl.ChangeLevelName,
       c.ColorName,
       u.*
     FROM unioned_w_entity_codes AS u
@@ -126,6 +128,10 @@ WITH
     ON u.EntityCode = e.EntityCode
     LEFT JOIN student_groups AS g
     ON u.StudentGroup = g.StudentGroup
+    LEFT JOIN status_levels AS sl
+    ON u.StatusLevel = sl.StatusLevel
+    LEFT JOIN change_levels AS cl
+    ON u.StatusLevel = cl.ChangeLevel
     LEFT JOIN colors AS c
     ON u.Color = c.Color
   )
