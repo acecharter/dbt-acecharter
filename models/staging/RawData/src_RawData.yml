@@ -73,6 +73,13 @@ sources:
       - name: CaDashSusp2019
         description: 2019 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 
+      - name: Cast2019
+        description: 2019 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
+
+      - name: Cast2021
+        description: 2021 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
+
+
       - name: CdeAdjustedCohortOutcomes2017
         description: 2016-17 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
 

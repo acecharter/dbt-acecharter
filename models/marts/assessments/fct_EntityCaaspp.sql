@@ -1,7 +1,10 @@
 WITH 
   caaspp AS (
     SELECT * FROM {{ ref('int_Caaspp__filtered_and_melted')}} 
+    UNION ALL
+    SELECT * FROM {{ ref('int_Cast__filtered_and_melted')}} 
   ),
+
 
   demographics AS (
     SELECT *
@@ -23,10 +26,7 @@ WITH
       d.DemographicName,
       c.GradeLevel,
       c.TestId,
-      CASE
-        WHEN c.TestId = '1' THEN 'ELA'
-        WHEN c.TestId = '2' Then 'Math'
-      END AS TestSubject,
+      c.AssessmentSubject AS TestSubject,
       c.StudentsEnrolled,
       c.StudentsWithScores,
       c.AssessmentObjective,

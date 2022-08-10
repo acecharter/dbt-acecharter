@@ -3,11 +3,11 @@
 )}}
 
 WITH
-  caaspp AS (
+  cast_results AS (
     SELECT
       CONCAT(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', DemographicId, '-', GradeLevel, '-', TestId) AS AssessmentId,
       *
-    FROM {{ ref('stg_RD__Caaspp')}}
+    FROM {{ ref('stg_RD__Cast')}}
     WHERE
       GradeLevel >= 5
       AND DemographicId IN (
@@ -20,7 +20,7 @@ WITH
         )
   ),
 
-  caaspp_keys AS(
+  cast_keys AS(
     SELECT
       AssessmentId,
       AceAssessmentId,
@@ -42,7 +42,7 @@ WITH
       TestId,
       StudentsEnrolled,
       StudentsWithScores
-    FROM caaspp
+    FROM cast_results
   ),
 
   mean_scale_score AS (
@@ -52,7 +52,7 @@ WITH
       'Mean Scale Score' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(MeanScaleScore AS STRING) AS SchoolResult
-    FROM caaspp
+    FROM cast_results
     WHERE MeanScaleScore IS NOT NULL
   ),
 
@@ -63,7 +63,7 @@ WITH
       'Mean Distance From Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(MeanDistanceFromStandard AS STRING) AS SchoolResult
-    FROM caaspp
+    FROM cast_results
     WHERE MeanDistanceFromStandard IS NOT NULL
   ),
 
@@ -74,7 +74,7 @@ WITH
       'Percent Met and Above' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(PctStandardMetAndAbove AS STRING) AS SchoolResult
-    FROM caaspp
+    FROM cast_results
     WHERE PctStandardMetAndAbove IS NOT NULL
   ),
 
@@ -85,7 +85,7 @@ WITH
       'Percent Exceeded' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(PctStandardExceeded AS STRING) AS SchoolResult
-    FROM caaspp
+    FROM cast_results
     WHERE PctStandardExceeded IS NOT NULL
   ),
 
@@ -96,7 +96,7 @@ WITH
       'Percent Met' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(PctStandardMet AS STRING) AS SchoolResult
-    FROM caaspp
+    FROM cast_results
     WHERE PctStandardMet IS NOT NULL
   ),
 
@@ -108,7 +108,7 @@ WITH
       'Percent Nearly Met' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(PctStandardNearlyMet AS STRING) AS SchoolResult
-    FROM caaspp
+    FROM cast_results
     WHERE PctStandardNearlyMet IS NOT NULL
   ),
 
@@ -119,173 +119,107 @@ WITH
       'Percent Not Met' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
       CAST(PctStandardNotMet AS STRING) AS SchoolResult
-    FROM caaspp
+    FROM cast_results
     WHERE PctStandardNotMet IS NOT NULL
   ),
 
-  area_1_above AS (
+  life_sciences_above AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Reading' 
-        WHEN AceAssessmentId = '2' THEN 'Concepts & Procedures'
-      END AS AssessmentObjective,
+      'Life Sciences Domain'AS AssessmentObjective,
       'Percent Above Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area1PctAboveStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area1PctAboveStandard IS NOT NULL  
+      CAST(LifeSciencesDomainPercentAboveStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE LifeSciencesDomainPercentAboveStandard IS NOT NULL  
   ),
 
-  area_1_near AS (
+  life_sciences_near AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Reading' 
-        WHEN AceAssessmentId = '2' THEN 'Concepts & Procedures'
-      END AS AssessmentObjective,
+      'Life Sciences Domain'AS AssessmentObjective,
       'Percent Near Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area1PctNearStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area1PctNearStandard IS NOT NULL  
+      CAST(LifeSciencesDomainPercentNearStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE LifeSciencesDomainPercentNearStandard IS NOT NULL  
   ),
 
-  area_1_below AS (
+  life_sciences_below AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Reading' 
-        WHEN AceAssessmentId = '2' THEN 'Concepts & Procedures'
-      END AS AssessmentObjective,
+      'Life Sciences Domain'AS AssessmentObjective,
       'Percent Below Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area1PctBelowStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area1PctBelowStandard IS NOT NULL  
+      CAST(LifeSciencesDomainPercentBelowStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE LifeSciencesDomainPercentBelowStandard IS NOT NULL  
   ),
 
-  area_2_above AS (
+  physical_sciences_above AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Writing' 
-        WHEN AceAssessmentId = '2' THEN 'Problem Solving and Modeling & Data Analysis'
-      END AS AssessmentObjective,
+      'Physical Sciences Domain'AS AssessmentObjective,
       'Percent Above Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area2PctAboveStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area2PctAboveStandard IS NOT NULL  
+      CAST(PhysicalSciencesDomainPercentAboveStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE PhysicalSciencesDomainPercentAboveStandard IS NOT NULL  
   ),
 
-  area_2_near AS (
+  physical_sciences_near AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Writing' 
-        WHEN AceAssessmentId = '2' THEN 'Problem Solving and Modeling & Data Analysis'
-      END AS AssessmentObjective,
+      'Physical Sciences Domain'AS AssessmentObjective,
       'Percent Near Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area2PctNearStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area2PctNearStandard IS NOT NULL  
+      CAST(PhysicalSciencesDomainPercentNearStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE PhysicalSciencesDomainPercentNearStandard IS NOT NULL  
   ),
 
-  area_2_below AS (
+  physical_sciences_below AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Writing' 
-        WHEN AceAssessmentId = '2' THEN 'Problem Solving and Modeling & Data Analysis'
-      END AS AssessmentObjective,
+      'Physical Sciences Domain'AS AssessmentObjective,
       'Percent Below Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area2PctBelowStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area2PctBelowStandard IS NOT NULL  
+      CAST(PhysicalSciencesDomainPercentBelowStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE PhysicalSciencesDomainPercentBelowStandard IS NOT NULL  
   ),
 
-  area_3_above AS (
+  earth_and_space_sciences_above AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Listening' 
-        WHEN AceAssessmentId = '2' THEN 'Communicating Reasoning'
-      END AS AssessmentObjective,
+      'Earth and Space Sciences Domain'AS AssessmentObjective,
       'Percent Above Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area3PctAboveStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area3PctAboveStandard IS NOT NULL  
+      CAST(EarthAndSpaceSciencesDomainPercentAboveStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE EarthAndSpaceSciencesDomainPercentAboveStandard IS NOT NULL  
   ),
 
-  area_3_near AS (
+  earth_and_space_sciences_near AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Listening' 
-        WHEN AceAssessmentId = '2' THEN 'Communicating Reasoning'
-      END AS AssessmentObjective,
+      'Earth and Space Sciences Domain'AS AssessmentObjective,
       'Percent Near Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area3PctNearStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area3PctNearStandard IS NOT NULL  
+      CAST(EarthAndSpaceSciencesDomainPercentNearStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE EarthAndSpaceSciencesDomainPercentNearStandard IS NOT NULL  
   ),
 
-  area_3_below AS (
+  earth_and_space_sciences_below AS (
     SELECT
       AssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'Listening' 
-        WHEN AceAssessmentId = '2' THEN 'Communicating Reasoning'
-      END AS AssessmentObjective,
+      'Earth and Space Sciences Domain'AS AssessmentObjective,
       'Percent Below Standard' AS ReportingMethod,
       'FLOAT64' AS ResultDataType,
-      CAST(Area3PctBelowStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE Area3PctBelowStandard IS NOT NULL  
-  ),
-
-  area_4_above AS (
-    SELECT
-      AssessmentId,
-      'Research/Inquiry' AS AssessmentObjective,
-      'Percent Above Standard' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(Area4PctAboveStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE
-      Area4PctAboveStandard IS NOT NULL
-      AND AceAssessmentId = '1'
-  ),
-
-  area_4_near AS (
-    SELECT
-      AssessmentId,
-      'Research/Inquiry' AS AssessmentObjective,
-      'Percent Near Standard' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(Area4PctNearStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE
-      Area4PctNearStandard IS NOT NULL
-      AND AceAssessmentId = '1'
-  ),
-
-  area_4_below AS (
-    SELECT
-      AssessmentId,
-      'Research/Inquiry' AS AssessmentObjective,
-      'Percent Below Standard' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(Area4PctBelowStandard AS STRING) AS SchoolResult
-    FROM caaspp
-    WHERE
-      Area4PctBelowStandard IS NOT NULL
-      AND AceAssessmentId = '1'
+      CAST(EarthAndSpaceSciencesDomainPercentBelowStandard AS STRING) AS SchoolResult
+    FROM cast_results
+    WHERE EarthAndSpaceSciencesDomainPercentBelowStandard IS NOT NULL  
   ),
 
   results_unioned AS(
@@ -303,29 +237,23 @@ WITH
     UNION ALL
     SELECT * FROM pct_not_met
     UNION ALL
-    SELECT * FROM area_1_above
+    SELECT * FROM life_sciences_above
     UNION ALL
-    SELECT * FROM area_1_near
+    SELECT * FROM life_sciences_near
     UNION ALL
-    SELECT * FROM area_1_below
+    SELECT * FROM life_sciences_below
     UNION ALL
-    SELECT * FROM area_2_above
+    SELECT * FROM physical_sciences_above
     UNION ALL
-    SELECT * FROM area_2_near
+    SELECT * FROM physical_sciences_near
     UNION ALL
-    SELECT * FROM area_2_below
+    SELECT * FROM physical_sciences_below
     UNION ALL
-    SELECT * FROM area_3_above
+    SELECT * FROM earth_and_space_sciences_above
     UNION ALL
-    SELECT * FROM area_3_near
+    SELECT * FROM earth_and_space_sciences_near
     UNION ALL
-    SELECT * FROM area_3_below
-    UNION ALL
-    SELECT * FROM area_4_above
-    UNION ALL
-    SELECT * FROM area_4_near
-    UNION ALL
-    SELECT * FROM area_4_below
+    SELECT * FROM earth_and_space_sciences_below
   ),
 
   final AS (
@@ -336,7 +264,7 @@ WITH
         WHEN r.ReportingMethod LIKE 'Mean%' THEN StudentsWithScores 
         ELSE ROUND(StudentsWithScores * CAST(SchoolResult AS FLOAT64), 0)
       END AS StudentWithResultCount
-    FROM caaspp_keys AS k
+    FROM cast_keys AS k
     LEFT JOIN results_unioned AS r
     USING (AssessmentId)
   )
