@@ -25,6 +25,7 @@ WITH
       AssessmentId,
       AceAssessmentId,
       AceAssessmentName,
+      AssessmentSubject,
       EntityCode,
       EntityType,
       EntityName,
