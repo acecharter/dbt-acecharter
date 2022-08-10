@@ -89,8 +89,6 @@ WITH
     FROM unioned_w_entity_codes AS u
     LEFT JOIN entities AS e
     ON u.EntityCode = e.EntityCode
-    LEFT JOIN student_groups AS g
-    ON u.StudentGroup = g.StudentGroup
     LEFT JOIN status_levels AS sl
     ON u.StatusLevel = sl.StatusLevel
     LEFT JOIN change_levels AS cl
