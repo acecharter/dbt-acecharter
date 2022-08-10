@@ -53,6 +53,7 @@ WITH
       a.AceAssessmentId,
       a.AceAssessmentName,
       a.AssessmentSubject,
+      2022 AS TestYear,
       '2021-22' AS SchoolYear,
       c.*,
       r.RaceEthnicity
