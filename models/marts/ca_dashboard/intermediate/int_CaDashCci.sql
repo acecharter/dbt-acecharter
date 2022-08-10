@@ -218,6 +218,22 @@ cci_2019 AS (
     WHERE CodeColumn = 'Color'
   ),
 
+  status_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS StatusLevel,
+      Value AS StatusLevelName
+    FROM codes
+    WHERE CodeColumn = 'StatusLevel - College/Career'
+  ),
+
+  change_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS ChangeLevel,
+      Value AS ChangeLevelName
+    FROM codes
+    WHERE CodeColumn = 'ChangeLevel - College/Career'
+  ),
+
   final AS (
     SELECT
       'College/Career' AS IndicatorName,

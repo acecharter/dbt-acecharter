@@ -98,6 +98,22 @@ WITH
     WHERE CodeColumn = 'Color'
   ),
 
+  status_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS StatusLevel,
+      Value AS StatusLevelName
+    FROM codes
+    WHERE CodeColumn = 'StatusLevel - Chronic Absenteeism'
+  ),
+
+  change_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS ChangeLevel,
+      Value AS ChangeLevelName
+    FROM codes
+    WHERE CodeColumn = 'ChangeLevel - Chronic Absenteeism'
+  ),
+
   final AS (
     SELECT
       'Chronic Absenteeism' AS IndicatorName,
