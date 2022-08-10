@@ -53,6 +53,7 @@ WITH
       a.AceAssessmentId,
       a.AceAssessmentName,
       a.AssessmentSubject,
+      2022 AS TestYear,
       '2021-22' AS SchoolYear,
       c.*,
       r.RaceEthnicity
@@ -66,6 +67,7 @@ WITH
   final AS (
     SELECT
       c.*,
+      CASE WHEN ELStatus IS TRUE OR DATE(RFEPDate) > DATE(TestYear - 4, 6, 15) THEN TRUE ELSE FALSE END AS ElWithinPast4Years,
       CAST(
         CASE WHEN c.ScaleScore IS NOT NULL THEN ROUND(c.ScaleScore - m.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
       ) AS Dfs,
