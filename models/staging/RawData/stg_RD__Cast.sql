@@ -46,6 +46,7 @@ WITH
     SELECT
       a.AceAssessmentId,
       a.AceAssessmentName,
+      a.AssessmentSubject,
       e.*,
       c.* EXCEPT(EntityCode, Filler)
     FROM cast_entity_codes_added AS c
