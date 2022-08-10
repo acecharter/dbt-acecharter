@@ -39,7 +39,7 @@ WITH
         WHEN SchoolCode = '0000000' THEN DistrictCode
         ELSE SchoolCode
       END AS EntityCode
-    FROM caaspp_unioned
+    FROM cast_unioned
   ),
 
   cast_filtered AS (
