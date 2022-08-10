@@ -7,6 +7,7 @@ WITH
     SELECT 
       AceAssessmentId,
       AssessmentNameShort AS AceAssessmentName,
+      AssessmentSubject,
       SystemOrVendorAssessmentId
     FROM {{ ref('stg_GSD__Assessments') }}
     WHERE SystemOrVendorName = 'CAASPP'
