@@ -39,6 +39,7 @@ SELECT
   StudentExitCode,
   StudentExitWithdrawalDate,
   StudentRemovedCALPADSFileDate,
+  ConditionCode,
   Attemptedness,
   ScoreStatus,
   CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
