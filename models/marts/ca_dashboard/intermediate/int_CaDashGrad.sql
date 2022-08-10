@@ -96,6 +96,22 @@ WITH
     WHERE CodeColumn = 'Color'
   ),
 
+  status_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS StatusLevel,
+      Value AS StatusLevelName
+    FROM codes
+    WHERE CodeColumn = 'StatusLevel - Graduation Rate'
+  ),
+
+  change_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS ChangeLevel,
+      Value AS ChangeLevelName
+    FROM codes
+    WHERE CodeColumn = 'ChangeLevel - Graduation Rate'
+  ),
+
   final AS (
     SELECT
       'Graduation Rate' AS IndicatorName,

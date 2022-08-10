@@ -60,6 +60,22 @@ WITH
     WHERE CodeColumn = 'Color'
   ),
 
+  status_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS StatusLevel,
+      Value AS StatusLevelName
+    FROM codes
+    WHERE CodeColumn = 'StatusLevel - EL Progress'
+  ),
+
+  change_levels AS (
+    SELECT
+      CAST(Code AS INT64) AS ChangeLevel,
+      Value AS ChangeLevelName
+    FROM codes
+    WHERE CodeColumn = 'ChangeLevel - EL Progress'
+  ),
+
   final AS (
     SELECT
       'EL Progress' AS IndicatorName,

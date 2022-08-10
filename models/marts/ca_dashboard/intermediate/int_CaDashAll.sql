@@ -24,6 +24,8 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      StatusLevelName,
+      ChangeLevelName,
       ColorName,
       Box,
       ReportingYear
@@ -55,6 +57,8 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      StatusLevelName,
+      ChangeLevelName,
       ColorName,
       Box,
       ReportingYear
@@ -86,6 +90,8 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      StatusLevelName,
+      ChangeLevelName,
       ColorName,
       Box,
       ReportingYear
@@ -117,6 +123,8 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      StatusLevelName,
+      ChangeLevelName,
       ColorName,
       Box,
       ReportingYear
@@ -148,6 +156,8 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      StatusLevelName,
+      ChangeLevelName,
       ColorName,
       Box,
       ReportingYear
@@ -179,6 +189,8 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      StatusLevelName,
+      ChangeLevelName,
       ColorName,
       Box,
       ReportingYear
@@ -210,6 +222,8 @@ WITH
       StatusLevel,
       ChangeLevel,
       Color,
+      StatusLevelName,
+      ChangeLevelName,
       ColorName,
       Box,
       ReportingYear
