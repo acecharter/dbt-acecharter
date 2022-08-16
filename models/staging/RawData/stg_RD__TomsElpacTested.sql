@@ -1,23 +1,7 @@
 WITH
-  elpac2021 AS (
-    SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Empower')}}
-    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Esperanza')}}
-    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Inspire')}}
-    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021HighSchool')}}
-   
-  ),
-
-  elpac2022 AS (
-    SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Empower')}}
-    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Esperanza')}}
-    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Inspire')}}
-    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022HighSchool')}}
-   
-  ),
-
   elpac AS (
-    SELECT * FROM elpac2021
-    UNION ALL SELECT * FROM elpac2022
+    SELECT * FROM {{ ref('base_RD__TomsElpacTested2022')}}
+    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021')}}
   ),
 
   elpac_ns_removed AS (
@@ -112,13 +96,11 @@ WITH
     WHERE SystemOrVendorName = 'ELPAC'
   ),
 
-  elpac_id_yr_added AS (
+  elpac_id_added AS (
     SELECT
       a.AceAssessmentId,
       a.AceAssessmentName,
       a.AssessmentSubject,
-      2021 AS TestYear,
-      '2020-21' AS SchoolYear,
       e.*
     FROM elpac_ns_removed AS e
     LEFT JOIN assessment_ids AS a
@@ -135,7 +117,7 @@ WITH
       e.ElpiLevel,
       e1.ElpiLevel AS ElpiLevelMinus1,
       e2.ElpiLevel AS ElpiLevelMinus2
-    FROM elpac_id_yr_added AS r
+    FROM elpac_id_added AS r
     LEFT JOIN elpi_levels AS e
     ON 
       r.GradeAssessed = CAST(e.GradeLevel AS STRING) AND
