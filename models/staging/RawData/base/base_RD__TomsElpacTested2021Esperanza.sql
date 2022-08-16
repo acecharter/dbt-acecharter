@@ -65,15 +65,5 @@ SELECT
   CAST(ListeningPLMinus2 AS STRING) AS ListeningPLMinus2,
   CAST(SpeakingPLMinus2 AS STRING) AS SpeakingPLMinus2,
   CAST(ReadingPLMinus2 AS STRING) AS ReadingPLMinus2,
-  CAST(WritingPLMinus2 AS STRING) AS WritingPLMinus2,
-  CAST(AttemptednessMinus3 AS STRING) AS AttemptednessMinus3,
-  CAST(GradeAssessedMinus3 AS STRING) AS GradeAssessedMinus3,
-  CAST(OverallScaleScoreMinus3 AS STRING) AS OverallScaleScoreMinus3,
-  CAST(OverallPLMinus3 AS STRING) AS OverallPLMinus3,
-  CAST(OralLanguagePLMinus3 AS STRING) AS OralLanguagePLMinus3,
-  CAST(WrittenLanguagePLMinus3 AS STRING) AS WrittenLanguagePLMinus3,
-  CAST(ListeningPLMinus3 AS STRING) AS ListeningPLMinus3,
-  CAST(SpeakingPLMinus3 AS STRING) AS SpeakingPLMinus3,
-  CAST(ReadingPLMinus3 AS STRING) AS ReadingPLMinus3,
-  CAST(WritingPLMinus3 AS STRING) AS WritingPLMinus3
-FROM {{ source('RawData', 'TomsElpacTested2022HighSchool')}}
+  CAST(WritingPLMinus2 AS STRING) AS WritingPLMinus2
+FROM {{ source('RawData', 'TomsElpacTested2021Esperanza')}}

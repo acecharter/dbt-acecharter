@@ -40,7 +40,7 @@ SELECT
   StudentExitWithdrawalDate,
   StudentRemovedCALPADSFileDate,
   ConditionCode,
-  Attemptedness,
+  CAST(Attemptedness AS STRING) AS Attemptedness,
   ScoreStatus,
   CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
   CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
