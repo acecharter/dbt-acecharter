@@ -186,13 +186,13 @@ WITH
       ElpiLevelChangeMinus1,
       ElpiChangeCategoryMinus1,
       ElpiProgressMinus1,
-      ElpiLevelMinus2
+      ElpiLevelMinus2,
       ElpiLevelNumericMinus2,
       ElpiLevelRankMinus2,
       ElpiLevelChangeMinus2,
       ElpiChangeCategoryMinus2,
       ElpiProgressMinus2,
-      ElpiLevelMinus3
+      ElpiLevelMinus3,
       ElpiLevelNumericMinus3,
       ElpiLevelRankMinus3
     FROM elpi_change_added
