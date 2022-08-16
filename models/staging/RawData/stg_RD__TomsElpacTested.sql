@@ -192,6 +192,9 @@ WITH
       ElpiLevelChangeMinus2,
       ElpiChangeCategoryMinus2,
       ElpiProgressMinus2,
+      ElpiLevelMinus3
+      ElpiLevelNumericMinus3,
+      ElpiLevelRankMinus3
     FROM elpi_change_added
   )
 
