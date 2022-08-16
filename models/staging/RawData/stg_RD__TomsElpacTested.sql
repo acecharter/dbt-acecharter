@@ -88,7 +88,7 @@ WITH
       ListeningPLMinus2,
       SpeakingPLMinus2,
       ReadingPLMinus2,
-      WritingPLMinus2
+      WritingPLMinus2,
       AttemptednessMinus3,
       GradeAssessedMinus3,
       OverallScaleScoreMinus3,
