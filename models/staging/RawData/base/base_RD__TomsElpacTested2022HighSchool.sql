@@ -37,7 +37,7 @@ SELECT
   DATE(StudentExitWithdrawalDate) AS StudentExitWithdrawalDate,
   DATE(StudentRemovedCALPADSFileDate) AS StudentRemovedCALPADSFileDate,
   ConditionCode,
-  Attemptedness,
+  CAST(Attemptedness AS STRING) AS Attemptedness,
   CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
   CAST(OverallScaleScore AS STRING) AS OverallScaleScore,
   CAST(OverallPL AS STRING) AS OverallPL,
