@@ -89,6 +89,16 @@ WITH
       SpeakingPLMinus2,
       ReadingPLMinus2,
       WritingPLMinus2
+      AttemptednessMinus3,
+      GradeAssessedMinus3,
+      OverallScaleScoreMinus3,
+      OverallPLMinus3,
+      OralLanguagePLMinus3,
+      WrittenLanguagePLMinus3,
+      ListeningPLMinus3,
+      SpeakingPLMinus3,
+      ReadingPLMinus3,
+      WritingPLMinus3
     FROM elpac
   ),
 
