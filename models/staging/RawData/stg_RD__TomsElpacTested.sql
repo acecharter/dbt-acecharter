@@ -1,28 +1,23 @@
 WITH
-  empower AS (
+  elpac2021 AS (
     SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Empower')}}
+    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Esperanza')}}
+    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Inspire')}}
+    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021HighSchool')}}
+   
   ),
 
-  esperanza AS (
-    SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Esperanza')}}
+  elpac2022 AS (
+    SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Empower')}}
+    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Esperanza')}}
+    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Inspire')}}
+    UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022HighSchool')}}
+   
   ),
 
-  inspire AS (
-    SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Inspire')}}
-  ),
-
-  hs AS (
-    SELECT * FROM {{ ref('base_RD__TomsElpacTested2021HighSchool')}}
-  ),
-  
   elpac AS (
-      SELECT * FROM empower
-      UNION ALL
-      SELECT * FROM esperanza
-      UNION ALL
-      SELECT * FROM inspire
-      UNION ALL
-      SELECT * FROM hs
+    SELECT * FROM elpac2021
+    UNION ALL SELECT * FROM elpac2022
   ),
 
   elpac_ns_removed AS (
@@ -93,17 +88,7 @@ WITH
       ListeningPLMinus2,
       SpeakingPLMinus2,
       ReadingPLMinus2,
-      WritingPLMinus2,
-      NULL AS AttemptednessMinus3,
-      NULL AS GradeAssessedMinus3,
-      NULL AS OverallScaleScoreMinus3,
-      NULL AS OverallPLMinus3,
-      NULL AS OralLanguagePLMinus3,
-      NULL AS WrittenLanguagePLMinus3,
-      NULL AS ListeningPLMinus3,
-      NULL AS SpeakingPLMinus3,
-      NULL AS ReadingPLMinus3,
-      NULL AS WritingPLMinus3
+      WritingPLMinus2
     FROM elpac
   ),
 

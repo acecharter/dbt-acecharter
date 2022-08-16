@@ -65,5 +65,15 @@ SELECT
   CAST(ListeningPLMinus2 AS STRING) AS ListeningPLMinus2,
   CAST(SpeakingPLMinus2 AS STRING) AS SpeakingPLMinus2,
   CAST(ReadingPLMinus2 AS STRING) AS ReadingPLMinus2,
-  CAST(WritingPLMinus2 AS STRING) AS WritingPLMinus2
+  CAST(WritingPLMinus2 AS STRING) AS WritingPLMinus2,
+  CAST(NULL AS STRING) AS AttemptednessMinus3,
+  CAST(NULL AS STRING) AS GradeAssessedMinus3,
+  CAST(NULL AS STRING) AS OverallScaleScoreMinus3,
+  CAST(NULL AS STRING) AS OverallPLMinus3,
+  CAST(NULL AS STRING) AS OralLanguagePLMinus3,
+  CAST(NULL AS STRING) AS WrittenLanguagePLMinus3,
+  CAST(NULL AS STRING) AS ListeningPLMinus3,
+  CAST(NULL AS STRING) AS SpeakingPLMinus3,
+  CAST(NULL AS STRING) AS ReadingPLMinus3,
+  CAST(NULL AS STRING) AS WritingPLMinus3
 FROM {{ source('RawData', 'TomsElpacTested2021Empower')}}
