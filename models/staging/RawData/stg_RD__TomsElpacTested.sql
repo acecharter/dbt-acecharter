@@ -33,8 +33,14 @@ WITH
     SELECT
       r.*,
       e.ElpiLevel,
+      e.ElpiLevelNumeric,
+      e.ElpiLevelRank,
       e1.ElpiLevel AS ElpiLevelMinus1,
-      e2.ElpiLevel AS ElpiLevelMinus2
+      e1.ElpiLevelNumeric AS ElpiLevelNumericMinus1,
+      e1.ElpiLevelRank As ElpiLevelRankMinus1,
+      e2.ElpiLevel AS ElpiLevelMinus2,
+      e2.ElpiLevelNumeric AS ElpiLevelNumericMinus2,
+      e2.ElpiLevelRank As ElpiLevelRankMinus2,
     FROM elpac_id_added AS r
     LEFT JOIN elpi_levels AS e
     ON 
@@ -135,8 +141,14 @@ WITH
       ReadingPLMinus3,
       WritingPLMinus3,
       ElpiLevel,
+      ElpiLevelNumeric,
+      ElpiLevelRank,
       ElpiLevelMinus1,
+      ElpiLevelNumericMinus1,
+      ElpiLevelRankMinus1,
       ElpiLevelMinus2
+      ElpiLevelNumericMinus2,
+      ElpiLevelRankMinus2,
     FROM elpac_elpi_added
   )
 
