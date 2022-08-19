@@ -38,6 +38,8 @@ WITH
     SELECT * FROM {{ ref('base_RD__Caaspp2019')}}
     UNION ALL
     SELECT * FROM {{ ref('base_RD__Caaspp2021')}}
+    UNION ALL
+    SELECT * FROM {{ ref('base_RD__Caaspp2022')}}
   ),
 
   caaspp_entity_codes_added AS (

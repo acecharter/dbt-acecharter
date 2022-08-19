@@ -281,6 +281,7 @@ sources:
       - name: Caaspp2018
       - name: Caaspp2019
       - name: Caaspp2021
+      - name: Caaspp2022
       - name: CaasppEntities2015
       - name: CaasppEntities2016
       - name: CaasppEntities2017
