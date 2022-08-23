@@ -6,31 +6,6 @@ WITH assessment_ids AS (
   WHERE AssessmentNameShort = 'Star Reading'
 ),
 
-missing_student_ids AS (
-  SELECT
-    StudentRenaissanceID,
-    StudentIdentifier,
-    StateUniqueId
-  FROM {{ ref('stg_GSD__RenStarMissingStudentIds')}}
-),
-
-star_reading_with_missing_ids AS (
-  SELECT
-    s.* EXCEPT(StudentIdentifier, StateUniqueId),
-    CASE
-      WHEN s.StudentIdentifier IS NULL THEN m.StudentIdentifier
-      ELSE s.StudentIdentifier
-    END AS StudentIdentifier,
-    CASE
-      WHEN s.StateUniqueId IS NULL THEN m.StateUniqueId
-      ELSE s.StateUniqueId
-    END AS StateUniqueId,
-  FROM {{ source('RenaissanceStar', 'Reading_v2')}} AS s
-  LEFT JOIN missing_student_ids AS m
-  USING (StudentRenaissanceID)
-),
-
-
 star_reading AS (
   SELECT
     CASE
@@ -107,8 +82,7 @@ star_reading AS (
         CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
       THEN 'Spring'
     END AS StarTestingWindow
-
-FROM star_reading_with_missing_ids
+  FROM {{ source('RenaissanceStar', 'Reading_v2')}}
 )
 
 SELECT
