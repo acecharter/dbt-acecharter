@@ -3,10 +3,35 @@ WITH assessment_ids AS (
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName
   FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Math (Spanish)'
+  WHERE AssessmentNameShort = 'Star Reading (Spanish)'
 ),
 
-star_math AS (
+missing_student_ids AS (
+  SELECT
+    StudentRenaissanceID,
+    StudentIdentifier,
+    StateUniqueId
+  FROM {{ ref('stg_GSD__RenStarMissingStudentIds')}}
+),
+
+star_reading_with_missing_ids AS (
+  SELECT
+    s.* EXCEPT(StudentIdentifier, StateUniqueId),
+    CASE
+      WHEN s.StudentIdentifier IS NULL THEN m.StudentIdentifier
+      ELSE s.StudentIdentifier
+    END AS StudentIdentifier,
+    CASE
+      WHEN s.StateUniqueId IS NULL THEN m.StateUniqueId
+      ELSE s.StateUniqueId
+    END AS StateUniqueId,
+  FROM {{ source('RenaissanceStar_Archive', 'ReadingSpanish_v2_SY22')}} AS s
+  LEFT JOIN missing_student_ids AS m
+  USING (StudentRenaissanceID)
+),
+
+
+star_reading AS (
   SELECT
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
@@ -29,7 +54,7 @@ star_math AS (
     MiddleName,
     Gender,
     DATE(Birthdate) AS BirthDate,
-    Gradelevel As GradeLevel,
+    Gradelevel AS GradeLevel,
     EnrollmentStatus,
     AssessmentID,
     DATE(CompletedDateLocal) AS AssessmentDate,
@@ -43,6 +68,8 @@ star_math AS (
     UnifiedScore,
     PercentileRank,
     NormalCurveEquivalent,
+    InstructionalReadingLevel,
+    Lexile,
     StudentGrowthPercentileFallFall,
     StudentGrowthPercentileFallSpring,
     StudentGrowthPercentileFallWinter,
@@ -50,7 +77,6 @@ star_math AS (
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
     CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
-    Quantile,
     CASE
       WHEN
         CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-11')) AND
@@ -81,12 +107,12 @@ star_math AS (
         CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
       THEN 'Spring'
     END AS StarTestingWindow
-  FROM {{ source('RenaissanceStar', 'MathSpanish_v2')}}
+
+FROM star_reading_with_missing_ids
 )
 
 SELECT
   a.*,
   s.*
-FROM star_math as s
+FROM star_reading as s
 CROSS JOIN assessment_ids AS a
-

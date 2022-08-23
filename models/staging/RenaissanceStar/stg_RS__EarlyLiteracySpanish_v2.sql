@@ -3,10 +3,10 @@ WITH assessment_ids AS (
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName
   FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Math (Spanish)'
+  WHERE AssessmentNameShort = 'Star Early Literacy (Spanish)'
 ),
 
-star_math AS (
+star_reading AS (
   SELECT
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
@@ -29,7 +29,7 @@ star_math AS (
     MiddleName,
     Gender,
     DATE(Birthdate) AS BirthDate,
-    Gradelevel As GradeLevel,
+    Gradelevel AS GradeLevel,
     EnrollmentStatus,
     AssessmentID,
     DATE(CompletedDateLocal) AS AssessmentDate,
@@ -43,6 +43,7 @@ star_math AS (
     UnifiedScore,
     PercentileRank,
     NormalCurveEquivalent,
+    Lexile,
     StudentGrowthPercentileFallFall,
     StudentGrowthPercentileFallSpring,
     StudentGrowthPercentileFallWinter,
@@ -50,7 +51,6 @@ star_math AS (
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
     CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
-    Quantile,
     CASE
       WHEN
         CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-11')) AND
@@ -81,12 +81,11 @@ star_math AS (
         CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
       THEN 'Spring'
     END AS StarTestingWindow
-  FROM {{ source('RenaissanceStar', 'MathSpanish_v2')}}
+  FROM {{ source('RenaissanceStar', 'EarlyLiteracySpanish_v2')}}
 )
 
 SELECT
   a.*,
   s.*
-FROM star_math as s
+FROM star_reading as s
 CROSS JOIN assessment_ids AS a
-
