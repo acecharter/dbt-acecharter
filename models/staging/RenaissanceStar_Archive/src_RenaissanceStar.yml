@@ -6,8 +6,8 @@ sources:
     database: landing-zone-acecharter
     schema: RenaissanceStar_Archive
     tables:
-    
-      - name: EarlyLiteracySpanishh_v2
+
+      - name: EarlyLiteracySpanish_v2_SY22
         description: Student-level Renaissance Star Early Literacy Assessment (Spanish) data from SY 2021-22.
 
       - name: Math_v2_SY22
@@ -24,12 +24,12 @@ sources:
           - name: StateUniqueId
             description: (StudentStateID in source documentation) Student's state ID in Renaissance. Blank if not provided.
 
-      - name: Reading_v2
+      - name: Reading_v2_SY22
         description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from SY 2021-22. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
       
-      - name: MathSpanish_v2
+      - name: MathSpanish_v2_SY22
         description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from SY 2021-22.
       
-      - name: ReadingSpanish_v2
+      - name: ReadingSpanish_v2_SY22
         description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data from SY 2021-22.
 
