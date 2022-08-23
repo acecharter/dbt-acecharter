@@ -26,6 +26,12 @@ math_unioned AS(
   SELECT * FROM {{ ref('stg_RS__MathSpanish_v2')}}
 ),
 
+early_literacy_unioned AS(
+  SELECT * FROM {{ ref('stg_RSA__EarlyLiteracySpanish_v2_SY22')}}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_RS__EarlyLiteracySpanish_v2')}}
+),
+
 reading AS (
   SELECT
     * EXCEPT(
@@ -45,6 +51,15 @@ math AS (
     CAST(NULL AS STRING) AS Lexile,
     Quantile,
   FROM math_unioned
+),
+
+early_literacy AS (
+  SELECT
+    * EXCEPT(Lexile),
+    CAST(NULL AS STRING) AS InstructionalReadingLevel,
+    Lexile,
+    CAST(NULL AS STRING) AS Quantile
+  FROM early_literacy_unioned
 ),
 
 final AS (
