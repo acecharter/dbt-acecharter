@@ -3,7 +3,7 @@ WITH assessment_ids AS (
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName
   FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Reading (Spanish)'
+  WHERE AssessmentNameShort = 'Star Early Literacy (Spanish)'
 ),
 
 star_reading AS (
