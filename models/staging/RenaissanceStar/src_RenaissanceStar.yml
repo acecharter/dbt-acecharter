@@ -6,6 +6,7 @@ sources:
     database: landing-zone-acecharter
     schema: RenaissanceStar
     tables:
+      - name: EarlyLiteracy_v2
       - name: EarlyLiteracySpanish_v2
       - name: Math_v2
         description: Student-level Renaissance Star Math Enterprise Assessment (English) data. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf

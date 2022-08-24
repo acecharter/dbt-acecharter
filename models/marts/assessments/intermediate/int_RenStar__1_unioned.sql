@@ -27,6 +27,8 @@ math_unioned AS(
 ),
 
 early_literacy_unioned AS(
+  SELECT * FROM {{ ref('stg_RS__EarlyLiteracy_v2')}}
+  UNION ALL
   SELECT * FROM {{ ref('stg_RSA__EarlyLiteracySpanish_v2_SY22')}}
   UNION ALL
   SELECT * FROM {{ ref('stg_RS__EarlyLiteracySpanish_v2')}}
