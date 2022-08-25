@@ -71,6 +71,8 @@ final AS (
   SELECT * FROM reading
   UNION ALL
   SELECT * FROM math
+  UNION ALL
+  SELECT * FROM early_literacy
 )
 
 SELECT * FROM final
