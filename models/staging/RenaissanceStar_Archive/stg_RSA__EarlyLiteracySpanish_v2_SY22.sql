@@ -44,6 +44,7 @@ star_reading AS (
     PercentileRank,
     NormalCurveEquivalent,
     Lexile,
+    LiteracyClassification,
     StudentGrowthPercentileFallFall,
     StudentGrowthPercentileFallSpring,
     StudentGrowthPercentileFallWinter,

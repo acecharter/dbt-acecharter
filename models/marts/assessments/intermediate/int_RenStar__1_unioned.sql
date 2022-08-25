@@ -43,6 +43,7 @@ reading AS (
     InstructionalReadingLevel,
     Lexile,
     CAST(NULL AS STRING) AS Quantile,
+    CAST(NULL AS STRING) AS LiteracyClassification
   FROM reading_unioned
 ),
 
@@ -52,15 +53,17 @@ math AS (
     CAST(NULL AS STRING) AS InstructionalReadingLevel,
     CAST(NULL AS STRING) AS Lexile,
     Quantile,
+    CAST(NULL AS STRING) AS LiteracyClassification
   FROM math_unioned
 ),
 
 early_literacy AS (
   SELECT
-    * EXCEPT(Lexile),
+    * EXCEPT(Lexile, LiteracyClassification),
     CAST(NULL AS STRING) AS InstructionalReadingLevel,
     Lexile,
-    CAST(NULL AS STRING) AS Quantile
+    CAST(NULL AS STRING) AS Quantile,
+    LiteracyClassification
   FROM early_literacy_unioned
 ),
 

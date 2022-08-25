@@ -117,6 +117,15 @@ state_benchmark AS (
   FROM star_results
 ),
 
+literacy_classification AS (
+  SELECT
+    AssessmentID,
+    'Literacy Classification' AS ReportingMethod,
+    'STRING' AS StudentResultDataType,
+    CAST(LiteracyClassification AS STRING) AS StudentResult
+  FROM star_results
+),
+
 results_unioned AS(
   SELECT * FROM ge
   UNION ALL
@@ -139,6 +148,8 @@ results_unioned AS(
   SELECT * FROM sgp_winter_spring
   UNION ALL
   SELECT * FROM state_benchmark
+  UNION ALL
+  SELECT * FROM literacy_classification
 
 )
 
