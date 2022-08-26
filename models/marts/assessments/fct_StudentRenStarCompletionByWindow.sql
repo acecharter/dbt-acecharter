@@ -245,6 +245,12 @@ WITH
         THEN 'Other Tested (Early Literacy, Early Literacy Spanish, and Spanish version only)'
         WHEN
           ProgressMonitoringResultCount = 0
+          AND EarlyLiteracyResultCount > 0
+          AND EarlyLiteracySpanishResultCount = 0
+          AND SpanishResultCount > 0
+        THEN 'Other Tested (Early Literacy and Spanish version only)'
+        WHEN
+          ProgressMonitoringResultCount = 0
           AND EarlyLiteracyResultCount = 0
           AND EarlyLiteracySpanishResultCount > 0
           AND SpanishResultCount = 0

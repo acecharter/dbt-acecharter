@@ -36,6 +36,8 @@ WITH
       'Fall to Spring' AS TestingPeriod,
       f.TestingStatus AS PreTestStatus,
       s.TestingStatus AS PostTestStatus,
+      f.EnterpriseTestingStatus AS EnterprisePreTestStatus,
+      s.EnterpriseTestingStatus AS EnterprisePostTestStatus,
       f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
       s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
@@ -59,6 +61,8 @@ WITH
       'Fall to Winter' AS TestingPeriod,
       f.TestingStatus AS PreTestStatus,
       w.TestingStatus AS PostTestStatus,
+      f.EnterpriseTestingStatus AS EnterprisePreTestStatus,
+      w.EnterpriseTestingStatus AS EnterprisePostTestStatus,
       f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
       w.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
@@ -82,6 +86,8 @@ WITH
       'Winter to Spring' AS TestingPeriod,
       w.TestingStatus AS PreTestStatus,
       s.TestingStatus AS PostTestStatus,
+      s.EnterpriseTestingStatus AS EnterprisePreTestStatus,
+      w.EnterpriseTestingStatus AS EnterprisePostTestStatus,
       w.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
       s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
@@ -111,7 +117,12 @@ WITH
     SELECT
       *,
       CASE WHEN PreTestRequired = 'Yes' AND PostTestRequired = 'Yes' THEN 'Yes' ELSE 'No' END AS PreAndPostTestRequired,
-      CASE WHEN PreTestStatus = 'Tested' AND PostTestStatus = 'Tested' THEN 'Yes' ELSE 'No' END AS CompletedPreAndPostTest,
+      CASE WHEN EnterprisePreTestStatus = 'Tested' AND EnterprisePostTestStatus = 'Tested' THEN 'Yes' ELSE 'No' END AS CompletedEnterprisePreAndPostTest,
+      CASE
+        WHEN PreTestStatus = 'Tested' AND PostTestStatus = 'Tested' THEN 'Yes'
+        WHEN PreTestStatus != 'Not Tested' AND PostTestStatus != 'Not Tested' THEN 'Other'
+        ELSE 'No'
+      END AS CompletedPreAndPostTest,
       CASE
         WHEN
           (PreTestRequired = 'Yes' OR PreTestStatus = 'Tested')
@@ -122,4 +133,4 @@ WITH
   )
 
 
-SELECT * FROM final
+SELECT * FROM final WHERE PostTestStatus IS NOT NULL # FIGURE OUT HOW TO FILTER THIS ONLY IF WINDOW HAS COMPLETED
