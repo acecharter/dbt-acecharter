@@ -6,6 +6,11 @@ WITH assessment_ids AS (
   WHERE AssessmentNameShort = 'Star Reading'
 ),
 
+testing_windows AS (
+  SELECT *
+  FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
+),
+
 missing_student_ids AS (
   SELECT
     StudentRenaissanceID,
@@ -14,7 +19,7 @@ missing_student_ids AS (
   FROM {{ ref('stg_GSD__RenStarMissingStudentIds')}}
 ),
 
-star_reading_with_missing_ids AS (
+star_with_missing_ids AS (
   SELECT
     s.* EXCEPT(StudentIdentifier, StateUniqueId),
     CASE
@@ -31,7 +36,7 @@ star_reading_with_missing_ids AS (
 ),
 
 
-star_reading AS (
+star AS (
   SELECT
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
@@ -76,43 +81,24 @@ star_reading AS (
     StudentGrowthPercentileSpringSpring,
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
-    CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
-    CASE
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-11')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-09-30'))
-      THEN 'Fall'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-12-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-01-24'))
-      THEN 'Winter'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-04-15')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-05-31'))
-      THEN 'Spring'
-    END AS AceTestingWindowName,
-    DATE(ScreeningWindowStartDate) AS AceTestingWindowStartDate,
-    DATE(ScreeningWindowEndDate) AS AceTestingWindowEndDate,
-    CASE
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-11-30'))
-      THEN 'Fall'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-12-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-03-31'))
-      THEN 'Winter'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-04-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
-      THEN 'Spring'
-    END AS StarTestingWindow
+    CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel
+FROM star_with_missing_ids
+),
 
-FROM star_reading_with_missing_ids
+final AS (
+  SELECT
+    a.*,
+    s.*,
+    CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
+    CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,
+    CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowEndDate END AS AceTestingWindowEndDate,
+    t.TestingWindow AS StarTestingWindow
+  FROM star as s
+  CROSS JOIN assessment_ids AS a
+  LEFT JOIN testing_windows AS t
+  ON s.SchoolYear = t.SchoolYear
+  WHERE s.AssessmentDate BETWEEN t.TestingWindowStartDate AND t.TestingWindowEndDate
 )
 
-SELECT
-  a.*,
-  s.*
-FROM star_reading as s
-CROSS JOIN assessment_ids AS a
+SELECT * FROM final
+

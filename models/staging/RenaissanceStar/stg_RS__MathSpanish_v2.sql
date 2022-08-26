@@ -6,7 +6,12 @@ WITH assessment_ids AS (
   WHERE AssessmentNameShort = 'Star Math (Spanish)'
 ),
 
-star_math AS (
+testing_windows AS (
+  SELECT *
+  FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
+),
+
+star AS (
   SELECT
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
@@ -50,43 +55,23 @@ star_math AS (
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
     CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel,
-    Quantile,
-    CASE
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-11')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-09-30'))
-      THEN 'Fall'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-12-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-01-24'))
-      THEN 'Winter'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-04-15')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-05-31'))
-      THEN 'Spring'
-    END AS AceTestingWindowName,
-    DATE(ScreeningWindowStartDate) AS AceTestingWindowStartDate,
-    DATE(ScreeningWindowEndDate) AS AceTestingWindowEndDate,
-    CASE
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-08-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-11-30'))
-      THEN 'Fall'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearStartDate), '-12-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-03-31'))
-      THEN 'Winter'
-      WHEN
-        CompletedDateLocal >= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-04-01')) AND
-        CompletedDateLocal <= DATE(CONCAT(EXTRACT(YEAR FROM SchoolYearEndDate), '-07-31'))
-      THEN 'Spring'
-    END AS StarTestingWindow
+    Quantile
   FROM {{ source('RenaissanceStar', 'MathSpanish_v2')}}
+),
+
+final AS (
+  SELECT
+    a.*,
+    s.*,
+    CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
+    CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,
+    CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowEndDate END AS AceTestingWindowEndDate,
+    t.TestingWindow AS StarTestingWindow
+  FROM star as s
+  CROSS JOIN assessment_ids AS a
+  LEFT JOIN testing_windows AS t
+  ON s.SchoolYear = t.SchoolYear
+  WHERE s.AssessmentDate BETWEEN t.TestingWindowStartDate AND t.TestingWindowEndDate
 )
 
-SELECT
-  a.*,
-  s.*
-FROM star_math as s
-CROSS JOIN assessment_ids AS a
-
+SELECT * FROM final

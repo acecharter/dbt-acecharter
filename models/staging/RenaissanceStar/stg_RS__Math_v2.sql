@@ -11,7 +11,7 @@ testing_windows AS (
   FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
 ),
 
-star_math AS (
+star AS (
   SELECT
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
@@ -67,7 +67,7 @@ final AS (
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowEndDate END AS AceTestingWindowEndDate,
     t.TestingWindow AS StarTestingWindow
-  FROM star_math as s
+  FROM star as s
   CROSS JOIN assessment_ids AS a
   LEFT JOIN testing_windows AS t
   ON s.SchoolYear = t.SchoolYear
