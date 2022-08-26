@@ -2,9 +2,9 @@ version: 2
 
 
 sources:
-  - name: StarterPack
+  - name: StarterPack_Archive
     database: landing-zone-acecharter
-    schema: StarterPack
+    schema: StarterPack_Archive
     description: Analytics data mart created by Landing Zone from data pulled from ACE's PowerSchool SIS and passed through the Ed-Fi ODS. Landing Zone's documentation available at https://docs.google.com/spreadsheets/d/10EhwdMyb015thaPAXbGFWm0Pp_CCATmMiyL2nUeNWiw
     tables:
       - name: AverageDailyAttendance_v3_SY22
