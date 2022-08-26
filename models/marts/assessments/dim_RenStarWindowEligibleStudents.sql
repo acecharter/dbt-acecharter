@@ -17,7 +17,7 @@ WITH
     WHERE TestingWindowStartDate < CURRENT_DATE()
   ),
 
-  student_window_combos AS (
+  final AS (
     SELECT
         w.SchoolYear,
         w.TestingWindow,
@@ -28,22 +28,8 @@ WITH
     WHERE
         s.EntryDate <= w.EligibleStudentsEnrollmentDate AND
         s.ExitWithdrawDate >= w.EligibleStudentsEnrollmentDate
-  ),
-
-  final AS (
-    SELECT
-      *,
-      '10' AS AceAssessmentId
-    FROM student_window_combos
-
-    UNION ALL
-
-    SELECT
-      *,
-      '11' AS AceAssessmentId
-    FROM student_window_combos
   )
 
 SELECT * FROM final
-ORDER BY 1, 2, 3, 4, 5
+ORDER BY 1, 2, 3, 4
 
