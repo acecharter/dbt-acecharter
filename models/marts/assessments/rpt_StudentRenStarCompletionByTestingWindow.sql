@@ -42,6 +42,7 @@ WITH
       AND c.SchoolId = st.SchoolId
     LEFT JOIN assessments AS a
     ON c.AceAssessmentId = a.AceAssessmentId
+    WHERE st.StudentUniqueId IS NOT NULL
   )
 
 SELECT *
