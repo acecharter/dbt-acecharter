@@ -17,8 +17,9 @@ WITH
     FROM {{ ref('stg_GSD__Assessments')}}
   ),
 
-  student_result_counts AS (
-    SELECT * FROM {{ ref('fct_StudentRenStarWindowResultCounts')}}
+  completion_by_window AS (
+    SELECT * FROM {{ ref('fct_StudentRenStarCompletionByWindow')}}
+    WHERE SchoolYear = '2022-23'
   ),
 
   final AS (
@@ -29,13 +30,10 @@ WITH
       a.AssessmentNameShort,
       a.AssessmentSubject,
       c.SchoolYear,
-      c.TestingWindow,
-      c.ResultCount,
-      CASE
-        WHEN c.ResultCount > 0 THEN 'Tested'
-        WHEN c.ResultCount = 0 THEN 'Not Tested' 
-      END AS WindowTestingStatus
-    FROM student_result_counts AS c
+      c.StarTestingWindow AS TestingWindow,
+      c.* EXCEPT(SchoolYear, StarTestingWindow, AceAssessmentId, SchoolId, StudentUniqueId, AssessmentName, TestingStatus),
+      c.TestingStatus AS WindowTestingStatus
+    FROM completion_by_window AS c
     LEFT JOIN schools AS sc
     ON c.SchoolId = sc.SchoolId
     LEFT JOIN students AS st

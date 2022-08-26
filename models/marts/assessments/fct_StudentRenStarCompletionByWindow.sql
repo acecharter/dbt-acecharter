@@ -26,8 +26,7 @@ WITH
   ),
 
   result_counts AS (
-    SELECT *
-    FROM {{ref('fct_StudentRenStarWindowResultCounts')}}
+    SELECT * FROM {{ref('fct_StudentRenStarWindowResultCounts')}}
   ),
 
   joined AS (
