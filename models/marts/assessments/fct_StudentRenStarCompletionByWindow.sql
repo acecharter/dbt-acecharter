@@ -265,6 +265,5 @@ WITH
     FROM unioned
   )
   
-SELECT * FROM final WHERE TestingStatus NOT IN ('Tested','Not Tested')
-
+SELECT * FROM final
 
