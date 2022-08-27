@@ -9,7 +9,7 @@ WITH
   ),
 
   ada AS (
-    SELECT * FROM {{ ref('stg_SP__AverageDailyAttendance_v3') }}
+    SELECT * FROM {{ ref('fct_SchoolAverageDailyAttendance')}}
   ),
 
   reporting_periods AS (
@@ -28,6 +28,7 @@ WITH
       s.*,
       a.GradeLevel,
       p.ReportingPeriod,
+      a.SchoolYear,
       a.Month,
       a.MonthRank,
       a.WeekOf,

@@ -9,5 +9,5 @@ SELECT
   EntryDate,
   ExitWithdrawDate,
   ExitWithdrawReason,
-  IsCurrentEnrollment
+  IsCurrentEnrollment AS EnrolledAtEndOfSchoolYear
 FROM {{ source('StarterPack_Archive', 'StudentEnrollments_SY22')}}
