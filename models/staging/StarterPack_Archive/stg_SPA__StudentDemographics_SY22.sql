@@ -1,5 +1,5 @@
 SELECT
-  '2021-22' AS SchoolYear
+  '2021-22' AS SchoolYear,
   StudentUniqueId,
   StateUniqueId,
   SisUniqueId,
