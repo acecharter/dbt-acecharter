@@ -4,11 +4,11 @@ WITH
   ),
 
   schools AS (
-    SELECT * FROM {{ref('dim_Schools')}}
+    SELECT * FROM {{ref('dim_CurrentSchools')}}
   ),
 
   students AS (
-    SELECT * FROM {{ ref('dim_Students') }}
+    SELECT * FROM {{ ref('dim_CurrentStudents') }}
   ),
   
   sections AS (
