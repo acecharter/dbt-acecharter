@@ -5,21 +5,23 @@ WITH enrollment AS (
 
 schools AS (
   SELECT
+    SchoolYear,
     SchoolId,
     SchoolName,
     SchoolNameMid,
     SchoolNameShort
-  FROM {{ref('dim_Schools')}}
+  FROM {{ref('dim_CurrentSchools')}}
 ),
 
 final AS (
   SELECT
     s.* EXCEPT(SchoolId),
-    e.* EXCEPT(SchoolId)
+    e.* EXCEPT(SchoolYear, SchoolId)
   FROM enrollment AS e
   LEFT JOIN schools AS s
-  USING (SchoolId)
+  ON
+    s.SchoolYear = e.SchoolYear
+    AND s.SchoolId = e.SchoolId
 )
-
 
 SELECT * FROM final

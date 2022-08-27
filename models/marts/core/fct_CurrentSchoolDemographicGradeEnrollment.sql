@@ -1,34 +1,35 @@
 WITH current_students AS (
-  SELECT *
-  FROM {{ ref('dim_Students') }}
-  WHERE IsCurrentlyEnrolled = true
+  SELECT * FROM {{ ref('dim_CurrentStudents')}}
 ),
 
 all_students AS (
   SELECT
+    SchoolYear,
     SchoolId,
     'All Students' AS StudentGroupType,
     'All Students' AS StudentGroup,
     GradeLevel,
     COUNT(*) AS Enrollment
   FROM current_students
-  GROUP BY 1, 4
+  GROUP BY 1, 2, 5
 ),
 
 race_ethnicity AS(
   SELECT
+    SchoolYear,
     SchoolId,
     'Race/Ethnicity' AS StudentGroupType,
     RaceEthnicity AS StudentGroup,
     GradeLevel,
     COUNT(*) AS Enrollment
   FROM current_students
-  GROUP BY 1, 3, 4
-  ORDER BY 1, 3, 4
+  GROUP BY 1, 2, 4, 5
+  ORDER BY 1, 2, 4, 5
 ),
 
 el_status AS (
   SELECT
+    SchoolYear,
     SchoolId,
     'English Learner Status' AS StudentGroupType,
     CASE 
@@ -38,12 +39,13 @@ el_status AS (
     GradeLevel,
     COUNT(*) AS Enrollment
   FROM current_students
-  GROUP BY 1, 3, 4
-  ORDER BY 1, 3, 4
+  GROUP BY 1, 2, 4, 5
+  ORDER BY 1, 2, 4, 5
 ),
 
 frl_status AS (
   SELECT
+    SchoolYear,
     SchoolId,
     'Free/Reduced Meal Eligibility Status' AS StudentGroupType,
     CASE 
@@ -53,12 +55,13 @@ frl_status AS (
     GradeLevel,
     COUNT(*) AS Enrollment
   FROM current_students
-  GROUP BY 1, 3, 4
-  ORDER BY 1, 3, 4
+  GROUP BY 1, 2, 4, 5
+  ORDER BY 1, 2, 4, 5
 ),
 
 sped_status AS (
   SELECT
+    SchoolYear,
     SchoolId,
     'Special Education Status' AS StudentGroupType,
     CASE 
@@ -68,20 +71,21 @@ sped_status AS (
     GradeLevel,
     COUNT(*) AS Enrollment
   FROM current_students
-  GROUP BY 1, 3, 4
-  ORDER BY 1, 3, 4
+  GROUP BY 1, 2, 4, 5
+  ORDER BY 1, 2, 4, 5
 ),
 
 gender AS (
   SELECT
+    SchoolYear,
     SchoolId,
     'Gender' AS StudentGroupType,
     Gender AS StudentGroup,
     GradeLevel,
     COUNT(*) AS Enrollment
   FROM current_students
-  GROUP BY 1, 3, 4
-  ORDER BY 1, 3, 4
+  GROUP BY 1, 2, 4, 5
+  ORDER BY 1, 2, 4, 5
 ),
 
 final AS (

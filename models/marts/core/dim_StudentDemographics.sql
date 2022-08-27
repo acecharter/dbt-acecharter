@@ -1,29 +1,13 @@
 WITH
-  sp_demographics AS (
+  demographics AS (
     SELECT * FROM {{ ref('stg_SP__StudentDemographics')}}
-  ),
-
-  students_with_iep AS (
-    SELECT * 
-    FROM {{ ref('stg_RD__Seis')}}
-    WHERE StudentEligibilityStatus = 'Eligible/Previously Eligible'
-  ),
-
-  demographics_final AS (
-    SELECT
-      sd.*,
-      CASE
-        WHEN i.StudentEligibilityStatus = 'Eligible/Previously Eligible' THEN TRUE
-        ELSE FALSE
-      END AS HasIep,
-      i.StudentEligibilityStatus AS SeisEligibilityStatus
-    FROM sp_demographics AS sd
-    LEFT JOIN students_with_iep AS i
-    USING (StateUniqueId)
+    UNION ALL
+    SELECT * FROM {{ ref('stg_SPA__StudentDemographics_SY22')}}
   ),
 
   final AS (
     SELECT
+      SchoolYear,
       StudentUniqueId,
       StateUniqueId,
       SisUniqueId,
@@ -43,7 +27,7 @@ WITH
       SeisEligibilityStatus,
       Email,
       IsCurrentlyEnrolled
-    FROM demographics_final
+    FROM demographics
   )
 
 SELECT * FROM final
