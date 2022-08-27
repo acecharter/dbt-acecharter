@@ -1,4 +1,11 @@
+WITH unioned AS (
+  SELECT * FROM {{ ref('stg_SP__StudentAttendance_v2')}}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_SPA__StudentAttendance_v2_SY22')}}
+)
+
 SELECT
+  SchoolYear,
   SchoolId,
   StudentUniqueId,
   CountOfDaysAbsent,
@@ -20,4 +27,4 @@ SELECT
     WHEN AverageDailyAttendance > 0.9 THEN 'No'
     WHEN AverageDailyAttendance <= 0.9 THEN 'Yes'
   END AS IsChronicallyAbsent
-FROM {{ ref('stg_SP__StudentAttendance_v2')}}
+FROM unioned

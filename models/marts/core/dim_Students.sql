@@ -3,8 +3,8 @@ WITH
     SELECT
       *,
       RANK() OVER (
-        PARTITION BY SchoolId, StudentUniqueId 
-        ORDER BY SchoolId, StudentUniqueId, EntryDate DESC
+        PARTITION BY SchoolYear, SchoolId, StudentUniqueId 
+        ORDER BY SchoolYear, SchoolId, StudentUniqueId, EntryDate DESC
       ) AS Rank
     FROM {{ ref('fct_StudentSchoolEnrollments') }}
   ),
@@ -15,6 +15,7 @@ WITH
   
   final AS (
     SELECT
+      e.SchoolYear,
       e.SchoolId,
       e.StudentUniqueId,
       d.StateUniqueId,
@@ -39,7 +40,9 @@ WITH
       e.IsCurrentEnrollment AS IsCurrentlyEnrolled
     FROM enrollments_ranked AS e
     LEFT JOIN demographics AS d
-    USING (StudentUniqueId)
+    ON
+      e.StudentUniqueId = d.StudentUniqueId
+      AND e.SchoolYear = d.SchoolYear
     WHERE e.Rank = 1
   )
 

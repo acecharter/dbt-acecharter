@@ -1,6 +1,7 @@
 WITH starter_pack_schools AS (
-  SELECT * 
-  FROM {{ ref('stg_SP__Schools') }}
+  SELECT * FROM {{ ref('stg_SP__Schools') }}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_SPA__Schools_SY22')}}
 ),
 
 raw_data_schools AS (
@@ -10,6 +11,7 @@ raw_data_schools AS (
 
 final AS (
   SELECT
+    sp.SchoolYear,
     sp.SchoolId,
     rd.StateCdsCode,
     rd.StateCountyCode,
@@ -41,7 +43,6 @@ final AS (
     rd.Grade10,
     rd.Grade11,
     rd.Grade12
-
   FROM starter_pack_schools AS sp
   LEFT JOIN raw_data_schools AS rd
   USING (SchoolId)
@@ -49,3 +50,4 @@ final AS (
 
 
 SELECT * FROM final
+ORDER BY SchoolYear DESC

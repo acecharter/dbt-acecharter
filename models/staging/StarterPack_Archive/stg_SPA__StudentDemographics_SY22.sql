@@ -21,9 +21,10 @@ SELECT
   FrlStatus,
   Has504Plan,
   HasIep,
+  CASE WHEN HasIep IS TRUE THEN 'Eligible/Previously Eligible' ELSE NULL END AS SeisEligibilityStatus,
   Email,
-  IsCurrentlyEnrolled AS EnrolledAtEndOfSchoolYear,
-  CurrentSchoolId EndOfSchoolYearSchoolId,
-  CurrentNameOfInstitution AS EndOfSchoolYearSchoolName,
-  CAST(CurrentGradeLevel AS int64) AS EndOfSchoolYearGradeLevel
+  IsCurrentlyEnrolled,
+  CurrentSchoolId,
+  CurrentNameOfInstitution,
+  CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
 FROM {{ source('StarterPack_Archive', 'StudentDemographics_SY22')}}
