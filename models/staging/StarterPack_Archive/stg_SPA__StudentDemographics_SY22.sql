@@ -1,4 +1,5 @@
 SELECT
+  '2021-22' AS SchoolYear
   StudentUniqueId,
   StateUniqueId,
   SisUniqueId,
@@ -21,8 +22,8 @@ SELECT
   Has504Plan,
   HasIep,
   Email,
-  IsCurrentlyEnrolled,
-  CurrentSchoolId,
-  CurrentNameOfInstitution AS CurrentSchoolName,
-  CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
+  IsCurrentlyEnrolled AS EnrolledAtEndOfSchoolYear,
+  CurrentSchoolId EndOfSchoolYearSchoolId,
+  CurrentNameOfInstitution AS EndOfSchoolYearSchoolName,
+  CAST(CurrentGradeLevel AS int64) AS EndOfSchoolYearGradeLevel
 FROM {{ source('StarterPack_Archive', 'StudentDemographics_SY22')}}
