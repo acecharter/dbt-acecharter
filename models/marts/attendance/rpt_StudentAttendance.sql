@@ -25,9 +25,10 @@ WITH
 
   final AS (
     SELECT
+      a.SchoolYear,
       sc.*,
       st.* EXCEPT (SchoolId),
-      a.* EXCEPT (SchoolId, StudentUniqueId)
+      a.* EXCEPT (SchoolId, StudentUniqueId, SchoolYear)
     FROM attendance AS a
     LEFT JOIN schools AS sc
     ON a.SchoolId = sc.SchoolId
