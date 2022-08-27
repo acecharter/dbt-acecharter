@@ -1,6 +1,7 @@
 WITH
   schools AS (
     SELECT 
+      SchoolYear,
       SchoolId,
       SchoolName,
       SchoolNameMid,
@@ -26,16 +27,19 @@ WITH
   final AS (
     SELECT
       a.SchoolYear,
-      sc.*,
-      st.* EXCEPT (SchoolId),
+      sc.* EXCEPT (SchoolYear),
+      st.* EXCEPT (SchoolYear, SchoolId),
       a.* EXCEPT (SchoolId, StudentUniqueId, SchoolYear)
     FROM attendance AS a
     LEFT JOIN schools AS sc
-    ON a.SchoolId = sc.SchoolId
+    ON
+      a.SchoolId = sc.SchoolId
+      AND a.SchoolYear = sc.SchoolYear
     LEFT JOIN students AS st
     ON
       a.SchoolId = st.SchoolId
       AND a.StudentUniqueId = st.StudentUniqueId
+      AND a.SchoolYear = st.SchoolYear
   )
 
 SELECT * FROM final

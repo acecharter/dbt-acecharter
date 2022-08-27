@@ -5,6 +5,7 @@ WITH
 
   schools AS (
       SELECT
+        SchoolYear,
         SchoolId,
         SchoolName,
         SchoolNameMid,
@@ -19,13 +20,12 @@ WITH
 
   completion_by_window AS (
     SELECT * FROM {{ ref('fct_StudentRenStarCompletionByWindow')}}
-    WHERE SchoolYear = '2022-23'
   ),
 
   final AS (
     SELECT
-      sc.*,
-      st.* EXCEPT (SchoolId),
+      sc.* EXCEPT (SchoolYear),
+      st.* EXCEPT (SchoolYear, SchoolId),
       c.AceAssessmentId,
       a.AssessmentNameShort,
       a.AssessmentSubject,
@@ -35,11 +35,14 @@ WITH
       c.TestingStatus AS WindowTestingStatus
     FROM completion_by_window AS c
     LEFT JOIN schools AS sc
-    ON c.SchoolId = sc.SchoolId
+    ON
+      c.SchoolId = sc.SchoolId
+      AND c.SchoolYear = sc.SchoolYear
     LEFT JOIN students AS st
     ON
       c.StudentUniqueId = st.StudentUniqueId
       AND c.SchoolId = st.SchoolId
+      AND c.SchoolYear = st.SchoolYear
     LEFT JOIN assessments AS a
     ON c.AceAssessmentId = a.AceAssessmentId
     WHERE st.StudentUniqueId IS NOT NULL

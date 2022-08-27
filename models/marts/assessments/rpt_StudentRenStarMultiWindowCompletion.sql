@@ -5,6 +5,7 @@ WITH
 
   schools AS (
       SELECT
+        SchoolYear,
         SchoolId,
         SchoolName,
         SchoolNameMid,
@@ -23,8 +24,8 @@ WITH
 
   final AS (
     SELECT
-      sc.*,
-      st.* EXCEPT (SchoolId),
+      sc.* EXCEPT (SchoolYear),
+      st.* EXCEPT (SchoolYear,SchoolId),
       c.AceAssessmentId,
       a.AssessmentNameShort,
       a.AssessmentSubject,
@@ -37,10 +38,12 @@ WITH
     FROM student_completion AS c
     LEFT JOIN schools AS sc
     ON c.SchoolId = sc.SchoolId
+    AND c.SchoolYear = sc.SchoolYear
     LEFT JOIN students AS st
     ON
       c.StudentUniqueId = st.StudentUniqueId
       AND c.SchoolId = st.SchoolId
+      AND c.SchoolYear = st.SchoolYear
     LEFT JOIN assessments AS a
     ON c.AceAssessmentId = a.AceAssessmentId
   )
