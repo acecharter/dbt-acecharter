@@ -5,12 +5,12 @@ WITH
       SchoolName,
       SchoolNameMid,
       SchoolNameShort
-    FROM {{ ref('dim_Schools')}}
+    FROM {{ ref('dim_CurrentSchools')}}
   ),
 
   students AS (
     SELECT *
-    FROM {{ ref('dim_Students') }}
+    FROM {{ ref('dim_CurrentStudents') }}
   ),
 
   assessments AS (
@@ -41,10 +41,10 @@ WITH
 
 SELECT
   s.* EXCEPT (SchoolId),
-  st.*,
+  st.* EXCEPT (SchoolYear),
   a.* EXCEPT (StateUniqueId)
 FROM students AS st
-LEFT JOIN assessments AS a
+INNER JOIN assessments AS a
 ON st.StateUniqueId = a.StateUniqueId
-LEFT JOIN schools AS s
+INNER JOIN schools AS s
 ON st.SchoolId = s.SchoolId

@@ -4,9 +4,9 @@ WITH star_completion AS (
 
 star_keys AS(
   SELECT * EXCEPT (
-    EnrolledOnCensusDate,
-    EnrolledOnJan15,
-    EnrolledOnJune9,
+    EnrolledOnCensusDate_21,
+    EnrolledOnJan15_22,
+    EnrolledOnJune9_22,
     FallMathResultCount,
     WinterMathResultCount,
     SpringMathResultCount,
@@ -33,7 +33,7 @@ fall_math AS (
     StudentUniqueId,
     '10' AS AceAssessmentId,
     'Fall' AS TestingWindow,
-    EnrolledOnCensusDate AS TestingRequired,
+    EnrolledOnCensusDate_21 AS TestingRequired,
     CASE WHEN FallMathResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInFallMathCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -45,7 +45,7 @@ winter_math AS (
     StudentUniqueId,
     '10' AS AceAssessmentId,
     'Winter' AS TestingWindow,
-    EnrolledOnJan15 AS TestingRequired,
+    EnrolledOnJan15_22 AS TestingRequired,
     CASE WHEN WinterMathResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInWinterMathCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -57,7 +57,7 @@ spring_math AS (
     StudentUniqueId,
     '10' AS AceAssessmentId,
     'Spring' AS TestingWindow,
-    EnrolledOnJune9 AS TestingRequired,
+    EnrolledOnJune9_22 AS TestingRequired,
     CASE WHEN SpringMathResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInSpringMathCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -69,7 +69,7 @@ fall_reading AS (
     StudentUniqueId,
     '11' AS AceAssessmentId,
     'Fall' AS TestingWindow,
-    EnrolledOnCensusDate AS TestingRequired,
+    EnrolledOnCensusDate_21 AS TestingRequired,
     CASE WHEN FallMathResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInFallMathCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -81,7 +81,7 @@ winter_reading AS (
     StudentUniqueId,
     '11' AS AceAssessmentId,
     'Winter' AS TestingWindow,
-    EnrolledOnJan15 AS TestingRequired,
+    EnrolledOnJan15_22 AS TestingRequired,
     CASE WHEN WinterReadingResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInWinterReadingCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -93,7 +93,7 @@ spring_reading AS (
     StudentUniqueId,
     '11' AS AceAssessmentId,
     'Spring' AS TestingWindow,
-    EnrolledOnJune9 AS TestingRequired,
+    EnrolledOnJune9_22 AS TestingRequired,
     CASE WHEN SpringReadingResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInSpringReadingCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -105,7 +105,7 @@ fall_spring_math AS (
     StudentUniqueId,
     '10' AS AceAssessmentId,
     'Fall to Spring' AS TestingWindow,
-    CASE WHEN EnrolledOnCensusDate = 'Yes' AND EnrolledOnJune9 = 'Yes' THEN 'Yes' ELSE 'No' END AS TestingRequired,
+    CASE WHEN EnrolledOnCensusDate_21 = 'Yes' AND EnrolledOnJune9_22 = 'Yes' THEN 'Yes' ELSE 'No' END AS TestingRequired,
     CASE WHEN FallMathResultCount > 0 AND SpringMathResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInFallSpringMathCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -117,7 +117,7 @@ fall_spring_reading AS (
     StudentUniqueId,
     '11' AS AceAssessmentId,
     'Fall to Spring' AS TestingWindow,
-    CASE WHEN EnrolledOnCensusDate = 'Yes' AND EnrolledOnJune9 = 'Yes' THEN 'Yes' ELSE 'No' END AS TestingRequired,
+    CASE WHEN EnrolledOnCensusDate_21 = 'Yes' AND EnrolledOnJune9_22 = 'Yes' THEN 'Yes' ELSE 'No' END AS TestingRequired,
     CASE WHEN FallReadingResultCount > 0 AND SpringReadingResultCount > 0 THEN 'Yes' ELSE 'No' END AS Tested,
     IncludeInFallSpringReadingCompletionRate AS IncludeInCompletionRate
   FROM star_completion
@@ -143,6 +143,7 @@ completion_unioned AS(
 )
 
 SELECT
+ 'DO NOT USE - NEED TO FIX dim_StudentRenStarCompletion & reporting models' AS ALERT,
  s.*,
  c.* EXCEPT (SchoolId, StudentUniqueId)
 FROM star_keys AS s
@@ -151,4 +152,3 @@ ON
   s.SchoolId = c.SchoolId
   AND s.StudentUniqueId = c.StudentUniqueId
 WHERE IncludeInCompletionRate = 'Yes'
-LIMIT 9909999999999

@@ -1,7 +1,6 @@
 WITH current_students AS (
     SELECT *
-    FROM {{ ref('dim_Students') }}
-    WHERE IsCurrentlyEnrolled = true
+    FROM {{ ref('dim_CurrentStudents') }}
 ),
 
 elpac_results AS (
@@ -18,16 +17,19 @@ schools AS (
       SchoolName,
       SchoolNameMid,
       SchoolNameShort
-    FROM {{ ref('dim_Schools')}}
+    FROM {{ ref('dim_CurrentSchools')}}
+),
+
+final AS (
+  SELECT
+    s.*,
+    cs.* EXCEPT (SchoolId, SchoolYear, ExitWithdrawReason),
+    er.* EXCEPT (StateUniqueId, TestedSchoolId),
+  FROM current_students AS cs
+  INNER JOIN elpac_results AS er
+  ON cs.StateUniqueId = er.StateUniqueId
+  LEFT JOIN schools AS s
+  ON cs.SchoolId = s.SchoolId
 )
 
-
-SELECT
-  s.* EXCEPT (SchoolId),
-  cs.* EXCEPT (ExitWithdrawReason),
-  er.* EXCEPT (StateUniqueId, TestedSchoolId),
-FROM current_students AS cs
-INNER JOIN elpac_results AS er
-ON cs.StateUniqueId = er.StateUniqueId
-LEFT JOIN schools AS s
-ON cs.SchoolId = s.SchoolId
+SELECT * FROM final
