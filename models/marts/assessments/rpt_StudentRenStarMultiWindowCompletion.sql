@@ -26,7 +26,7 @@ WITH
     SELECT
       sc.* EXCEPT (SchoolYear),
       st.* EXCEPT (SchoolYear,SchoolId),
-      c.AceAssessmentId,
+      c.AssessmentSubject AS StarAssessmentSubject,
       a.AssessmentNameShort,
       a.AssessmentSubject,
       c.SchoolYear,
@@ -45,7 +45,7 @@ WITH
       AND c.SchoolId = st.SchoolId
       AND c.SchoolYear = st.SchoolYear
     LEFT JOIN assessments AS a
-    ON c.AceAssessmentId = a.AceAssessmentId
+    ON c.AssessmentSubject = a.AssessmentNameShort
   )
 
 SELECT *
@@ -53,7 +53,7 @@ FROM final
 ORDER BY
   SchoolId,
   DisplayName,
-  AceAssessmentId,
+  StarAssessmentSubject,
   SchoolYear,
   TestingPeriod
   
