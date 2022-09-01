@@ -92,11 +92,15 @@ WITH
   
   math_joined AS (
     SELECT
-      m.*,
-      COALESCE(pm.ResultCount, 0) AS ProgressMonitoringResultCount,
-      COALESCE(el.ResultCount, 0) AS EarlyLiteracyResultCount,
-      COALESCE(els.ResultCount, 0) AS EarlyLiteracySpanishResultCount,
-      COALESCE(s.ResultCount, 0)  AS SpanishResultCount
+      m.* EXCEPT (AceAssessmentId, TestingStatus, ResultCount),
+      m.AssessmentName AS AssessmentSubject,
+      m.ResultCount + pm.ResultCount AS ResultCount,
+      s.ResultCount AS ResultCountSpanish,
+      CASE
+        WHEN m.ResultCount + pm.ResultCount > 0 THEN 'Tested'
+        WHEN s.ResultCount > 0 THEN 'Other Tested (Spanish Only)'
+        ELSE 'Not Tested'
+      END AS TestingStatus
     FROM math AS m
     LEFT JOIN math_progress_monitoring AS pm
     ON
@@ -104,18 +108,6 @@ WITH
       AND m.StarTestingWindow = pm.StarTestingWindow
       AND m.SchoolId = pm.SchoolId
       AND m.StudentUniqueId = pm.StudentUniqueId
-    LEFT JOIN early_literacy AS el
-    ON
-      m.SchoolYear = el.SchoolYear
-      AND m.StarTestingWindow = el.StarTestingWindow
-      AND m.SchoolId = el.SchoolId
-      AND m.StudentUniqueId = el.StudentUniqueId
-    LEFT JOIN early_literacy_spanish AS els
-    ON
-      m.SchoolYear = els.SchoolYear
-      AND m.StarTestingWindow = els.StarTestingWindow
-      AND m.SchoolId = els.SchoolId
-      AND m.StudentUniqueId = els.StudentUniqueId
     LEFT JOIN math_spanish AS s
     ON
       m.SchoolYear = s.SchoolYear
@@ -126,11 +118,15 @@ WITH
 
   reading_joined AS (
     SELECT
-      r.*,
-      COALESCE(pm.ResultCount, 0) AS ProgressMonitoringResultCount,
-      COALESCE(el.ResultCount, 0) AS EarlyLiteracyResultCount,
-      COALESCE(els.ResultCount, 0) AS EarlyLiteracySpanishResultCount,
-      COALESCE(s.ResultCount, 0)  AS SpanishResultCount
+      r.* EXCEPT (AceAssessmentId, TestingStatus, ResultCount),
+      r.AssessmentName AS AssessmentSubject,
+      r.ResultCount + pm.ResultCount + els.ResultCount AS ResultCount,
+      els.ResultCount + s.ResultCount AS ResultCountSpanish,
+      CASE
+        WHEN r.ResultCount + pm.ResultCount + els.ResultCount > 0 THEN 'Tested'
+        WHEN els.ResultCount + s.ResultCount > 0 THEN 'Other Tested (Spanish Only)'
+        ELSE 'Not Tested'
+      END AS TestingStatus
     FROM reading AS r
     LEFT JOIN reading_progress_monitoring AS pm
     ON
@@ -158,117 +154,9 @@ WITH
       AND r.StudentUniqueId = s.StudentUniqueId
   ),
 
-  unioned AS (
+  final AS (
     SELECT * FROM math_joined
     UNION ALL
     SELECT * FROM reading_joined
-  ),
-
-  final AS (
-    SELECT
-      * EXCEPT (TestingStatus),
-      TestingStatus AS EnterpriseTestingStatus,
-      CASE
-        WHEN ResultCount > 0 THEN 'Tested'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount = 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount = 0
-        THEN 'Not Tested' 
-        WHEN
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount = 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount = 0
-        THEN 'Other Tested (Progress Monitoring version only)'
-        WHEN  
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount = 0
-        THEN 'Other Tested (Progress Monitoring version and Early Literacy only)'
-        WHEN  
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount = 0
-        THEN 'Other Tested (Progress Monitoring version, Early Literacy, and Early Literacy Spanish only)'
-        WHEN  
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Progress Monitoring version, Early Literacy, Early Literacy Spanish, and Spanish version only)'
-        WHEN  
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount = 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount = 0
-        THEN 'Other Tested (Progress Monitoring version and Early Literacy Spanish only)'
-        WHEN  
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Progress Monitoring version, Early Literacy, and Spanish version only)'
-        WHEN  
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount = 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Progress Monitoring version and Spanish version only)'
-        WHEN  
-          ProgressMonitoringResultCount > 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Progress Monitoring version, Early Literacy, Early Literacy Spanish, and Spanish version only)'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount = 0
-        THEN 'Other Tested (Early Literacy only)'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount = 0
-        THEN 'Other Tested (Early Literacy and Early Literacy Spanish only)'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Early Literacy, Early Literacy Spanish, and Spanish version only)'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount > 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Early Literacy and Spanish version only)'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount = 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount = 0
-        THEN 'Other Tested (Early Literacy Spanish only)'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount = 0
-          AND EarlyLiteracySpanishResultCount > 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Early Literacy Spanish and Spanish version only)'
-        WHEN
-          ProgressMonitoringResultCount = 0
-          AND EarlyLiteracyResultCount = 0
-          AND EarlyLiteracySpanishResultCount = 0
-          AND SpanishResultCount > 0
-        THEN 'Other Tested (Spanish version only)'
-      END AS TestingStatus
-    FROM unioned
   )
-  
 SELECT * FROM final
-

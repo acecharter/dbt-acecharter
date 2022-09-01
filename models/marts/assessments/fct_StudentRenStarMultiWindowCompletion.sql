@@ -8,7 +8,7 @@ WITH
       SchoolYear,
       SchoolId,
       StudentUniqueId,
-      AceAssessmentId,
+      AssessmentSubject,
     FROM completion_by_window
   ),
 
@@ -36,8 +36,6 @@ WITH
       'Fall to Spring' AS TestingPeriod,
       f.TestingStatus AS PreTestStatus,
       s.TestingStatus AS PostTestStatus,
-      f.EnterpriseTestingStatus AS EnterprisePreTestStatus,
-      s.EnterpriseTestingStatus AS EnterprisePostTestStatus,
       f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
       s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
@@ -46,13 +44,13 @@ WITH
       t.SchoolYear = f.SchoolYear
       AND t.SchoolId = f.SchoolId
       AND t.StudentUniqueId = f.StudentUniqueId
-      AND t.AceAssessmentId = f.AceAssessmentId
+      AND t.AssessmentSubject = f.AssessmentSubject
     LEFT JOIN spring AS s
     ON
       t.SchoolYear = s.SchoolYear
       AND t.SchoolId = s.SchoolId
       AND t.StudentUniqueId = s.StudentUniqueId
-      AND t.AceAssessmentId = s.AceAssessmentId
+      AND t.AssessmentSubject = s.AssessmentSubject
   ),
 
   fall_winter AS (
@@ -61,8 +59,6 @@ WITH
       'Fall to Winter' AS TestingPeriod,
       f.TestingStatus AS PreTestStatus,
       w.TestingStatus AS PostTestStatus,
-      f.EnterpriseTestingStatus AS EnterprisePreTestStatus,
-      w.EnterpriseTestingStatus AS EnterprisePostTestStatus,
       f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
       w.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
@@ -71,13 +67,13 @@ WITH
       t.SchoolYear = f.SchoolYear
       AND t.SchoolId = f.SchoolId
       AND t.StudentUniqueId = f.StudentUniqueId
-      AND t.AceAssessmentId = f.AceAssessmentId
+      AND t.AssessmentSubject = f.AssessmentSubject
     LEFT JOIN winter AS w
     ON
       t.SchoolYear = w.SchoolYear
       AND t.SchoolId = w.SchoolId
       AND t.StudentUniqueId = w.StudentUniqueId
-      AND t.AceAssessmentId = w.AceAssessmentId
+      AND t.AssessmentSubject = w.AssessmentSubject
   ),
 
   winter_spring AS (
@@ -86,8 +82,6 @@ WITH
       'Winter to Spring' AS TestingPeriod,
       w.TestingStatus AS PreTestStatus,
       s.TestingStatus AS PostTestStatus,
-      s.EnterpriseTestingStatus AS EnterprisePreTestStatus,
-      w.EnterpriseTestingStatus AS EnterprisePostTestStatus,
       w.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
       s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
     FROM student_testing AS t
@@ -96,13 +90,13 @@ WITH
       t.SchoolYear = w.SchoolYear
       AND t.SchoolId = w.SchoolId
       AND t.StudentUniqueId = w.StudentUniqueId
-      AND t.AceAssessmentId = w.AceAssessmentId
+      AND t.AssessmentSubject = w.AssessmentSubject
     LEFT JOIN spring AS s
     ON
       t.SchoolYear = s.SchoolYear
       AND t.SchoolId = s.SchoolId
       AND t.StudentUniqueId = s.StudentUniqueId
-      AND t.AceAssessmentId = s.AceAssessmentId
+      AND t.AssessmentSubject = s.AssessmentSubject
   ),
 
   unioned AS (
@@ -117,7 +111,6 @@ WITH
     SELECT
       *,
       CASE WHEN PreTestRequired = 'Yes' AND PostTestRequired = 'Yes' THEN 'Yes' ELSE 'No' END AS PreAndPostTestRequired,
-      CASE WHEN EnterprisePreTestStatus = 'Tested' AND EnterprisePostTestStatus = 'Tested' THEN 'Yes' ELSE 'No' END AS CompletedEnterprisePreAndPostTest,
       CASE
         WHEN PreTestStatus = 'Tested' AND PostTestStatus = 'Tested' THEN 'Yes'
         WHEN PreTestStatus != 'Not Tested' AND PostTestStatus != 'Not Tested' THEN 'Other'

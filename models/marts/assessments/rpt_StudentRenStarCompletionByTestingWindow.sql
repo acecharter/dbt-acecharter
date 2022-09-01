@@ -26,12 +26,12 @@ WITH
     SELECT
       sc.* EXCEPT (SchoolYear),
       st.* EXCEPT (SchoolYear, SchoolId),
-      c.AceAssessmentId,
+      c.AssessmentSubject AS StarAssessmentSubject,
       a.AssessmentNameShort,
       a.AssessmentSubject,
       c.SchoolYear,
       c.StarTestingWindow AS TestingWindow,
-      c.* EXCEPT(SchoolYear, StarTestingWindow, AceAssessmentId, SchoolId, StudentUniqueId, AssessmentName, TestingStatus),
+      c.* EXCEPT(SchoolYear, StarTestingWindow, AssessmentSubject, SchoolId, StudentUniqueId, AssessmentName, TestingStatus),
       c.TestingStatus AS WindowTestingStatus
     FROM completion_by_window AS c
     LEFT JOIN schools AS sc
@@ -44,7 +44,7 @@ WITH
       AND c.SchoolId = st.SchoolId
       AND c.SchoolYear = st.SchoolYear
     LEFT JOIN assessments AS a
-    ON c.AceAssessmentId = a.AceAssessmentId
+    ON c.AssessmentSubject = a.AssessmentNameShort
     WHERE st.StudentUniqueId IS NOT NULL
   )
 
@@ -53,10 +53,6 @@ FROM final
 ORDER BY
   SchoolId,
   StudentUniqueId,
-  AceAssessmentId,
+  StarAssessmentSubject,
   SchoolYear,
   TestingWindow
-
-
-
-  
