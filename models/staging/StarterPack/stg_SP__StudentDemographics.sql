@@ -37,7 +37,7 @@ students_with_iep AS (
   SELECT * 
   FROM {{ ref('stg_RD__Seis')}}
   WHERE StudentEligibilityStatus = 'Eligible/Previously Eligible'
-  AND SpedExitDate IS NOT NULL
+  AND SpedExitDate IS NULL
 ),
 
 sy AS (
