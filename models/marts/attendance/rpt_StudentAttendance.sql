@@ -14,8 +14,7 @@ WITH
       LastName,
       FirstName,
       MiddleName,
-      BirthDate,
-      Email
+      BirthDate
     )
     FROM {{ref('dim_Students')}}
   ),
