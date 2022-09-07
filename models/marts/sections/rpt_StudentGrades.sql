@@ -75,6 +75,7 @@ WITH
       st.HasIep,
       st.SeisEligibilityStatus,
       st.GradeLevel,
+      st.Email,
       st.EntryDate,
       st.ExitWithdrawDate,
       st.ExitWithdrawReason,
