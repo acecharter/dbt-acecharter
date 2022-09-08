@@ -295,15 +295,6 @@ sources:
       - name: Elpac2021
       - name: ElpacStudentGroups
       
-      - name: TomsCaasppEnrolled2021Empower
-        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-      - name: TomsCaasppEnrolled2021Esperanza
-        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Esperanza as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-      - name: TomsCaasppEnrolled2021HighSchool
-        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-      - name: TomsCaasppEnrolled2021Inspire
-        description: Student-level 2021 CAASPP results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-      
       - name: TomsCaasppTested2022Empower
         description: Student-level CAASPP results exported from TOMS for students tested at Empower in 2022
       - name: TomsCaasppTested2022Esperanza
@@ -312,39 +303,24 @@ sources:
         description: Student-level CAASPP results exported from TOMS for students tested at Inspire in 2022
       - name: TomsCaasppTested2022HighSchool
         description: Student-level CAASPP results exported from TOMS for students tested at ACE High School in 2022
-        
-      - name: TomsElpacEnrolled2021Empower
-        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Empower as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-      - name: TomsElpacEnrolled2021Esperanza
-        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Esperanza as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-      - name: TomsElpacEnrolled2021HighSchool
-        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in ACE High as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
-      - name: TomsElpacEnrolled2021Inspire
-        description: Student-level 2021 ELPAC results exported from TOMS for students enrolled in Inspire as of the data indicate in the ManuallyMaintainedFilesTracker table (located in the GoogleSheetData dataset)
+
       - name: TomsEthnicityCodes
         description: Race/ethnicity codes and names for Reporting Ethnicity field in TOMS CAASPP Student Data Files
 
       - name: TomsElpacTested2021Empower
         description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2021 
-
       - name: TomsElpacTested2021Esperanza
         description: Student-level ELPAC results exported from TOMS for students tested at Esperanza in 2021
-
       - name: TomsElpacTested2021HighSchool
         description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2021
-
       - name: TomsElpacTested2021Inspire
         description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2021 
-
       - name: TomsElpacTested2022Empower
         description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2022
-
       - name: TomsElpacTested2022Esperanza
         description: Student-level ELPAC results exported from TOMS for students tested at Esperanza in 2022
-
       - name: TomsElpacTested2022Inspire
         description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2022
-
       - name: TomsElpacTested2022HighSchool
         description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2022
 
