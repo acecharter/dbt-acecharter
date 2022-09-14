@@ -1,6 +1,7 @@
 WITH 
   schools AS (
     SELECT
+      SchoolYear,
       SchoolId,
       SchoolName,
       SchoolNameMid,
@@ -31,6 +32,7 @@ WITH
     FROM schools AS s
     RIGHT JOIN enrollment AS e
     ON s.SchoolId = e.SchoolId
+    AND s.SchoolYear = e.SchoolYear
     LEFT JOIN reporting_periods AS p
     ON e.CalendarDate = p.CalendarDate
     ORDER BY s.SchoolName, e.CalendarDate
