@@ -28,7 +28,7 @@ WITH
     SELECT
       s.*,
       p.ReportingPeriod,
-      e.* EXCEPT(SchoolId)
+      e.* EXCEPT(SchoolId, SchoolYear)
     FROM schools AS s
     RIGHT JOIN enrollment AS e
     ON s.SchoolId = e.SchoolId
