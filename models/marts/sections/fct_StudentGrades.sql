@@ -16,6 +16,7 @@ WITH
         WHEN GradingPeriodDescriptor = 'Second Semester' THEN 'S2'
       END AS GradingPeriod,
       GradeTypeDescriptor,
+      IsCurrentCourseEnrollment,
       IsCurrentGradingPeriod,
       NumericGradeEarned,
       LetterGradeEarned
@@ -27,7 +28,7 @@ WITH
     FROM grades
     WHERE
       (GradeTypeDescriptor IN ('Final', 'Grading Period'))
-      OR (IsCurrentGradingPeriod = TRUE)
+      OR (IsCurrentCourseEnrollment = TRUE AND IsCurrentGradingPeriod = TRUE)
   )
 
 SELECT * FROM final_or_current_grades
