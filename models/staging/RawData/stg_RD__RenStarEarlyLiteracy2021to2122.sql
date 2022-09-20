@@ -42,7 +42,7 @@ star_early_lit AS (
     SchoolName AS TestedSchoolName,
     CONCAT(LEFT(SchoolYear, 4), '-', RIGHT(SchoolYear, 2)) AS SchoolYear,
     StudentRenaissanceID,
-    StudentIdentifier AS StudentIdentifier,
+    CAST(StudentIdentifier AS STRING) AS StudentIdentifier,
     CAST(StudentStateID AS STRING) AS StateUniqueId,
     CASE
       WHEN StudentMiddleName IS NULL THEN CONCAT(StudentLastName, ", ", StudentFirstName)
@@ -55,7 +55,7 @@ star_early_lit AS (
     DATE(BirthDate) AS BirthDate,
     CAST(CurrentGrade AS STRING) As GradeLevel,
     EnrollmentStatus,
-    AssessmentID AS AssessmentId,
+    AssessmentID,
     DATE(CompletedDate) AS AssessmentDate,
     AssessmentNumber,
     AssessmentType,
@@ -67,6 +67,8 @@ star_early_lit AS (
     UnifiedScore,
     PercentileRank AS PercentileRank,
     NormalCurveEquivalent AS NormalCurveEquivalent,
+    CAST(NULL AS STRING) AS Lexile,
+    LiteracyClassification,
     CAST(NULL AS STRING) AS StudentGrowthPercentileFallFall,
     CAST(NULL AS STRING) AS StudentGrowthPercentileFallSpring,
     CAST(NULL AS STRING) AS StudentGrowthPercentileFallWinter,
@@ -74,12 +76,14 @@ star_early_lit AS (
     CAST(NULL AS STRING) AS StudentGrowthPercentileWinterSpring,
     CAST(NULL AS INT64) AS CurrentSGP,
     CAST(NULL AS INT64) AS StateBenchmarkCategoryLevel,
-    CAST(NULL AS STRING) AS Lexile,
     CAST(NULL AS STRING) AS AceTestingWindowName,
     CAST(NULL AS DATE) AS AceTestingWindowStartDate,
     CAST(NULL AS DATE) AS AceTestingWindowEndDate,
     CASE
-      WHEN CompletedDate BETWEEN '2021-08-01' AND '2021-11-30'THEN 'Fall'
+      WHEN CompletedDate BETWEEN '2020-08-01' AND '2020-11-30' THEN 'Fall'
+      WHEN CompletedDate BETWEEN '2020-12-01' AND '2021-03-31' THEN 'Winter'
+      WHEN CompletedDate BETWEEN '2021-04-01' AND'2021-07-31' THEN 'Spring'
+      WHEN CompletedDate BETWEEN '2021-08-01' AND '2021-11-30' THEN 'Fall'
       WHEN CompletedDate BETWEEN '2021-12-01' AND '2022-03-31' THEN 'Winter'
       WHEN CompletedDate BETWEEN '2022-04-01' AND'2022-07-31' THEN 'Spring'
     END AS StarTestingWindow
