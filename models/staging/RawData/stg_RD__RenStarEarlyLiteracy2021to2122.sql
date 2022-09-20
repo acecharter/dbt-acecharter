@@ -65,7 +65,7 @@ star_early_lit AS (
     CAST(GradeEquivalent AS STRING) AS GradeEquivalent,
     ScaledScore,
     UnifiedScore,
-    PercentileRank AS PercentileRank,
+    CAST(NULL AS INT64) AS PercentileRank,
     NormalCurveEquivalent AS NormalCurveEquivalent,
     CAST(NULL AS STRING) AS Lexile,
     LiteracyClassification,
