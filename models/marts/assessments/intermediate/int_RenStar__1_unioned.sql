@@ -32,6 +32,8 @@ early_literacy_unioned AS(
   SELECT * FROM {{ ref('stg_RSA__EarlyLiteracySpanish_v2_SY22')}}
   UNION ALL
   SELECT * FROM {{ ref('stg_RS__EarlyLiteracySpanish_v2')}}
+  UNION ALL
+  SELECT * FROM {{ ref('stg_RD__RenStarEarlyLiteracy2021to2122')}}
 ),
 
 reading AS (
