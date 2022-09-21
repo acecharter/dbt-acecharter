@@ -5,6 +5,12 @@ with
     where SchoolId = '129247'
   ),
 
+  attendance as (
+    select *
+    from {{ ref('fct_StudentAttendance')}}
+    where SchoolYear = '2022-23'
+  ),
+
   assessments as (
     select *
     from {{ ref('fct_StudentAssessment')}}
@@ -185,12 +191,6 @@ with
     where STARTS_WITH(SectionIdentifier, 'ACSPED')
   ),
 
-  attendance as (
-    select *
-    from {{ ref('fct_StudentAttendance')}}
-    where SchoolYear = '2022-23'
-  ),
-
   other_data as (
     select *
     from {{ ref('stg_GSD__EsperanzaStudentConferenceData')}}
@@ -223,7 +223,6 @@ with
       caa_ela.CaaElaLevel,
       caa_math.CaaMathLevel,
       caa_science.CaaScienceLevel,
-      o.StateUniqueId,
       o.Amplify,
       o.DuoLingo,
       o.NoRedInk,
