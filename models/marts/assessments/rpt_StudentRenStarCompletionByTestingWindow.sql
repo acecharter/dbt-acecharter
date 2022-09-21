@@ -51,8 +51,9 @@ WITH
 SELECT *
 FROM final
 ORDER BY
-  SchoolId,
-  StudentUniqueId,
+  SchoolNameMid,
   StarAssessmentSubject,
   SchoolYear,
-  TestingWindow
+  TestingWindow,
+  GradeLevel,
+  DisplayName
