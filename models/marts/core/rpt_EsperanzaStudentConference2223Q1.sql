@@ -191,9 +191,17 @@ with
     where SchoolYear = '2022-23'
   ),
 
+  other_data as (
+    select *
+    from {{ ref('stg_GSD__EsperanzaStudentConferenceData')}}
+  ),
+
   final as (
     select
       s.*,
+      a.CountOfDaysAbsent,
+      a.CountOfDaysEnrolled,
+      Round(a.AverageDailyAttendance, 2) as AttendanceRate,
       sr.StarReadingGe,
       srs.StarReadingSpanishGe,
       sm.StarMathGe,
@@ -215,10 +223,16 @@ with
       caa_ela.CaaElaLevel,
       caa_math.CaaMathLevel,
       caa_science.CaaScienceLevel,
-      a.CountOfDaysAbsent,
-      a.CountOfDaysEnrolled,
-      Round(a.AverageDailyAttendance, 2) as AttendanceRate
+      o.StateUniqueId,
+      o.Amplify,
+      o.DuoLingo,
+      o.NoRedInk,
+      o.Zearn,
+      o.Khan
     from students as s
+    left join attendance as a
+    on s.SchoolId = a.SchoolId
+    and s.StudentUniqueId = a.StudentUniqueId
     left join star_reading as sr
     on s.StateUniqueId = sr.StateUniqueId
     left join star_reading_sp as srs
@@ -257,10 +271,8 @@ with
     on s.StateUniqueId = caa_math.StateUniqueId
     left join caa_science
     on s.StateUniqueId = caa_science.StateUniqueId
-    left join attendance as a
-    on s.SchoolId = a.SchoolId
-    and s.StudentUniqueId = a.StudentUniqueId
-
+    left join other_data as o
+    on s.StudentUniqueId = o.StudentUniqueId
   )
 
 select * from final
