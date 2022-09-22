@@ -11,6 +11,9 @@ WITH source_table AS (
     ExitWithdrawReason,
     IsCurrentEnrollment
   FROM {{ source('StarterPack', 'StudentEnrollments')}}
+  WHERE
+    FirstName != 'Test' 
+    AND LastName != 'Test'
 ),
 
 sy AS (
