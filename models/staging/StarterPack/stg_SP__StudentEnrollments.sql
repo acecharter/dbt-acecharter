@@ -13,7 +13,7 @@ WITH source_table AS (
   FROM {{ source('StarterPack', 'StudentEnrollments')}}
   WHERE
     FirstName != 'Test' 
-    AND LastName != 'Test'
+    AND LastSurname != 'Test'
 ),
 
 sy AS (
