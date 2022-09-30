@@ -5,20 +5,25 @@ with
     where SchoolId IN ('116814','129247', '131656')
   ),
 
-schools AS (
-  select
-    SchoolYear,
-    SchoolId,
-    SchoolName,
-    SchoolNameMid,
-    SchoolNameShort
-  from {{ref('dim_CurrentSchools')}}
-),
+  schools AS (
+    select
+      SchoolYear,
+      SchoolId,
+      SchoolName,
+      SchoolNameMid,
+      SchoolNameShort
+    from {{ref('dim_CurrentSchools')}}
+  ),
+
+  current_sy AS (
+    SELECT * FROM {{ ref('dim_CurrentStarterPackSchoolYear')}}
+  ),
 
   attendance as (
-    select *
-    from {{ ref('fct_StudentAttendance')}}
-    where SchoolYear = '2022-23'
+    select a.*
+    from {{ ref('fct_StudentAttendance')}} as a
+    right join current_sy
+    using (SchoolYear)
   ),
 
   assessments as (
@@ -28,10 +33,12 @@ schools AS (
   ),
 
   star as (
-    select * from assessments
-    where STARTS_WITH(AssessmentName, 'Star')
-    and ReportingMethod = 'Grade Equivalent'
-    and AssessmentSchoolYear = '2022-23'
+    select a.*
+    from assessments as a
+    right join current_sy
+    on a.AssessmentSchoolYear = current_sy.SchoolYear
+    where STARTS_WITH(a.AssessmentName, 'Star')
+    and a.ReportingMethod = 'Grade Equivalent'
   ),
 
   star_reading as (
