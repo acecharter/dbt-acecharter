@@ -1,5 +1,5 @@
 WITH sy AS (
-  SELECT * FROM {{ ref('dim_CurrentStarterPackSchoolYear')}}
+  SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
 ),
 
 schools AS (

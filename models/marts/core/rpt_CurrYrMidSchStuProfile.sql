@@ -16,7 +16,7 @@ with
   ),
 
   current_sy AS (
-    SELECT * FROM {{ ref('dim_CurrentStarterPackSchoolYear')}}
+    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
   ),
 
   attendance as (
