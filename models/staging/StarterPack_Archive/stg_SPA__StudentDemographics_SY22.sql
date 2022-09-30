@@ -23,7 +23,7 @@ SELECT
   HasIep,
   CASE WHEN HasIep IS TRUE THEN 'Eligible/Previously Eligible' ELSE NULL END AS SeisEligibilityStatus,
   Email,
-  IsCurrentlyEnrolled,
+  FALSE AS IsCurrentlyEnrolled,
   CurrentSchoolId,
   CurrentNameOfInstitution,
   CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
