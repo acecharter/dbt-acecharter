@@ -12,7 +12,7 @@ WITH source_table AS (
 ),
 
 sy AS (
-  SELECT * FROM {{ ref('dim_CurrentStarterPackSchoolYear')}}
+  SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
 ),
 
 final AS (

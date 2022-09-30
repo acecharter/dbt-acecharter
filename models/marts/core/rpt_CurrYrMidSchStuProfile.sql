@@ -16,7 +16,13 @@ with
   ),
 
   current_sy AS (
-    SELECT * FROM {{ ref('dim_CurrentStarterPackSchoolYear')}}
+    SELECT SchoolYear FROM {{ ref('dim_CurrentSchoolYear')}}
+  ),
+
+  prior_sy AS (
+    SELECT SchoolYear
+    FROM {{ ref('dim_SchoolYears')}}
+    WHERE YearsPriorToCurrent = 1
   ),
 
   attendance as (
@@ -96,10 +102,11 @@ with
   ),
 
   state_tests as (
-    select * from assessments
-    where AceAssessmentId IN ('1','2','3','4','5','6','7','8','9')
-    and ReportingMethod = 'Achievement Level'
-    and AssessmentSchoolYear = '2021-22'
+    select a.* from assessments as a
+    right join prior_sy
+    on a.AssessmentSchoolYear = prior_sy.SchoolYear
+    where a.AceAssessmentId IN ('1','2','3','4','5','6','7','8','9')
+    and a.ReportingMethod = 'Achievement Level'
   ),
 
   sbac_ela as (
