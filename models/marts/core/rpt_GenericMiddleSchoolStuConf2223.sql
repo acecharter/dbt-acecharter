@@ -2,7 +2,18 @@ with
   students as (
     select * except (ExitWithdrawDate, ExitWithdrawReason)
     from {{ ref('dim_CurrentStudents')}}
+    where SchoolId IN ('116814','129247', '131656')
   ),
+
+schools AS (
+  select
+    SchoolYear,
+    SchoolId,
+    SchoolName,
+    SchoolNameMid,
+    SchoolNameShort
+  from {{ref('dim_CurrentSchools')}}
+),
 
   attendance as (
     select *
@@ -195,7 +206,8 @@ with
 
   final as (
     select
-      s.*,
+      sc.*,
+      s.* EXCEPT(SchoolYear, SchoolId),
       a.CountOfDaysAbsent,
       a.CountOfDaysEnrolled,
       Round(a.AverageDailyAttendance, 2) as AttendanceRate,
@@ -221,6 +233,9 @@ with
       caa_math.CaaMathLevel,
       caa_science.CaaScienceLevel
     from students as s
+    left join schools as sc
+    on s.SchoolId = sc.SchoolId
+    and s.SchoolYear = sc.SchoolYear
     left join attendance as a
     on s.SchoolId = a.SchoolId
     and s.StudentUniqueId = a.StudentUniqueId
