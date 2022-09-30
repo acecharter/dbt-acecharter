@@ -219,12 +219,7 @@ with
       elpac.ElpacLevel,
       caa_ela.CaaElaLevel,
       caa_math.CaaMathLevel,
-      caa_science.CaaScienceLevel,
-      o.Amplify,
-      o.DuoLingo,
-      o.NoRedInk,
-      o.Zearn,
-      o.Khan
+      caa_science.CaaScienceLevel
     from students as s
     left join attendance as a
     on s.SchoolId = a.SchoolId
