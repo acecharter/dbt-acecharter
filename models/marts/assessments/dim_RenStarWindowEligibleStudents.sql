@@ -1,5 +1,4 @@
---This script identifies "eligible" students for each testing window
--- A student is considered eligible if they were enrolled anytime during testing window
+--This script identifies "eligible" students for each testing window based on dates entered in the RenStarWindows table
 
 WITH
   students AS (
