@@ -247,7 +247,7 @@ with
       caa_ela.CaaElaLevel,
       caa_math.CaaMathLevel,
       caa_science.CaaScienceLevel
-    from students as s
+    from current_ms_students as s
     left join schools as sc
     on s.SchoolId = sc.SchoolId
     and s.SchoolYear = sc.SchoolYear
