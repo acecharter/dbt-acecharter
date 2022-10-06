@@ -3,12 +3,14 @@ WITH
     SELECT * FROM {{ ref('fct_StudentGrades')}}
   ),
 
-  schools AS (
+  current_schools AS (
     SELECT * FROM {{ref('dim_CurrentSchools')}}
   ),
 
-  students AS (
-    SELECT * FROM {{ ref('dim_CurrentStudents') }}
+  current_students AS (
+    SELECT *
+    FROM {{ ref('dim_Students')}}
+    WHERE IsCurrentlyEnrolled = TRUE
   ),
   
   sections AS (
@@ -109,9 +111,9 @@ WITH
       AND e.SectionIdentifier = g.SectionIdentifier
       AND e.ClassPeriodName = g.ClassPeriodName
       AND e.StudentUniqueId = g.StudentUniqueId
-    LEFT JOIN schools AS sc
+    LEFT JOIN current_schools AS sc
     ON e.SchoolId = sc.SchoolId
-    LEFT JOIN students AS st
+    LEFT JOIN current_students AS st
     ON
       e.SchoolId = st.SchoolId
       AND e.StudentUniqueId = st.StudentUniqueId

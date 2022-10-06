@@ -1,8 +1,9 @@
 with
-  students as (
+  current_esperanza_students as (
     select * except (ExitWithdrawDate, ExitWithdrawReason)
-    from {{ ref('dim_CurrentStudents')}}
-    where SchoolId = '129247'
+    from {{ ref('dim_Students')}}
+    where IsCurrentlyEnrolled = TRUE
+    and SchoolId = '129247'
   ),
 
   attendance as (
@@ -228,7 +229,7 @@ with
       o.NoRedInk,
       o.Zearn,
       o.Khan
-    from students as s
+    from current_esperanza_students as s
     left join attendance as a
     on s.SchoolId = a.SchoolId
     and s.StudentUniqueId = a.StudentUniqueId
