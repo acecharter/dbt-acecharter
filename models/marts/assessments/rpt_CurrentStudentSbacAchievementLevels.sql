@@ -1,9 +1,10 @@
 WITH current_students AS (
-    SELECT *
-    FROM {{ ref('dim_CurrentStudents') }}
+  SELECT *
+  FROM {{ ref('dim_Students')}}
+  WHERE IsCurrentlyEnrolled = TRUE
 ),
 
-schools AS (
+current_schools AS (
     SELECT
       SchoolId,
       SchoolName,
@@ -68,6 +69,6 @@ SELECT
 FROM current_students AS cs
 LEFT JOIN sbac_results AS r
 ON cs.StateUniqueId = r.StateUniqueId
-LEFT JOIN schools AS s
+LEFT JOIN current_schools AS s
 ON cs.SchoolId = s.SchoolId
 WHERE AceAssessmentId IS NOT NULL

@@ -1,8 +1,9 @@
 with
-  students as (
+  current_ms_students as (
     select * except (ExitWithdrawDate, ExitWithdrawReason)
-    from {{ ref('dim_CurrentStudents')}}
-    where SchoolId IN ('116814','129247', '131656')
+    from {{ ref('dim_Students')}}
+    where IsCurrentlyEnrolled = TRUE
+    and SchoolId IN ('116814','129247', '131656')
   ),
 
   schools AS (

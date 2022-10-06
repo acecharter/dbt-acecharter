@@ -1,5 +1,7 @@
 WITH current_students AS (
-  SELECT * FROM {{ ref('dim_CurrentStudents')}}
+  SELECT *
+  FROM {{ ref('dim_Students')}}
+  WHERE IsCurrentlyEnrolled = TRUE
 ),
 
 all_students AS (
