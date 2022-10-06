@@ -7,11 +7,20 @@ sources:
     schema: RenaissanceStar_Archive
     tables:
 
+      - name: EarlyLiteracy_SY21
+        description: Student-level Renaissance Star Early Literacy Assessment data from SY 2020-21. Export provided by Renaissance customer support.
+
+      - name: EarlyLiteracy_SY22
+        description: Student-level Renaissance Star Early Literacy Assessment data from SY 2021-22. Export provided by Renaissance customer support.
+
       - name: EarlyLiteracySpanish_v2_SY22
-        description: Student-level Renaissance Star Early Literacy Assessment (Spanish) data from SY 2021-22.
+        description: Student-level Renaissance Star Early Literacy Assessment (Spanish) data from SY 2021-22. Imported via Landing Zone integration.
+
+      - name: Math_SY21
+        description: Student-level Renaissance Star Math Enterprise Assessment (English) data from SY 2020-21. Export obtained during SY 2021-22. Only includes data for students who were still enrolled at ACE in 2021-22 at the time the data was exported.
 
       - name: Math_v2_SY22
-        description: Student-level Renaissance Star Math Enterprise Assessment (English) data from SY 2021-22. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
+        description: Student-level Renaissance Star Math Enterprise Assessment (English) data from SY 2021-22. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
         columns:
           - name: RenaissanceClientID
             description: Renaissance customer number
@@ -24,12 +33,18 @@ sources:
           - name: StateUniqueId
             description: (StudentStateID in source documentation) Student's state ID in Renaissance. Blank if not provided.
 
+      - name: MissingStudentIds
+        description: Student ID information for some student records in Renaissance Star data files where this information is missing or inaccurate.
+
+      - name: Reading_SY21
+        description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from SY 2020-21. Export obtained during SY 2021-22. Only includes data for students who were still enrolled at ACE in 2021-22 at the time the data was exported.
+
       - name: Reading_v2_SY22
-        description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from SY 2021-22. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
+        description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from SY 2021-22. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
       
       - name: MathSpanish_v2_SY22
-        description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from SY 2021-22.
+        description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from SY 2021-22. Imported via Landing Zone integration.
       
       - name: ReadingSpanish_v2_SY22
-        description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data from SY 2021-22.
+        description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data from SY 2021-22. Imported via Landing Zone integration.
 

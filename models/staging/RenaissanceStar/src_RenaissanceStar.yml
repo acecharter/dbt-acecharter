@@ -7,9 +7,13 @@ sources:
     schema: RenaissanceStar
     tables:
       - name: EarlyLiteracy_v2
+        description: Student-level Renaissance Star Early Literacy Assessment (English) data from current school year. Imported via Landing Zone integration.
+
       - name: EarlyLiteracySpanish_v2
+        description: Student-level Renaissance Star Early Literacy Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
+
       - name: Math_v2
-        description: Student-level Renaissance Star Math Enterprise Assessment (English) data. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
+        description: Student-level Renaissance Star Math Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
         columns:
           - name: RenaissanceClientID
             description: Renaissance customer number
@@ -21,12 +25,13 @@ sources:
           - name: StudentUserID
           - name: StateUniqueId
             description: (StudentStateID in source documentation) Student's state ID in Renaissance. Blank if not provided.
+      
       - name: Reading_v2
-        description: Student-level Renaissance Star Reading Enterprise Assessment (English) data. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
+        description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
       
       - name: MathSpanish_v2
-        description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data.
+        description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
       
       - name: ReadingSpanish_v2
-        description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data.
+        description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
 

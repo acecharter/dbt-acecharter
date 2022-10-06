@@ -3,7 +3,9 @@ WITH assessment_ids AS (
     AceAssessmentId,
     AssessmentNameShort AS AssessmentName
   FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Reading (Spanish)'
+  WHERE
+    AssessmentFamilyNameShort = 'Star' AND
+    AssessmentSubject = 'Reading'
 ),
 
 testing_windows AS (
@@ -16,7 +18,7 @@ missing_student_ids AS (
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId
-  FROM {{ ref('stg_GSD__RenStarMissingStudentIds')}}
+  FROM {{ ref('base_RSA__MissingStudentIds')}}
 ),
 
 star_with_missing_ids AS (
@@ -30,7 +32,7 @@ star_with_missing_ids AS (
       WHEN s.StateUniqueId IS NULL THEN m.StateUniqueId
       ELSE s.StateUniqueId
     END AS StateUniqueId,
-  FROM {{ source('RenaissanceStar_Archive', 'ReadingSpanish_v2_SY22')}} AS s
+  FROM {{ source('RenaissanceStar_Archive', 'Reading_v2_SY22')}} AS s
   LEFT JOIN missing_student_ids AS m
   USING (StudentRenaissanceID)
 ),
@@ -85,19 +87,45 @@ star AS (
 FROM star_with_missing_ids
 ),
 
-final AS (
+testing_windows_added AS (
   SELECT
-    a.*,
     s.*,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowEndDate END AS AceTestingWindowEndDate,
     t.TestingWindow AS StarTestingWindow
   FROM star as s
-  CROSS JOIN assessment_ids AS a
   LEFT JOIN testing_windows AS t
   ON s.SchoolYear = t.SchoolYear
   WHERE s.AssessmentDate BETWEEN t.TestingWindowStartDate AND t.TestingWindowEndDate
+),
+
+enterprise AS (
+  SELECT
+    a.*,
+    t.*
+  FROM testing_windows_added AS t
+  CROSS JOIN assessment_ids AS a
+  WHERE
+    t.AssessmentType = 'Enterprise'
+    AND a.AssessmentName = 'Star Reading'
+),
+
+progress_monitoring AS (
+  SELECT
+    a.*,
+    t.*
+  FROM testing_windows_added AS t
+  CROSS JOIN assessment_ids AS a
+  WHERE
+    t.AssessmentType = 'ProgressMonitoring'
+    AND a.AssessmentName = 'Star Reading Progress Monitoring'
+),
+
+final AS (
+  SELECT * FROM enterprise
+  UNION ALL
+  SELECT * FROM progress_monitoring
 )
 
 SELECT * FROM final

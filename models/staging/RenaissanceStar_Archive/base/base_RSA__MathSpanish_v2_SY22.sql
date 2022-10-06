@@ -16,7 +16,7 @@ missing_student_ids AS (
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId
-  FROM {{ ref('stg_GSD__RenStarMissingStudentIds')}}
+  FROM {{ ref('base_RSA__MissingStudentIds')}}
 ),
 
 star_with_missing_ids AS (

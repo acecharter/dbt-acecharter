@@ -11,7 +11,7 @@ missing_student_ids AS (
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId
-  FROM {{ ref('stg_GSD__RenStarMissingStudentIds')}}
+  FROM {{ ref('base_RSA__MissingStudentIds')}}
 ),
 
 star_with_missing_ids AS (
@@ -25,7 +25,7 @@ star_with_missing_ids AS (
       WHEN s.StudentStateID IS NULL OR s.StudentStateID = 15939 THEN CAST(m.StateUniqueId AS INT64)
       ELSE s.StudentStateID
     END AS StudentStateID,
-  FROM {{ source('RawData', 'RenStarEarlyLiteracy2021to2122')}} AS s
+  FROM {{ source('RenaissanceStar_Archive', 'EarlyLiteracy_SY22')}} AS s
   LEFT JOIN missing_student_ids AS m
   USING (StudentRenaissanceID)
 ),
@@ -80,9 +80,6 @@ star_early_lit AS (
     CAST(NULL AS DATE) AS AceTestingWindowStartDate,
     CAST(NULL AS DATE) AS AceTestingWindowEndDate,
     CASE
-      WHEN CompletedDate BETWEEN '2020-08-01' AND '2020-11-30' THEN 'Fall'
-      WHEN CompletedDate BETWEEN '2020-12-01' AND '2021-03-31' THEN 'Winter'
-      WHEN CompletedDate BETWEEN '2021-04-01' AND'2021-07-31' THEN 'Spring'
       WHEN CompletedDate BETWEEN '2021-08-01' AND '2021-11-30' THEN 'Fall'
       WHEN CompletedDate BETWEEN '2021-12-01' AND '2022-03-31' THEN 'Winter'
       WHEN CompletedDate BETWEEN '2022-04-01' AND'2022-07-31' THEN 'Spring'
