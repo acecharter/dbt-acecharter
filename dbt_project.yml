@@ -65,6 +65,16 @@ models:
         
     # Applies to all files under models/staging/
     staging:
+      +materialized: table
+      
       RawData:
+        base:
+          +materialized: ephemeral
+
+      RenaissanceStar_Archive:
+        base:
+          +materialized: ephemeral
+
+      RenaissanceStar:
         base:
           +materialized: ephemeral

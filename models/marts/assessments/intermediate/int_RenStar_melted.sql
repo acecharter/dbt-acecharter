@@ -1,5 +1,5 @@
 WITH star_results AS (
-  SELECT * FROM {{ ref('int_RenStar__1_unioned') }}
+  SELECT * FROM {{ ref('stg_RenaissanceStar') }}
 ),
 
 star_keys AS(

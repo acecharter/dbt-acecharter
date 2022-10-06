@@ -25,7 +25,7 @@ WITH
       StudentIdentifier AS StudentUniqueId,
       AceAssessmentId,
       COUNT(*) AS ResultCount
-    FROM {{ref('int_RenStar__1_unioned')}}
+    FROM {{ref('stg_RenaissanceStar')}}
     GROUP BY 1, 2, 3, 4, 5
   ),
 

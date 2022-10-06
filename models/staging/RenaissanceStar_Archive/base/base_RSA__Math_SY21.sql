@@ -39,7 +39,7 @@ star_math_with_gp_added AS (
   SELECT
     s.*,
     CAST(CONCAT(s.Current_Grade, '.', gp.GradePlacementDecimalValue) AS FLOAT64) AS GradePlacement
-  FROM {{ source('RawData', 'RenStarMath2021')}} AS s
+  FROM {{ source('RenaissanceStar_Archive', 'Math_SY21')}} AS s
   LEFT JOIN grade_placement AS gp
   USING (Activity_Type)
   WHERE DATE(s.Activity_Completed_Date) BETWEEN DATE(StartDate) AND DATE(EndDate)

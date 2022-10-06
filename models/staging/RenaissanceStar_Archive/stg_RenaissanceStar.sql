@@ -1,39 +1,37 @@
-{{ config(
-    materialized='table'
-)}}
-
 WITH reading_unioned AS(
-  SELECT * FROM {{ ref('stg_RD__RenStarReading2021')}}
+  SELECT * FROM {{ ref('base_RSA__Reading_SY21')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RSA__Reading_v2_SY22')}}
+  SELECT * FROM {{ ref('base_RSA__Reading_v2_SY22')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RSA__ReadingSpanish_v2_SY22')}}
+  SELECT * FROM {{ ref('base_RSA__ReadingSpanish_v2_SY22')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RS__Reading_v2')}}
+  SELECT * FROM {{ ref('base_RS__Reading_v2')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RS__ReadingSpanish_v2')}}
+  SELECT * FROM {{ ref('base_RS__ReadingSpanish_v2')}}
 ),
 
 math_unioned AS(
-  SELECT * FROM {{ ref('stg_RD__RenStarMath2021')}}
+  SELECT * FROM {{ ref('base_RSA__Math_SY21')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RSA__Math_v2_SY22')}}
+  SELECT * FROM {{ ref('base_RSA__Math_v2_SY22')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RSA__MathSpanish_v2_SY22')}}
+  SELECT * FROM {{ ref('base_RSA__MathSpanish_v2_SY22')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RS__Math_v2')}}
+  SELECT * FROM {{ ref('base_RS__Math_v2')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RS__MathSpanish_v2')}}
+  SELECT * FROM {{ ref('base_RS__MathSpanish_v2')}}
 ),
 
 early_literacy_unioned AS(
-  SELECT * FROM {{ ref('stg_RS__EarlyLiteracy_v2')}}
+  SELECT * FROM {{ ref('base_RSA__EarlyLiteracy_SY21')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RSA__EarlyLiteracySpanish_v2_SY22')}}
+  SELECT * FROM {{ ref('base_RSA__EarlyLiteracy_SY22')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RS__EarlyLiteracySpanish_v2')}}
+  SELECT * FROM {{ ref('base_RS__EarlyLiteracy_v2')}}
   UNION ALL
-  SELECT * FROM {{ ref('stg_RD__RenStarEarlyLiteracy2021to2122')}}
+  SELECT * FROM {{ ref('base_RSA__EarlyLiteracySpanish_v2_SY22')}}
+  UNION ALL
+  SELECT * FROM {{ ref('base_RS__EarlyLiteracySpanish_v2')}}
 ),
 
 reading AS (

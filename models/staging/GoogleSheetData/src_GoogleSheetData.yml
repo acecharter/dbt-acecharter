@@ -189,9 +189,6 @@ sources:
        
       - name: RenStarGradePlacementByDayRange
         description: List of Renaissance Star Grade Placement (GP) decimal values and corresponding assessment date info. Used to calculate GP for 20-21 Star Results
-      
-      - name: RenStarMissingStudentIds
-        description: List of StudentRenaissanceIDs and corresponding StudentIdentifier and StateUniqueId values that are missing from RenaissanceStar records
 
       - name: RenStarTestingWindows
         description: List of Renaissance Star testing windows and key dates for determining eligiblity and completion rates
