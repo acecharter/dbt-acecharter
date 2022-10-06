@@ -34,7 +34,7 @@ sources:
             description: (StudentStateID in source documentation) Student's state ID in Renaissance. Blank if not provided.
 
       - name: MissingStudentIds
-        description: Student ID information for some student records in Renaissance Star data files where this information is missing or inaccurate.
+        description: List of StudentRenaissanceIDs and corresponding StudentIdentifier and StateUniqueId values that are missing from or inaccurate in RenaissanceStar data files.
 
       - name: Reading_SY21
         description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from SY 2020-21. Export obtained during SY 2021-22. Only includes data for students who were still enrolled at ACE in 2021-22 at the time the data was exported.

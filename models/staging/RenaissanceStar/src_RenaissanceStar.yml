@@ -6,6 +6,7 @@ sources:
     database: landing-zone-acecharter
     schema: RenaissanceStar
     tables:
+    
       - name: EarlyLiteracy_v2
         description: Student-level Renaissance Star Early Literacy Assessment (English) data from current school year. Imported via Landing Zone integration.
 
