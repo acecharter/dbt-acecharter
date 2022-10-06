@@ -32,14 +32,6 @@ star_with_missing_ids AS (
 star AS (
   SELECT
     CASE
-      WHEN AssessmentType = 'Enterprise' THEN '11'
-      WHEN AssessmentType = 'ProgressMonitoring' THEN '24'
-    END AS AceAssessmentId,
-    CASE
-      WHEN AssessmentType = 'Enterprise' THEN 'Star Reading'
-      WHEN AssessmentType = 'ProgressMonitoring' THEN 'Star Reading Progress Monitoring'
-    END AS AssessmentName,
-    CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
       WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247'
       WHEN SchoolIdentifier='57b1f93e473b517136000007' THEN '131656'

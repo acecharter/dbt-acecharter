@@ -6,8 +6,7 @@ testing_windows AS (
 
 star AS (
   SELECT
-    '13' AS AceAssessmentId,
-    'Star Reading (Spanish)' AS AssessmentName,CASE
+    CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
       WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247'
       WHEN SchoolIdentifier='57b1f93e473b517136000007' THEN '131656'

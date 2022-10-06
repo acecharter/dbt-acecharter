@@ -13,10 +13,6 @@ WITH
       FROM {{ ref('dim_Schools')}}
   ),
 
-  assessments AS (
-    SELECT * FROM {{ ref('stg_GSD__Assessments')}}
-  ),
-
   star_results AS (
     SELECT
       SchoolYear,
@@ -69,33 +65,7 @@ WITH
     WHERE
       AceAssessmentId = '11'
       AND StarTestingWindow = 'Spring' 
-  ),
-
-  testing_windows AS (
-    SELECT 
-      * EXCEPT(EligibleStudentsEnrollmentDate),
-      CASE
-        WHEN EligibleStudentsEnrollmentDate > CURRENT_DATE() THEN CURRENT_DATE()
-        ELSE EligibleStudentsEnrollmentDate
-      END AS EligibleStudentsEnrollmentDate
-    FROM {{ ref('stg_GSD__RenStarTestingWindows')}}
-    WHERE TestingWindowStartDate < CURRENT_DATE()
-  ),
-
---   student_window_combos AS (
---     SELECT
---         w.SchoolYear,
---         w.TestingWindow,
---         s.SchoolId,
---         s.StudentUniqueId
---     FROM students AS s
---     CROSS JOIN testing_windows AS w
---     WHERE
---         s.EntryDate <= w.EligibleStudentsEnrollmentDate AND
---         s.ExitWithdrawDate >= w.EligibleStudentsEnrollmentDate
---   ),
-
-  
+  ),  
 
   joined AS (
     SELECT

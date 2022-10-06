@@ -40,8 +40,6 @@ star_math_with_gp_added AS (
 
 final AS (
   SELECT
-    '10' AS AceAssessmentId,
-    'Star Math' AS AssessmentName,
     CASE
       WHEN School_Id='gs_4e804ecc-4623-46b4-a91a-fe2acb88cbb3' THEN '116814'
       WHEN School_Id='gs_e8341d4c-4366-43e1-99b5-71f66cec337a' THEN '129247'

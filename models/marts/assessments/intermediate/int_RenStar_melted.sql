@@ -6,6 +6,8 @@ star_keys AS(
   SELECT
     AssessmentId,
     AceAssessmentId,
+    AssessmentName,
+    AssessmentSubject,
     StudentRenaissanceID,
     StudentIdentifier,
     StateUniqueId,

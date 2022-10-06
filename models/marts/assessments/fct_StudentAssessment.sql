@@ -1,52 +1,60 @@
 WITH
-  assessment_names AS (
-    SELECT * FROM {{ ref('stg_GSD__Assessments') }}
-  ),
-
   star AS (    
     SELECT
       s.AceAssessmentId,
-      a.AssessmentNameShort AS AssessmentName,
-      a.AssessmentSubject,
+      s.AssessmentName,
+      s.AssessmentSubject,
       s.StateUniqueId,
       s.TestedSchoolId,
       s.SchoolYear AS AssessmentSchoolYear,
       s.AssessmentID AS AssessmentId,
       CAST(s.AssessmentDate AS STRING) AS AssessmentDate,
-      s.GradeLevel,
+      s.GradeLevel AS GradeLevelWhenAssessed,
       s.AssessmentGradeLevel,
       'Overall' AS AssessmentObjective,
       s.ReportingMethod,
       s.StudentResultDataType,
       s.StudentResult
     FROM {{ ref('int_RenStar_melted') }} AS s
-    LEFT JOIN assessment_names AS a
-    USING (AceAssessmentId)
   ),
 
   cers AS (
     SELECT
-      c.AceAssessmentId,
+      AceAssessmentId,
       CASE
-        WHEN AceAssessmentId = '15' THEN CONCAT('SB ELA', REGEXP_EXTRACT(c.AssessmentName, '.+(\\s\\-\\s.+)'))
-        WHEN AceAssessmentId = '16' THEN CONCAT('SB Math', REGEXP_EXTRACT(c.AssessmentName, '.+(\\s\\-\\s.+)'))
-        ELSE a.AssessmentNameShort 
+        WHEN AceAssessmentId = '1' THEN 'SB ELA Summative'
+        WHEN AceAssessmentId = '2' THEN 'SB Math Summative'
+        WHEN AceAssessmentId = '3' THEN 'CAA ELA'
+        WHEN AceAssessmentId = '4' THEN 'CAA Math'
+        WHEN AceAssessmentId = '5' THEN 'CAA Science'
+        WHEN AceAssessmentId = '6' THEN 'CAST'
+        WHEN AceAssessmentId = '7' THEN 'CSA'
+        WHEN AceAssessmentId = '8' THEN 'Summative ELPAC'
+        WHEN AceAssessmentId = '9' THEN 'Initial ELPAC'
+        WHEN AceAssessmentId = '15' THEN CONCAT('SB ELA', REGEXP_EXTRACT(AssessmentName, '.+(\\s\\-\\s.+)'))
+        WHEN AceAssessmentId = '16' THEN CONCAT('SB Math', REGEXP_EXTRACT(AssessmentName, '.+(\\s\\-\\s.+)'))
+        WHEN AceAssessmentId = '17' THEN 'SB ELA ICA'
+        WHEN AceAssessmentId = '18' THEN 'SB Math ICA'
       END AS AssessmentName,
-      a.AssessmentSubject,
-      c.StateUniqueId,
-      c.TestedSchoolId,
-      c.SchoolYear AS AssessmentSchoolYear,
-      c.AssessmentId,
-      CAST(c.AssessmentDate AS STRING) AS AssessmentDate,
-      c.GradeLevel,
-      c.AssessmentGradeLevel,
-      c.AssessmentObjective,
-      c.ReportingMethod,
-      c.StudentResultDataType,
-      c.StudentResult
-    FROM {{ ref('int_Cers__3_melted') }} AS c
-    LEFT JOIN assessment_names AS a
-    USING (AceAssessmentId)
+      CASE
+        WHEN AceAssessmentId IN ('1','3','15','17') THEN 'ELA'
+        WHEN AceAssessmentId IN ('2','4','16','18') THEN 'Math'
+        WHEN AceAssessmentId IN ('5','6') THEN 'Science'
+        WHEN AceAssessmentId IN ('7') THEN 'Spanish'
+        WHEN AceAssessmentId IN ('8','9') THEN 'English Fluency'
+      END AS AssessmentSubject,
+      StateUniqueId,
+      TestedSchoolId,
+      SchoolYear AS AssessmentSchoolYear,
+      AssessmentId,
+      CAST(AssessmentDate AS STRING) AS AssessmentDate,
+      GradeLevel AS GradeLevelWhenAssessed,
+      AssessmentGradeLevel,
+      AssessmentObjective,
+      ReportingMethod,
+      StudentResultDataType,
+      StudentResult
+    FROM {{ ref('int_Cers__3_melted') }}
   ),
 
   anet AS (
@@ -78,23 +86,21 @@ WITH
 
   final AS (
     SELECT
-      n.AceAssessmentId,
-      r.AssessmentName,
-      r.StateUniqueId,
-      r.TestedSchoolId,
-      r.AssessmentSchoolYear,
-      r.AssessmentId,
-      r.AssessmentDate,
-      r.GradeLevel AS GradeLevelWhenAssessed,
-      r.AssessmentGradeLevel,
-      r.AssessmentSubject,
-      r.AssessmentObjective,
-      r.ReportingMethod,
-      r.StudentResultDataType,
-      r.StudentResult
-    FROM unioned_results AS r
-    LEFT JOIN assessment_names AS n
-    USING (AceAssessmentId)
+      AceAssessmentId,
+      AssessmentName,
+      StateUniqueId,
+      TestedSchoolId,
+      AssessmentSchoolYear,
+      AssessmentId,
+      AssessmentDate,
+      GradeLevelWhenAssessed,
+      AssessmentGradeLevel,
+      AssessmentSubject,
+      AssessmentObjective,
+      ReportingMethod,
+      StudentResultDataType,
+      StudentResult
+    FROM unioned_results
   )
 
 SELECT * FROM final
