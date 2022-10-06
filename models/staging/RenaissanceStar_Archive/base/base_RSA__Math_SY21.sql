@@ -1,11 +1,4 @@
-WITH assessment_ids AS (
-  SELECT 
-    AceAssessmentId,
-    AssessmentNameShort AS AssessmentName
-  FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Math'
-),
-
+WITH
 grade_placement_2021_dates AS (
   SELECT
     'Star Math Enterprise Tests' AS Activity_Type,
@@ -45,8 +38,10 @@ star_math_with_gp_added AS (
   WHERE DATE(s.Activity_Completed_Date) BETWEEN DATE(StartDate) AND DATE(EndDate)
 ),
 
-star_math AS (
+final AS (
   SELECT
+    '10' AS AceAssessmentId,
+    'Star Math' AS AssessmentName,
     CASE
       WHEN School_Id='gs_4e804ecc-4623-46b4-a91a-fe2acb88cbb3' THEN '116814'
       WHEN School_Id='gs_e8341d4c-4366-43e1-99b5-71f66cec337a' THEN '129247'
@@ -100,14 +95,6 @@ star_math AS (
     END AS StarTestingWindow
 
   FROM star_math_with_gp_added
-),
-
-final AS(
-  SELECT
-    a.*,
-    s.*
-  FROM assessment_ids AS a
-  CROSS JOIN star_math as s
 )
 
 SELECT * FROM final

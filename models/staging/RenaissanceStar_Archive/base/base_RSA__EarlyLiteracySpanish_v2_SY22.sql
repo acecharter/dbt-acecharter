@@ -1,14 +1,6 @@
-WITH assessment_ids AS (
-  SELECT 
-    AceAssessmentId,
-    AssessmentNameShort AS AssessmentName
-  FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Early Literacy (Spanish)'
-),
-
+WITH
 testing_windows AS (
-  SELECT *
-  FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
+  SELECT *  FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
 ),
 
 star AS (
@@ -62,14 +54,14 @@ FROM {{ source('RenaissanceStar_Archive', 'EarlyLiteracySpanish_v2_SY22')}}
 
 final AS (
   SELECT
-    a.*,
+    '22' AS AceAssessmentId,
+    'Star Early Literacy (Spanish)' AS AssessmentName,
     s.*,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowEndDate END AS AceTestingWindowEndDate,
     t.TestingWindow AS StarTestingWindow
   FROM star as s
-  CROSS JOIN assessment_ids AS a
   LEFT JOIN testing_windows AS t
   ON s.SchoolYear = t.SchoolYear
   WHERE s.AssessmentDate BETWEEN t.TestingWindowStartDate AND t.TestingWindowEndDate

@@ -1,11 +1,4 @@
-WITH assessment_ids AS (
-  SELECT 
-    AceAssessmentId,
-    AssessmentNameShort AS AssessmentName
-  FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Math (Spanish)'
-),
-
+WITH
 testing_windows AS (
   SELECT *
   FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
@@ -13,6 +6,8 @@ testing_windows AS (
 
 star AS (
   SELECT
+    '12' AS AceAssessmentId,
+    'Star Math (Spanish)' AS AssessmentName,
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
       WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247'
@@ -61,14 +56,12 @@ star AS (
 
 final AS (
   SELECT
-    a.*,
     s.*,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowEndDate END AS AceTestingWindowEndDate,
     t.TestingWindow AS StarTestingWindow
   FROM star as s
-  CROSS JOIN assessment_ids AS a
   LEFT JOIN testing_windows AS t
   ON s.SchoolYear = t.SchoolYear
   WHERE s.AssessmentDate BETWEEN t.TestingWindowStartDate AND t.TestingWindowEndDate
