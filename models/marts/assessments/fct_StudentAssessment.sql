@@ -19,7 +19,7 @@ WITH
       s.ReportingMethod,
       s.StudentResultDataType,
       s.StudentResult
-    FROM {{ ref('int_RenStar__2_melted') }} AS s
+    FROM {{ ref('int_RenStar_melted') }} AS s
     LEFT JOIN assessment_names AS a
     USING (AceAssessmentId)
   ),
