@@ -1,16 +1,17 @@
 WITH
-  current_schools AS (
-    SELECT
+  schools AS (
+    SELECT DISTINCT
       SchoolId,
       SchoolName,
       SchoolNameMid,
       SchoolNameShort
-    FROM {{ ref('dim_CurrentSchools')}}
+    FROM {{ ref('dim_Schools')}}
   ),
 
-  students AS (
+  current_students AS (
     SELECT *
     FROM {{ ref('dim_Students') }}
+    WHERE IsCurrentlyEnrolled = TRUE
   ),
 
   assessments AS (
@@ -34,17 +35,20 @@ WITH
       a.StudentResultDataType,
       a.StudentResult
     FROM {{ ref('fct_StudentAssessment')}} AS a
-    LEFT JOIN current_schools AS s
+    LEFT JOIN schools AS s
     ON a.TestedSchoolId = s.SchoolId
+  ),
+
+  final AS (
+    SELECT
+      s.* EXCEPT (SchoolId),
+      st.* EXCEPT (SchoolYear),
+      a.* EXCEPT (StateUniqueId)
+    FROM current_students AS st
+    INNER JOIN assessments AS a
+    ON st.StateUniqueId = a.StateUniqueId
+    INNER JOIN schools AS s
+    ON st.SchoolId = s.SchoolId
   )
 
-
-SELECT
-  s.* EXCEPT (SchoolId),
-  st.* EXCEPT (SchoolYear),
-  a.* EXCEPT (StateUniqueId)
-FROM current_students AS st
-INNER JOIN assessments AS a
-ON st.StateUniqueId = a.StateUniqueId
-INNER JOIN current_schools AS s
-ON st.SchoolId = s.SchoolId
+SELECT * FROM final
