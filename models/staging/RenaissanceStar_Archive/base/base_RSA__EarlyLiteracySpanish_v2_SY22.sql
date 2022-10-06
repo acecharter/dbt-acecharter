@@ -54,8 +54,6 @@ FROM {{ source('RenaissanceStar_Archive', 'EarlyLiteracySpanish_v2_SY22')}}
 
 final AS (
   SELECT
-    '22' AS AceAssessmentId,
-    'Star Early Literacy (Spanish)' AS AssessmentName,
     s.*,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,

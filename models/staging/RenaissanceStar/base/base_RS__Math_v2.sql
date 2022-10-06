@@ -7,14 +7,6 @@ testing_windows AS (
 star AS (
   SELECT
     CASE
-      WHEN AssessmentType = 'Enterprise' THEN '10'
-      WHEN AssessmentType = 'ProgressMonitoring' THEN '23'
-    END AS AceAssessmentId,
-    CASE
-      WHEN AssessmentType = 'Enterprise' THEN 'Star Math'
-      WHEN AssessmentType = 'ProgressMonitoring' THEN 'Star Math Progress Monitoring'
-    END AS AssessmentName,
-    CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
       WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247'
       WHEN SchoolIdentifier='57b1f93e473b517136000007' THEN '131656'

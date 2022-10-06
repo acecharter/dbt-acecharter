@@ -8,10 +8,9 @@ WITH
     FROM {{ ref('dim_CurrentSchools')}}
   ),
 
-  current_students AS (
+  students AS (
     SELECT *
     FROM {{ ref('dim_Students') }}
-    WHERE IsCurrentlyEnrolled = TRUE
   ),
 
   assessments AS (
