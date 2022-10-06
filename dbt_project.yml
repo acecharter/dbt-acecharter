@@ -65,7 +65,8 @@ models:
         
     # Applies to all files under models/staging/
     staging:
-
+      +materialized: table
+      
       RawData:
         base:
           +materialized: ephemeral
