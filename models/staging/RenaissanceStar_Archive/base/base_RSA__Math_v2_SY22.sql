@@ -1,13 +1,4 @@
-WITH assessment_ids AS (
-  SELECT 
-    AceAssessmentId,
-    AssessmentNameShort AS AssessmentName
-  FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE
-    AssessmentFamilyNameShort = 'Star' AND
-    AssessmentSubject = 'Math'
-),
-
+WITH
 testing_windows AS (
   SELECT *
   FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
@@ -39,6 +30,14 @@ star_with_missing_ids AS (
 
 star AS (
   SELECT
+    CASE
+      WHEN AssessmentType = 'Enterprise' THEN '10'
+      WHEN AssessmentType = 'ProgressMonitoring' THEN '23'
+    END AS AceAssessmentId,
+    CASE
+      WHEN AssessmentType = 'Enterprise' THEN 'Star Math'
+      WHEN AssessmentType = 'ProgressMonitoring' THEN 'Star Math Progress Monitoring'
+    END AS AssessmentName,
     CASE
       WHEN SchoolIdentifier='57b1f93e473b517136000009' THEN '116814'
       WHEN SchoolIdentifier='57b1f93e473b51713600000b' THEN '129247'
@@ -85,7 +84,7 @@ star AS (
  FROM star_with_missing_ids
 ),
 
-testing_windows_added AS (
+final AS (
   SELECT
     s.*,
     CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
@@ -96,34 +95,6 @@ testing_windows_added AS (
   LEFT JOIN testing_windows AS t
   ON s.SchoolYear = t.SchoolYear
   WHERE s.AssessmentDate BETWEEN t.TestingWindowStartDate AND t.TestingWindowEndDate
-),
-
-enterprise AS (
-  SELECT
-    a.*,
-    t.*
-  FROM testing_windows_added AS t
-  CROSS JOIN assessment_ids AS a
-  WHERE
-    t.AssessmentType = 'Enterprise'
-    AND a.AssessmentName = 'Star Math'
-),
-
-progress_monitoring AS (
-  SELECT
-    a.*,
-    t.*
-  FROM testing_windows_added AS t
-  CROSS JOIN assessment_ids AS a
-  WHERE
-    t.AssessmentType = 'ProgressMonitoring'
-    AND a.AssessmentName = 'Star Math Progress Monitoring'
-),
-
-final AS (
-  SELECT * FROM enterprise
-  UNION ALL
-  SELECT * FROM progress_monitoring
 )
 
 SELECT * FROM final

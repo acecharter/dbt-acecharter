@@ -1,11 +1,4 @@
-WITH assessment_ids AS (
-  SELECT 
-    AceAssessmentId,
-    AssessmentNameShort AS AssessmentName
-  FROM {{ ref('stg_GSD__Assessments') }}
-  WHERE AssessmentNameShort = 'Star Early Literacy'
-),
-
+WITH
 missing_student_ids AS (
   SELECT
     StudentRenaissanceID,
@@ -30,8 +23,10 @@ star_with_missing_ids AS (
   USING (StudentRenaissanceID)
 ),
 
-star_early_lit AS (
+final AS (
   SELECT
+    '21' AS AceAssessmentId,
+    'Star Early Literacy' AS AssessmentName,
     CASE
       WHEN TRIM(SchoolIdentifier)='57b1f93e473b517136000009' THEN '116814'
       WHEN TRIM(SchoolIdentifier)='57b1f93e473b51713600000b' THEN '129247'
@@ -85,14 +80,6 @@ star_early_lit AS (
       WHEN CompletedDate BETWEEN '2021-04-01' AND'2021-07-31' THEN 'Spring'
     END AS StarTestingWindow
   FROM star_with_missing_ids
-),
-
-final AS(
-  SELECT
-    a.*,
-    s.*
-  FROM assessment_ids AS a
-  CROSS JOIN star_early_lit as s
 )
 
 SELECT * FROM final
