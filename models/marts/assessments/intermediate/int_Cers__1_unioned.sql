@@ -20,6 +20,10 @@ WITH
     SELECT * FROM {{ ref('stg_RD__Cers2122') }}
   ),
 
+  cers_2122 AS(
+    SELECT * FROM {{ ref('stg_RD__Cers2223') }}
+  ),
+
   final AS (
     SELECT * FROM cers_1819 
     UNION ALL
@@ -28,6 +32,8 @@ WITH
     SELECT * FROM cers_2021
     UNION ALL
     SELECT * FROM cers_2122
+    UNION ALL
+    SELECT * FROM cers_2223
        
   )
 
