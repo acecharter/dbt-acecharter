@@ -20,7 +20,7 @@ WITH
     SELECT * FROM {{ ref('stg_RD__Cers2122') }}
   ),
 
-  cers_2122 AS(
+  cers_2223 AS(
     SELECT * FROM {{ ref('stg_RD__Cers2223') }}
   ),
 
