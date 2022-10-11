@@ -47,7 +47,6 @@ SELECT
     WHEN CAST(IncludeIndicator AS STRING) = 'false' THEN 'N'
     ELSE CAST(IncludeIndicator AS STRING)
   END AS IncludeIndicator,
-  CAST(IncludeIndicator AS STRING) AS IncludeIndicator,
   CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
   CAST(GrowthScore AS STRING) AS GrowthScore,
   CAST(ScaleScore AS INT64) AS ScaleScore,
