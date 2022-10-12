@@ -140,12 +140,61 @@ early_literacy AS (
   FROM early_literacy_all
 ),
 
-final AS (
+unioned AS (
   SELECT * FROM reading
   UNION ALL
   SELECT * FROM math
   UNION ALL
   SELECT * FROM early_literacy
+),
+
+final AS (
+  SELECT
+    AceAssessmentId,
+    AssessmentName,
+    AssessmentSubject,
+    TestedSchoolId,
+    TestedSchoolName,
+    SchoolYear,
+    StudentRenaissanceID,
+    StudentIdentifier,
+    StateUniqueId,
+    DisplayName,
+    LastName,
+    FirstName,
+    MiddleName,
+    Gender,
+    BirthDate,
+    GradeLevel,
+    EnrollmentStatus,
+    AssessmentID,
+    AssessmentDate,
+    AssessmentNumber,
+    AssessmentType,
+    TotalTimeInSeconds,
+    GradePlacement,
+    CAST(AssessmentGradeLevel AS INT64) AS AssessmentGradeLevel,
+    GradeEquivalent,
+    ScaledScore,
+    UnifiedScore,
+    PercentileRank,
+    NormalCurveEquivalent,
+    StudentGrowthPercentileFallFall,
+    StudentGrowthPercentileFallSpring,
+    StudentGrowthPercentileFallWinter,
+    StudentGrowthPercentileSpringSpring,
+    StudentGrowthPercentileWinterSpring,
+    CurrentSGP,
+    StateBenchmarkCategoryLevel,
+    AceTestingWindowName,
+    AceTestingWindowStartDate,
+    AceTestingWindowEndDate,
+    StarTestingWindow,
+    InstructionalReadingLevel,
+    Lexile,
+    Quantile,
+    LiteracyClassification
+  FROM unioned
 )
 
 SELECT * FROM final

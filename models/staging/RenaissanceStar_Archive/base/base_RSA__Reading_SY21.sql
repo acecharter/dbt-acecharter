@@ -58,8 +58,8 @@ final AS (
       ELSE CONCAT(Student_Last_Name, ", ", Student_First_Name, " ", Student_Middle_Name)
     END AS DisplayName,
     Student_Last_Name AS LastName,
-    Student_First_Name,
-    Student_Middle_Name,
+    Student_First_Name AS FirstName,
+    Student_Middle_Name AS MiddleName,
     CAST(NULL AS STRING) AS Gender,
     DATE(Birthdate) AS BirthDate,
     CAST(Current_Grade AS STRING) As GradeLevel,
