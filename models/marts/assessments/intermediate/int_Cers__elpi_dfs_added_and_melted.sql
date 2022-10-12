@@ -3,12 +3,70 @@
 )}}
 
 WITH
-  cers AS (
+  elpi_levels AS (
+    SELECT * FROM {{ ref('stg_GSD__ElpiLevels') }}
+  ),
+  
+  caaspp_min_met_scores AS (
     SELECT
-      *,
-      CONCAT(AssessmentName, '-', StateUniqueId, '-', AssessmentDate) AS AssessmentId,
-    FROM {{ ref('int_Cers__2_elpi_and_dfs_added') }}
-    WHERE Completeness='Complete'
+      AceAssessmentId,
+      CAST(GradeLevel AS INT64) AS GradeLevel,
+      MinStandardMetScaleScore
+    FROM {{ ref('fct_CaasppMinMetScaleScores') }}
+    WHERE
+      Area='Overall'
+      AND AceAssessmentId IN ('1', '2')
+  ),
+
+  cers AS (
+    SELECT 
+      AceAssessmentId,
+      AceAssessmentName,
+      DistrictId,
+      TestDistrictName,
+      TestSchoolCdsCode,
+      TestSchoolName,
+      StateUniqueId,
+      FirstName,
+      LastSurname,
+      AssessmentDate,
+      TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed AS GradeLevel,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+      Alt1ScoreAchievementLevel,
+      Alt2ScoreAchievementLevel,
+      Claim1ScoreAchievementLevel,
+      Claim2ScoreAchievementLevel,
+      Claim3ScoreAchievementLevel,
+      Claim4ScoreAchievementLevel
+    FROM {{ ref('stg_RD__Cers')}}
+  ),
+
+  cers_elpi_and_dfs_added AS (
+    SELECT
+      cers.*,
+      e.ElpiLevel,
+      cers.ScaleScore - c.MinStandardMetScaleScore AS DistanceFromStandard,
+      CONCAT(cers.AssessmentName, '-', cers.StateUniqueId, '-', cers.AssessmentDate) AS AssessmentId,
+    FROM cers
+    LEFT JOIN elpi_levels AS e
+      ON
+        cers.AceAssessmentId = e.AceAssessmentId
+        AND CAST(cers.GradeLevel AS INT64) = e.GradeLevel
+        AND CAST(cers.ScaleScore AS INT64) BETWEEN CAST(e.MinScaleScore AS INT64) AND CAST(e.MaxScaleScore AS INT64)
+    LEFT JOIN caaspp_min_met_scores AS c
+      ON
+        cers.AceAssessmentId = c.AceAssessmentId
+        AND cers.GradeLevel = c.GradeLevel 
+    WHERE cers.Completeness='Complete'
   ),
 
   cers_keys AS(
@@ -39,7 +97,7 @@ WITH
         ELSE AssessmentName
       END AS AssessmentGradeLevel,
       AdministrationCondition
-    FROM cers
+    FROM cers_elpi_and_dfs_added
   ),
 
   achievement_level AS (
@@ -49,7 +107,7 @@ WITH
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(ScaleScoreAchievementLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE ScaleScoreAchievementLevel IS NOT NULL
   ),
 
@@ -60,7 +118,7 @@ WITH
       'Scale Score' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(ScaleScore AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE ScaleScore IS NOT NULL
   ),
 
@@ -71,7 +129,7 @@ WITH
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(Alt1ScoreAchievementLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE Alt1ScoreAchievementLevel IS NOT NULL
   ),
 
@@ -82,7 +140,7 @@ WITH
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(Alt2ScoreAchievementLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE Alt2ScoreAchievementLevel IS NOT NULL
   ),
 
@@ -98,7 +156,7 @@ WITH
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(Claim1ScoreAchievementLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE Claim1ScoreAchievementLevel IS NOT NULL
   ),
 
@@ -114,7 +172,7 @@ WITH
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(Claim2ScoreAchievementLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE Claim2ScoreAchievementLevel IS NOT NULL
   ),
 
@@ -130,7 +188,7 @@ WITH
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(Claim3ScoreAchievementLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE Claim3ScoreAchievementLevel IS NOT NULL
   ),
 
@@ -144,7 +202,7 @@ WITH
       'Achievement Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(Claim4ScoreAchievementLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE Claim4ScoreAchievementLevel IS NOT NULL
   ),
 
@@ -155,7 +213,7 @@ WITH
       'ELPI Level' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(ElpiLevel AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE ElpiLevel IS NOT NULL
   ),
 
@@ -166,7 +224,7 @@ WITH
       'Distance From Standard' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(DistanceFromStandard AS STRING) AS StudentResult
-    FROM cers
+    FROM cers_elpi_and_dfs_added
     WHERE DistanceFromStandard IS NOT NULL
   ),
 

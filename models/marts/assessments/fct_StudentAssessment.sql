@@ -54,7 +54,7 @@ WITH
       ReportingMethod,
       StudentResultDataType,
       StudentResult
-    FROM {{ ref('int_Cers__3_melted') }}
+    FROM {{ ref('int_Cers__elpi_dfs_added_and_melted') }}
   ),
 
   anet AS (
