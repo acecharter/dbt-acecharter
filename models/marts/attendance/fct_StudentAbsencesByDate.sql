@@ -1,4 +1,4 @@
-WITH stu_att_by_date AS (
+WITH unioned AS (
   SELECT * FROM {{ ref('stg_SP__StudentAttendanceByDate')}}
   UNION ALL
   SELECT * FROM {{ ref('stg_SPA__StudentAttendanceByDate_SY22')}}
