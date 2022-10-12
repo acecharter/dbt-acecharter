@@ -48,7 +48,7 @@ WITH
       SchoolYear AS AssessmentSchoolYear,
       AssessmentId,
       CAST(AssessmentDate AS STRING) AS AssessmentDate,
-      GradeLevel AS GradeLevelWhenAssessed,
+      GradeLevelWhenAssessed,
       AssessmentGradeLevel,
       AssessmentObjective,
       ReportingMethod,

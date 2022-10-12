@@ -36,7 +36,7 @@ WITH
       AssessmentSubType,
       AssessmentName,
       Subject,
-      GradeLevelWhenAssessed AS GradeLevel,
+      GradeLevelWhenAssessed,
       Completeness,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
@@ -60,12 +60,12 @@ WITH
     LEFT JOIN elpi_levels AS e
       ON
         cers.AceAssessmentId = e.AceAssessmentId
-        AND CAST(cers.GradeLevel AS INT64) = e.GradeLevel
+        AND CAST(cers.GradeLevelWhenAssessed AS INT64) = e.GradeLevel
         AND CAST(cers.ScaleScore AS INT64) BETWEEN CAST(e.MinScaleScore AS INT64) AND CAST(e.MaxScaleScore AS INT64)
     LEFT JOIN caaspp_min_met_scores AS c
       ON
         cers.AceAssessmentId = c.AceAssessmentId
-        AND cers.GradeLevel = c.GradeLevel 
+        AND cers.GradeLevelWhenAssessed = c.GradeLevel 
     WHERE cers.Completeness='Complete'
   ),
 
@@ -90,7 +90,7 @@ WITH
         "-",
         RIGHT(CAST(TestSchoolYear AS STRING), 2)
       ) AS SchoolYear,
-      GradeLevel,
+      GradeLevelWhenAssessed,
       CASE
         WHEN STARTS_WITH(AssessmentName, 'High') OR STARTS_WITH(AssessmentName, 'Grade H') THEN 'High School'
         WHEN STARTS_WITH(AssessmentName, 'Grade') THEN REGEXP_EXTRACT(AssessmentName, 'Grade (\\S+)')

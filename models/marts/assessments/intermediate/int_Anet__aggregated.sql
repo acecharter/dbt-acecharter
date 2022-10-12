@@ -18,7 +18,7 @@ WITH
       student_first_name AS FirstName,
       student_middle_name AS MiddleName,
       student_last_name AS LastName,
-      enrollment_grade AS GradeLevel,
+      CAST(enrollment_grade AS INT64) AS GradeLevel,
       CASE
         WHEN course = 'english_i' THEN 'English I'
         WHEN course = 'english_ii' THEN 'English II'
