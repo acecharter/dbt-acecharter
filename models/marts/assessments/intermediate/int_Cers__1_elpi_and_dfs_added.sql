@@ -6,7 +6,7 @@ WITH
   caaspp_min_met_scores AS (
     SELECT
       AceAssessmentId,
-      GradeLevel,
+      CAST(GradeLevel AS INT64) AS GradeLevel,
       MinStandardMetScaleScore
     FROM {{ ref('fct_CaasppMinMetScaleScores') }}
     WHERE
