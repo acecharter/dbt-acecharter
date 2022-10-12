@@ -43,7 +43,7 @@ WITH
       Claim2ScoreAchievementLevel,
       Claim3ScoreAchievementLevel,
       Claim4ScoreAchievementLevel
-    FROM {{ ref('int_Cers__1_unioned')}}
+    FROM {{ ref('stg_RD__Cers')}}
   ),
 
   final AS (

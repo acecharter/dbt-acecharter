@@ -54,7 +54,7 @@ WITH
       ReportingMethod,
       StudentResultDataType,
       StudentResult
-    FROM {{ ref('int_Cers__3_melted') }}
+    FROM {{ ref('int_Cers__2_melted') }}
   ),
 
   anet AS (
