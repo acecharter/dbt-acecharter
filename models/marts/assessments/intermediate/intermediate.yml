@@ -1,12 +1,80 @@
 version: 2
 
 models:
-          
-  - name: int_Caaspp__1_unioned
-    description: "Unioned CAASPP research file data for the State and all Santa Clara County entities for corresponding annual CAASPP staging files"
+
+  - name: int_Anet__aggregated
+    description: Aggregated Achievement Network (ANET) export data to calculated each student's score on each assessment. Raw data file contains question level information (i.e. 1 row per question).
+
     config:
       materialized: view
+
+  - name: int_Caaspp__filtered_and_melted
+    description: >
+      Melted (unpivoted) CAASPP research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
+      - 1 - All Students
+      - 128 - Reported Disabilities
+      - 31 - Economic disadvantaged
+      - 160 - EL (English learner)
+      - 78 - Hispanic or Latino
+      - 204 - Economically disadvantaged Hispanic or Latino
+
+    config:
+      materialized: table
+
     columns:
       - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
         tests:
           - unique
+
+  - name: int_Cast__filtered_and_melted
+    description: >
+      Melted (unpivoted) CAST research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
+      - 1 - All Students
+      - 128 - Reported Disabilities
+      - 31 - Economic disadvantaged
+      - 160 - EL (English learner)
+      - 78 - Hispanic or Latino
+      - 204 - Economically disadvantaged Hispanic or Latino
+
+    config:
+      materialized: table
+
+    columns:
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
+        tests:
+          - unique
+
+  - name: int_Cers__elpi_dfs_added_and_melted
+    description: Melted (unpivoted) CERS export data containing state summative and SBAC interim assessment results. EL Progress Indicator (for ELPAC) and DFS (for CAASPP) results calculated and added.
+
+    config:
+      materialized: table
+
+  - name: int_Elpac__filtered_and_melted
+    description: >
+      Melted (unpivoted) summative ELPAC research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Student Group IDs:
+      - 160 - All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
+      - 120 - ELs enrolled less than 12 months
+      - 142 - ELs enrolled 12 months or more
+      - 242 - EL - 1 year in program
+      - 243 - EL - 2 years in program
+      - 244 - EL - 3 years in program
+      - 245 - EL - 4 years in program
+      - 246 - EL - 5 years in program
+      - 247 - EL - 6+ years in program
+
+    config:
+      materialized: table
+
+    columns:
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || StudentGroupId || '-' || GradeLevel || '-' || AssessmentType"
+        tests:
+          - unique
+
+  - name: int_RenStar_melted
+    description: >
+      Melted (unpivoted) Renaissance Star export data for students tested at ACE.
+
+    config:
+      materialized: view
+
