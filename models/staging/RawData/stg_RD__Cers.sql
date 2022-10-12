@@ -55,7 +55,7 @@ WITH
       AssessmentSubType,
       AssessmentName,
       Subject,
-      GradeLevelWhenAssessed AS GradeLevel,
+      GradeLevelWhenAssessed,
       Completeness,
       AdministrationCondition,
       ScaleScoreAchievementLevel,
