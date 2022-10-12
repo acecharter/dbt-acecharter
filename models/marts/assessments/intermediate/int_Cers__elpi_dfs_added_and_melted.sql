@@ -60,7 +60,7 @@ WITH
     LEFT JOIN elpi_levels AS e
       ON
         cers.AceAssessmentId = e.AceAssessmentId
-        AND CAST(cers.GradeLevelWhenAssessed AS INT64) = e.GradeLevel
+        AND cers.GradeLevelWhenAssessed = e.GradeLevel
         AND CAST(cers.ScaleScore AS INT64) BETWEEN CAST(e.MinScaleScore AS INT64) AND CAST(e.MaxScaleScore AS INT64)
     LEFT JOIN caaspp_min_met_scores AS c
       ON

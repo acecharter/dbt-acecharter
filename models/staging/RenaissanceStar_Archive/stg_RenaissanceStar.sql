@@ -165,7 +165,7 @@ final AS (
     MiddleName,
     Gender,
     BirthDate,
-    GradeLevel,
+    CAST(GradeLevel AS INT64) AS GradeLevel,
     EnrollmentStatus,
     AssessmentID,
     AssessmentDate,
