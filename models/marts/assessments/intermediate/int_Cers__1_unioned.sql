@@ -24,7 +24,7 @@ WITH
     SELECT * FROM {{ ref('stg_RD__Cers2223') }}
   ),
 
-  final AS (
+  unioned AS (
     SELECT * FROM cers_1819 
     UNION ALL
     SELECT * FROM cers_1920
@@ -35,6 +35,38 @@ WITH
     UNION ALL
     SELECT * FROM cers_2223
        
+  ),
+
+  final AS (
+    SELECT
+      AceAssessmentId,
+      AceAssessmentName,
+      DistrictId,
+      TestDistrictName,
+      TestSchoolCdsCode,
+      TestSchoolName,
+      StateUniqueId,
+      FirstName,
+      LastSurname,
+      AssessmentDate,
+      TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed AS GradeLevel,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+      Alt1ScoreAchievementLevel,
+      Alt2ScoreAchievementLevel,
+      Claim1ScoreAchievementLevel,
+      Claim2ScoreAchievementLevel,
+      Claim3ScoreAchievementLevel,
+      Claim4ScoreAchievementLevel
+    FROM unioned
   )
 
 SELECT * FROM final

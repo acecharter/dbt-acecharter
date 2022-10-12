@@ -15,7 +15,35 @@ WITH
   ),
 
   cers AS (
-    SELECT * FROM {{ ref('int_Cers__1_unioned')}}
+    SELECT 
+      AceAssessmentId,
+      AceAssessmentName,
+      DistrictId,
+      TestDistrictName,
+      TestSchoolCdsCode,
+      TestSchoolName,
+      StateUniqueId,
+      FirstName,
+      LastSurname,
+      AssessmentDate,
+      TestSchoolYear,
+      TestSessionId,
+      AssessmentType,
+      AssessmentSubType,
+      AssessmentName,
+      Subject,
+      GradeLevelWhenAssessed AS GradeLevel,
+      Completeness,
+      AdministrationCondition,
+      ScaleScoreAchievementLevel,
+      ScaleScore,
+      Alt1ScoreAchievementLevel,
+      Alt2ScoreAchievementLevel,
+      Claim1ScoreAchievementLevel,
+      Claim2ScoreAchievementLevel,
+      Claim3ScoreAchievementLevel,
+      Claim4ScoreAchievementLevel
+    FROM {{ ref('int_Cers__1_unioned')}}
   ),
 
   final AS (
