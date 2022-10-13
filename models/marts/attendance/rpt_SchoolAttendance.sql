@@ -1,6 +1,7 @@
 WITH
   schools AS (
     SELECT
+      SchoolYear,
       SchoolId,
       SchoolName,
       SchoolNameMid,
@@ -39,6 +40,7 @@ WITH
     FROM ada AS a
     LEFT JOIN schools AS s
     ON a.SchoolId = s.SchoolId
+    AND a.SchoolYear = s.SchoolYear
     LEFT JOIN reporting_periods AS p
     ON a.EventDate = p.EventDate
   )
