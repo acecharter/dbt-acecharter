@@ -13,25 +13,13 @@ caaspp_results AS (
       AceAssessmentId IN ('1', '2')
 ),
 
-schools AS (
-    SELECT
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ ref('dim_CurrentSchools')}}
-),
-
 final AS (
   SELECT
-    s.*,
-    cs.* EXCEPT (SchoolId, SchoolYear, ExitWithdrawReason),
+    cs.* EXCEPT (SchoolYear, ExitWithdrawReason),
     cr.* EXCEPT (StateUniqueId, TestedSchoolId),
   FROM current_students AS cs
   INNER JOIN caaspp_results AS cr
   ON cs.StateUniqueId = cr.StateUniqueId
-  LEFT JOIN schools AS s
-  ON cs.SchoolId = s.SchoolId
 )
 
 SELECT * FROM final
