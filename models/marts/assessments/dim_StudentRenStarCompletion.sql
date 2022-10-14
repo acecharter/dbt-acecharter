@@ -2,17 +2,7 @@ WITH
   students AS (
     SELECT * FROM {{ ref('dim_Students') }}
   ),
-
-  schools AS (
-      SELECT
-        SchoolYear,
-        SchoolId,
-        SchoolName,
-        SchoolNameMid,
-        SchoolNameShort
-      FROM {{ ref('dim_Schools')}}
-  ),
-
+  
   star_results AS (
     SELECT
       SchoolYear,
