@@ -69,8 +69,7 @@ WITH
 
   joined AS (
     SELECT
-      sc.*,
-      st.* EXCEPT (SchoolId,SchoolYear),
+      st.*,
       --Add cols indicating whether student was enrolled as of Fall, Winter, Spring dates
       CASE WHEN st.EntryDate <= '2021-10-06' AND st.ExitWithdrawDate > '2021-10-06' THEN 'Yes' ELSE 'No' END AS EnrolledOnCensusDate_21,
       CASE WHEN st.EntryDate <= '2022-01-15' AND st.ExitWithdrawDate > '2022-01-15' THEN 'Yes' ELSE 'No' END AS EnrolledOnJan15_22,
@@ -84,10 +83,6 @@ WITH
       CASE WHEN sr.ResultCount > 0 THEN sr.ResultCount ELSE 0 END AS SpringReadingResultCount,
       CASE WHEN fr.ResultCount > 0 AND sr.ResultCount > 0 THEN 'Yes' ELSE 'No' END AS ReadingTestedBothFallSpring,
     FROM students AS st
-    LEFT JOIN schools AS sc
-    ON
-      st.SchoolId = sc.SchoolId
-      AND st.SchoolYear = sc.SchoolYear
     LEFT JOIN fall_math AS fm
     ON
       st.StudentUniqueId = fm.StudentUniqueId
