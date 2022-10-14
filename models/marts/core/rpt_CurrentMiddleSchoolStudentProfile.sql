@@ -6,16 +6,6 @@ with
     and SchoolId IN ('116814','129247', '131656')
   ),
 
-  schools AS (
-    select
-      SchoolYear,
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    from {{ref('dim_CurrentSchools')}}
-  ),
-
   current_sy AS (
     SELECT SchoolYear FROM {{ ref('dim_CurrentSchoolYear')}}
   ),
@@ -221,8 +211,7 @@ with
 
   final as (
     select
-      sc.*,
-      s.* EXCEPT(SchoolYear, SchoolId),
+      s.*,
       a.CountOfDaysAbsent,
       a.CountOfDaysEnrolled,
       Round(a.AverageDailyAttendance, 2) as AttendanceRate,
@@ -248,9 +237,6 @@ with
       caa_math.CaaMathLevel,
       caa_science.CaaScienceLevel
     from current_ms_students as s
-    left join schools as sc
-    on s.SchoolId = sc.SchoolId
-    and s.SchoolYear = sc.SchoolYear
     left join attendance as a
     on s.SchoolId = a.SchoolId
     and s.StudentUniqueId = a.StudentUniqueId
