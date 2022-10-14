@@ -12,11 +12,23 @@ WITH
   demographics AS (
     SELECT * FROM {{ ref('dim_StudentDemographics')}}
   ),
+
+  schools AS (
+    SELECT DISTINCT
+      SchoolId,
+      SchoolName,
+      SchoolNameMid,
+      SchoolNameShort
+    FROM {{ ref('dim_Schools')}}
+  ),
   
   final AS (
     SELECT
       e.SchoolYear,
       e.SchoolId,
+      s.SchoolName,
+      s.SchoolNameMid,
+      s.SchoolNameShort,
       e.StudentUniqueId,
       d.StateUniqueId,
       d.DisplayName,
@@ -43,6 +55,8 @@ WITH
     ON
       e.StudentUniqueId = d.StudentUniqueId
       AND e.SchoolYear = d.SchoolYear
+    LEFT JOIN schools AS s
+    ON e.SchoolId = s.SchoolId
     WHERE e.Rank = 1
   )
 
