@@ -27,7 +27,7 @@ WITH
       r.AssessmentGradeLevel,
       r.AssessmentSubject,
       r.ReportingMethod,
-      MAX(CAST(r.StudentResult AS r.StudentResultDataType)) AS MaxStudentResult
+      MAX(CAST(r.StudentResult AS FLOAT64)) AS MaxStudentResult
     FROM {{ ref('int_RenStar_melted')}} AS r
     LEFT JOIN schools AS s
     ON r.TestedSchoolId = s.SchoolId
@@ -43,6 +43,7 @@ WITH
     FROM students AS st
     INNER JOIN star_results AS r
     ON st.StateUniqueId = r.StateUniqueId
+    AND st.SchoolYear = r.AssessmentSchoolYear
     INNER JOIN schools AS s
     ON st.SchoolId = s.SchoolId
   )
