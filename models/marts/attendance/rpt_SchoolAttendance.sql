@@ -29,7 +29,6 @@ WITH
       s.*,
       a.GradeLevel,
       p.ReportingPeriod,
-      a.SchoolYear,
       a.Month,
       a.MonthRank,
       a.WeekOf,
