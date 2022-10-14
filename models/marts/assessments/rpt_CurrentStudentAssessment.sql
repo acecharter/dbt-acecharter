@@ -1,4 +1,13 @@
 WITH
+  schools AS (
+    SELECT DISTINCT
+      SchoolId,
+      SchoolName,
+      SchoolNameMid,
+      SchoolNameShort
+    FROM {{ ref('dim_Schools')}}
+  ),
+
   current_students AS (
     SELECT *
     FROM {{ ref('dim_Students') }}
@@ -32,7 +41,7 @@ WITH
 
   final AS (
     SELECT
-      st.*,
+      st.* EXCEPT (SchoolYear),
       a.* EXCEPT (StateUniqueId)
     FROM current_students AS st
     INNER JOIN assessments AS a
