@@ -13,6 +13,7 @@ star_keys AS(
     StateUniqueId,
     TestedSchoolId,
     SchoolYear,
+    StarTestingWindow,
     AssessmentDate,
     GradeLevel,
     AssessmentGradeLevel,
