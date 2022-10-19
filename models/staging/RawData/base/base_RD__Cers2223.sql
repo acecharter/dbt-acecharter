@@ -1,28 +1,4 @@
 WITH
-  assessment_ids AS (
-    SELECT 
-      AceAssessmentId,
-      AssessmentNameShort AS AceAssessmentName,
-      CASE
-        WHEN AssessmentNameShort = 'SB ELA Summative' THEN 'ELA SUM'
-        WHEN AssessmentNameShort = 'SB Math Summative' THEN 'Math SUM'
-        WHEN AssessmentNameShort = 'CAA ELA' THEN 'CAAELA SUM'
-        WHEN AssessmentNameShort = 'CAA Math' THEN 'CAAMATH SUM'
-        WHEN AssessmentNameShort = 'CAST' THEN 'CAST SUM'
-        WHEN AssessmentNameShort = 'CSA' THEN 'CSA SUM'
-        WHEN AssessmentNameShort = 'SB ELA IAB/FIAB' THEN 'ELA IAB'
-        WHEN AssessmentNameShort = 'SB Math IAB/FIAB' THEN 'Math IAB'
-        WHEN AssessmentNameShort = 'SB ELA ICA' THEN 'ELA ICA'
-        WHEN AssessmentNameShort = 'SB Math ICA' THEN 'Math ICA'
-        WHEN AssessmentNameShort = 'Summative ELPAC' THEN 'ELPAC SUM'
-        WHEN AssessmentNameShort = 'ALT ELPAC' THEN 'ALTELPAC SUM'
-      END AS SubjectAssessmentSubType
-    FROM {{ ref('stg_GSD__Assessments') }}
-    WHERE 
-      SystemOrVendorName = 'CAASPP' 
-      OR SystemOrVendorName = 'ELPAC'
-  ),
-
   empower AS (
     SELECT
       FORMAT("%014d", CAST(DistrictId AS INT64)) AS TestDistrictId,
@@ -155,12 +131,21 @@ WITH
 
   final AS (
     SELECT
-      a.AceAssessmentId,
-      a.AceAssessmentName,
-      c.*
-    FROM cers_unioned AS c
-    LEFT JOIN assessment_ids AS a
-    ON CONCAT(c.Subject, ' ', c.AssessmentSubType) = a.SubjectAssessmentSubType
+      * EXCEPT (
+        Alt1ScoreAchievementLevel,
+        Alt2ScoreAchievementLevel,
+        Claim1ScoreAchievementLevel,
+        Claim2ScoreAchievementLevel,
+        Claim3ScoreAchievementLevel,
+        Claim4ScoreAchievementLevel
+      ),
+      NULLIF(Alt1ScoreAchievementLevel,'') AS Alt1ScoreAchievementLevel,
+      NULLIF(Alt2ScoreAchievementLevel,'') AS Alt2ScoreAchievementLevel,
+      NULLIF(Claim1ScoreAchievementLevel,'') AS Claim1ScoreAchievementLevel,
+      NULLIF(Claim2ScoreAchievementLevel,'') AS Claim2ScoreAchievementLevel,
+      NULLIF(Claim3ScoreAchievementLevel,'') AS Claim3ScoreAchievementLevel,
+      NULLIF(Claim4ScoreAchievementLevel,'') AS Claim4ScoreAchievementLevel
+    FROM cers_unioned
   )
 
 SELECT DISTINCT * FROM final
