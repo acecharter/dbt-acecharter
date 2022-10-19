@@ -15,6 +15,7 @@ WITH
         WHEN AssessmentNameShort = 'SB ELA ICA' THEN 'ELA ICA'
         WHEN AssessmentNameShort = 'SB Math ICA' THEN 'Math ICA'
         WHEN AssessmentNameShort = 'Summative ELPAC' THEN 'ELPAC SUM'
+        WHEN AssessmentNameShort = 'ALT ELPAC' THEN 'ALTELPAC SUM'
       END AS SubjectAssessmentSubType
     FROM {{ ref('stg_GSD__Assessments') }}
     WHERE 
