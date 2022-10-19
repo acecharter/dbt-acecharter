@@ -156,7 +156,20 @@ WITH
     SELECT
       a.AceAssessmentId,
       a.AceAssessmentName,
-      c.*
+      c.* EXCEPT (
+        Alt1ScoreAchievementLevel,
+        Alt2ScoreAchievementLevel,
+        Claim1ScoreAchievementLevel,
+        Claim2ScoreAchievementLevel,
+        Claim3ScoreAchievementLevel,
+        Claim4ScoreAchievementLevel
+      ),
+      NULLIF(Alt1ScoreAchievementLevel,'') AS Alt1ScoreAchievementLevel,
+      NULLIF(Alt2ScoreAchievementLevel,'') AS Alt2ScoreAchievementLevel,
+      NULLIF(Claim1ScoreAchievementLevel,'') AS Claim1ScoreAchievementLevel,
+      NULLIF(Claim2ScoreAchievementLevel,'') AS Claim2ScoreAchievementLevel,
+      NULLIF(Claim3ScoreAchievementLevel,'') AS Claim3ScoreAchievementLevel,
+      NULLIF(Claim4ScoreAchievementLevel,'') AS Claim4ScoreAchievementLevel
     FROM cers_unioned AS c
     LEFT JOIN assessment_ids AS a
     ON CONCAT(c.Subject, ' ', c.AssessmentSubType) = a.SubjectAssessmentSubType
