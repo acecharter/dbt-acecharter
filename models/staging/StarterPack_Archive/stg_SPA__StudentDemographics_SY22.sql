@@ -22,7 +22,7 @@ SELECT
   Has504Plan,
   HasIep,
   CASE WHEN HasIep IS TRUE THEN 'Eligible/Previously Eligible' ELSE NULL END AS SeisEligibilityStatus,
-  NULL AS Email, --Email addresses in 2021-22 were incorrect due to a data error
+  CAST (NULL AS STRING) AS Email, --Email addresses in 2021-22 were incorrect due to a data error
   FALSE AS IsCurrentlyEnrolled,
   CurrentSchoolId,
   CurrentNameOfInstitution,
