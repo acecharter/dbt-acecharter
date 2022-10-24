@@ -29,6 +29,8 @@ WITH
     SELECT * FROM {{ ref('base_RD__Cast2019')}}
     UNION ALL
     SELECT * FROM {{ ref('base_RD__Cast2021')}}
+    UNION ALL
+    SELECT * FROM {{ ref('base_RD__Cast2022')}}
   ),
 
   cast_entity_codes_added AS (

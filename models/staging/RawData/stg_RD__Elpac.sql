@@ -22,6 +22,8 @@ WITH
     SELECT * FROM {{ ref('base_RD__Elpac2019')}}
     UNION ALL
     SELECT * FROM {{ ref('base_RD__Elpac2021')}}
+    UNION ALL
+    SELECT * FROM {{ ref('base_RD__Elpac2022')}}
   ),
 
   elpac_entity_codes_added AS (
