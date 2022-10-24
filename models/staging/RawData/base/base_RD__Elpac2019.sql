@@ -1,4 +1,3 @@
---Dropped CharterNumber column due to problems where it was being detected as int, but contained non-int values
 SELECT
   FORMAT("%02d", CountyCode) AS CountyCode,
   FORMAT("%05d", DistrictCode) AS DistrictCode,

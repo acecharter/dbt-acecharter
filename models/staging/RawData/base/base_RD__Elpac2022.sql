@@ -69,4 +69,4 @@ SELECT
   ROUND(CAST(NULLIF(WritingDomainDevelopedPcnt, '*') AS FLOAT64)/100, 4) AS WritingDomainDevelopedPcnt,
   CAST(NULLIF(WritingDomainDevelopedCount, '*') AS INT64) AS WritingDomainDevelopedCount,
   CAST(NULLIF(WritingDomainTotal, '*') AS INT64) AS WritingDomainTotal
-FROM {{ source('RawData', 'Elpac2021')}}
+FROM {{ source('RawData', 'Elpac2022')}}
