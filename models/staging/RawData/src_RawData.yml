@@ -79,6 +79,9 @@ sources:
       - name: Cast2021
         description: 2021 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
 
+      - name: Cast2022
+        description: 2022 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
+
 
       - name: CdeAdjustedCohortOutcomes2017
         description: 2016-17 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
@@ -299,6 +302,7 @@ sources:
       - name: Elpac2018
       - name: Elpac2019
       - name: Elpac2021
+      - name: Elpac2022
       - name: ElpacStudentGroups
       
       - name: TomsCaasppTested2022Empower
