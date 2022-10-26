@@ -86,8 +86,9 @@ SELECT
   reportingyear AS ReportingYear
 FROM {{ source('RawData', 'CaDashCci2019')}}
 WHERE 
-    rtype = 'X'
-    OR rtype = 'D' AND cds = 43694270000000 --ESUHSD
-    OR rtype = 'S' AND cds = 43694274330031 --Independence HS
-    OR rtype = 'S' AND cds = 43694270125617 --ACE Charter HS
-    
+  rtype = 'X'
+  OR SUBSTR(CAST(cds AS STRING),1,7) = '4369369' --ARUSD
+  OR SUBSTR(CAST(cds AS STRING),1,7) = '4369666' --SJUSD (includes ACE Inspire)
+  OR SUBSTR(CAST(cds AS STRING),1,7) = '4369450' --FMSD (includes ACE Esperanza)
+  OR SUBSTR(CAST(cds AS STRING),1,7) = '4369427' --ESUHSD (includes ACE Charter High)
+  OR cds = 43104390116814 --ACE Empower
