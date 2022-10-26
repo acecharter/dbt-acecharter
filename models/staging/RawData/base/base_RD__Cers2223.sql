@@ -123,8 +123,8 @@ WITH
     SELECT * FROM empower
     UNION ALL
     SELECT * FROM esperanza
-    -- UNION ALL
-    -- SELECT * FROM inspire
+    UNION ALL
+    SELECT * FROM inspire
     -- UNION ALL
     -- SELECT * FROM hs
   ),
