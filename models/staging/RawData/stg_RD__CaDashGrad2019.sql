@@ -24,8 +24,6 @@ SELECT
   reportingyear AS ReportingYear
 FROM {{ source('RawData', 'CaDashGrad2019')}}
 WHERE 
-    rtype = 'X'
-    OR rtype = 'D' AND cds = 43694270000000 --ESUHSD
-    OR rtype = 'S' AND cds = 43694274330031 --Independence HS
-    OR rtype = 'S' AND cds = 43694270125617 --ACE Charter HS
+  rtype = 'X'
+  OR SUBSTR(CAST(cds AS STRING),1,7) = '4369427' --ESUHSD (includes ACE Charter High)
     
