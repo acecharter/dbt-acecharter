@@ -10,7 +10,7 @@ sources:
         description: Achievement Network (ANET) interim data for 2021-22 machine-scored questions. Subject/Cycle-specific export files merged manually prior to uploading to BigQuery. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
       
       - name: Amplify2223
-        description: Amplify interim admin report export for 2022-23. Amplify admin reports export guide: https://my.amplify.com/admin-reports/downloads/Admin_Reports_Export_Guide_ELA.pdf
+        description: Amplify interim admin report export for 2022-23. Amplify admin reports export guide available at https://my.amplify.com/admin-reports/downloads/Admin_Reports_Export_Guide_ELA.pdf
         
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
