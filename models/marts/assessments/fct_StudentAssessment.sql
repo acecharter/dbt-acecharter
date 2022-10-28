@@ -85,14 +85,14 @@ WITH
       SchoolId AS TestedSchoolId,
       SchoolYear AS AssessmentSchoolYear,
       CONCAT(ElaLessonTitle,'-',StateUniqueId) AS AssessmentId,
-      ElaHandInDate AS AssessmentDate,
-      GradeLevel AS GradeLevelWhenAssessed,
+      CAST(ElaHandInDate AS STRING) AS AssessmentDate,
+      CAST(GradeLevel AS INT64) AS GradeLevelWhenAssessed,
       GradeLevel AS AssessmentGradeLevel,
       'Overall' AS AssessmentObjective,
       'Percent Score' AS ReportingMethod,
       'FLOAT64' AS StudentResultDataType,
       CAST(ElaTestScore AS STRING) AS StudentResult
-    FROM {{ ref('stg_RD__Amplify') }} AS c 
+    FROM {{ ref('stg_RD__Amplify') }}
   ),
 
   unioned_results AS (
