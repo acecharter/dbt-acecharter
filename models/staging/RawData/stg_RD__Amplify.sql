@@ -34,9 +34,8 @@ amplify AS (
 final AS (
   SELECT
     a.AceAssessmentId,
-    a.AceAssessmentId,
-    a.SchoolYear,
     a.AceAssessmentName,
+    a.SchoolYear,
     a.Subject,
     a.SchoolId,
     a.SchoolName,
