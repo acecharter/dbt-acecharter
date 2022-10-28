@@ -8,7 +8,7 @@ SELECT
   ELA_School_Name AS SchoolName,
   ELA_Class_Name AS ClassName,
   ELA_SIS_ID AS StudentUniqueId,
-  ELA_LastName AS LastName,
+  ELA_Last_Name AS LastName,
   ELA_First_Name AS FirstName,
   ELA_Email AS Email,
   ELA_Test_Score_Achieved AS ElaTestScoreAchieved,
