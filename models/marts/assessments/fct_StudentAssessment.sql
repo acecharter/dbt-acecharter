@@ -92,7 +92,7 @@ WITH
       'Percent Score' AS ReportingMethod,
       'FLOAT64' AS StudentResultDataType,
       CAST(ElaTestScore AS STRING) AS StudentResult
-    FROM {{ ref('stg_Amplify') }} AS c 
+    FROM {{ ref('stg_RD__Amplify') }} AS c 
   ),
 
   unioned_results AS (
