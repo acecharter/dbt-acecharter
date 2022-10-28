@@ -76,12 +76,33 @@ WITH
     FROM {{ ref('int_Anet__aggregated') }} AS c 
   ),
 
+  amplify AS (
+    SELECT
+      AceAssessmentId,
+      AceAssessmentName AS AssessmentName,
+      Subject AS AssessmentSubject,
+      StateUniqueId,
+      SchoolId AS TestedSchoolId,
+      SchoolYear AS AssessmentSchoolYear,
+      CONCAT(ElaLessonTitle,'-',StateUniqueId) AS AssessmentId,
+      ElaHandInDate AS AssessmentDate,
+      GradeLevel AS GradeLevelWhenAssessed,
+      GradeLevel AS AssessmentGradeLevel,
+      'Overall' AS AssessmentObjective,
+      'Percent Score' AS ReportingMethod,
+      'FLOAT64' AS StudentResultDataType,
+      CAST(ElaTestScore AS STRING) AS StudentResult
+    FROM {{ ref('stg_Amplify') }} AS c 
+  ),
+
   unioned_results AS (
     SELECT * FROM star
     UNION ALL
     SELECT * FROM cers
     UNION ALL
     SELECT * FROM anet
+    UNION ALL
+    SELECT * FROM amplify
   ),
 
   final AS (
