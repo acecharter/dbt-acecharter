@@ -82,7 +82,7 @@ WITH
       CAST(NULL AS FLOAT64) AS PriorAdjustment,
       CAST(NULL AS STRING) AS PairShareMethod,
       CAST(NULL AS BOOL) AS NoTestFlag,
-      CAST(ReportingYear
+      ReportingYear
     FROM {{ ref('stg_RD__CaDashEla2017')}} 
   ),
 
