@@ -40,6 +40,24 @@ sources:
             tests:
               - not_null
 
+      - name: CaDashCci2017
+        description: 2017 CA School Dashboard College/Career indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashEla2017
+        description: 2017 CA School Dashboard ELA indicator data file (grades 3-8 only). Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashElpi2017
+        description: 2017 CA School Dashboard English Learner Progress indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashGrad2017
+        description: 2017 CA School Dashboard Graduation Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashMath2017
+        description: 2017 CA School Dashboard Math data file (grades 3-8 only). Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashSusp2017
+        description: 2017 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
       - name: CaDashCci2018
         description: 2018 CA School Dashboard College/Career indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 

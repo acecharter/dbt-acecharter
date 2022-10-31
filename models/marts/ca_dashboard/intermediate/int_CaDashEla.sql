@@ -56,11 +56,42 @@ WITH
       ReportingYear
     FROM {{ ref('stg_RD__CaDashEla2018')}} 
   ),
+  
+  ela_2018 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      StudentGroup,
+      CurrDenom,
+      CurrStatus,
+      PriorDenom,
+      PriorStatus,
+      Change,
+      StatusLevel,
+      ChangeLevel,
+      Color,
+      CAST(NULL AS INT64) AS Box,
+      CAST(NULL AS BOOL) AS HsCutPoints,
+      CAST(NULL AS FLOAT64) AS CurrAdjustment,
+      CAST(NULL AS FLOAT64) AS PriorAdjustment,
+      CAST(NULL AS STRING) AS PairShareMethod,
+      CAST(NULL AS BOOL) AS NoTestFlag,
+      ReportingYear
+    FROM {{ ref('stg_RD__CaDashEla2017')}} 
+  ),
 
   unioned AS (
+    SELECT * FROM ela_2019
+    UNION ALL
     SELECT * FROM ela_2018
     UNION ALL
-    SELECT * FROM ela_2019
+    SELECT * FROM ela_2017
   ),
 
   unioned_w_entity_codes AS (
