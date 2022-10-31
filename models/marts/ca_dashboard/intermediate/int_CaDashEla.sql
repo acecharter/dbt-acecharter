@@ -57,7 +57,7 @@ WITH
     FROM {{ ref('stg_RD__CaDashEla2018')}} 
   ),
   
-  ela_2018 AS (
+  ela_2017 AS (
     SELECT
       Cds,
       RType,
