@@ -1,5 +1,5 @@
 WITH 
-  ela_2019 AS (
+  chronic_2019 AS (
     SELECT
       Cds,
       RType,
@@ -10,25 +10,25 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
       Change,
+      SafetyNet,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      NoTestFlag,
+      CertifyFlag,
+      DataErrorFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashEla2019')}} 
+  FROM {{ ref('base_RD__CaDashChronic2019')}} 
   ),
   
-  ela_2018 AS (
+  chronic_2018 AS (
     SELECT
       Cds,
       RType,
@@ -39,59 +39,28 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
       Change,
+      SafetyNet,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      CAST(NULL AS BOOL) AS NoTestFlag,
+      CertifyFlag,
+      CAST(NULL AS BOOL) AS DataErrorFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashEla2018')}} 
-  ),
-  
-  ela_2017 AS (
-    SELECT
-      Cds,
-      RType,
-      SchoolName,
-      DistrictName,
-      CountyName,
-      CharterFlag,
-      CAST(CoeFlag AS BOOL) AS CoeFlag,
-      CAST(NULL AS BOOL) AS DassFlag,
-      StudentGroup,
-      CurrDenom,
-      CurrStatus,
-      PriorDenom,
-      PriorStatus,
-      Change,
-      StatusLevel,
-      ChangeLevel,
-      Color,
-      CAST(NULL AS INT64) AS Box,
-      CAST(NULL AS BOOL) AS HsCutPoints,
-      CAST(NULL AS FLOAT64) AS CurrAdjustment,
-      CAST(NULL AS FLOAT64) AS PriorAdjustment,
-      CAST(NULL AS STRING) AS PairShareMethod,
-      CAST(NULL AS BOOL) AS NoTestFlag,
-      ReportingYear
-    FROM {{ ref('stg_RD__CaDashEla2017')}} 
+    FROM {{ ref('base_RD__CaDashChronic2018')}} 
   ),
 
   unioned AS (
-    SELECT * FROM ela_2019
+    SELECT * FROM chronic_2018
     UNION ALL
-    SELECT * FROM ela_2018
-    UNION ALL
-    SELECT * FROM ela_2017
+    SELECT * FROM chronic_2019
   ),
 
   unioned_w_entity_codes AS (
@@ -134,7 +103,7 @@ WITH
       CAST(Code AS INT64) AS StatusLevel,
       Value AS StatusLevelName
     FROM codes
-    WHERE CodeColumn = 'StatusLevel - ELA'
+    WHERE CodeColumn = 'StatusLevel - Chronic Absenteeism'
   ),
 
   change_levels AS (
@@ -142,12 +111,12 @@ WITH
       CAST(Code AS INT64) AS ChangeLevel,
       Value AS ChangeLevelName
     FROM codes
-    WHERE CodeColumn = 'ChangeLevel - ELA'
+    WHERE CodeColumn = 'ChangeLevel - Chronic Absenteeism'
   ),
 
   final AS (
     SELECT
-      'ELA' AS IndicatorName,
+      'Chronic Absenteeism' AS IndicatorName,
       e.EntityType,
       e.EntityName,
       e.EntityNameShort,
@@ -170,4 +139,3 @@ WITH
   )
 
 SELECT * FROM final
-

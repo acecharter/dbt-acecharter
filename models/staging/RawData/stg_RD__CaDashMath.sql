@@ -25,7 +25,7 @@ WITH
       PairShareMethod,
       NoTestFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashMath2019')}} 
+  FROM {{ ref('base_RD__CaDashMath2019')}} 
   ),
   
   math_2018 AS (
@@ -54,7 +54,7 @@ WITH
       PairShareMethod,
       CAST(NULL AS BOOL) AS NoTestFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashMath2018')}} 
+    FROM {{ ref('base_RD__CaDashMath2018')}} 
   ),
 
   unioned AS (

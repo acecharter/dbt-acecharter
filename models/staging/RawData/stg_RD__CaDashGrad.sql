@@ -1,5 +1,5 @@
 WITH 
-  chronic_2019 AS (
+  grad_2019 AS (
     SELECT
       Cds,
       RType,
@@ -16,19 +16,18 @@ WITH
       PriorNumer,
       PriorDenom,
       PriorStatus,
-      Change,
+      FiveYrNumer,
       SafetyNet,
+      Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      CertifyFlag,
-      DataErrorFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashChronic2019')}} 
+  FROM {{ ref('base_RD__CaDashGrad2019')}} 
   ),
-  
-  chronic_2018 AS (
+
+  grad_2018 AS (
     SELECT
       Cds,
       RType,
@@ -45,22 +44,21 @@ WITH
       PriorNumer,
       PriorDenom,
       PriorStatus,
-      Change,
+      NULL AS FiveYrNumer,
       SafetyNet,
+      Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      CertifyFlag,
-      CAST(NULL AS BOOL) AS DataErrorFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashChronic2018')}} 
+    FROM {{ ref('base_RD__CaDashGrad2018')}} 
   ),
 
   unioned AS (
-    SELECT * FROM chronic_2018
+    SELECT * FROM grad_2018
     UNION ALL
-    SELECT * FROM chronic_2019
+    SELECT * FROM grad_2019
   ),
 
   unioned_w_entity_codes AS (
@@ -103,7 +101,7 @@ WITH
       CAST(Code AS INT64) AS StatusLevel,
       Value AS StatusLevelName
     FROM codes
-    WHERE CodeColumn = 'StatusLevel - Chronic Absenteeism'
+    WHERE CodeColumn = 'StatusLevel - Graduation Rate'
   ),
 
   change_levels AS (
@@ -111,12 +109,12 @@ WITH
       CAST(Code AS INT64) AS ChangeLevel,
       Value AS ChangeLevelName
     FROM codes
-    WHERE CodeColumn = 'ChangeLevel - Chronic Absenteeism'
+    WHERE CodeColumn = 'ChangeLevel - Graduation Rate'
   ),
 
   final AS (
     SELECT
-      'Chronic Absenteeism' AS IndicatorName,
+      'Graduation Rate' AS IndicatorName,
       e.EntityType,
       e.EntityName,
       e.EntityNameShort,

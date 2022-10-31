@@ -85,7 +85,7 @@ cci_2019 AS (
       PriorNPrep,
       PriorNPrepPct,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashCci2019')}} 
+  FROM {{ ref('base_RD__CaDashCci2019')}} 
   ),
   
   cci_2018 AS (
@@ -174,7 +174,7 @@ cci_2019 AS (
       PriorNPrep,
       PriorNPrepPct,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashCci2018')}} 
+    FROM {{ ref('base_RD__CaDashCci2018')}} 
   ),
 
   unioned AS (
