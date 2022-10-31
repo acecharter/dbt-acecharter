@@ -29,7 +29,7 @@ WITH
       ColorName,
       Box,
       ReportingYear
-    FROM {{ ref('int_CaDashEla')}} 
+    FROM {{ ref('stg_RD__CaDashEla')}} 
   ),
 
   math AS (
@@ -62,7 +62,7 @@ WITH
       ColorName,
       Box,
       ReportingYear
-    FROM {{ ref('int_CaDashMath')}} 
+    FROM {{ ref('stg_RD__CaDashMath')}} 
   ),
 
   elpi AS (
@@ -95,7 +95,7 @@ WITH
       ColorName,
       Box,
       ReportingYear
-    FROM {{ ref('int_CaDashElpi')}}
+    FROM {{ ref('stg_RD__CaDashElpi')}}
   ),
 
   cci AS (
@@ -128,7 +128,7 @@ WITH
       ColorName,
       Box,
       ReportingYear
-    FROM {{ ref('int_CaDashCci')}}
+    FROM {{ ref('stg_RD__CaDashCci')}}
   ),
 
   chronic AS (
@@ -161,7 +161,7 @@ WITH
       ColorName,
       Box,
       ReportingYear
-    FROM {{ ref('int_CaDashChronic')}}
+    FROM {{ ref('stg_RD__CaDashChronic')}}
   ),
 
   susp AS (
@@ -194,7 +194,7 @@ WITH
       ColorName,
       Box,
       ReportingYear
-    FROM {{ ref('int_CaDashSusp')}}
+    FROM {{ ref('stg_RD__CaDashSusp')}}
   ),
 
   grad AS (
@@ -227,7 +227,7 @@ WITH
       ColorName,
       Box,
       ReportingYear
-    FROM {{ ref('int_CaDashGrad')}}
+    FROM {{ ref('stg_RD__CaDashGrad')}}
   ),
 
   unioned AS (
