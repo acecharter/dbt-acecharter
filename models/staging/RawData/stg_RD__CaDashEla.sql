@@ -54,7 +54,7 @@ WITH
       PairShareMethod,
       CAST(NULL AS BOOL) AS NoTestFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashEla2018')}} 
+    FROM {{ ref('base_RD__CaDashEla2018')}} 
   ),
   
   ela_2017 AS (
@@ -83,7 +83,7 @@ WITH
       CAST(NULL AS STRING) AS PairShareMethod,
       CAST(NULL AS BOOL) AS NoTestFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashEla2017')}} 
+    FROM {{ ref('base_RD__CaDashEla2017')}} 
   ),
 
   unioned AS (
