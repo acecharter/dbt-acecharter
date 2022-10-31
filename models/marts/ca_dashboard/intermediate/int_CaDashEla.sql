@@ -65,7 +65,7 @@ WITH
       DistrictName,
       CountyName,
       CharterFlag,
-      CoeFlag,
+      CAST(CoeFlag AS BOOL) AS CoeFlag,
       CAST(NULL AS BOOL) AS DassFlag,
       StudentGroup,
       CurrDenom,
@@ -82,7 +82,7 @@ WITH
       CAST(NULL AS FLOAT64) AS PriorAdjustment,
       CAST(NULL AS STRING) AS PairShareMethod,
       CAST(NULL AS BOOL) AS NoTestFlag,
-      ReportingYear
+      CAST(ReportingYear
     FROM {{ ref('stg_RD__CaDashEla2017')}} 
   ),
 
