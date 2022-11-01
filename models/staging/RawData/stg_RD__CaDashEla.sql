@@ -148,18 +148,9 @@ WITH
   final AS (
     SELECT
       'ELA' AS IndicatorName,
-      CASE
-        WHEN e.EntityType IS NOT NULL THEN e.EntityType
-        WHEN u.Rtype = 'S' THEN 'School'
-      END AS EntityType,
-      CASE
-        WHEN e.EntityName IS NOT NULL THEN e.EntityName
-        WHEN u.Rtype = 'S' THEN u.SchoolName
-      END AS EntityName,
-      CASE
-        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
-        WHEN u.Rtype = 'S' THEN u.SchoolName
-      END AS EntityNameShort,
+      IFNULL(e.EntityType, IF(u.Rtype = 'S', 'School', NULL)) AS EntityType,
+      IFNULL(e.EntityName, u.SchoolName) AS EntityName,
+      IFNULL(e.EntityNameShort, u.SchoolName) AS EntityNameShort,
       g.StudentGroupName,
       IFNULL(sl.StatusLevelName, 'No Status Level') AS StatusLevelName,
       IFNULL(cl.ChangeLevelName, 'No Change Level') AS ChangeLevelName,
