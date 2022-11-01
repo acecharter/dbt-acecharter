@@ -158,9 +158,9 @@ WITH
         WHEN u.Rtype = 'S' THEN u.SchoolName
       END AS EntityNameShort,
       g.StudentGroupName,
-      sl.StatusLevelName,
-      cl.ChangeLevelName,
-      c.ColorName,
+      IFNULL(sl.StatusLevelName, 'No Status Level') AS StatusLevelName,
+      IFNULL(cl.ChangeLevelName, 'No Change Level') AS ChangeLevelName,
+      IFNULL(c.ColorName, 'No Color') AS ColorName,
       u.*
     FROM unioned_w_entity_codes AS u
     LEFT JOIN entities AS e
