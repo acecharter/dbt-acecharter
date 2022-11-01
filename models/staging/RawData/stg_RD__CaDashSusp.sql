@@ -56,11 +56,42 @@ WITH
       ReportingYear
     FROM {{ ref('base_RD__CaDashSusp2018')}} 
   ),
+  
+  susp_2017 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      Type,
+      StudentGroup,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      PriorNumer,
+      PriorDenom,
+      PriorStatus,
+      SafetyNet,
+      Change,
+      StatusLevel,
+      ChangeLevel,
+      Color,
+      Box,
+      CertifyFlag,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashSusp2017')}} 
+  ),
 
   unioned AS (
+    SELECT * FROM susp_2019
+    UNION ALL
     SELECT * FROM susp_2018
     UNION ALL
-    SELECT * FROM susp_2019
+    SELECT * FROM susp_2017
   ),
 
   unioned_w_entity_codes AS (
