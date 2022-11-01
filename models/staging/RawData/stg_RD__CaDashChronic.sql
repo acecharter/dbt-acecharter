@@ -58,9 +58,9 @@ WITH
   ),
 
   unioned AS (
-    SELECT * FROM chronic_2018
-    UNION ALL
     SELECT * FROM chronic_2019
+    UNION ALL
+    SELECT * FROM chronic_2018
   ),
 
   unioned_w_entity_codes AS (
