@@ -194,7 +194,7 @@ cci_2019 AS (
       CAST(NULL AS INT64) AS PriorDenom,
       CAST(NULL AS FLOAT64) AS PriorStatus,
       CAST(NULL AS FLOAT64) AS Change,
-      CAST(NULL AS INT64) StatusLevel,
+      StatusLevel,
       CAST(NULL AS INT64) AS ChangeLevel,
       CAST(NULL AS INT64) AS Color,
       CAST(NULL AS INT64) AS Box,
@@ -328,22 +328,13 @@ cci_2019 AS (
   final AS (
     SELECT
       'College/Career' AS IndicatorName,
-      CASE
-        WHEN e.EntityType IS NOT NULL THEN e.EntityType
-        WHEN u.Rtype = 'S' THEN 'School'
-      END AS EntityType,
-      CASE
-        WHEN e.EntityName IS NOT NULL THEN e.EntityName
-        WHEN u.Rtype = 'S' THEN u.SchoolName
-      END AS EntityName,
-      CASE
-        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
-        WHEN u.Rtype = 'S' THEN u.SchoolName
-      END AS EntityNameShort,
+      IFNULL(e.EntityType, IF(u.Rtype = 'S', 'School', NULL)) AS EntityType,
+      IFNULL(e.EntityName, u.SchoolName) AS EntityName,
+      IFNULL(e.EntityNameShort, u.SchoolName) AS EntityNameShort,
       g.StudentGroupName,
-      sl.StatusLevelName,
-      cl.ChangeLevelName,
-      c.ColorName,
+      IFNULL(sl.StatusLevelName, 'No Status Level') AS StatusLevelName,
+      IFNULL(cl.ChangeLevelName, 'No Change Level') AS ChangeLevelName,
+      IFNULL(c.ColorName, 'No Color') AS ColorName,
       u.*
     FROM unioned_w_entity_codes AS u
     LEFT JOIN entities AS e
