@@ -185,7 +185,7 @@ cci_2019 AS (
       DistrictName,
       CountyName,
       CharterFlag,
-      CAST(CoeFlag AS BOOL) AS CoeFlag,
+      CoeFlag,
       CAST(NULL AS BOOL) AS DassFlag,
       CAST(NULL AS BOOL) AS SafetyNet,
       StudentGroup,

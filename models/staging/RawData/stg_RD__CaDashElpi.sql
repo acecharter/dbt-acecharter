@@ -37,7 +37,7 @@ WITH
       DistrictName,
       CountyName,
       CharterFlag,
-      CAST(CoeFlag AS BOOL) AS CoeFlag,
+      CoeFlag,
       CAST(NULL AS BOOL) AS DassFlag,
       CurrProgressed,
       CurrMaintainPL4,
