@@ -1,4 +1,4 @@
-WITH 
+WITH
   elpi_2019 AS (
     SELECT
       Cds,
@@ -29,8 +29,40 @@ WITH
     FROM {{ ref('base_RD__CaDashElpi2019')}} 
   ),
 
+  elpi_2017 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CAST(CoeFlag AS BOOL) AS CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      CurrProgressed,
+      CurrMaintainPL4,
+      CAST(NULL AS INT64) AS CurrDeclined,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      PriorDenom,
+      PriorStatus,
+      Change,
+      StatusLevel,
+      ChangeLevel,
+      Color,
+      Box,
+      CAST(NULL AS BOOL) AS Flag95Pct,
+      NSizeMet,
+      CAST(NULL AS STRING) AS NSizeGroup,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashElpi2017')}} 
+  ),
+
   unioned AS (
     SELECT * FROM elpi_2019
+    UNION ALL
+    SELECT * FROM elpi_2017
   ),
 
   unioned_w_entity_codes AS (
