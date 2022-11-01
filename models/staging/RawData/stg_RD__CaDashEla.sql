@@ -1,5 +1,5 @@
 WITH 
-  grad_2019 AS (
+  ela_2019 AS (
     SELECT
       Cds,
       RType,
@@ -10,24 +10,25 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
-      CurrNumer,
       CurrDenom,
       CurrStatus,
-      PriorNumer,
       PriorDenom,
       PriorStatus,
-      FiveYrNumer,
-      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
+      HsCutPoints,
+      CurrAdjustment,
+      PriorAdjustment,
+      PairShareMethod,
+      NoTestFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashGrad2019')}} 
+  FROM {{ ref('base_RD__CaDashEla2019')}} 
   ),
-
-  grad_2018 AS (
+  
+  ela_2018 AS (
     SELECT
       Cds,
       RType,
@@ -38,27 +39,59 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
-      CurrNumer,
       CurrDenom,
       CurrStatus,
-      PriorNumer,
       PriorDenom,
       PriorStatus,
-      NULL AS FiveYrNumer,
-      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
+      HsCutPoints,
+      CurrAdjustment,
+      PriorAdjustment,
+      PairShareMethod,
+      CAST(NULL AS BOOL) AS NoTestFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashGrad2018')}} 
+    FROM {{ ref('base_RD__CaDashEla2018')}} 
+  ),
+  
+  ela_2017 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      StudentGroup,
+      CurrDenom,
+      CurrStatus,
+      PriorDenom,
+      PriorStatus,
+      Change,
+      StatusLevel,
+      ChangeLevel,
+      Color,
+      CAST(NULL AS INT64) AS Box,
+      CAST(NULL AS BOOL) AS HsCutPoints,
+      CAST(NULL AS FLOAT64) AS CurrAdjustment,
+      CAST(NULL AS FLOAT64) AS PriorAdjustment,
+      CAST(NULL AS STRING) AS PairShareMethod,
+      CAST(NULL AS BOOL) AS NoTestFlag,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashEla2017')}} 
   ),
 
   unioned AS (
-    SELECT * FROM grad_2018
+    SELECT * FROM ela_2019
     UNION ALL
-    SELECT * FROM grad_2019
+    SELECT * FROM ela_2018
+    UNION ALL
+    SELECT * FROM ela_2017
   ),
 
   unioned_w_entity_codes AS (
@@ -101,7 +134,7 @@ WITH
       CAST(Code AS INT64) AS StatusLevel,
       Value AS StatusLevelName
     FROM codes
-    WHERE CodeColumn = 'StatusLevel - Graduation Rate'
+    WHERE CodeColumn = 'StatusLevel - ELA'
   ),
 
   change_levels AS (
@@ -109,15 +142,24 @@ WITH
       CAST(Code AS INT64) AS ChangeLevel,
       Value AS ChangeLevelName
     FROM codes
-    WHERE CodeColumn = 'ChangeLevel - Graduation Rate'
+    WHERE CodeColumn = 'ChangeLevel - ELA'
   ),
 
   final AS (
     SELECT
-      'Graduation Rate' AS IndicatorName,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameShort,
+      'ELA' AS IndicatorName,
+      CASE
+        WHEN e.EntityType IS NOT NULL THEN e.EntityType
+        WHEN u.Rtype = 'S' THEN 'School'
+      END AS EntityType,
+      CASE
+        WHEN e.EntityName IS NOT NULL THEN e.EntityName
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityName,
+      CASE
+        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityNameShort,
       g.StudentGroupName,
       sl.StatusLevelName,
       cl.ChangeLevelName,
@@ -137,3 +179,4 @@ WITH
   )
 
 SELECT * FROM final
+

@@ -1,4 +1,4 @@
-WITH 
+WITH
   elpi_2019 AS (
     SELECT
       Cds,
@@ -26,11 +26,43 @@ WITH
       NSizeMet,
       NSizeGroup,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashElpi2019')}} 
+    FROM {{ ref('base_RD__CaDashElpi2019')}} 
+  ),
+
+  elpi_2017 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      CurrProgressed,
+      CurrMaintainPL4,
+      CAST(NULL AS INT64) AS CurrDeclined,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      PriorDenom,
+      PriorStatus,
+      Change,
+      StatusLevel,
+      ChangeLevel,
+      Color,
+      Box,
+      CAST(NULL AS BOOL) AS Flag95Pct,
+      NSizeMet,
+      CAST(NULL AS STRING) AS NSizeGroup,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashElpi2017')}} 
   ),
 
   unioned AS (
     SELECT * FROM elpi_2019
+    UNION ALL
+    SELECT * FROM elpi_2017
   ),
 
   unioned_w_entity_codes AS (
@@ -79,9 +111,18 @@ WITH
   final AS (
     SELECT
       'EL Progress' AS IndicatorName,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameShort,
+      CASE
+        WHEN e.EntityType IS NOT NULL THEN e.EntityType
+        WHEN u.Rtype = 'S' THEN 'School'
+      END AS EntityType,
+      CASE
+        WHEN e.EntityName IS NOT NULL THEN e.EntityName
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityName,
+      CASE
+        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityNameShort,
       sl.StatusLevelName,
       cl.ChangeLevelName,
       c.ColorName,

@@ -85,7 +85,7 @@ cci_2019 AS (
       PriorNPrep,
       PriorNPrepPct,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashCci2019')}} 
+  FROM {{ ref('base_RD__CaDashCci2019')}} 
   ),
   
   cci_2018 AS (
@@ -174,13 +174,104 @@ cci_2019 AS (
       PriorNPrep,
       PriorNPrepPct,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashCci2018')}} 
+    FROM {{ ref('base_RD__CaDashCci2018')}} 
+  ),
+
+  cci_2017 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      CAST(NULL AS BOOL) AS SafetyNet,
+      StudentGroup,
+      CurrDenom,
+      CurrStatus,
+      CAST(NULL AS INT64) AS PriorDenom,
+      CAST(NULL AS FLOAT64) AS PriorStatus,
+      CAST(NULL AS FLOAT64) AS Change,
+      CAST(NULL AS INT64) StatusLevel,
+      CAST(NULL AS INT64) AS ChangeLevel,
+      CAST(NULL AS INT64) AS Color,
+      CAST(NULL AS INT64) AS Box,
+      CurrPrep,
+      CurrPrepPct,
+      CAST(NULL AS INT64) CurrPrepSummative,
+      CAST(NULL AS FLOAT64) AS CurrPrepSummativePct,
+      CAST(NULL AS INT64) CurrPrepApExam,
+      CAST(NULL AS FLOAT64) AS CurrPrepApExamPct,
+      CAST(NULL AS INT64) CurrPrepIbExam,
+      CAST(NULL AS FLOAT64) AS CurrPrepIbExamPct,
+      CAST(NULL AS INT64) CurrPrepCollegeCredit,
+      CAST(NULL AS FLOAT64) AS CurrPrepCollegeCreditPct,
+      CAST(NULL AS INT64) CurrPrepAgPlus,
+      CAST(NULL AS FLOAT64) AS CurrPrepAgPlusPct,
+      CAST(NULL AS INT64) CurrPrepCtePlus,
+      CAST(NULL AS FLOAT64) AS CurrPrepCtePlusPct,
+      CAST(NULL AS INT64) CurrPrepSsb,
+      CAST(NULL AS FLOAT64) AS CurrPrepSsbPct,
+      CAST(NULL AS INT64) CurrPrepMilSci,
+      CAST(NULL AS FLOAT64) AS CurrPrepMilSciPct,
+      CAST(NULL AS INT64) CurrAPrep,
+      CAST(NULL AS FLOAT64) AS CurrAPrepPct,
+      CAST(NULL AS INT64) CurrAPrepSummative,
+      CAST(NULL AS FLOAT64) AS CurrAPrepSummativePct,
+      CAST(NULL AS INT64) CurrAPrepCollegeCredit,
+      CAST(NULL AS FLOAT64) AS CurrAPrepCollegeCreditPct,
+      CAST(NULL AS INT64) CurrAPrepAg,
+      CAST(NULL AS FLOAT64) AS CurrAPrepAgPct,
+      CAST(NULL AS INT64) CurrAPrepCte,
+      CAST(NULL AS FLOAT64) AS CurrAPrepCtePct,
+      CAST(NULL AS INT64) CurrAPrepMilSci,
+      CAST(NULL AS FLOAT64) AS CurrAPrepMilSciPct,
+      CAST(NULL AS INT64) CurrNPrep,
+      CAST(NULL AS FLOAT64) AS CurrNPrepPct,
+      CAST(NULL AS INT64) PriorPrep,
+      CAST(NULL AS FLOAT64) AS PriorPrepPct,
+      CAST(NULL AS INT64) PriorPrepSummative,
+      CAST(NULL AS FLOAT64) AS PriorPrepSummativePct,
+      CAST(NULL AS INT64) PriorPrepApExam,
+      CAST(NULL AS FLOAT64) AS PriorPrepApExamPct,
+      CAST(NULL AS INT64) PriorPrepIbExam,
+      CAST(NULL AS FLOAT64) AS PriorPrepIbExamPct,
+      CAST(NULL AS INT64) PriorPrepCollegeCredit,
+      CAST(NULL AS FLOAT64) AS PriorPrepCollegeCreditPct,
+      CAST(NULL AS INT64) PriorPrepAgPlus,
+      CAST(NULL AS FLOAT64) AS PriorPrepAgPlusPct,
+      CAST(NULL AS INT64) PriorPrepCtePlus,
+      CAST(NULL AS FLOAT64) AS PriorPrepCtePlusPct,
+      CAST(NULL AS INT64) PriorPrepSsb,
+      CAST(NULL AS FLOAT64) AS PriorPrepSsbPct,
+      CAST(NULL AS INT64) PriorPrepMilSci,
+      CAST(NULL AS FLOAT64) AS PriorPrepMilSciPct,
+      CAST(NULL AS INT64) PriorAPrep,
+      CAST(NULL AS FLOAT64) AS PriorAPrepPct,
+      CAST(NULL AS INT64) PriorAPrepSummative,
+      CAST(NULL AS FLOAT64) AS PriorAPrepSummativePct,
+      CAST(NULL AS INT64) PriorAPrepCollegeCredit,
+      CAST(NULL AS FLOAT64) AS PriorAPrepCollegeCreditPct,
+      CAST(NULL AS INT64) PriorAPrepAg,
+      CAST(NULL AS FLOAT64) AS PriorAPrepAgPct,
+      CAST(NULL AS INT64) PriorAPrepCte,
+      CAST(NULL AS FLOAT64) AS PriorAPrepCtePct,
+      CAST(NULL AS INT64) PriorAPrepMilSci,
+      CAST(NULL AS FLOAT64) AS PriorAPrepMilSciPct,
+      CAST(NULL AS INT64) PriorNPrep,
+      CAST(NULL AS FLOAT64) AS PriorNPrepPct,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashCci2017')}} 
   ),
 
   unioned AS (
+    SELECT * FROM cci_2019
+    UNION ALL
     SELECT * FROM cci_2018
     UNION ALL
-    SELECT * FROM cci_2019
+    SELECT * FROM cci_2017
   ),
 
   unioned_w_entity_codes AS (
@@ -237,9 +328,18 @@ cci_2019 AS (
   final AS (
     SELECT
       'College/Career' AS IndicatorName,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameShort,
+      CASE
+        WHEN e.EntityType IS NOT NULL THEN e.EntityType
+        WHEN u.Rtype = 'S' THEN 'School'
+      END AS EntityType,
+      CASE
+        WHEN e.EntityName IS NOT NULL THEN e.EntityName
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityName,
+      CASE
+        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityNameShort,
       g.StudentGroupName,
       sl.StatusLevelName,
       cl.ChangeLevelName,

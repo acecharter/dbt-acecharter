@@ -1,5 +1,5 @@
 WITH 
-  math_2019 AS (
+  chronic_2019 AS (
     SELECT
       Cds,
       RType,
@@ -10,25 +10,25 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
       Change,
+      SafetyNet,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      NoTestFlag,
+      CertifyFlag,
+      DataErrorFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashMath2019')}} 
+  FROM {{ ref('base_RD__CaDashChronic2019')}} 
   ),
   
-  math_2018 AS (
+  chronic_2018 AS (
     SELECT
       Cds,
       RType,
@@ -39,28 +39,28 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
       Change,
+      SafetyNet,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      CAST(NULL AS BOOL) AS NoTestFlag,
+      CertifyFlag,
+      CAST(NULL AS BOOL) AS DataErrorFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashMath2018')}} 
+    FROM {{ ref('base_RD__CaDashChronic2018')}} 
   ),
 
   unioned AS (
-    SELECT * FROM math_2018
+    SELECT * FROM chronic_2019
     UNION ALL
-    SELECT * FROM math_2019
+    SELECT * FROM chronic_2018
   ),
 
   unioned_w_entity_codes AS (
@@ -103,7 +103,7 @@ WITH
       CAST(Code AS INT64) AS StatusLevel,
       Value AS StatusLevelName
     FROM codes
-    WHERE CodeColumn = 'StatusLevel - Math'
+    WHERE CodeColumn = 'StatusLevel - Chronic Absenteeism'
   ),
 
   change_levels AS (
@@ -111,15 +111,24 @@ WITH
       CAST(Code AS INT64) AS ChangeLevel,
       Value AS ChangeLevelName
     FROM codes
-    WHERE CodeColumn = 'ChangeLevel - Math'
+    WHERE CodeColumn = 'ChangeLevel - Chronic Absenteeism'
   ),
 
   final AS (
     SELECT
-      'Math' AS IndicatorName,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameShort,
+      'Chronic Absenteeism' AS IndicatorName,
+      CASE
+        WHEN e.EntityType IS NOT NULL THEN e.EntityType
+        WHEN u.Rtype = 'S' THEN 'School'
+      END AS EntityType,
+      CASE
+        WHEN e.EntityName IS NOT NULL THEN e.EntityName
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityName,
+      CASE
+        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityNameShort,
       g.StudentGroupName,
       sl.StatusLevelName,
       cl.ChangeLevelName,

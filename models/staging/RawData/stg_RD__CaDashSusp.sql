@@ -1,5 +1,5 @@
 WITH 
-  chronic_2019 AS (
+  susp_2019 AS (
     SELECT
       Cds,
       RType,
@@ -9,6 +9,7 @@ WITH
       CharterFlag,
       CoeFlag,
       DassFlag,
+      Type,
       StudentGroup,
       CurrNumer,
       CurrDenom,
@@ -16,19 +17,18 @@ WITH
       PriorNumer,
       PriorDenom,
       PriorStatus,
-      Change,
       SafetyNet,
+      Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
       CertifyFlag,
-      DataErrorFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashChronic2019')}} 
+  FROM {{ ref('base_RD__CaDashSusp2019')}} 
   ),
   
-  chronic_2018 AS (
+  susp_2018 AS (
     SELECT
       Cds,
       RType,
@@ -38,6 +38,7 @@ WITH
       CharterFlag,
       CoeFlag,
       DassFlag,
+      Type,
       StudentGroup,
       CurrNumer,
       CurrDenom,
@@ -45,22 +46,52 @@ WITH
       PriorNumer,
       PriorDenom,
       PriorStatus,
-      Change,
       SafetyNet,
+      Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
       CertifyFlag,
-      CAST(NULL AS BOOL) AS DataErrorFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashChronic2018')}} 
+    FROM {{ ref('base_RD__CaDashSusp2018')}} 
+  ),
+  
+  susp_2017 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      Type,
+      StudentGroup,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      PriorNumer,
+      PriorDenom,
+      PriorStatus,
+      SafetyNet,
+      Change,
+      StatusLevel,
+      ChangeLevel,
+      Color,
+      Box,
+      CertifyFlag,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashSusp2017')}} 
   ),
 
   unioned AS (
-    SELECT * FROM chronic_2018
+    SELECT * FROM susp_2019
     UNION ALL
-    SELECT * FROM chronic_2019
+    SELECT * FROM susp_2018
+    UNION ALL
+    SELECT * FROM susp_2017
   ),
 
   unioned_w_entity_codes AS (
@@ -103,7 +134,7 @@ WITH
       CAST(Code AS INT64) AS StatusLevel,
       Value AS StatusLevelName
     FROM codes
-    WHERE CodeColumn = 'StatusLevel - Chronic Absenteeism'
+    WHERE CodeColumn = 'StatusLevel - Suspension Rate'
   ),
 
   change_levels AS (
@@ -111,15 +142,24 @@ WITH
       CAST(Code AS INT64) AS ChangeLevel,
       Value AS ChangeLevelName
     FROM codes
-    WHERE CodeColumn = 'ChangeLevel - Chronic Absenteeism'
+    WHERE CodeColumn = 'ChangeLevel - Suspension Rate'
   ),
 
   final AS (
     SELECT
-      'Chronic Absenteeism' AS IndicatorName,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameShort,
+      'Suspension Rate' AS IndicatorName,
+      CASE
+        WHEN e.EntityType IS NOT NULL THEN e.EntityType
+        WHEN u.Rtype = 'S' THEN 'School'
+      END AS EntityType,
+      CASE
+        WHEN e.EntityName IS NOT NULL THEN e.EntityName
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityName,
+      CASE
+        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityNameShort,
       g.StudentGroupName,
       sl.StatusLevelName,
       cl.ChangeLevelName,
@@ -139,3 +179,4 @@ WITH
   )
 
 SELECT * FROM final
+

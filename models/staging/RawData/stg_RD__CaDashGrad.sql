@@ -1,5 +1,5 @@
 WITH 
-  ela_2019 AS (
+  grad_2019 AS (
     SELECT
       Cds,
       RType,
@@ -10,25 +10,24 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
+      FiveYrNumer,
+      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      NoTestFlag,
       ReportingYear
-  FROM {{ ref('stg_RD__CaDashEla2019')}} 
+  FROM {{ ref('base_RD__CaDashGrad2019')}} 
   ),
-  
-  ela_2018 AS (
+
+  grad_2018 AS (
     SELECT
       Cds,
       RType,
@@ -39,28 +38,57 @@ WITH
       CoeFlag,
       DassFlag,
       StudentGroup,
+      CurrNumer,
       CurrDenom,
       CurrStatus,
+      PriorNumer,
       PriorDenom,
       PriorStatus,
+      NULL AS FiveYrNumer,
+      SafetyNet,
       Change,
       StatusLevel,
       ChangeLevel,
       Color,
       Box,
-      HsCutPoints,
-      CurrAdjustment,
-      PriorAdjustment,
-      PairShareMethod,
-      CAST(NULL AS BOOL) AS NoTestFlag,
       ReportingYear
-    FROM {{ ref('stg_RD__CaDashEla2018')}} 
+    FROM {{ ref('base_RD__CaDashGrad2018')}} 
+  ),
+
+  grad_2017 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      CAST(NULL AS BOOL) AS DassFlag,
+      StudentGroup,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      PriorNumer,
+      PriorDenom,
+      PriorStatus,
+      NULL AS FiveYrNumer,
+      SafetyNet,
+      Change,
+      StatusLevel,
+      ChangeLevel,
+      Color,
+      Box,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashGrad2017')}} 
   ),
 
   unioned AS (
-    SELECT * FROM ela_2018
+    SELECT * FROM grad_2019
     UNION ALL
-    SELECT * FROM ela_2019
+    SELECT * FROM grad_2018
+    UNION ALL
+    SELECT * FROM grad_2017
   ),
 
   unioned_w_entity_codes AS (
@@ -103,7 +131,7 @@ WITH
       CAST(Code AS INT64) AS StatusLevel,
       Value AS StatusLevelName
     FROM codes
-    WHERE CodeColumn = 'StatusLevel - ELA'
+    WHERE CodeColumn = 'StatusLevel - Graduation Rate'
   ),
 
   change_levels AS (
@@ -111,15 +139,24 @@ WITH
       CAST(Code AS INT64) AS ChangeLevel,
       Value AS ChangeLevelName
     FROM codes
-    WHERE CodeColumn = 'ChangeLevel - ELA'
+    WHERE CodeColumn = 'ChangeLevel - Graduation Rate'
   ),
 
   final AS (
     SELECT
-      'ELA' AS IndicatorName,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameShort,
+      'Graduation Rate' AS IndicatorName,
+      CASE
+        WHEN e.EntityType IS NOT NULL THEN e.EntityType
+        WHEN u.Rtype = 'S' THEN 'School'
+      END AS EntityType,
+      CASE
+        WHEN e.EntityName IS NOT NULL THEN e.EntityName
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityName,
+      CASE
+        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityNameShort,
       g.StudentGroupName,
       sl.StatusLevelName,
       cl.ChangeLevelName,
@@ -139,4 +176,3 @@ WITH
   )
 
 SELECT * FROM final
-
