@@ -194,7 +194,7 @@ cci_2019 AS (
       CAST(NULL AS INT64) AS PriorDenom,
       CAST(NULL AS FLOAT64) AS PriorStatus,
       CAST(NULL AS FLOAT64) AS Change,
-      CAST(NULL AS INT64) StatusLevel,
+      StatusLevel,
       CAST(NULL AS INT64) AS ChangeLevel,
       CAST(NULL AS INT64) AS Color,
       CAST(NULL AS INT64) AS Box,
