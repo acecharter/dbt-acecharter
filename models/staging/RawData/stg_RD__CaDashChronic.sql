@@ -117,9 +117,18 @@ WITH
   final AS (
     SELECT
       'Chronic Absenteeism' AS IndicatorName,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameShort,
+      CASE
+        WHEN e.EntityType IS NOT NULL THEN e.EntityType
+        WHEN u.Rtype = 'S' THEN 'School'
+      END AS EntityType,
+      CASE
+        WHEN e.EntityName IS NOT NULL THEN e.EntityName
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityName,
+      CASE
+        WHEN e.EntityNameShort IS NOT NULL THEN e.EntityNameShort
+        WHEN u.Rtype = 'S' THEN u.SchoolName
+      END AS EntityNameShort,
       g.StudentGroupName,
       sl.StatusLevelName,
       cl.ChangeLevelName,
