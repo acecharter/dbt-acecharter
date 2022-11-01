@@ -20,8 +20,8 @@ SELECT
   changelevel AS ChangeLevel,
   color AS Color,
   box AS Box,
-  certifyflag AS CertifyFlag,
-  reportingyear AS ReportingYear
+  CAST(certifyflag AS BOOL) AS CertifyFlag,
+  CAST(SUBSTR(reportingyear,1,4) AS INT64) AS ReportingYear
 FROM {{ source('RawData', 'CaDashSusp2017')}}
 WHERE 
   rtype = 'X'
