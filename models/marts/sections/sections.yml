@@ -91,12 +91,12 @@ models:
         tests:
           - not_null
 
-      - name: StudentCourseEnrollmentBeginDate
+      - name: StudentSectionEnrollmentBeginDate
         description: Month, day, and year of the Student's entry or assignment to the Section.
         tests:
           - not_null
 
-      - name: StudentCourseEnrollmentEndDate
+      - name: StudentSectionEnrollmentEndDate
         description: Month, day, and year of the withdrawal or exit of the Student from the Section.
         tests:
           - not_null
