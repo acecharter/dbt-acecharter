@@ -96,10 +96,6 @@ sources:
 
       - name: StudentAttendance_v2
         description: Attendance aggregations taken at the student level. Includes the student's average daily attendance, sums of all attendance event durations, and counts of all attendance events.
-        columns:
-          - name: AverageDailyAttendance
-            tests:
-              - is_less_than_1
 
       - name: StudentDemographics
         description: General demographic information about students enrolled in the current academic year.
