@@ -90,4 +90,4 @@ WITH
     FROM joined
   )
 
-SELECT * FROM joined
+SELECT * FROM final
