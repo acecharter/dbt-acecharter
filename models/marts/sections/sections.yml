@@ -101,7 +101,7 @@ models:
         tests:
           - not_null
       
-      - name: IsCurrentCourseEnrollment
+      - name: IsCurrentSectionEnrollment
         description: Whether or not the student's enrollment in the course section is currently active.
         tests:
           - not_null
