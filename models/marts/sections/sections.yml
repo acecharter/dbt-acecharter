@@ -56,11 +56,11 @@ models:
       - name: AvailableCredits
         description: The course credits that are being attempted for the grading period.
 
-      - name: CourseSectionBeginDate
-        description: Month, day, and year of the start of the course section. (Extracted from the earliest StaffBeginDate associated with the course section.)
+      - name: SectionBeginDate
+        description: Month, day, and year of the start of the section. (Extracted from the earliest StaffBeginDate associated with the section.)
 
-      - name: CourseSectionEndDate
-        description: Month, day, and year of the end of the course section. (Extracted from the latest StaffEndDate associated with the course section.)
+      - name: SectionEndDate
+        description: Month, day, and year of the end of the section. (Extracted from the latest StaffEndDate associated with the section.)
 
       - name: StaffUniqueId
         description: The unique ID of any staff member associated with a section of a course.
@@ -69,16 +69,6 @@ models:
 
       - name: StaffClassroomPosition
         description: The classroom position of the staff member referred to by StaffUniqueId. A value of 'Teacher of Record' typically indicates the primary teacher for a section.
-        tests:
-          - not_null
-
-      - name: StaffBeginDate
-        description: Month, day, and year of the beginning of the staff member's association with the section indicated by SectionIdentifier.
-        tests:
-          - not_null
-
-      - name: StaffEndDate
-        description: Month, day, and year of the ending of the staff member's association with the section indicated by SectionIdentifier.
         tests:
           - not_null
 
@@ -109,6 +99,8 @@ models:
   - name: dim_Sections
     description: Unique sections for each course at each school.
     columns:
+      - name: "SchoolId || '-' ||  SessionName || '-' ||  SectionIdentifier"
+        description: No existing primary key, but each combination of the above columns should be unique
 
       - name: SchoolId
         description: The unique ID of the school where the course section exists.
@@ -128,7 +120,6 @@ models:
       - name: CourseCode
         description: The local course code from PowerSchool SIS.
         tests:
-          - unique
           - not_null
 
       - name: AcademicSubject
