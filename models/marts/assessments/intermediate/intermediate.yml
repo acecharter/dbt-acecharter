@@ -22,7 +22,8 @@ models:
       materialized: table
 
     columns:
-      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId || '-' || AssessmentObjective || '-' || ReportingMethod"
+        description: No true primary key, but combination of these columns should be unique
         tests:
           - unique
 
@@ -40,7 +41,8 @@ models:
       materialized: table
 
     columns:
-      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId"
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId || '-' || AssessmentObjective || '-' || ReportingMethod"
+        description: No true primary key, but combination of these columns should be unique
         tests:
           - unique
 
@@ -67,7 +69,8 @@ models:
       materialized: table
 
     columns:
-      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || StudentGroupId || '-' || GradeLevel || '-' || AssessmentType"
+      - name: "CountyCode || '-' || DistrictCode || '-' || SchoolCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || AssessmentType || '-' || AssessmentObjective || '-' || ReportingMethod"
+        description: No true primary key, but combination of these columns should be unique
         tests:
           - unique
 
