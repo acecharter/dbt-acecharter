@@ -63,12 +63,9 @@ sources:
           - name: NumericGradeEarned
             description: The numeric value of the grade earned by the student for the section and respective grading period.
             tests:
-              - not_null
 
           - name: LetterGradeEarned
             description: The letter grade of the grade earned by the student for the section and respective grading period.
-            tests:
-              - not_null
 
           - name: PerformanceBaseConversionDescriptor
             description: The descriptor value mapped to the performance level earned by the student for the section and respective grading period. (currently all null)

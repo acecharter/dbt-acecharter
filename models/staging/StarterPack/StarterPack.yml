@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: stg_SP__StudentAttendance_v2
+    description: Staging model for StudentAttendance_v2 source data.
+    columns:
+      - name: AverageDailyAttendance
+        tests:
+          - is_less_than_1

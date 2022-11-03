@@ -36,7 +36,7 @@ sources:
             tests:
               - not_null
 
-          - name: SystemOrVendor
+          - name: SystemOrVendorName
             description: Name of the assessment vendor or system of assessments that the assessment is a part of
             tests:
               - not_null
@@ -48,12 +48,12 @@ sources:
         description: A google sheet containing assessment- and grade-specific scale score ranges for assessments used by ACE.
         columns:
 
-          - name: "AceAssessmentUniqueId || '-' || Area || '-' || GradeLevel"
+          - name: "AceAssessmentId || '-' || Area || '-' || GradeLevel"
             description: Table does not have a primary key, but the combination of these columns should be unique
             tests:
               - unique
 
-          - name: AceAssessmentUniqueId
+          - name: AceAssessmentId
             description: Foreign key from Assessments table unique to each assessment (but not grade level)
             tests:
               - not_null
