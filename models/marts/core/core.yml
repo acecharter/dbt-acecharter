@@ -32,8 +32,8 @@ models:
   - name: dim_StudentDemographics
     description: Student demographic information for each unique student
     columns:
-      - name: "SchoolYear || '-' ||SchoolId || '-' || StudentUniqueId"
-        description: No true primary key, but each schoolyear-school-student combo should be unique
+      - name: "SchoolYear || '-' || StudentUniqueId"
+        description: No true primary key, but each schoolyear-student combo should be unique
 
       - name: StudentUniqueId
         description: PowerSchool SIS Student Number
@@ -46,8 +46,8 @@ models:
   - name: dim_Students
     description: Student demographic and enrollment information for the most recent enrollment of a student in each school. A student may have multiple records for enrollments in different schools.
     columns:
-      - name: "SchoolId || '-' || StudentUniqueId"
-        description: No true primary key, but each school-student combo should be unique
+      - name: "SchoolYear || '-' || SchoolId || '-' || StudentUniqueId"
+        description: No true primary key, but each schoolyear-school-student combo should be unique
         tests:
           - unique
 
