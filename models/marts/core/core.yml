@@ -21,30 +21,33 @@ models:
   - name: dim_Schools
     description: School-level information for each school
     columns:
+      - name: "SchoolYear || '-' || SchoolId"
+        description: No existing primary key, but each school-student combo should have a unique EntryDate
+
       - name: SchoolId
         description: Primary key of table
         tests:
-          - unique
           - not_null
 
   - name: dim_StudentDemographics
     description: Student demographic information for each unique student
     columns:
+      - name: "SchoolYear || '-' || StudentUniqueId"
+        description: No true primary key, but each schoolyear-student combo should be unique
+
       - name: StudentUniqueId
-        description: Primary key of table
+        description: PowerSchool SIS Student Number
         tests:
-          - unique
           - not_null
       - name: StateUniqueId
         description: Statewide Student Identifier (SSID); though new students may have a null value, any non-null values should be unique
-        tests:
-          - unique
+
 
   - name: dim_Students
     description: Student demographic and enrollment information for the most recent enrollment of a student in each school. A student may have multiple records for enrollments in different schools.
     columns:
-      - name: "SchoolId || '-' || StudentUniqueId"
-        description: No true primary key, but each school-student combo should be unique
+      - name: "SchoolYear || '-' || SchoolId || '-' || StudentUniqueId"
+        description: No true primary key, but each schoolyear-school-student combo should be unique
         tests:
           - unique
 

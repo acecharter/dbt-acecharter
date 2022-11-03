@@ -130,4 +130,3 @@ WITH
 
 
 SELECT * FROM final
-
