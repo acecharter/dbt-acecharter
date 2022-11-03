@@ -21,10 +21,12 @@ models:
   - name: dim_Schools
     description: School-level information for each school
     columns:
+      - name: "SchoolYear || '-' || SchoolId"
+        description: No existing primary key, but each school-student combo should have a unique EntryDate
+
       - name: SchoolId
         description: Primary key of table
         tests:
-          - unique
           - not_null
 
   - name: dim_StudentDemographics
