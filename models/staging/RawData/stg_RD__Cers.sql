@@ -79,7 +79,13 @@ WITH
       u.AssessmentName,
       u.Subject,
       CASE
+        WHEN u.GradeLevelWhenAssessed = 'IT' THEN -4
+        WHEN u.GradeLevelWhenAssessed = 'PR' THEN -3
+        WHEN u.GradeLevelWhenAssessed = 'PK' THEN -2
+        WHEN u.GradeLevelWhenAssessed = 'TK' THEN -1
         WHEN u.GradeLevelWhenAssessed = 'KG' THEN 0
+        WHEN u.GradeLevelWhenAssessed = 'PS' THEN 14
+        WHEN u.GradeLevelWhenAssessed = 'UG' THEN CAST(NULL AS INT64)
         ELSE CAST(u.GradeLevelWhenAssessed AS INT64)
       END AS GradeLevelWhenAssessed,
       u.Completeness,
