@@ -85,8 +85,7 @@ WITH
         WHEN u.GradeLevelWhenAssessed = 'TK' THEN -1
         WHEN u.GradeLevelWhenAssessed = 'KG' THEN 0
         WHEN u.GradeLevelWhenAssessed = 'PS' THEN 14
-        WHEN u.GradeLevelWhenAssessed = 'UG' THEN CAST(NULL AS INT64)
-        ELSE CAST(u.GradeLevelWhenAssessed AS INT64)
+        ELSE SAFE_CAST(u.GradeLevelWhenAssessed AS INT64)
       END AS GradeLevelWhenAssessed,
       u.Completeness,
       u.AdministrationCondition,
