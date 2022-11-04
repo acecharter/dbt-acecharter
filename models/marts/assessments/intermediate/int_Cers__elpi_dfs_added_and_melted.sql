@@ -22,7 +22,7 @@ WITH
     SELECT 
       AceAssessmentId,
       AceAssessmentName,
-      DistrictId,
+      TestDistrictId,
       TestDistrictName,
       TestSchoolCdsCode,
       TestSchoolName,
