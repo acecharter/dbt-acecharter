@@ -64,34 +64,37 @@ WITH
     SELECT
       a.AceAssessmentId,
       a.AceAssessmentName,
-      u.DistrictId,
-      u.TestDistrictName,
-      u.TestSchoolCdsCode,
-      u.TestSchoolName,
-      u.StateUniqueId,
+      u.DistrictId AS TestDistrictId,
+      u.DistrictName AS TestDistrictName,
+      u.SchoolId AS TestSchoolCdsCode,
+      u.SchoolName AS TestSchoolName,
+      u.StudentIdentifier AS StateUniqueId,
       u.FirstName,
-      u.LastSurname,
-      u.AssessmentDate,
-      u.TestSchoolYear,
+      u.LastOrSurname AS LastSurname,
+      DATE(u.SubmitDateTime) AS AssessmentDate,
+      CAST(u.SchoolYear AS INT64) AS TestSchoolYear,
       u.TestSessionId,
       u.AssessmentType,
       u.AssessmentSubType,
       u.AssessmentName,
       u.Subject,
-      u.GradeLevelWhenAssessed,
+      CASE
+        WHEN u.GradeLevelWhenAssessed = 'KG' THEN 0
+        ELSE CAST(u.GradeLevelWhenAssessed AS INT64)
+      END AS GradeLevelWhenAssessed,
       u.Completeness,
       u.AdministrationCondition,
-      u.ScaleScoreAchievementLevel,
-      u.ScaleScore,
-      u.Alt1ScoreAchievementLevel,
-      u.Alt2ScoreAchievementLevel,
-      u.Claim1ScoreAchievementLevel,
-      u.Claim2ScoreAchievementLevel,
-      u.Claim3ScoreAchievementLevel,
-      u.Claim4ScoreAchievementLevel
+      SAFE_CAST(u.ScaleScoreAchievementLevel AS INT64) AS ScaleScoreAchievementLevel,
+      SAFE_CAST(u.ScaleScore AS INT64) AS ScaleScore,
+      NULLIF(u.Alt1ScoreAchievementLevel,'') AS Alt1ScoreAchievementLevel,
+      NULLIF(u.Alt2ScoreAchievementLevel,'') AS Alt2ScoreAchievementLevel,
+      NULLIF(u.Claim1ScoreAchievementLevel,'') AS Claim1ScoreAchievementLevel,
+      NULLIF(u.Claim2ScoreAchievementLevel,'') AS Claim2ScoreAchievementLevel,
+      NULLIF(u.Claim3ScoreAchievementLevel,'') AS Claim3ScoreAchievementLevel,
+      NULLIF(u.Claim4ScoreAchievementLevel,'') AS Claim4ScoreAchievementLevel
     FROM unioned AS u
     LEFT JOIN assessment_ids AS a
     ON CONCAT(u.Subject, ' ', u.AssessmentSubType) = a.SubjectAssessmentSubType
   )
 
-SELECT * FROM final
+SELECT DISTINCT * FROM final
