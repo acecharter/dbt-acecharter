@@ -1,165 +1,72 @@
-WITH star_results AS (
-  SELECT * FROM {{ ref('stg_RenaissanceStar') }}
+with unpivoted as (
+  {{ dbt_utils.unpivot(
+    relation=ref('stg_RenaissanceStar'),
+    cast_to='STRING',
+    exclude=[
+      'AssessmentId',
+      'AceAssessmentId',
+      'AssessmentName',
+      'AssessmentSubject',
+      'TestedSchoolId',
+      'SchoolYear',
+      'StudentRenaissanceID',
+      'StudentIdentifier',
+      'StateUniqueId',
+      'StarTestingWindow',
+      'AssessmentDate',
+      'GradeLevel',
+      'AssessmentGradeLevel',
+      'GradePlacement'
+    ],
+    remove=[
+      'TestedSchoolName',
+      'DisplayName',
+      'LastName',
+      'FirstName',
+      'MiddleName',
+      'Gender',
+      'BirthDate',
+      'EnrollmentStatus',
+      'AssessmentNumber',
+      'AssessmentType',
+      'TotalTimeInSeconds',
+      'CurrentSGP',
+      'AceTestingWindowName',
+      'AceTestingWindowStartDate',
+      'AceTestingWindowEndDate',
+      'StarTestingWindow',
+      'ScaledScore'
+    ],
+    field_name='ReportingMethod',
+    value_name='StudentResult'
+) }}
 ),
 
-star_keys AS(
-  SELECT
-    AssessmentId,
-    AceAssessmentId,
-    AssessmentName,
-    AssessmentSubject,
-    StudentRenaissanceID,
-    StudentIdentifier,
-    StateUniqueId,
-    TestedSchoolId,
-    SchoolYear,
-    StarTestingWindow,
-    AssessmentDate,
-    GradeLevel,
-    AssessmentGradeLevel,
-    GradePlacement
-  FROM star_results
-),
-
-ge AS (
-  SELECT
-    AssessmentID,
-    'Grade Equivalent' AS ReportingMethod,
-    'STRING' AS StudentResultDataType,
-    CAST(GradeEquivalent AS STRING) AS StudentResult
-  FROM star_results
-),
-
-unified_score AS (
-  SELECT
-    AssessmentID,
-    'Unified Score' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(UnifiedScore AS STRING) AS StudentResult
-  FROM star_results
-), 
-
-percentile_rank AS (
-  SELECT
-    AssessmentID,
-    'Percentile Rank' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(PercentileRank AS STRING) AS StudentResult
-  FROM star_results
-),
-
-normal_curve_equivalent AS (
-  SELECT
-    AssessmentID,
-    'Normal Curve Equivalent' AS ReportingMethod,
-    'FLOAT64' AS StudentResultDataType,
-    CAST(NormalCurveEquivalent AS STRING) AS StudentResult
-  FROM star_results
-),
-
-lexile AS (
-  SELECT
-    AssessmentID,
-    'Lexile Level' AS ReportingMethod,
-    'STRING' AS StudentResultDataType,
-    CAST(Lexile AS STRING) AS StudentResult
-  FROM star_results
-),
-
-sgp_fall_fall AS (
-  SELECT
-    AssessmentID,
-    'SGP (Fall to Fall)' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(StudentGrowthPercentileFallFall AS STRING) AS StudentResult
-  FROM star_results
-),
-
-sgp_fall_winter AS (
-  SELECT
-    AssessmentID,
-    'SGP (Fall to Winter)' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(StudentGrowthPercentileFallWinter AS STRING) AS StudentResult
-  FROM star_results
-),
-
-sgp_fall_spring AS (
-  SELECT
-    AssessmentID,
-    'SGP (Fall to Spring)' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(StudentGrowthPercentileFallSpring AS STRING) AS StudentResult
-  FROM star_results
-),
-
-sgp_spring_spring AS (
-  SELECT
-    AssessmentID,
-    'SGP (Spring to Spring)' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(StudentGrowthPercentileSpringSpring AS STRING) AS StudentResult
-  FROM star_results
-),
-
-sgp_winter_spring AS (
-  SELECT
-    AssessmentID,
-    'SGP (Winter to Spring)' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(StudentGrowthPercentileWinterSpring AS STRING) AS StudentResult
-  FROM star_results
-),
-
-state_benchmark AS (
-  SELECT
-    AssessmentID,
-    'State Benchmark Level' AS ReportingMethod,
-    'INT64' AS StudentResultDataType,
-    CAST(StateBenchmarkCategoryLevel AS STRING) AS StudentResult
-  FROM star_results
-),
-
-literacy_classification AS (
-  SELECT
-    AssessmentID,
-    'Literacy Classification' AS ReportingMethod,
-    'STRING' AS StudentResultDataType,
-    CAST(LiteracyClassification AS STRING) AS StudentResult
-  FROM star_results
-),
-
-results_unioned AS(
-  SELECT * FROM ge
-  UNION ALL
-  SELECT * FROM unified_score
-  UNION ALL
-  SELECT * FROM normal_curve_equivalent
-  UNION ALL
-  SELECT * FROM percentile_rank
-  UNION ALL
-  SELECT * FROM lexile
-  UNION ALL
-  SELECT * FROM sgp_fall_fall
-  UNION ALL
-  SELECT * FROM sgp_fall_winter
-  UNION ALL
-  SELECT * FROM sgp_fall_spring
-  UNION ALL
-  SELECT * FROM sgp_spring_spring
-  UNION ALL
-  SELECT * FROM sgp_winter_spring
-  UNION ALL
-  SELECT * FROM state_benchmark
-  UNION ALL
-  SELECT * FROM literacy_classification
-
+final as (
+  select * except(ReportingMethod, StudentResult),
+  case
+    when ReportingMethod='GradeEquivalent' then 'Grade Equivalent'
+    when ReportingMethod='UnifiedScore' then 'Unified Score'
+    when ReportingMethod='PercentileRank' then 'Percentile Rank'
+    when ReportingMethod='NormalCurveEquivalent' then 'Normal Curve Equivalent'
+    when ReportingMethod='StudentGrowthPercentileFallFall' then 'SGP (Fall to Fall)'
+    when ReportingMethod='StudentGrowthPercentileFallWinter' then 'SGP (Fall to Winter)'
+    when ReportingMethod='StudentGrowthPercentileFallSpring' then 'SGP (Fall to Spring)'
+    when ReportingMethod='StudentGrowthPercentileSpringSpring' then 'SGP (Spring to Spring)'
+    when ReportingMethod='StudentGrowthPercentileWinterSpring' then 'SGP (Winter to Spring)'
+    when ReportingMethod='StateBenchmarkCategoryLevel' then 'State Benchmark Level'
+    when ReportingMethod='LiteracyClassification' then 'Literacy Classification'
+    when ReportingMethod='InstructionalReadingLevel' then 'Instructional Reading Level'
+    else ReportingMethod
+  end as ReportingMethod,
+  case
+    when ReportingMethod in ('GradeEquivalent', 'Lexile', 'LiteracyClassification', 'Quantile', 'InstructionalReadingLevel') then 'STRING'
+    when ReportingMethod in ('UnifiedScore', 'PercentileRank','StateBenchmarkCategoryLevel') or ReportingMethod like 'StudentGrowth%' then 'INT64'
+    when ReportingMethod = 'NormalCurveEquivalent' then 'FLOAT64'
+  end as StudentResultDataType,
+  StudentResult
+  from unpivoted
+  where StudentResult is not null
 )
 
-SELECT
- s.*,
- r.* EXCEPT (AssessmentID)
-FROM star_keys AS s
-LEFT JOIN results_unioned AS r
-USING (AssessmentID)
-WHERE StudentResult IS NOT NULL
+select * from final
