@@ -15,7 +15,7 @@ WITH
       s.ReportingMethod,
       s.StudentResultDataType,
       s.StudentResult
-    FROM {{ ref('int_RenStar_melted') }} AS s
+    FROM {{ ref('int_RenStar_unpivoted') }} AS s
   ),
 
   cers AS (
