@@ -1,8 +1,8 @@
 WITH 
   caaspp AS (
-    SELECT * FROM {{ ref('int_Caaspp__filtered_and_melted')}} 
+    SELECT * FROM {{ ref('int_Caaspp__filtered_and_unpivoted')}} 
     UNION ALL
-    SELECT * FROM {{ ref('int_Cast__filtered_and_melted')}} 
+    SELECT * FROM {{ ref('int_Cast__filtered_and_unpivoted')}} 
   ),
 
 

@@ -28,7 +28,7 @@ WITH
       r.AssessmentSubject,
       r.ReportingMethod,
       MAX(CAST(r.StudentResult AS FLOAT64)) AS MaxStudentResult
-    FROM {{ ref('int_RenStar_melted')}} AS r
+    FROM {{ ref('int_RenStar_unpivoted')}} AS r
     LEFT JOIN schools AS s
     ON r.TestedSchoolId = s.SchoolId
     WHERE StudentResultDataType IN ('INT64', 'FLOAT64')
