@@ -35,7 +35,7 @@ WITH unpivoted as (
         'TypeId'
       ],
       field_name='ReportingMethod',
-      value_name='StudentResult'
+      value_name='SchoolResult'
     ) }}
   ),
 
@@ -43,7 +43,7 @@ WITH unpivoted as (
     SELECT
       *,
       CASE
-        WHEN r.ReportingMethod LIKE 'Mean%' THEN StudentsWithScores 
+        WHEN ReportingMethod LIKE 'Mean%' THEN StudentsWithScores 
         ELSE ROUND(StudentsWithScores * CAST(SchoolResult AS FLOAT64), 0)
       END AS StudentWithResultCount
     FROM unpivoted
