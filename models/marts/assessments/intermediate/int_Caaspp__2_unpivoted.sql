@@ -13,7 +13,7 @@ WITH unpivoted as (
         'AssessmentSubject',
         'EntityCode',
         'EntityType',
-        'EntityName'
+        'EntityName',
         'EntityNameMid',
         'EntityNameShort',
         'CountyCode',
@@ -21,10 +21,10 @@ WITH unpivoted as (
         'SchoolCode',
         'SchoolYear',
         'TestYear',
-        'TypeId'
-        'DemographicId'
+        'TypeId',
+        'DemographicId',
         'GradeLevel',
-        'TestId'
+        'TestId',
         'StudentsEnrolled',
         'StudentsWithScores'
       ],
