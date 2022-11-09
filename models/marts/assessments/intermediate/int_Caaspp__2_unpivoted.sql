@@ -4,7 +4,7 @@
 
 WITH unpivoted as (
     {{ dbt_utils.unpivot(
-      relation={{ ref('int_Caaspp__1_filtered')}},
+      relation=ref('int_Caaspp__1_filtered'),
       cast_to='STRING',
       exclude=[
         'AssessmentId',

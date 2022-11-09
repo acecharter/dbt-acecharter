@@ -1,6 +1,6 @@
 WITH 
   caaspp AS (
-    SELECT * FROM {{ ref('int_Caaspp__unpivoted')}} 
+    SELECT * FROM {{ ref('int_Caaspp__2_unpivoted')}} 
     UNION ALL
     SELECT * FROM {{ ref('int_Cast__filtered_and_unpivoted')}} 
   ),

@@ -1,14 +1,10 @@
--- {{ config(
---     materialized='table'
--- )}}
-
-SELECT
-    CONCAT(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', DemographicId, '-', GradeLevel, '-', TestId) AS AssessmentId,
-    *
-FROM {{ ref('stg_RD__Caaspp')}}
-WHERE
+select
+  concat (CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', DemographicId, '-', GradeLevel, '-', TestId) as AssessmentId,
+  *
+from {{ ref('stg_RD__Caaspp')}}
+where
   GradeLevel >= 5
-  AND DemographicId IN (
+  and DemographicId IN (
     '1',   --All Students
     '128', --Reported Disabilities
     '31',  --Economic disadvantaged
