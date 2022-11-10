@@ -69,4 +69,4 @@ final as (
   where SchoolResult is not null
 )
 
-select assessmentobjective, reportingmethod, count(*) from final group by 1, 2
+select * from final
