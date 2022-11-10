@@ -2,7 +2,7 @@
     materialized='table'
 )}}
 
-WITH unpivoted as (
+with unpivoted as (
     {{ dbt_utils.unpivot(
       relation=ref('int_Caaspp__1_filtered'),
       cast_to='STRING',
@@ -41,7 +41,7 @@ WITH unpivoted as (
 
   final as (
     select
-      * ,
+      * except(ReportingMethod),
       case
         when ReportingMethod like 'Mean%' OR ReportingMethod like 'PctStandard%' then 'Overall'
         when AceAssessmentId = '1' and ReportingMethod like 'Area1%' then 'Reading'
@@ -63,7 +63,7 @@ WITH unpivoted as (
         when ReportingMethod like '%AboveStandard' then 'Percent Above Standard'
         when ReportingMethod like '%NearStandard' then 'Percent Near Standard'
         when ReportingMethod like '%BelowStandard' then 'Percent Below Standard'
-      end as ReportingMethod2,
+      end as ReportingMethod,
       'FLOAT64' as ResultDataType,
       case
         when ReportingMethod like 'Mean%' then StudentsWithScores 
