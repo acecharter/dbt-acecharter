@@ -1,6 +1,6 @@
 WITH 
   elpac AS (
-    SELECT * FROM {{ ref('int_Elpac__filtered_and_unpivoted')}} 
+    SELECT * FROM {{ ref('int_Elpac__2_unpivoted')}} 
   ),
 
   demographics AS (

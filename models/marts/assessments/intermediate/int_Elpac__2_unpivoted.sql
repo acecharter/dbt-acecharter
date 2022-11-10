@@ -23,7 +23,7 @@ with unpivoted as (
       'RecordType',
       'StudentGroupId',
       'GradeLevel',
-      'AssessmentType'
+      'AssessmentType',
       'TotalEnrolled',
       'TotalTestedWithScores',
       'OverallPerfLvl1Count',
@@ -97,7 +97,7 @@ final as (
       ReadingDomainDevelopedCount,
       WritingDomainBeginCount,
       WritingDomainModerateCount,
-      WritingDomainDevelopedCount,
+      WritingDomainDevelopedCount
     ),
     case
       when ReportingMethod like 'Overall%' then 'Overall'
@@ -110,43 +110,43 @@ final as (
     end as AssessmentObjective,
     case
       when ReportingMethod like '%MeanSclScr' then 'Mean Scale Score'
-      when ReportingMethod like '%Lvl1' then 'Percent Level 1'
-      when ReportingMethod like '%Lvl2' then 'Percent Level 2'
-      when ReportingMethod like '%Lvl3' then 'Percent Level 3'
-      when ReportingMethod like '%Lvl4' then 'Percent Level 4'
-      when ReportingMethod like '%Begin' then 'Percent Beginning to Develop'
-      when ReportingMethod like '%Moderate' then 'Percent Somewhat/Moderately Developed'
-      when ReportingMethod like '%Developed' then 'Percent Well Developed'
+      when ReportingMethod like '%Lvl1%' then 'Percent Level 1'
+      when ReportingMethod like '%Lvl2%' then 'Percent Level 2'
+      when ReportingMethod like '%Lvl3%' then 'Percent Level 3'
+      when ReportingMethod like '%Lvl4%' then 'Percent Level 4'
+      when ReportingMethod like '%Begin%' then 'Percent Beginning to Develop'
+      when ReportingMethod like '%Moderate%' then 'Percent Somewhat/Moderately Developed'
+      when ReportingMethod like '%Developed%' then 'Percent Well Developed'
     end as ReportingMethod,
     'FLOAT64' as ResultDataType,
     case
       when ReportingMethod = 'OverallMeanSclScr' THEN OverallTotal
-      when ReportingMethod = 'OverallPerfLvl1Pct' THEN OverallPerfLvl1Count
-      when ReportingMethod = 'OverallPerfLvl2Pct' THEN OverallPerfLvl2Count
-      when ReportingMethod = 'OverallPerfLvl3Pct' THEN OverallPerfLvl3Count
-      when ReportingMethod = 'OverallPerfLvl4Pct' THEN OverallPerfLvl4Count
+      when ReportingMethod = 'OverallPerfLvl1Pcnt' THEN OverallPerfLvl1Count
+      when ReportingMethod = 'OverallPerfLvl2Pcnt' THEN OverallPerfLvl2Count
+      when ReportingMethod = 'OverallPerfLvl3Pcnt' THEN OverallPerfLvl3Count
+      when ReportingMethod = 'OverallPerfLvl4Pcnt' THEN OverallPerfLvl4Count
       when ReportingMethod = 'OralLangMeanSclScr' THEN OralLangTotal
-      when ReportingMethod = 'OralLangPerfLvl1Pct' THEN OralLangPerfLvl1Count
-      when ReportingMethod = 'OralLangPerfLvl2Pct' THEN OralLangPerfLvl2Count
-      when ReportingMethod = 'OralLangPerfLvl3Pct' THEN OralLangPerfLvl3Count
-      when ReportingMethod = 'OralLangPerfLvl4Pct' THEN OralLangPerfLvl4Count
+      when ReportingMethod = 'OralLangPerfLvl1Pcnt' THEN OralLangPerfLvl1Count
+      when ReportingMethod = 'OralLangPerfLvl2Pcnt' THEN OralLangPerfLvl2Count
+      when ReportingMethod = 'OralLangPerfLvl3Pcnt' THEN OralLangPerfLvl3Count
+      when ReportingMethod = 'OralLangPerfLvl4Pcnt' THEN OralLangPerfLvl4Count
       when ReportingMethod = 'WritLangMeanSclScr' THEN WritLangTotal
-      when ReportingMethod = 'WritLangPerfLvl1Pct' THEN WritLangPerfLvl1Count
-      when ReportingMethod = 'WritLangPerfLvl2Pct' THEN WritLangPerfLvl2Count
-      when ReportingMethod = 'WritLangPerfLvl3Pct' THEN WritLangPerfLvl3Count
-      when ReportingMethod = 'WritLangPerfLvl4Pct' THEN WritLangPerfLvl4Count
-      when ReportingMethod = 'ListeningDomainBeginPct' THEN ListeningDomainBeginCount
-      when ReportingMethod = 'ListeningDomainModeratePct' THEN ListeningDomainModerateCount
-      when ReportingMethod = 'ListeningDomainDevelopedPct' THEN ListeningDomainDevelopedCount
-      when ReportingMethod = 'SpeakingDomainBeginPct' THEN SpeakingDomainBeginCount
-      when ReportingMethod = 'SpeakingDomainModeratePct' THEN SpeakingDomainModerateCount
-      when ReportingMethod = 'SpeakingDomainDevelopedPct' THEN SpeakingDomainDevelopedCount
-      when ReportingMethod = 'ReadingDomainBeginPct' THEN ReadingDomainBeginCount
-      when ReportingMethod = 'ReadingDomainModeratePct' THEN ReadingDomainModerateCount
-      when ReportingMethod = 'ReadingDomainDevelopedPct' THEN ReadingDomainDevelopedCount
-      when ReportingMethod = 'WritingDomainBeginPct' THEN WritingDomainBeginCount
-      when ReportingMethod = 'WritingDomainModeratePct' THEN WritingDomainModerateCount
-      when ReportingMethod = 'WritingDomainDevelopedPct' THEN WritingDomainDevelopedCount
+      when ReportingMethod = 'WritLangPerfLvl1Pcnt' THEN WritLangPerfLvl1Count
+      when ReportingMethod = 'WritLangPerfLvl2Pcnt' THEN WritLangPerfLvl2Count
+      when ReportingMethod = 'WritLangPerfLvl3Pcnt' THEN WritLangPerfLvl3Count
+      when ReportingMethod = 'WritLangPerfLvl4Pcnt' THEN WritLangPerfLvl4Count
+      when ReportingMethod = 'ListeningDomainBeginPcnt' THEN ListeningDomainBeginCount
+      when ReportingMethod = 'ListeningDomainModeratePcnt' THEN ListeningDomainModerateCount
+      when ReportingMethod = 'ListeningDomainDevelopedPcnt' THEN ListeningDomainDevelopedCount
+      when ReportingMethod = 'SpeakingDomainBeginPcnt' THEN SpeakingDomainBeginCount
+      when ReportingMethod = 'SpeakingDomainModeratePcnt' THEN SpeakingDomainModerateCount
+      when ReportingMethod = 'SpeakingDomainDevelopedPcnt' THEN SpeakingDomainDevelopedCount
+      when ReportingMethod = 'ReadingDomainBeginPcnt' THEN ReadingDomainBeginCount
+      when ReportingMethod = 'ReadingDomainModeratePcnt' THEN ReadingDomainModerateCount
+      when ReportingMethod = 'ReadingDomainDevelopedPcnt' THEN ReadingDomainDevelopedCount
+      when ReportingMethod = 'WritingDomainBeginPcnt' THEN WritingDomainBeginCount
+      when ReportingMethod = 'WritingDomainModeratePcnt' THEN WritingDomainModerateCount
+      when ReportingMethod = 'WritingDomainDevelopedPcnt' THEN WritingDomainDevelopedCount
     end as StudentWithResultCount
   from unpivoted
   where SchoolResult is not null
