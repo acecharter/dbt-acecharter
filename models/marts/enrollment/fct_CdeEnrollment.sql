@@ -10,7 +10,7 @@ WITH
       GradeLevel,
       Enrollment,
       PctOfTotalEnrollment
-    FROM {{ ref('int_CdeEnrByRaceAndGrade__3_melted')}}
+    FROM {{ ref('int_CdeEnrByRaceAndGrade__3_unpivoted')}}
   ),
 
   subgroups AS (

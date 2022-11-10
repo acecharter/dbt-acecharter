@@ -15,7 +15,7 @@ WITH
       s.ReportingMethod,
       s.StudentResultDataType,
       s.StudentResult
-    FROM {{ ref('int_RenStar_melted') }} AS s
+    FROM {{ ref('int_RenStar_unpivoted') }} AS s
   ),
 
   cers AS (
@@ -54,7 +54,7 @@ WITH
       ReportingMethod,
       StudentResultDataType,
       StudentResult
-    FROM {{ ref('int_Cers__elpi_dfs_added_and_melted') }}
+    FROM {{ ref('int_Cers__elpi_dfs_added_and_unpivoted') }}
   ),
 
   anet AS (

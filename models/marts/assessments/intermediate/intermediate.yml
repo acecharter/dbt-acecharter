@@ -8,9 +8,9 @@ models:
     config:
       materialized: view
 
-  - name: int_Caaspp__filtered_and_melted
+  - name: int_Caaspp__filtered_and_unpivoted
     description: >
-      Melted (unpivoted) CAASPP research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
+      Unpivoted CAASPP research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
       - 1 - All Students
       - 128 - Reported Disabilities
       - 31 - Economic disadvantaged
@@ -27,9 +27,9 @@ models:
         tests:
           - unique
 
-  - name: int_Cast__filtered_and_melted
+  - name: int_Cast__filtered_and_unpivoted
     description: >
-      Melted (unpivoted) CAST research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
+      Unpivoted CAST research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
       - 1 - All Students
       - 128 - Reported Disabilities
       - 31 - Economic disadvantaged
@@ -47,14 +47,14 @@ models:
           - unique
 
   - name: int_Cers__elpi_dfs_added_and_melted
-    description: Melted (unpivoted) CERS export data containing state summative and SBAC interim assessment results. EL Progress Indicator (for ELPAC) and DFS (for CAASPP) results calculated and added.
+    description: Unpivoted CERS export data containing state summative and SBAC interim assessment results. EL Progress Indicator (for ELPAC) and DFS (for CAASPP) results calculated and added.
 
     config:
       materialized: table
 
   - name: int_Elpac__filtered_and_melted
     description: >
-      Melted (unpivoted) summative ELPAC research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Student Group IDs:
+      Unpivoted summative ELPAC research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Student Group IDs:
       - 160 - All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
       - 120 - ELs enrolled less than 12 months
       - 142 - ELs enrolled 12 months or more
@@ -74,9 +74,8 @@ models:
         tests:
           - unique
 
-  - name: int_RenStar_melted
-    description: >
-      Melted (unpivoted) Renaissance Star export data for students tested at ACE.
+  - name: int_RenStar_unpivoted
+    description: Unpivoted Renaissance Star export data for students tested at ACE.
 
     config:
       materialized: view
