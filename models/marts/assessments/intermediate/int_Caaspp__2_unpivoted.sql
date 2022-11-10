@@ -39,14 +39,40 @@ WITH unpivoted as (
     ) }}
   ),
 
-  final AS (
-    SELECT
-      *,
-      CASE
-        WHEN ReportingMethod LIKE 'Mean%' THEN StudentsWithScores 
-        ELSE ROUND(StudentsWithScores * CAST(SchoolResult AS FLOAT64), 0)
-      END AS StudentWithResultCount
-    FROM unpivoted
+  final as (
+    select
+      * ,
+      case
+        when ReportingMethod like 'Mean%' OR ReportingMethod like 'PctStandard%' then 'Overall'
+        when AceAssessmentId = '1' and ReportingMethod like 'Area1%' then 'Reading'
+        when AceAssessmentId = '1' and ReportingMethod like 'Area2%' then 'Writing'
+        when AceAssessmentId = '1' and ReportingMethod like 'Area3%' then 'Listening'
+        when AceAssessmentId = '1' and ReportingMethod like 'Area4%' then 'Research/Inquiry'
+        when AceAssessmentId = '2' and ReportingMethod like 'Area1%' then 'Concepts & Procedures'
+        when AceAssessmentId = '2' and ReportingMethod like 'Area2%' then 'Problem Solving and Modeling & Data Analysis'
+        when AceAssessmentId = '2' and ReportingMethod like 'Area3%' then 'Communicating Reasoning'
+      end as AssessmentObjective,
+      case
+        when ReportingMethod = 'MeanScaleScore' then 'Mean Scale Score'
+        when ReportingMethod = 'MeanDistanceFromStandard' then 'Mean Distance From Standard'
+        when ReportingMethod = 'PctStandardMetAndAbove' then 'Percent Met and Above'
+        when ReportingMethod = 'PctStandardExceeded' then 'Percent Exceeded'
+        when ReportingMethod = 'PctStandardMet' then 'Percent Met'
+        when ReportingMethod = 'PctStandardNearlyMet' then 'Percent Nearly Met'
+        when ReportingMethod = 'PctStandardNotMet' then 'Percent Not Met'
+        when ReportingMethod like '%AboveStandard' then 'Percent Above Standard'
+        when ReportingMethod like '%NearStandard' then 'Percent Near Standard'
+        when ReportingMethod like '%BelowStandard' then 'Percent Below Standard'
+      end as ReportingMethod2,
+      'FLOAT64' as ResultDataType,
+      case
+        when ReportingMethod like 'Mean%' then StudentsWithScores 
+        else round(StudentsWithScores * cast(SchoolResult as float64), 0)
+      end as StudentWithResultCount
+    from unpivoted
+    where
+      SchoolResult is not null
+      and not (AceAssessmentId = '2' and ReportingMethod like 'Area4%')
   )
   
-SELECT * FROM final
+select * from final
