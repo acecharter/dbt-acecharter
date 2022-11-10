@@ -1,253 +1,107 @@
-WITH
-  enr AS (
-    SELECT
-      CONCAT(
-        CAST(Year AS STRING),
-        EntityCode,
-        RaceEthnicCode,
-        Gender,
-        Subgroup,
-        SchoolType
-      ) AS UniqueEnrId,
-      *      
-    FROM {{ ref('int_CdeEnrByRaceAndGrade__2_filtered') }}
-  ),
+with unpivoted as (
+  {{ dbt_utils.unpivot(
+    relation=ref('int_CdeEnrByRaceAndGrade__2_filtered'),
+    cast_to='INT64',
+    exclude=[
+      'Year',
+      'EntityCode',
+      'EntityType',
+      'EntityName',
+      'Subgroup',
+      'SchoolType',
+      'RaceEthnicCode',
+      'Gender'
+    ],
+    remove=[
+      'CdsCode',
+      'ENR_TOTAL'
+    ],
+    field_name='GradeLevel',
+    value_name='Enrollment'
+  ) }}
+),
 
-  enr_keys AS(
-    SELECT
-      UniqueEnrId,
-      Year,
-      CONCAT(
-        CAST(Year AS STRING), 
-        '-', 
-        FORMAT("%02d", Year - 1999)
-      ) AS SchoolYear,
-      EntityCode,
-      EntityType,
-      EntityName,
-      SchoolType,
-      RaceEthnicCode,
-      CASE
-        WHEN RaceEthnicCode = '0' THEN 'Not Reported'
-        WHEN RaceEthnicCode = '1' THEN 'American Indian or Alaska Native'
-        WHEN RaceEthnicCode = '2' THEN 'Asian'
-        WHEN RaceEthnicCode = '3' THEN 'Pacific Islander'
-        WHEN RaceEthnicCode = '4' THEN 'Filipino'
-        WHEN RaceEthnicCode = '5' THEN 'Hispanic or Latino'
-        WHEN RaceEthnicCode = '6' THEN 'African American'
-        WHEN RaceEthnicCode = '7' THEN 'White'
-        WHEN RaceEthnicCode = '8' THEN 'Multiple or No Response (pre-2009)'
-        WHEN RaceEthnicCode = '9' THEN 'Two or More Races'
-      END AS RaceEthnicity, 
-      Gender
-    FROM enr
-  ),
-
-  kinder AS (
-    SELECT
-      UniqueEnrId,
-      'K' AS GradeLevel,
-      KDGN AS Enrollment
-    FROM enr
-  ),
-
-  gr1 AS (
-    SELECT
-      UniqueEnrId,
-      '1' AS GradeLevel,
-      GR_1 AS Enrollment
-    FROM enr
-  ),
-
-  gr2 AS (
-    SELECT
-      UniqueEnrId,
-      '2' AS GradeLevel,
-      GR_2 AS Enrollment
-    FROM enr
-  ),
-
-  gr3 AS (
-    SELECT
-      UniqueEnrId,
-      '3' AS GradeLevel,
-      GR_3 AS Enrollment
-    FROM enr
-  ),
-  
-  gr4 AS (
-    SELECT
-      UniqueEnrId,
-      '4' AS GradeLevel,
-      GR_4 AS Enrollment
-    FROM enr
-  ),
-  
-  gr5 AS (
-    SELECT
-      UniqueEnrId,
-      '5' AS GradeLevel,
-      GR_5 AS Enrollment
-    FROM enr
-  ),
-  
-  gr6 AS (
-    SELECT
-      UniqueEnrId,
-      '6' AS GradeLevel,
-      GR_6 AS Enrollment
-    FROM enr
-  ),
-  
-  gr7 AS (
-    SELECT
-      UniqueEnrId,
-      '7' AS GradeLevel,
-      GR_7 AS Enrollment
-    FROM enr
-  ),
-  
-  gr8 AS (
-    SELECT
-      UniqueEnrId,
-      '8' AS GradeLevel,
-      GR_8 AS Enrollment
-    FROM enr
-  ),
-  
-  gr9 AS (
-    SELECT
-      UniqueEnrId,
-      '9' AS GradeLevel,
-      GR_9 AS Enrollment
-    FROM enr
-  ),
-  
-  gr10 AS (
-    SELECT
-      UniqueEnrId,
-      '10' AS GradeLevel,
-      GR_10 AS Enrollment
-    FROM enr
-  ),
-  
-  gr11 AS (
-    SELECT
-      UniqueEnrId,
-      '11' AS GradeLevel,
-      GR_11 AS Enrollment
-    FROM enr
-  ),
-  
-  gr12 AS (
-    SELECT
-      UniqueEnrId,
-      '12' AS GradeLevel,
-      GR_12 AS Enrollment
-    FROM enr
-  ),
-
-  ungr_elm AS (
-    SELECT
-      UniqueEnrId,
-      'Ungraded Elementary' AS GradeLevel,
-      UNGR_ELM AS Enrollment
-    FROM enr
-  ),
-
-  ungr_sec AS (
-    SELECT
-      UniqueEnrId,
-      'Ungraded Secondary' AS GradeLevel,
-      UNGR_SEC AS Enrollment
-    FROM enr
-  ),
-
-  adult AS (
-    SELECT
-      UniqueEnrId,
-      'Adult' AS GradeLevel,
-      ADULT AS Enrollment
-    FROM enr
-  ),
-
-  total AS (
-    SELECT
-      Year,
-      EntityCode,
-      SchoolType,
-      SUM(ENR_TOTAL) AS Enrollment
-    FROM enr
-    WHERE Subgroup = 'All Students'
-    GROUP BY 1, 2, 3
-  ),
-
-  enr_unioned AS (
-    SELECT * FROM kinder
-    UNION ALL
-    SELECT * FROM gr1
-    UNION ALL
-    SELECT * FROM gr2
-    UNION ALL
-    SELECT * FROM gr3
-    UNION ALL
-    SELECT * FROM gr4
-    UNION ALL
-    SELECT * FROM gr5
-    UNION ALL
-    SELECT * FROM gr6
-    UNION ALL
-    SELECT * FROM gr7
-    UNION ALL
-    SELECT * FROM gr8
-    UNION ALL
-    SELECT * FROM gr9
-    UNION ALL
-    SELECT * FROM gr10
-    UNION ALL
-    SELECT * FROM gr11
-    UNION ALL
-    SELECT * FROM gr12
-    UNION ALL
-    SELECT * FROM ungr_elm
-    UNION ALL
-    SELECT * FROM ungr_sec
-    UNION ALL
-    SELECT * FROM adult
-  ),
-
-  enr_final AS (
-    SELECT
-      k.* EXCEPT (UniqueEnrId),
-      e.GradeLevel,
-      e.Enrollment
-    FROM enr_keys AS k
-    LEFT JOIN enr_unioned AS e
-    USING (UniqueEnrId)
-    WHERE e.Enrollment > 0
-    ORDER BY
-      SchoolYear DESC,
+enr_final as (
+  select
+    concat(
+      cast(Year as STRING),
       EntityCode,
       RaceEthnicCode,
       Gender,
-      GradeLevel
-  ),
+      Subgroup,
+      SchoolType
+    ) as UniqueEnrId,
+    Year,
+    concat(cast(Year as STRING), '-', format("%02d", Year - 1999)) as SchoolYear,
+    EntityCode,
+    EntityType,
+    EntityName,
+    SchoolType,
+    RaceEthnicCode,
+    case
+      when RaceEthnicCode = '0' then 'Not Reported'
+      when RaceEthnicCode = '1' then 'American Indian or Alaska Native'
+      when RaceEthnicCode = '2' then 'Asian'
+      when RaceEthnicCode = '3' then 'Pacific Islander'
+      when RaceEthnicCode = '4' then 'Filipino'
+      when RaceEthnicCode = '5' then 'Hispanic or Latino'
+      when RaceEthnicCode = '6' then 'African American'
+      when RaceEthnicCode = '7' then 'White'
+      when RaceEthnicCode = '8' then 'Multiple or No Response (pre-2009)'
+      when RaceEthnicCode = '9' then 'Two or More Races'
+    end as RaceEthnicity, 
+    Gender,
+    case
+      when GradeLevel = 'KDGN' then 'K'
+      when GradeLevel = 'GR_1' then '1'
+      when GradeLevel = 'GR_2' then '2'
+      when GradeLevel = 'GR_3' then '3'
+      when GradeLevel = 'GR_4' then '4'
+      when GradeLevel = 'GR_5' then '5'
+      when GradeLevel = 'GR_6' then '6'
+      when GradeLevel = 'GR_7' then '7'
+      when GradeLevel = 'GR_8' then '8'
+      when GradeLevel = 'GR_9' then '9'
+      when GradeLevel = 'GR_10' then '10'
+      when GradeLevel = 'GR_11' then '11'
+      when GradeLevel = 'GR_12' then '12'
+      when GradeLevel = 'UNGR_ELM' then 'Ungraded Elementary'
+      when GradeLevel = 'UNGR_SEC' then 'Ungraded Secondary'
+      when GradeLevel = 'ADULT' then 'Adult'
+    end as GradeLevel,
+    Enrollment
+  from unpivoted
+  where
+    Enrollment is not null
+    and Enrollment > 0
+),
 
-  final AS (
-    SELECT
-      e.*,
-      ROUND(e.Enrollment / t.Enrollment, 4) AS PctOfTotalEnrollment
-    FROM enr_final AS e
-    LEFT JOIN total AS t
-    ON
-      e.Year = t.Year
-      AND e.EntityCode = t.EntityCode
-      AND e.SchoolType = t.SchoolType
-  )
+total as (
+  select
+    Year,
+    EntityCode,
+    SchoolType,
+    sum(ENR_TOTAL) as Enrollment
+  from {{ ref('int_CdeEnrByRaceAndGrade__2_filtered')}}
+  where Subgroup = 'All Students'
+  group by 1, 2, 3
+),
 
-SELECT * 
-FROM final
-ORDER BY
+final as (
+  select
+    e.*,
+    round(e.Enrollment / t.Enrollment, 4) as PctOfTotalEnrollment
+  from enr_final as e
+  left join total as t
+  on
+    e.Year = t.Year
+    and e.EntityCode = t.EntityCode
+    and e.SchoolType = t.SchoolType
+)
+
+select * 
+from final
+order by
   Year, 
   EntityCode, 
   RaceEthnicCode, 
