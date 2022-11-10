@@ -8,15 +8,21 @@ models:
     config:
       materialized: view
 
-  - name: int_Caaspp__filtered_and_unpivoted
+  - name: int_Caaspp__1_filtered
     description: >
-      Unpivoted CAASPP research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
+      CAASPP research file data for the State and all Santa Clara County entities filtered to only include results for grade level 5 or higher the following Demographic IDs:
       - 1 - All Students
       - 128 - Reported Disabilities
       - 31 - Economic disadvantaged
       - 160 - EL (English learner)
       - 78 - Hispanic or Latino
       - 204 - Economically disadvantaged Hispanic or Latino
+
+    config:
+      materialized: view
+
+  - name: int_Caaspp__2_unpivoted
+    description: Unpivoted version of filtered CAASPP research file data per int_Caaspp__1_filtered description.
 
     config:
       materialized: table
@@ -27,15 +33,21 @@ models:
         tests:
           - unique
 
-  - name: int_Cast__filtered_and_unpivoted
+  - name: int_Cast__1_filtered
     description: >
-      Unpivoted CAST research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Demographic IDs:
+      CAST research file data for the State and all Santa Clara County entities filtered to only include results for grade level 5 or higher the following Demographic IDs:
       - 1 - All Students
       - 128 - Reported Disabilities
       - 31 - Economic disadvantaged
       - 160 - EL (English learner)
       - 78 - Hispanic or Latino
       - 204 - Economically disadvantaged Hispanic or Latino
+
+    config:
+      materialized: view
+
+  - name: int_Cast__2_unpivoted
+    description: Unpivoted version of filtered CAST research file data per int_Cast__1_filtered description.
 
     config:
       materialized: table
@@ -53,7 +65,8 @@ models:
       materialized: table
 
   - name: int_Elpac__filtered_and_melted
-    description: >
+    description: >Unpivoted version of filtered CAST research file data per int_Cast__1_filtered description.
+
       Unpivoted summative ELPAC research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Student Group IDs:
       - 160 - All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
       - 120 - ELs enrolled less than 12 months
@@ -64,6 +77,43 @@ models:
       - 245 - EL - 4 years in program
       - 246 - EL - 5 years in program
       - 247 - EL - 6+ years in program
+
+    config:
+      materialized: table
+  - name: int_Elpac__filtered_and_melted
+    description: >Unpivoted version of filtered CAST research file data per int_Cast__1_filtered description.
+
+      Unpivoted summative ELPAC research file data for the State and all Santa Clara County entities. Filtered to only include results for grade level 5 or higher the following Student Group IDs:
+      - 160 - All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
+      - 120 - ELs enrolled less than 12 months
+      - 142 - ELs enrolled 12 months or more
+      - 242 - EL - 1 year in program
+      - 243 - EL - 2 years in program
+      - 244 - EL - 3 years in program
+      - 245 - EL - 4 years in program
+      - 246 - EL - 5 years in program
+      - 247 - EL - 6+ years in program
+
+    config:
+      materialized: table
+  - name: int_Elpac__1_filtered
+    description: >
+      Summative ELPAC research file data for the State and all Santa Clara County entities filtered to only include results for grade level 5 or higher the following Student Group IDs:
+      - 160 - All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
+      - 120 - ELs enrolled less than 12 months
+      - 142 - ELs enrolled 12 months or more
+      - 242 - EL - 1 year in program
+      - 243 - EL - 2 years in program
+      - 244 - EL - 3 years in program
+      - 245 - EL - 4 years in program
+      - 246 - EL - 5 years in program
+      - 247 - EL - 6+ years in program
+
+    config:
+      materialized: table
+
+  - name: int_Elpac__filtered_and_melted
+    description: Unpivoted version of filtered Summative ELPAC research file data per int_Elpac__1_filtered description.
 
     config:
       materialized: table
