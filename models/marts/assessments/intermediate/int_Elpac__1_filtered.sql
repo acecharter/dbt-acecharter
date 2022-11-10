@@ -1,6 +1,6 @@
 select
   concat(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', StudentGroupId, '-', GradeLevel, '-', AssessmentType) AS AssessmentId,
-  * except(TotalTested),
+  * except(TotalTested, TotalTestedWithScores),
   case when TestYear = 2018 THEN TotalTested ELSE TotalTestedWithScores END AS TotalTestedWithScores
 from {{ ref('stg_RD__Elpac') }}
 where
