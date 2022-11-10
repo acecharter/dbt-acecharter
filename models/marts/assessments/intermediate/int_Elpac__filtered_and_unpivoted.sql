@@ -2,131 +2,154 @@
     materialized='table'
 )}}
 
-WITH
-  elpac AS (
-    SELECT
-      CONCAT(CountyCode, DistrictCode, SchoolCode,'-', TestYear, '-', StudentGroupId, '-', GradeLevel, '-', AssessmentType) AS AssessmentId,
-      *
-    FROM {{ ref('stg_RD__Elpac') }}
-    WHERE
-      GradeLevel >= 5
-      AND StudentGroupId IN (
-        '160', --All English learners - (All ELs) (Same as All Students (code 1) for ELPAC files)
-        '120', --ELs enrolled less than 12 months
-        '142', --ELs enrolled 12 months or more
-        '242', --EL - 1 year in program
-        '243', --EL - 2 years in program
-        '244', --EL - 3 years in program
-        '245', --EL - 4 years in program
-        '246', --EL - 5 years in program
-        '247' --EL - 6+ years in program
-      )
-  ),
-  
-  elpac_keys AS(
-    SELECT
-      AssessmentId,
-      AceAssessmentId,
-      AceAssessmentName,
-      EntityCode,
-      EntityType,
-      EntityName,
-      EntityNameMid,
-      EntityNameShort,
-      CountyCode,
-      DistrictCode,
-      SchoolCode,
-      TestYear,
-      SchoolYear,
-      RecordType,
-      StudentGroupId,
-      GradeLevel,
-      AssessmentType,
-      TotalEnrolled,
-      CASE WHEN TestYear = 2018 THEN TotalTested ELSE TotalTestedWithScores END AS TotalTestedWithScores
-    FROM elpac
-  ),
+with unpivoted as (
+  {{ dbt_utils.unpivot(
+    relation=ref('int_Elpac__1_filtered'),
+    cast_to='STRING',
+    exclude=[
+      'AssessmentId',
+      'AceAssessmentId',
+      'AceAssessmentName',
+      'EntityCode',
+      'EntityType',
+      'EntityName',
+      'EntityNameMid',
+      'EntityNameShort',
+      'CountyCode',
+      'DistrictCode',
+      'SchoolCode',
+      'SchoolYear',
+      'TestYear',
+      'RecordType',
+      'StudentGroupId',
+      'GradeLevel',
+      'AssessmentType'
+      'TotalEnrolled',
+      'TotalTestedWithScores',
+      'OverallPerfLvl1Count',
+      'OverallPerfLvl2Count',
+      'OverallPerfLvl3Count',
+      'OverallPerfLvl4Count',
+      'OverallTotal',
+      'OralLangPerfLvl1Count',
+      'OralLangPerfLvl2Count',
+      'OralLangPerfLvl3Count',
+      'OralLangPerfLvl4Count',
+      'OralLangTotal',
+      'WritLangPerfLvl1Count',
+      'WritLangPerfLvl2Count',
+      'WritLangPerfLvl3Count',
+      'WritLangPerfLvl4Count',
+      'WritLangTotal',
+      'ListeningDomainBeginCount',
+      'ListeningDomainModerateCount',
+      'ListeningDomainDevelopedCount',
+      'SpeakingDomainBeginCount',
+      'SpeakingDomainModerateCount',
+      'SpeakingDomainDevelopedCount',
+      'ReadingDomainBeginCount',
+      'ReadingDomainModerateCount',
+      'ReadingDomainDevelopedCount',
+      'WritingDomainBeginCount',
+      'WritingDomainModerateCount',
+      'WritingDomainDevelopedCount'
+    ],
+    remove=[
+      'CharterNumber',
+      'TotalTested',
+      'ListeningDomainTotal',
+      'SpeakingDomainTotal',
+      'ReadingDomainTotal',
+      'WritingDomainTotal'
+    ],
+    field_name='ReportingMethod',
+    value_name='SchoolResult'
+  ) }}
+),
 
-  mean_scale_score AS (
-    SELECT
-      AssessmentId,
-      'Overall' AS AssessmentObjective,
-      'Mean Scale Score' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(OverallMeanSclScr AS STRING) AS SchoolResult,
-      CAST(NULL AS INT64) AS StudentWithResultCount
-    FROM elpac
-    WHERE OverallMeanSclScr IS NOT NULL
-  ),
+final as (
+  select
+    * except(
+      ReportingMethod,
+      OverallPerfLvl1Count,
+      OverallPerfLvl2Count,
+      OverallPerfLvl3Count,
+      OverallPerfLvl4Count,
+      OverallTotal,
+      OralLangPerfLvl1Count,
+      OralLangPerfLvl2Count,
+      OralLangPerfLvl3Count,
+      OralLangPerfLvl4Count,
+      OralLangTotal,
+      WritLangPerfLvl1Count,
+      WritLangPerfLvl2Count,
+      WritLangPerfLvl3Count,
+      WritLangPerfLvl4Count,
+      WritLangTotal,
+      ListeningDomainBeginCount,
+      ListeningDomainModerateCount,
+      ListeningDomainDevelopedCount,
+      SpeakingDomainBeginCount,
+      SpeakingDomainModerateCount,
+      SpeakingDomainDevelopedCount,
+      ReadingDomainBeginCount,
+      ReadingDomainModerateCount,
+      ReadingDomainDevelopedCount,
+      WritingDomainBeginCount,
+      WritingDomainModerateCount,
+      WritingDomainDevelopedCount,
+    ),
+    case
+      when ReportingMethod like 'Overall%' then 'Overall'
+      when ReportingMethod like 'OralLang%' then 'Oral Language'
+      when ReportingMethod like 'WritLang%' then 'Written Language'
+      when ReportingMethod like 'Listening%' then 'Listening Domain'
+      when ReportingMethod like 'Speaking%' then 'Speaking Domain'
+      when ReportingMethod like 'Reading%' then 'Reading Domain'
+      when ReportingMethod like 'Writing%' then 'Writing Domain'
+    end as AssessmentObjective,
+    case
+      when ReportingMethod like '%MeanSclScr' then 'Mean Scale Score'
+      when ReportingMethod like '%Lvl1' then 'Percent Level 1'
+      when ReportingMethod like '%Lvl2' then 'Percent Level 2'
+      when ReportingMethod like '%Lvl3' then 'Percent Level 3'
+      when ReportingMethod like '%Lvl4' then 'Percent Level 4'
+      when ReportingMethod like '%Begin' then 'Percent Beginning to Develop'
+      when ReportingMethod like '%Moderate' then 'Percent Somewhat/Moderately Developed'
+      when ReportingMethod like '%Developed' then 'Percent Well Developed'
+    end as ReportingMethod,
+    'FLOAT64' as ResultDataType,
+    case
+      when ReportingMethod = 'OverallMeanSclScr' THEN OverallTotal
+      when ReportingMethod = 'OverallPerfLvl1Pct' THEN OverallPerfLvl1Count
+      when ReportingMethod = 'OverallPerfLvl2Pct' THEN OverallPerfLvl2Count
+      when ReportingMethod = 'OverallPerfLvl3Pct' THEN OverallPerfLvl3Count
+      when ReportingMethod = 'OverallPerfLvl4Pct' THEN OverallPerfLvl4Count
+      when ReportingMethod = 'OralLangMeanSclScr' THEN OralLangTotal
+      when ReportingMethod = 'OralLangPerfLvl1Pct' THEN OralLangPerfLvl1Count
+      when ReportingMethod = 'OralLangPerfLvl2Pct' THEN OralLangPerfLvl2Count
+      when ReportingMethod = 'OralLangPerfLvl3Pct' THEN OralLangPerfLvl3Count
+      when ReportingMethod = 'OralLangPerfLvl4Pct' THEN OralLangPerfLvl4Count
+      when ReportingMethod = 'WritLangMeanSclScr' THEN WritLangTotal
+      when ReportingMethod = 'WritLangPerfLvl1Pct' THEN WritLangPerfLvl1Count
+      when ReportingMethod = 'WritLangPerfLvl2Pct' THEN WritLangPerfLvl2Count
+      when ReportingMethod = 'WritLangPerfLvl3Pct' THEN WritLangPerfLvl3Count
+      when ReportingMethod = 'WritLangPerfLvl4Pct' THEN WritLangPerfLvl4Count
+      when ReportingMethod = 'ListeningDomainBeginPct' THEN ListeningDomainBeginCount
+      when ReportingMethod = 'ListeningDomainModeratePct' THEN ListeningDomainModerateCount
+      when ReportingMethod = 'ListeningDomainDevelopedPct' THEN ListeningDomainDevelopedCount
+      when ReportingMethod = 'SpeakingDomainBeginPct' THEN SpeakingDomainBeginCount
+      when ReportingMethod = 'SpeakingDomainModeratePct' THEN SpeakingDomainModerateCount
+      when ReportingMethod = 'SpeakingDomainDevelopedPct' THEN SpeakingDomainDevelopedCount
+      when ReportingMethod = 'ReadingDomainBeginPct' THEN ReadingDomainBeginCount
+      when ReportingMethod = 'ReadingDomainModeratePct' THEN ReadingDomainModerateCount
+      when ReportingMethod = 'ReadingDomainDevelopedPct' THEN ReadingDomainDevelopedCount
+      when ReportingMethod = 'WritingDomainBeginPct' THEN WritingDomainBeginCount
+      when ReportingMethod = 'WritingDomainModeratePct' THEN WritingDomainModerateCount
+      when ReportingMethod = 'WritingDomainDevelopedPct' THEN WritingDomainDevelopedCount
+    end as StudentWithResultCount
+  from unpivoted
+  where SchoolResult is not null
+)
 
-  pct_level1 AS (
-    SELECT
-      AssessmentId,
-      'Overall' AS AssessmentObjective,
-      'Percent Level 1' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(OverallPerfLvl1Pcnt AS STRING) AS SchoolResult,
-      OverallPerfLvl1Count AS StudentWithResultCount
-    FROM elpac
-    WHERE OverallPerfLvl1Pcnt IS NOT NULL
-  ),
-
-  pct_level2 AS (
-    SELECT
-      AssessmentId,
-      'Overall' AS AssessmentObjective,
-      'Percent Level 2' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(OverallPerfLvl2Pcnt AS STRING) AS SchoolResult,
-      OverallPerfLvl2Count AS StudentWithResultCount
-    FROM elpac
-    WHERE OverallPerfLvl2Pcnt IS NOT NULL
-  ),
-
-  pct_level3 AS (
-    SELECT
-      AssessmentId,
-      'Overall' AS AssessmentObjective,
-      'Percent Level 3' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(OverallPerfLvl3Pcnt AS STRING) AS SchoolResult,
-      OverallPerfLvl3Count AS StudentWithResultCount
-    FROM elpac
-    WHERE OverallPerfLvl3Pcnt IS NOT NULL
-  ),
-
-  pct_level4 AS (
-    SELECT
-      AssessmentId,
-      'Overall' AS AssessmentObjective,
-      'Percent Level 4' AS ReportingMethod,
-      'FLOAT64' AS ResultDataType,
-      CAST(OverallPerfLvl4Pcnt AS STRING) AS SchoolResult,
-      OverallPerfLvl4Count AS StudentWithResultCount
-    FROM elpac
-    WHERE OverallPerfLvl4Pcnt IS NOT NULL
-  ),
-
-  results_unioned AS(
-    SELECT * FROM mean_scale_score
-    UNION ALL
-    SELECT * FROM pct_level1
-    UNION ALL
-    SELECT * FROM pct_level2
-    UNION ALL
-    SELECT * FROM pct_level3
-    UNION ALL
-    SELECT * FROM pct_level4
-  ),
-
-  final AS (
-    SELECT
-      k.*,
-      r.* EXCEPT (AssessmentID)
-    FROM elpac_keys AS k
-    LEFT JOIN results_unioned AS r
-    USING (AssessmentId)
-  )
-
-
-SELECT * FROM final
+select * from final
