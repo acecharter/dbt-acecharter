@@ -104,6 +104,7 @@ with unpivoted as (
         when ReportingMethod = 'ElpiLevel' then 'ELPI Level'
         when ReportingMethod = 'DistanceFromStandard' then 'Distance From Standard'
       end as ReportingMethod,
+      StudentResult,
       'INT64' as StudentResultDataType
     from unpivoted
     where
