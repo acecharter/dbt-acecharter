@@ -53,18 +53,7 @@ enr_final as (
     Gender,
     case
       when GradeLevel = 'KDGN' then 'K'
-      when GradeLevel = 'GR_1' then '1'
-      when GradeLevel = 'GR_2' then '2'
-      when GradeLevel = 'GR_3' then '3'
-      when GradeLevel = 'GR_4' then '4'
-      when GradeLevel = 'GR_5' then '5'
-      when GradeLevel = 'GR_6' then '6'
-      when GradeLevel = 'GR_7' then '7'
-      when GradeLevel = 'GR_8' then '8'
-      when GradeLevel = 'GR_9' then '9'
-      when GradeLevel = 'GR_10' then '10'
-      when GradeLevel = 'GR_11' then '11'
-      when GradeLevel = 'GR_12' then '12'
+      when starts_with(GradeLevel, 'GR_') then REGEXP_EXTRACT(GradeLevel, '_(.*)')
       when GradeLevel = 'UNGR_ELM' then 'Ungraded Elementary'
       when GradeLevel = 'UNGR_SEC' then 'Ungraded Secondary'
       when GradeLevel = 'ADULT' then 'Adult'
