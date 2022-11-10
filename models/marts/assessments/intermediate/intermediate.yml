@@ -58,11 +58,17 @@ models:
         tests:
           - unique
 
-  - name: int_Cers__elpi_dfs_added_and_melted
-    description: Unpivoted CERS export data containing state summative and SBAC interim assessment results. EL Progress Indicator (for ELPAC) and DFS (for CAASPP) results calculated and added.
+  - name: int_Cers__1_elpi_dfs_added
+    description: CERS export data containing state summative and SBAC interim assessment results with EL Progress Indicator (for ELPAC) and DFS (for CAASPP) results calculated and added.
 
     config:
-      materialized: table
+      materialized: view
+
+  - name: int_Cers__2_unpivoted
+    description: Unpivoted version of CERS export data per int_Cers__1_elpi_dfs_added description.
+
+    config:
+      materialized: view
 
   - name: int_Elpac__1_filtered
     description: >
