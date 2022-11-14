@@ -10,7 +10,7 @@ models:
 
   - name: int_Caaspp__1_filtered
     description: >
-      CAASPP research file data for the State and all Santa Clara County entities filtered to only include results for grade level 5 or higher the following Demographic IDs:
+      CAASPP research file data for the State and all Santa Clara County entities filtered to only include results for the following Demographic IDs:
       - 1 - All Students
       - 128 - Reported Disabilities
       - 31 - Economic disadvantaged
