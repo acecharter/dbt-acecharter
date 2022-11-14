@@ -3,8 +3,7 @@ select
   *
 from {{ ref('stg_RD__Caaspp')}}
 where
-  GradeLevel >= 5
-  and DemographicId IN (
+  DemographicId IN (
     '1',   --All Students
     '128', --Reported Disabilities
     '31',  --Economic disadvantaged
