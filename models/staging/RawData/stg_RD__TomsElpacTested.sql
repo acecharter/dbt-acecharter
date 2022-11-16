@@ -144,6 +144,7 @@ WITH
       ListeningPL,
       SpeakingPL,
       WritingPL,
+      ReadingPL,
       AttemptednessMinus1,
       GradeAssessedMinus1,
       OverallScaleScoreMinus1,
