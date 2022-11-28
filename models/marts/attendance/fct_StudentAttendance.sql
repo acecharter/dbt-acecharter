@@ -22,7 +22,6 @@ SELECT
     WHEN AverageDailyAttendance <= 0.80 THEN 'Severe Chronic Absence'
   END AS AttendanceRateGroup,
   CASE
-    WHEN CountOfDaysInAttendance = 0 THEN 'N/A (0 days attended)' 
     WHEN CountOfDaysEnrolled < 31 THEN 'N/A (enrolled <31 days)'
     WHEN AverageDailyAttendance > 0.9 THEN 'No'
     WHEN AverageDailyAttendance <= 0.9 THEN 'Yes'
