@@ -10,3 +10,4 @@ SELECT
   CountOfAllInAttendanceEvents AS CountOfDaysInAttendance,
   CountOfDaysEnrolled
 FROM {{ source('StarterPack_Archive', 'StudentAttendance_v2_SY22')}}
+WHERE StudentUniqueId = '16348' --Exclude this fake/test student showing up in PS
