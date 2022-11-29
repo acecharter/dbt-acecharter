@@ -9,7 +9,7 @@ WITH source_table AS (
     CASE WHEN AttendanceEventCategoryDescriptor = 'Unreconciled' THEN 'Absent' ELSE NULL END AS AttendanceEventCategoryDescriptor,
     EventDuration
   FROM {{ source('StarterPack', 'StudentAttendanceByDate')}}
-  WHERE StudentUniqueId NOT IN ('16671', '16668')  -- These are fake/test student accounts
+  WHERE StudentUniqueId NOT IN ('16671', '16667', '16668')  -- These are fake/test student accounts
 ),
 
 sy AS (

@@ -10,7 +10,7 @@ WITH source_table AS(
     CountOfAllInAttendanceEvents AS CountOfDaysInAttendance,
     CountOfDaysEnrolled
   FROM {{ source('StarterPack', 'StudentAttendance_v2')}}
-  WHERE StudentUniqueId NOT IN ('16671', '16668')  -- These are fake/test student accounts
+  WHERE StudentUniqueId NOT IN ('16671', '16667', '16668')  -- These are fake/test student accounts
 ),
 
 sy AS (

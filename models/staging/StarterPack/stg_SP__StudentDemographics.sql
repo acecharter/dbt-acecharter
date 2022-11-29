@@ -31,7 +31,7 @@ WITH source_table AS (
     CurrentNameOfInstitution AS CurrentSchoolName,
     CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
   FROM {{ source('StarterPack', 'StudentDemographics')}}
-  WHERE StudentUniqueId NOT IN ('16671', '16668')  -- These are fake/test student accounts
+  WHERE StudentUniqueId NOT IN ('16671', '16667', '16668')  -- These are fake/test student accounts
 ),
 
 students_with_iep AS (
