@@ -11,9 +11,7 @@ WITH source_table AS (
     ExitWithdrawReason,
     IsCurrentEnrollment
   FROM {{ source('StarterPack', 'StudentEnrollments')}}
-  WHERE
-    FirstName != 'Test' 
-    AND LastSurname != 'Test'
+  WHERE StudentUniqueId NOT IN ('16671', '16668')  -- These are fake/test student accounts
 ),
 
 sy AS (
