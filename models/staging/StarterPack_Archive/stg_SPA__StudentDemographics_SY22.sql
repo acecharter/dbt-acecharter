@@ -28,3 +28,4 @@ SELECT
   CurrentNameOfInstitution,
   CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
 FROM {{ source('StarterPack_Archive', 'StudentDemographics_SY22')}}
+WHERE StudentUniqueId != '16348' --Exclude this fake/test student showing up in PS
