@@ -1,28 +1,4 @@
 WITH
-missing_student_ids AS (
-  SELECT
-    StudentRenaissanceID,
-    StudentIdentifier,
-    StateUniqueId
-  FROM {{ ref('base_RSA__MissingStudentIds')}}
-),
-
-star_with_missing_ids AS (
-  SELECT
-    s.* EXCEPT(StudentIdentifier, StudentStateID),
-    CASE
-      WHEN s.StudentIdentifier IS NULL THEN CAST(m.StudentIdentifier AS INT64)
-      ELSE s.StudentIdentifier
-    END AS StudentIdentifier,
-    CASE
-      WHEN s.StudentStateID IS NULL OR s.StudentStateID = 15939 THEN CAST(m.StateUniqueId AS INT64)
-      ELSE s.StudentStateID
-    END AS StudentStateID,
-  FROM {{ source('RenaissanceStar_Archive', 'EarlyLiteracy_SY22')}} AS s
-  LEFT JOIN missing_student_ids AS m
-  USING (StudentRenaissanceID)
-),
-
 final AS (
   SELECT
     CASE
@@ -77,7 +53,7 @@ final AS (
       WHEN CompletedDate BETWEEN '2021-12-01' AND '2022-03-31' THEN 'Winter'
       WHEN CompletedDate BETWEEN '2022-04-01' AND'2022-07-31' THEN 'Spring'
     END AS StarTestingWindow
-  FROM star_with_missing_ids
+  FROM {{ source('RenaissanceStar_Archive', 'EarlyLiteracy_SY22')}}
 )
 
 SELECT * FROM final
