@@ -4,31 +4,6 @@ testing_windows AS (
   FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
 ),
 
-missing_student_ids AS (
-  SELECT
-    StudentRenaissanceID,
-    StudentIdentifier,
-    StateUniqueId
-  FROM {{ ref('base_RSA__MissingStudentIds')}}
-),
-
-star_with_missing_ids AS (
-  SELECT
-    s.* EXCEPT(StudentIdentifier, StateUniqueId),
-    CASE
-      WHEN s.StudentIdentifier IS NULL THEN m.StudentIdentifier
-      ELSE s.StudentIdentifier
-    END AS StudentIdentifier,
-    CASE
-      WHEN s.StateUniqueId IS NULL THEN m.StateUniqueId
-      ELSE s.StateUniqueId
-    END AS StateUniqueId,
-  FROM {{ source('RenaissanceStar_Archive', 'Reading_v2_SY22')}} AS s
-  LEFT JOIN missing_student_ids AS m
-  USING (StudentRenaissanceID)
-),
-
-
 star AS (
   SELECT
     CASE
@@ -75,7 +50,7 @@ star AS (
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
     CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel
-FROM star_with_missing_ids
+FROM {{ source('RenaissanceStar_Archive', 'Reading_v2_SY22')}}
 ),
 
 final AS (
