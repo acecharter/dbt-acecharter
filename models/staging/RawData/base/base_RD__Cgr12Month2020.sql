@@ -29,7 +29,7 @@ SELECT
   CAST(NULLIF(Enrolled_In_State_Private__2_and_4_Year___12_Months_, '*') AS INT64) AS EnrolledInStatePrivate2And4Year12Months,
   CAST(NULLIF(Enrolled_Out_of_State_4_Year_College__Public_Private___12_Months_, '*') AS INT64) AS EnrolledOutOfState4YearCollegePublicPrivate12Months,
   CAST(NULLIF(Enrolled_Out_of_State_2_Year_College__Public_Private___12_Months_, '*') AS INT64) AS EnrolledOutOfState2YearCollegePublicPrivate12Months
-FROM {{ source('RawData', 'CdeCgr12Mo2017')}}
+FROM {{ source('RawData', 'CdeCgr12Mo2020')}}
 WHERE
   AggregateLevel = 'T'
   OR (
