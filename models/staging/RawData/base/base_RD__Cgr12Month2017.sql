@@ -1,12 +1,6 @@
 SELECT
   AcademicYear,
   AggregateLevel,
-  CASE
-    WHEN AggregateLevel = 'T' THEN 'State'
-    WHEN AggregateLevel = 'C' THEN 'County'
-    WHEN AggregateLevel = 'D' THEN 'District'
-    WHEN AggregateLevel = 'S' THEN 'School'
-  END AS EntityType,
   FORMAT("%02d", CAST(CountyCode AS INT64)) AS CountyCode,
   FORMAT("%05d", CAST(DistrictCode AS INT64)) AS DistrictCode,
   FORMAT("%07d", CAST(SchoolCode AS INT64)) AS SchoolCode,
@@ -30,10 +24,3 @@ SELECT
   CAST(NULLIF(Enrolled_Out_of_State_4_Year_College__Public_Private___12_Months_, '*') AS INT64) AS EnrolledOutOfState4YearCollegePublicPrivate12Months,
   CAST(NULLIF(Enrolled_Out_of_State_2_Year_College__Public_Private___12_Months_, '*') AS INT64) AS EnrolledOutOfState2YearCollegePublicPrivate12Months
 FROM {{ source('RawData', 'CdeCgr12Mo2017')}}
-WHERE
-  AggregateLevel = 'T'
-  OR (
-    AggregateLevel = 'C' 
-    AND CountyCode = 43
-  )
-  OR DistrictCode = '69427'
