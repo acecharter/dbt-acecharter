@@ -1,13 +1,13 @@
 -- Columns dropped: Filler
 WITH
   unioned AS (
-    SELECT * FROM {{ ref('base_RD__Cgr12Mo2017')}}
+    SELECT * FROM {{ ref('base_RD__Cgr12Month2017')}}
     UNION ALL
-    SELECT * FROM {{ ref('base_RD__Cgr12Mo2018')}}
+    SELECT * FROM {{ ref('base_RD__Cgr12Month2018')}}
     UNION ALL
-    SELECT * FROM {{ ref('base_RD__Cgr12Mo2019')}}
+    SELECT * FROM {{ ref('base_RD__Cgr12Month2019')}}
     UNION ALL
-    SELECT * FROM {{ ref('base_RD__Cgr12Mo2020')}}
+    SELECT * FROM {{ ref('base_RD__Cgr12Month2020')}}
   ),
 
   final AS (
@@ -47,7 +47,7 @@ WITH
       AggregateLevel = 'T'
       OR (
         AggregateLevel = 'C' 
-        AND CountyCode = 43
+        AND CountyCode = '43'
       )
       OR DistrictCode = '69427'
   )
