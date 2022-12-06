@@ -58,7 +58,7 @@ WITH
       EnrolledInStatePrivate2And4Year12Months AS EnrolledInStatePrivate2And4Year,
       EnrolledOutOfState4YearCollegePublicPrivate12Months AS EnrolledOutOfState4YearCollegePublicPrivate,
       EnrolledOutOfState2YearCollegePublicPrivate12Months AS EnrolledOutOfState2YearCollegePublicPrivate
-    FROM {{ ref('stg_RD__CdeCgr12Month')}}
+    FROM {{ ref('stg_RD__CdeCgr16Month')}}
   ),
 
   final AS (
