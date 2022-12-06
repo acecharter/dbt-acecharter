@@ -1,6 +1,6 @@
 WITH
   cgr AS (
-    SELECT * FROM {{ ref('stg_RD__CdeCgr12Month')}}
+    SELECT * FROM {{ ref('int_CdeCgr__merged')}}
   ),
 
   entity_names AS (
