@@ -1,5 +1,5 @@
 WITH
-  twelve AS (
+  cgr AS (
     SELECT
       AcademicYear,
       CASE
@@ -12,26 +12,24 @@ WITH
       DASS,
       ReportingCategory,
       CompleterType,
-      '12-month' AS CgrPeriodType,
+      CgrPeriodType,
       HighSchoolCompleters,
-      EnrolledInCollegeTotal12Months AS EnrolledInCollegeTotal,
-      CollegeGoingRateTotal12Months AS CollegeGoingRateTotal,
-      EnrolledInState12Months AS EnrolledInState,
-      EnrolledOutOfState12Months AS EnrolledOutOfState,
-      NotEnrolledInCollege12Months AS NotEnrolledInCollege,
-      EnrolledUc12Months AS EnrolledUc,
-      EnrolledCsu12Months AS EnrolledCsu,
-      EnrolledCcc12Months AS EnrolledCcc,
-      EnrolledInStatePrivate2And4Year12Months AS EnrolledInStatePrivate2And4Year,
-      EnrolledOutOfState4YearCollegePublicPrivate12Months AS EnrolledOutOfState4YearCollegePublicPrivate,
-      EnrolledOutOfState2YearCollegePublicPrivate12Months AS EnrolledOutOfState2YearCollegePublicPrivate
-    FROM {{ ref('stg_RD__CdeCgr12Month')}}
+      EnrolledInCollegeTotal,
+      CollegeGoingRateTotal,
+      EnrolledInState,
+      EnrolledOutOfState,
+      NotEnrolledInCollege,
+      EnrolledUc,
+      EnrolledCsu,
+      EnrolledCcc,
+      EnrolledInStatePrivate2And4Year,
+      EnrolledOutOfState4YearCollegePublicPrivate,
+      EnrolledOutOfState2YearCollegePublicPrivate
+    FROM {{ ref('int_CdeCgr__merged')}}
   ),
 
   final AS (
-    SELECT *
-    FROM twelve
-    WHERE HighSchoolCompleters IS NOT NULL
+    SELECT * FROM cgr
     ORDER BY 1, 2, 3, 4, 5, 6, 7
   )
 
