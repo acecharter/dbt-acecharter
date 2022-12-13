@@ -7,3 +7,10 @@ models:
       - name: AverageDailyAttendance
         tests:
           - is_less_than_1
+  
+  - name: stg_SP__StudentDemographics
+    description: Staging model for StudentDemographics source data
+    columns:
+      - name: EllStatus
+        tests:
+          - not_null
