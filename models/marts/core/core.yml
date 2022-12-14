@@ -65,3 +65,10 @@ models:
       - name: ExitWithdrawDate
       - name: ExitWithdrawReason
       - name: IsCurrentEnrollment
+  
+  - name: rpt_CurrentStudentDemographics
+    description: Staging model for StudentDemographics source data
+    columns:
+      - name: EllStatus
+        tests:
+          - not_null
