@@ -31,7 +31,7 @@ WITH
       CurrDenomWithoutPrLoss,
       CurrStatusWithoutPrLoss,
       ReportingYear
-    FROM {{ ref('base_RD__CaDashEla2022')}} 
+    FROM {{ ref('base_RD__CaDashMath2022')}} 
   ),
   math_2019 AS (
     SELECT
