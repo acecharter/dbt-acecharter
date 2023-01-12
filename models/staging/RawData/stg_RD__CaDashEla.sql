@@ -1,4 +1,39 @@
-WITH 
+WITH
+  ela_2022 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      DassFlag,
+      StudentGroup,
+      CurrDenom,
+      CurrStatus,
+      CAST(NULL AS INT64) AS PriorDenom,
+      CAST(NULL AS FLOAT64) AS PriorStatus,
+      CAST(NULL AS FLOAT64) AS Change,
+      StatusLevel,
+      CAST(NULL AS INT64) AS ChangeLevel,
+      CAST(NULL AS INT64) AS Color,
+      CAST(NULL AS INT64) AS Box,
+      HsCutPoints,
+      CAST(NULL AS FLOAT64) AS CurrAdjustment,
+      CAST(NULL AS FLOAT64) AS PriorAdjustment,
+      PairShareMethod,
+      CAST(NULL AS BOOL) AS NoTestFlag,
+      PRateEnrolled,
+      PRateTested,
+      PRate,
+      NumPrLoss,
+      CurrDenomWithoutPrLoss,
+      CurrStatusWithoutPrLoss,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashEla2022')}} 
+  ),
+
   ela_2019 AS (
     SELECT
       Cds,
@@ -24,6 +59,12 @@ WITH
       PriorAdjustment,
       PairShareMethod,
       NoTestFlag,
+      CAST(NULL AS INT64) AS PRateEnrolled,
+      CAST(NULL AS INT64) AS PRateTested,
+      CAST(NULL AS INT64) AS PRate,
+      CAST(NULL AS INT64) AS NumPrLoss,
+      CAST(NULL AS INT64) AS CurrDenomWithoutPrLoss,
+      CAST(NULL AS FLOAT64) AS CurrStatusWithoutPrLoss,
       ReportingYear
   FROM {{ ref('base_RD__CaDashEla2019')}} 
   ),
@@ -53,6 +94,12 @@ WITH
       PriorAdjustment,
       PairShareMethod,
       CAST(NULL AS BOOL) AS NoTestFlag,
+      CAST(NULL AS INT64) AS PRateEnrolled,
+      CAST(NULL AS INT64) AS PRateTested,
+      CAST(NULL AS INT64) AS PRate,
+      CAST(NULL AS INT64) AS NumPrLoss,
+      CAST(NULL AS INT64) AS CurrDenomWithoutPrLoss,
+      CAST(NULL AS FLOAT64) AS CurrStatusWithoutPrLoss,
       ReportingYear
     FROM {{ ref('base_RD__CaDashEla2018')}} 
   ),
@@ -82,11 +129,19 @@ WITH
       CAST(NULL AS FLOAT64) AS PriorAdjustment,
       CAST(NULL AS STRING) AS PairShareMethod,
       CAST(NULL AS BOOL) AS NoTestFlag,
+      CAST(NULL AS INT64) AS PRateEnrolled,
+      CAST(NULL AS INT64) AS PRateTested,
+      CAST(NULL AS INT64) AS PRate,
+      CAST(NULL AS INT64) AS NumPrLoss,
+      CAST(NULL AS INT64) AS CurrDenomWithoutPrLoss,
+      CAST(NULL AS FLOAT64) AS CurrStatusWithoutPrLoss,
       ReportingYear
     FROM {{ ref('base_RD__CaDashEla2017')}} 
   ),
 
   unioned AS (
+    SELECT * FROM ela_2022
+    UNION ALL
     SELECT * FROM ela_2019
     UNION ALL
     SELECT * FROM ela_2018

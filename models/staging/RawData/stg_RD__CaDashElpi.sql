@@ -1,4 +1,38 @@
 WITH
+  elpi_2022 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      DassFlag,
+      CurrProgressed,
+      PctCurrProgressed,
+      CurrMaintainPL4,
+      PctCurrMaintainPL4,
+      CurrMaintainOth,
+      PctCurrMaintainOth,
+      CurrDeclined,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      NULL AS PriorDenom,
+      NULL AS PriorStatus,
+      NULL AS Change,
+      StatusLevel,
+      NULL AS ChangeLevel,
+      NULL AS Color,
+      NULL AS Box,
+      Flag95Pct,
+      NSizeMet,
+      NSizeGroup,
+      ReportingYear
+    FROM {{ ref('base_RD__CaDashElpi2022')}} 
+  ),
+
   elpi_2019 AS (
     SELECT
       Cds,
@@ -10,7 +44,11 @@ WITH
       CoeFlag,
       DassFlag,
       CurrProgressed,
+      CAST(NULL AS FLOAT64) AS PctCurrProgressed,
       CurrMaintainPL4,
+      CAST(NULL AS FLOAT64) AS PctCurrMaintainPL4,
+      CAST(NULL AS INT64) AS CurrMaintainOth,
+      CAST(NULL AS FLOAT64) AS PctCurrMaintainOth,
       CurrDeclined,
       CurrNumer,
       CurrDenom,
@@ -40,7 +78,11 @@ WITH
       CoeFlag,
       CAST(NULL AS BOOL) AS DassFlag,
       CurrProgressed,
+      CAST(NULL AS FLOAT64) AS PctCurrProgressed,
       CurrMaintainPL4,
+      CAST(NULL AS FLOAT64) AS PctCurrMaintainPL4,
+      CAST(NULL AS INT64) AS CurrMaintainOth,
+      CAST(NULL AS FLOAT64) AS PctCurrMaintainOth,
       CAST(NULL AS INT64) AS CurrDeclined,
       CurrNumer,
       CurrDenom,
@@ -60,6 +102,8 @@ WITH
   ),
 
   unioned AS (
+    SELECT * FROM elpi_2022
+    UNION ALL
     SELECT * FROM elpi_2019
     UNION ALL
     SELECT * FROM elpi_2017

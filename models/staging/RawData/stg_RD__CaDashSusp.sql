@@ -1,4 +1,33 @@
-WITH 
+WITH
+  susp_2022 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      DassFlag,
+      Type,
+      StudentGroup,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      CAST(NULL AS INT64) AS PriorNumer,
+      CAST(NULL AS INT64) AS PriorDenom,
+      CAST(NULL AS FLOAT64) AS PriorStatus,
+      CAST(NULL AS BOOL) AS SafetyNet,
+      CAST(NULL AS FLOAT64) AS Change,
+      StatusLevel,
+      CAST(NULL AS INT64) AS ChangeLevel,
+      CAST(NULL AS INT64) AS Color,
+      CAST(NULL AS INT64) AS Box,
+      CertifyFlag,
+      ReportingYear
+  FROM {{ ref('base_RD__CaDashSusp2022')}} 
+  ),
+
   susp_2019 AS (
     SELECT
       Cds,
@@ -87,6 +116,8 @@ WITH
   ),
 
   unioned AS (
+    SELECT * FROM susp_2022
+    UNION ALL
     SELECT * FROM susp_2019
     UNION ALL
     SELECT * FROM susp_2018

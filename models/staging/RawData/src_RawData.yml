@@ -103,6 +103,24 @@ sources:
       - name: CaDashSusp2019
         description: 2019 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 
+      - name: CaDashChronic2022
+        description: 2022 CA School Dashboard Chronic Absenteeism Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashEla2022
+        description: 2022 CA School Dashboard ELA indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashElpi2022
+        description: 2022 CA School Dashboard English Learner Progress indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashGrad2022
+        description: 2022 CA School Dashboard Graduation Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashMath2022
+        description: 2022 CA School Dashboard Math data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashSusp2022
+        description: 2022 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
       - name: Cast2019
         description: 2019 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
 

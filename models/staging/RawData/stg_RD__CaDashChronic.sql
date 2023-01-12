@@ -1,4 +1,33 @@
 WITH 
+  chronic_2022 AS (
+    SELECT
+      Cds,
+      RType,
+      SchoolName,
+      DistrictName,
+      CountyName,
+      CharterFlag,
+      CoeFlag,
+      DassFlag,
+      StudentGroup,
+      CurrNumer,
+      CurrDenom,
+      CurrStatus,
+      CAST(NULL AS INT64) AS PriorNumer,
+      CAST(NULL AS INT64) AS PriorDenom,
+      CAST(NULL AS FLOAT64) AS PriorStatus,
+      CAST(NULL AS FLOAT64) AS Change,
+      CAST(NULL AS BOOL) AS SafetyNet,
+      StatusLevel,
+      CAST(NULL AS INT64) AS ChangeLevel,
+      CAST(NULL AS INT64) AS Color,
+      CAST(NULL AS INT64) AS Box,
+      CertifyFlag,
+      DataErrorFlag,
+      ReportingYear
+  FROM {{ ref('base_RD__CaDashChronic2022')}} 
+  ),
+
   chronic_2019 AS (
     SELECT
       Cds,
@@ -58,6 +87,8 @@ WITH
   ),
 
   unioned AS (
+    SELECT * FROM chronic_2022
+    UNION ALL
     SELECT * FROM chronic_2019
     UNION ALL
     SELECT * FROM chronic_2018
