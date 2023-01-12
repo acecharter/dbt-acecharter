@@ -139,6 +139,8 @@ WITH
   ),
 
   unioned AS (
+    SELECT * FROM math_2022
+    UNION ALL
     SELECT * FROM math_2019
     UNION ALL
     SELECT * FROM math_2018
