@@ -112,6 +112,8 @@ WITH
   ),
 
   unioned AS (
+    SELECT * FROM grad_2022
+    UNION ALL
     SELECT * FROM grad_2019
     UNION ALL
     SELECT * FROM grad_2018
