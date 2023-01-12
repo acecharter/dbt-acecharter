@@ -102,6 +102,8 @@ WITH
   ),
 
   unioned AS (
+    SELECT * FROM elpi_2022
+    UNION ALL
     SELECT * FROM elpi_2019
     UNION ALL
     SELECT * FROM elpi_2017
