@@ -4,16 +4,16 @@ SELECT
   NULLIF(schoolname,'') AS SchoolName,
   districtname AS DistrictName,
   NULLIF(countyname,'') AS CountyName,
-  CAST(NULLIF(charter_flag,'') AS BOOL) AS CharterFlag,
-  CAST(NULLIF(coe_flag,'') AS BOOL) AS CoeFlag,
-  CAST(NULLIF(dass_flag,'') AS BOOL) AS DassFlag,
+  CASE WHEN charter_flag = 'Y' THEN TRUE ELSE FALSE END AS CharterFlag,
+  CASE WHEN coe_flag = 'Y' THEN TRUE ELSE FALSE END AS CoeFlag,
+  CASE WHEN dass_flag = 'Y' THEN TRUE ELSE FALSE END AS DassFlag,
   studentgroup AS StudentGroup,
   currnumer AS CurrNumer,
   currdenom AS CurrDenom,
   currstatus AS CurrStatus,
   statuslevel AS StatusLevel,
-  CAST(NULLIF(certifyflag,'') AS BOOL) AS CertifyFlag,
-  CAST(NULLIF(dataerrorflag,'') AS BOOL) AS DataErrorFlag,
+  CASE WHEN certifyflag = 'Y' THEN TRUE ELSE FALSE END AS CertifyFlag,
+  CASE WHEN dataerrorflag = 'Y' THEN TRUE ELSE FALSE END AS DataErrorFlag,
   reportingyear AS ReportingYear
 FROM {{ source('RawData', 'CaDashChronic2022')}}
 WHERE 
