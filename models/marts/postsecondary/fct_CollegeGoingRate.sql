@@ -7,7 +7,7 @@ WITH
         WHEN EntityType = 'County' THEN CountyCode
         WHEN EntityType = 'District' THEN DistrictCode
         WHEN EntityType = 'School' THEN SchoolCode
-      END AS EntityCode,     
+      END AS EntityCode,
       CharterSchool,
       DASS,
       ReportingCategory,
