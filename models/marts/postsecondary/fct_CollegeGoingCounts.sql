@@ -49,5 +49,5 @@ SELECT
   EnrolledInCollegeTotal,
   CollegeGoingGroupType,
   Count,
-  CASE WHEN EnrolledInCollegeTotal = 0 THEN NULL ELSE ROUND(CAST(Count AS INT64) / EnrolledInCollegeTotal, 1) END AS PercentOfHsCompleters
+  CASE WHEN EnrolledInCollegeTotal = 0 THEN NULL ELSE ROUND(CAST(Count AS INT64) / EnrolledInCollegeTotal, 3) END AS PercentOfHsCompleters
 FROM unpivoted
