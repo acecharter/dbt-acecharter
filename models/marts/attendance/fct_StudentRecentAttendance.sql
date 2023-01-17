@@ -83,7 +83,10 @@ stu_att_final AS (
     s.GradeLevel,
     IFNULL(a.StatusCount,0) AS AbsenceCount,
     IFNULL(a.StatusCount,0) + IFNULL(p.StatusCount,0) AS DaysEnrolledCount,
-    ROUND(IFNULL(p.StatusCount,0) / (IFNULL(a.StatusCount,0) + IFNULL(p.StatusCount,0)),4) AS AttendanceRate
+    CASE
+      WHEN a.StatusCount IS NULL AND p.StatusCount IS NULL THEN NULL
+      ELSE ROUND(IFNULL(p.StatusCount,0) / (IFNULL(a.StatusCount,0) + IFNULL(p.StatusCount,0)),4)
+    END AS AttendanceRate
   FROM students AS s
   LEFT JOIN stu_att_present AS p
   ON s.SchoolId = p.SchoolId
