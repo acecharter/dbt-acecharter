@@ -4,7 +4,7 @@ with
   ),
 
   students as (
-    select distinct * EXCEPT(FieldName, FieldNameGroup, ValueName)
+    select distinct * EXCEPT(FieldName, TestNumber, ValueName)
     from ap
   ),
 
