@@ -1,5 +1,5 @@
 select
-  _AP_Number___AP_ID_ as ApId,
+  CAST(_AP_Number___AP_ID_ as STRING) as ApId,
   Last_Name as LastName,
   First_Name as FirstName,
   Middle_Initial as MiddleInitial,
@@ -34,10 +34,10 @@ select
   CAST(Irregularity_Code__1_05 as STRING) as IrregularityCode105,
   CAST(Irregularity_Code__2_05 as STRING) as IrregularityCode205,
   CAST(Admin_Year_06 as STRING) as AdminYear06,
-  CAST(Exam_Code_06 as STRING) as ExamCode02,
-  CAST(Exam_Grade_06 as STRING) as ExamGrade02,
-  CAST(Irregularity_Code__1_06 as STRING) as IrregularityCode102,
-  CAST(Irregularity_Code__2_06 as STRING) as IrregularityCode202,
+  CAST(Exam_Code_06 as STRING) as ExamCode06,
+  CAST(Exam_Grade_06 as STRING) as ExamGrade06,
+  CAST(Irregularity_Code__1_06 as STRING) as IrregularityCode106,
+  CAST(Irregularity_Code__2_06 as STRING) as IrregularityCode206,
   CAST(Admin_Year_07 as STRING) as AdminYear07,
   CAST(Exam_Code_07 as STRING) as ExamCode07,
   CAST(Exam_Grade_07 as STRING) as ExamGrade07,
@@ -158,6 +158,6 @@ select
   CAST(Exam_Grade_30 as STRING) as ExamGrade30,
   CAST(Irregularity_Code__1_30 as STRING) as IrregularityCode130,
   CAST(Irregularity_Code__2_30 as STRING) as IrregularityCode230,
-  CAST(Student_Identifier as STRING) as StateUniqueId,
+  CAST(Student_Identifier as STRING) as StudentIdentifier,
   Derived_Aggregate_Race_Ethnicity_2016_and_Forward as RaceEthnicity
 FROM {{ source('RawData', 'ApStudentDatafile2021')}}
