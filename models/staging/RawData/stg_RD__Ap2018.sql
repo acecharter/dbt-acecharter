@@ -4,8 +4,26 @@ select
   First_Name as FirstName,
   Middle_Initial as MiddleInitial,
   Gender,
-  Date_of_Birth as DateOfBirth,
-  Grade_Level as GradeLevel,
+  concat(
+    case
+    when CAST(RIGHT(FORMAT("%06d", Date_Of_Birth), 2) as INT64) > 90
+        then CAST(CAST(RIGHT(FORMAT("%06d", Date_Of_Birth), 2) as INT64) + 1900 as STRING)
+    else CAST(CAST(RIGHT(FORMAT("%06d", Date_Of_Birth), 2) as INT64) + 2000 as STRING)
+    end,
+    '-',
+    LEFT(FORMAT("%06d", Date_Of_Birth), 2),
+    '-',
+    SUBSTR(FORMAT("%06d", Date_Of_Birth), 3, 2)
+  ) as DateOfBirth,
+  case
+    when Grade_Level = 3 then '<9'
+    when Grade_Level = 4 then '9'
+    when Grade_Level = 5 then '10'
+    when Grade_Level = 6 then  '11'
+    when Grade_Level = 7 then '12'
+    when Grade_Level = 8 then 'No longer in high school'
+    when Grade_Level = 11 then 'Unknown'
+  end as GradeLevel,
   AI_Code as AiCode,
   AI_Institution_Name AS AiInstitutionName,
   CAST(Admin_Year_01 as STRING) as AdminYear01,
@@ -159,5 +177,15 @@ select
   CAST(Irregularity_Code__1_30 as STRING) as IrregularityCode130,
   CAST(Irregularity_Code__2_30 as STRING) as IrregularityCode230,
   CAST(Student_Identifier as STRING) as StudentIdentifier,
-  Derived_Aggregate_Race_Ethnicity_2016_and_Forward as RaceEthnicity
+  case
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 0 then 'No Response'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 1 then 'American Indian/Alaska Native'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 2 then 'Asian'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 3 then 'Black/African American'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 4 then 'Hispanic/Latino'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 8 then 'Native Hawaiian or Other Pacific Islander'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 9 then 'White'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 10 then 'Other'
+    when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 12 then 'Two or More Races, Non-Hispanic'
+  end as RaceEthnicity
 FROM {{ source('RawData', 'ApStudentDatafile2018')}}
