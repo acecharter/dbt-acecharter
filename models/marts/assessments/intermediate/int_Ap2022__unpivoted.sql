@@ -29,7 +29,7 @@ with unpivoted as (
     select
       * EXCEPT(FieldName, ValueName),
       SUBSTR(FieldName, 1, LENGTH(FieldName)-2) as FieldName,
-      SUBSTR(FieldName, LENGTH(FieldName)-1, 2) as FieldNameGroup,
+      SUBSTR(FieldName, LENGTH(FieldName)-1, 2) as TestNumber,
       ValueName
     from unpivoted
     where

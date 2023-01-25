@@ -1,12 +1,17 @@
 with
   ap as (
     select * from {{ ref('int_Ap2022__unpivoted') }}
-    
+  ),
+
+  students as (
+    select distinct * EXCEPT(FieldName, FieldNameGroup, ValueName)
+    from ap
   ),
 
   ay as (
     select
       ApId,
+      TestNumber,
       ValueName
     from ap
     where FieldName = 'AdminYear'
@@ -15,6 +20,7 @@ with
   ec as (
     select
       ApId,
+      TestNumber,
       ValueName
     from ap
     where FieldName = 'ExamCode'
@@ -23,6 +29,7 @@ with
   eg as (
     select
       ApId,
+      TestNumber,
       ValueName
     from ap
     where FieldName = 'ExamGrade'
@@ -31,6 +38,7 @@ with
   ic1 as (
     select
       ApId,
+      TestNumber,
       ValueName
     from ap
     where FieldName = 'IrregularityCode1'
@@ -39,30 +47,43 @@ with
   ic2 as (
     select
       ApId,
+      TestNumber,
       ValueName
     from ap
     where FieldName = 'IrregularityCode2'
   ),
 
+  results as (
+    select
+      ay.ApId,
+      ay.TestNumber,
+      ay.ValueName as AdminYear,
+      ec.ValueName as ExamCode,
+      eg.ValueName as ExamGrade,
+      ic1.ValueName as IrregularityCode1,
+      ic2.ValueName as IrregularityCode2
+    from ay
+    left join ec
+    on ay.ApId = ec.ApId
+    and ay.TestNumber = ec.TestNumber
+    left join eg
+    on ay.ApId = eg.ApId
+    and ay.TestNumber = eg.TestNumber
+    left join ic1
+    on ay.ApId = ic1.ApId
+    and ay.TestNumber = ic1.TestNumber
+    left join ic2
+    on ay.ApId = ic2.ApId
+    and ay.TestNumber = ic2.TestNumber
+  ),
+
   final as (
       select
-        ap.* EXCEPT(FieldName, FieldNameGroup, ValueName),
-        ay.ValueName as AdminYear,
-        ec.ValueName as ExamCode,
-        eg.ValueName as ExamGrade,
-        ic1.ValueName as IrregularityCode1,
-        ic2.ValueName as IrregularityCode2
-      from ap
-      left join ay
-      on  ap.ApId = ay.ApId
-      left join ec
-      on  ap.ApId = ec.ApId
-      left join eg
-      on  ap.ApId = eg.ApId
-      left join ic1
-      on  ap.ApId = ic1.ApId
-      left join ic2
-      on  ap.ApId = ic2.ApId 
+        s.*,
+        r.* EXCEPT(ApId)
+      from students as s
+      left join results as r
+      on  s.ApId = r.ApId 
   )
 
 select * from final
