@@ -1,6 +1,7 @@
 with
   ap as (
-    select * {{ ref('int_Ap2022__unpivoted') }}
+    select * from {{ ref('int_Ap2022__unpivoted') }}
+    
   ),
 
   ay as (
