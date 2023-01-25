@@ -160,4 +160,4 @@ select
   CAST(Irregularity_Code__2_30 as STRING) as IrregularityCode230,
   CAST(Student_Identifier as STRING) as StateUniqueId,
   Derived_Aggregate_Race_Ethnicity_2016_and_Forward as RaceEthnicity
-FROM {{ source('RawData', 'ApStudentDatafile2019')}}
+FROM {{ source('RawData', 'ApStudentDatafile2020')}}
