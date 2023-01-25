@@ -54,15 +54,15 @@ with
         ic2.ValueName as IrregularityCode2
       from ap
       left join ay
-      on  o.ApId = ay.ApId
+      on  ap.ApId = ay.ApId
       left join ec
-      on  o.ApId = ec.ApId
+      on  ap.ApId = ec.ApId
       left join eg
-      on  o.ApId = eg.ApId
+      on  ap.ApId = eg.ApId
       left join ic1
-      on  o.ApId = ic1.ApId
+      on  ap.ApId = ic1.ApId
       left join ic2
-      on  o.ApId = ic2.ApId 
+      on  ap.ApId = ic2.ApId 
   )
 
 select * from final
