@@ -63,7 +63,7 @@ with
       ay.TestNumber,
       ay.ValueName as AdminYear,
       ec.ValueName as ExamCode,
-      en.ExamName
+      en.ExamName,
       eg.ValueName as ExamGrade,
       ic1.ValueName as IrregularityCode1,
       ic2.ValueName as IrregularityCode2
@@ -86,6 +86,7 @@ with
 
   final as (
       select
+        case when SourceFileYear = CAST(AdminYear as INT64) + 2000 then 'Yes' else 'No' end as AdminYrEqualsSourceFileYr,        
         s.*,
         r.* EXCEPT(ApId)
       from students as s
