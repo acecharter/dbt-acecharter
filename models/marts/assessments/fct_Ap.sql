@@ -10,6 +10,7 @@ with
 
   ay as (
     select
+      SourceFileYear,
       ApId,
       TestNumber,
       ValueName
@@ -19,6 +20,7 @@ with
 
   ec as (
     select
+      SourceFileYear,
       ApId,
       TestNumber,
       ValueName
@@ -28,6 +30,7 @@ with
 
   eg as (
     select
+      SourceFileYear,
       ApId,
       TestNumber,
       ValueName
@@ -37,6 +40,7 @@ with
 
   ic1 as (
     select
+      SourceFileYear,
       ApId,
       TestNumber,
       ValueName
@@ -46,6 +50,7 @@ with
 
   ic2 as (
     select
+      SourceFileYear,
       ApId,
       TestNumber,
       ValueName
@@ -59,6 +64,7 @@ with
 
   results as (
     select
+      ay.SourceFileYear,
       ay.ApId,
       ay.TestNumber,
       ay.ValueName as AdminYear,
@@ -71,27 +77,32 @@ with
     left join ec
     on ay.ApId = ec.ApId
     and ay.TestNumber = ec.TestNumber
+    and ay.SourceFileYear = ec.SourceFileYear
     left join eg
     on ay.ApId = eg.ApId
     and ay.TestNumber = eg.TestNumber
+    and ay.SourceFileYear = eg.SourceFileYear
     left join ic1
     on ay.ApId = ic1.ApId
     and ay.TestNumber = ic1.TestNumber
+    and ay.SourceFileYear = ic1.SourceFileYear
     left join ic2
     on ay.ApId = ic2.ApId
     and ay.TestNumber = ic2.TestNumber
+    and ay.SourceFileYear = ic2.SourceFileYear
     left join exam_names as en
     on ec.ValueName = en.ExamCode
   ),
 
   final as (
       select
-        case when SourceFileYear = CAST(AdminYear as INT64) + 2000 then 'Yes' else 'No' end as AdminYrEqualsSourceFileYr,        
+        case when s.SourceFileYear = CAST(AdminYear as INT64) + 2000 then 'Yes' else 'No' end as AdminYrEqualsSourceFileYr,        
         s.*,
         r.* EXCEPT(ApId)
       from students as s
       left join results as r
       on  s.ApId = r.ApId 
+      and s.SourceFileYear = r.SourceFileYear
   )
 
 select * from final
