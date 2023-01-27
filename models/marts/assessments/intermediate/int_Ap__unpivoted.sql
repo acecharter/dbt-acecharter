@@ -4,7 +4,7 @@
 
 with unpivoted as (
     {{ dbt_utils.unpivot(
-      relation=ref('stg_RD__Ap2022'),
+      relation=ref('stg_RD__Ap'),
       cast_to='STRING',
       exclude=[
         'ApId',

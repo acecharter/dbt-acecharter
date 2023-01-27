@@ -1,4 +1,5 @@
 select
+  2022 as SourceFileYear,
   CAST(_AP_Number___AP_ID_ as STRING) as ApId,
   Last_Name as LastName,
   First_Name as FirstName,
@@ -188,4 +189,4 @@ select
     when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 10 then 'Other'
     when Derived_Aggregate_Race_Ethnicity_2016_and_Forward = 12 then 'Two or More Races, Non-Hispanic'
   end as RaceEthnicity
-FROM {{ source('RawData', 'ApStudentDatafile2019')}}
+FROM {{ source('RawData', 'ApStudentDatafile2022')}}

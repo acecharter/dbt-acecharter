@@ -1,6 +1,6 @@
 with
   ap as (
-    select * from {{ ref('int_Ap2020__unpivoted') }}
+    select * from {{ ref('int_Ap__unpivoted') }}
   ),
 
   students as (
@@ -55,6 +55,7 @@ with
 
   results as (
     select
+      ay.SourceFileYear,
       ay.ApId,
       ay.TestNumber,
       ay.ValueName as AdminYear,
