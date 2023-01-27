@@ -98,7 +98,7 @@ with
       select
         case when s.SourceFileYear = CAST(AdminYear as INT64) + 2000 then 'Yes' else 'No' end as AdminYrEqualsSourceFileYr,        
         s.*,
-        r.* EXCEPT(ApId)
+        r.* EXCEPT(SourceFileYear, ApId)
       from students as s
       left join results as r
       on  s.ApId = r.ApId 
