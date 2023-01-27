@@ -7,6 +7,7 @@ with unpivoted as (
       relation=ref('stg_RD__Ap'),
       cast_to='STRING',
       exclude=[
+        'SourceFileYear',
         'ApId',
         'LastName',
         'FirstName',
