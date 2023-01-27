@@ -55,7 +55,6 @@ with
 
   results as (
     select
-      ay.SourceFileYear,
       ay.ApId,
       ay.TestNumber,
       ay.ValueName as AdminYear,
