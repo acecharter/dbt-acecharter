@@ -20,7 +20,22 @@ sources:
                   
       - name: Amplify2223
         description: Amplify interim admin report export for 2022-23. Amplify admin reports export guide available at https://my.amplify.com/admin-reports/downloads/Admin_Reports_Export_Guide_ELA.pdf
-        
+      
+      - name: ApStudentDatafile2018
+        description: 2018 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
+      
+      - name: ApStudentDatafile2019
+        description: 2019 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
+      
+      - name: ApStudentDatafile2020
+        description: 2020 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
+      
+      - name: ApStudentDatafile2021
+        description: 2021 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
+      
+      - name: ApStudentDatafile2022
+        description: 2022 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
+      
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
         columns:
