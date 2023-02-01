@@ -19,7 +19,14 @@ with
   ),
 
   star as (
-    select * from assessments
+    select
+      *,
+      case
+        when DATE(AssessmentDate) < DATE('2022-12-01') then 'Fall'
+        when DATE(AssessmentDate) >= DATE('2022-12-01') and DATE(AssessmentDate) < DATE('2023-04-01') then 'Winter'
+        when DATE(AssessmentDate) < DATE('2023-07-01') then 'Spring'
+      end as TestingWindow
+    from assessments
     where STARTS_WITH(AssessmentName, 'Star')
     and ReportingMethod = 'Grade Equivalent'
     and AssessmentSchoolYear = '2022-23'
@@ -28,55 +35,133 @@ with
   star_reading as (
     select
       StateUniqueId,
+      TestingWindow,
       MAX(StudentResult) as StarReadingGe
     from star
     where AssessmentSubject = 'Reading'
-    group by StateUniqueId
+    group by 1, 2
   ),
 
   star_reading_sp as (
     select
       StateUniqueId,
+      TestingWindow,
       MAX(StudentResult) as StarReadingSpanishGe
     from star
     where AssessmentSubject = 'Reading (Spanish)'
-    GROUP BY StateUniqueId
+    GROUP BY 1, 2
   ),
 
   star_math as (
     select
       StateUniqueId,
+      TestingWindow,
       MAX(StudentResult) as StarMathGe
     from star
     where AssessmentSubject = 'Math'
-    group by StateUniqueId
+    group by 1, 2
   ),
 
   star_math_sp as (
     select
       StateUniqueId,
+      TestingWindow,
       MAX(StudentResult) as StarMathSpanishGe
     from star
     where AssessmentSubject = 'Math (Spanish)'
-    group by StateUniqueId
+    group by 1, 2
   ),
 
   star_el as (
     select
       StateUniqueId,
+      TestingWindow,
       MAX(StudentResult) as StarEarlyLitGe
     from star
     where AssessmentSubject = 'Early Literacy'
-    GROUP BY StateUniqueId
+    GROUP BY 1, 2
   ),
 
   star_el_sp as (
     select
       StateUniqueId,
+      TestingWindow,
       MAX(StudentResult) as StarEarlyLitSpanishGe
     from star
     where AssessmentSubject = 'Early Literacy (Spanish)'
-    GROUP BY StateUniqueId
+    GROUP BY 1, 2
+  ),
+
+  star_reading_fall as (
+    select *
+    from star_reading
+    where TestingWindow = 'Fall'
+  ),
+
+  star_reading_sp_fall as (
+    select *
+    from star_reading_sp
+    where TestingWindow = 'Fall'
+  ),
+
+  star_math_fall as (
+    select *
+    from star_math
+    where TestingWindow = 'Fall'
+  ),
+
+  star_math_sp_fall as (
+    select *
+    from star_math_sp
+    where TestingWindow = 'Fall'
+  ),
+
+  star_el_fall as (
+    select *
+    from star_el
+    where TestingWindow = 'Fall'
+  ),
+
+  star_el_sp_fall as (
+    select *
+    from star_el_sp
+    where TestingWindow = 'Fall'
+  ),
+
+  star_reading_winter as (
+    select *
+    from star_reading
+    where TestingWindow = 'Winter'
+  ),
+
+  star_reading_sp_winter as (
+    select *
+    from star_reading_sp
+    where TestingWindow = 'Winter'
+  ),
+
+  star_math_winter as (
+    select *
+    from star_math
+    where TestingWindow = 'Winter'
+  ),
+
+  star_math_sp_winter as (
+    select *
+    from star_math_sp
+    where TestingWindow = 'Winter'
+  ),
+
+  star_el_winter as (
+    select *
+    from star_el
+    where TestingWindow = 'Winter'
+  ),
+
+  star_el_sp_winter as (
+    select *
+    from star_el_sp
+    where TestingWindow = 'Winter'
   ),
 
   state_tests as (
@@ -203,12 +288,18 @@ with
       a.CountOfDaysAbsent,
       a.CountOfDaysEnrolled,
       Round(a.AverageDailyAttendance, 2) as AttendanceRate,
-      sr.StarReadingGe,
-      srs.StarReadingSpanishGe,
-      sm.StarMathGe,
-      sms.StarMathSpanishGe,
-      se.StarEarlyLitGe,
-      ses.StarEarlyLitSpanishGe,
+      srf.StarReadingGe as StarReadingGeFall,
+      srsf.StarReadingSpanishGe as StarReadingSpanishGeFall,
+      smf.StarMathGe as StarMathGeFall,
+      smsf.StarMathSpanishGe as StarMathSpanishGeFall,
+      sef.StarEarlyLitGe as StarEarlyLitGeFall,
+      sesf.StarEarlyLitSpanishGe as StarEarlyLitSpanishGFalle,
+      srw.StarReadingGe as StarReadingGeWinter,
+      srsw.StarReadingSpanishGe as StarReadingSpanishGeWinter,
+      smw.StarMathGe as StarMathGeWinter,
+      smsw.StarMathSpanishGe as StarMathSpanishGeWinter,
+      sew.StarEarlyLitGe as StarEarlyLitGeWinter,
+      sesw.StarEarlyLitSpanishGe as StarEarlyLitSpanishGeWinter,
       ge.ElaNumericGrade,
       ge.ElaLetterGrade,
       gm.MathNumericGrade,
@@ -224,27 +315,35 @@ with
       caa_ela.CaaElaLevel,
       caa_math.CaaMathLevel,
       caa_science.CaaScienceLevel,
-      o.Amplify,
-      o.DuoLingo,
-      o.NoRedInk,
-      o.Zearn,
-      o.Khan
+      o.* EXCEPT(StudentUniqueId)
     from current_esperanza_students as s
     left join attendance as a
     on s.SchoolId = a.SchoolId
     and s.StudentUniqueId = a.StudentUniqueId
-    left join star_reading as sr
-    on s.StateUniqueId = sr.StateUniqueId
-    left join star_reading_sp as srs
-    on s.StateUniqueId = srs.StateUniqueId
-    left join star_math as sm
-    on s.StateUniqueId = sm.StateUniqueId
-    left join star_math_sp as sms
-    on s.StateUniqueId = sms.StateUniqueId
-    left join star_el as se
-    on s.StateUniqueId = se.StateUniqueId
-    left join star_el_sp as ses
-    on s.StateUniqueId = ses.StateUniqueId
+    left join star_reading as srf
+    on s.StateUniqueId = srf.StateUniqueId
+    left join star_reading_sp as srsf
+    on s.StateUniqueId = srsf.StateUniqueId
+    left join star_math as smf
+    on s.StateUniqueId = smf.StateUniqueId
+    left join star_math_sp as smsf
+    on s.StateUniqueId = smsf.StateUniqueId
+    left join star_el as sef
+    on s.StateUniqueId = sef.StateUniqueId
+    left join star_el_sp as sesf
+    on s.StateUniqueId = sesf.StateUniqueId
+    left join star_reading as srw
+    on s.StateUniqueId = srw.StateUniqueId
+    left join star_reading_sp as srsw
+    on s.StateUniqueId = srsw.StateUniqueId
+    left join star_math as smw
+    on s.StateUniqueId = smw.StateUniqueId
+    left join star_math_sp as smsw
+    on s.StateUniqueId = smsw.StateUniqueId
+    left join star_el as sew
+    on s.StateUniqueId = sew.StateUniqueId
+    left join star_el_sp as sesw
+    on s.StateUniqueId = sesw.StateUniqueId
     left join grades_ela as ge
     on s.SchoolId = ge.SchoolId
     and s.StudentUniqueId = ge.StudentUniqueId
