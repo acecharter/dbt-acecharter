@@ -1,5 +1,5 @@
 select
-  Student_ID AS StudentUniqueId,
+  CAST(Student_ID as STRING) as StudentUniqueId,
   _2022_SBAC_ELA as SbacElaDfs22,
   ELA_Benchmark_Q1 as ElaDfsQ1,
   ELA_Benchmark_Q2 as ElaDfsQ2,
