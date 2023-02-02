@@ -193,7 +193,15 @@ final AS (
     InstructionalReadingLevel,
     Lexile,
     Quantile,
-    LiteracyClassification
+    LiteracyClassification,
+    CASE
+      WHEN GradeEquivalent = '> 12.9' THEN 13
+      WHEN GradeEquivalent = '> 11' THEN 11.1
+      WHEN GradeEquivalent = '> 10' THEN 10.1
+      WHEN GradeEquivalent = '> 9' THEN 9.1
+      WHEN GradeEquivalent = '< 1' THEN 0.9
+      ELSE CAST(GradeEquivalent as FLOAT64)
+    END AS GradEquivalentNumeric
   FROM unioned
 )
 
