@@ -20,7 +20,8 @@ with
 
   star as (
     select
-      *,
+      * EXCEPT(StudentResult),
+      CAST(StudentResult AS FLOAT64) AS StudentResult,
       case
         when DATE(AssessmentDate) < DATE('2022-12-01') then 'Fall'
         when DATE(AssessmentDate) >= DATE('2022-12-01') and DATE(AssessmentDate) < DATE('2023-04-01') then 'Winter'
