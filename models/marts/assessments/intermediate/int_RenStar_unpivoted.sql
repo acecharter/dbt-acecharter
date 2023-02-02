@@ -57,12 +57,14 @@ final as (
     when ReportingMethod='StateBenchmarkCategoryLevel' then 'State Benchmark Level'
     when ReportingMethod='LiteracyClassification' then 'Literacy Classification'
     when ReportingMethod='InstructionalReadingLevel' then 'Instructional Reading Level'
+    when ReportingMethod='GradeEquivalentNumeric' then 'Grade Equivalent (numeric)'
+    when ReportingMethod='GradeEquivalentMinusPlacement' then 'Grade Equivalent Minus Placement'
     else ReportingMethod
   end as ReportingMethod,
   case
     when ReportingMethod in ('GradeEquivalent', 'Lexile', 'LiteracyClassification', 'Quantile', 'InstructionalReadingLevel') then 'STRING'
     when ReportingMethod in ('UnifiedScore', 'PercentileRank','StateBenchmarkCategoryLevel') or ReportingMethod like 'StudentGrowth%' then 'INT64'
-    when ReportingMethod = 'NormalCurveEquivalent' then 'FLOAT64'
+    when ReportingMethod in ('GradeEquivalentNumeric', 'GradeEquivalentMinusPlacement', 'NormalCurveEquivalent') then 'FLOAT64'
   end as StudentResultDataType,
   StudentResult
   from unpivoted
