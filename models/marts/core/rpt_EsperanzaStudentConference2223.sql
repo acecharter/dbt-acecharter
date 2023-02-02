@@ -28,7 +28,7 @@ with
       end as TestingWindow
     from assessments
     where STARTS_WITH(AssessmentName, 'Star')
-    and ReportingMethod = 'Grade Equivalent'
+    and ReportingMethod = 'Grade Equivalent (numeric)'
     and AssessmentSchoolYear = '2022-23'
   ),
 

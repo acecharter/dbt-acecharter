@@ -207,4 +207,4 @@ final AS (
   FROM unioned
 )
 
-SELECT * FROM final where GradeEquivalent like '<%'
+SELECT * FROM final
