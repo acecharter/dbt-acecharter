@@ -231,7 +231,7 @@ with
     select *
     from {{ref ('fct_StudentGrades')}}
     where IsCurrentGradingPeriod = true
-    and GradingPeriodDescriptor = 'First Semester'
+    and GradingPeriodDescriptor = 'Second Semester'
   ),
 
   grades_math as (
@@ -320,29 +320,29 @@ with
     left join attendance as a
     on s.SchoolId = a.SchoolId
     and s.StudentUniqueId = a.StudentUniqueId
-    left join star_reading as srf
+    left join star_reading_fall as srf
     on s.StateUniqueId = srf.StateUniqueId
-    left join star_reading_sp as srsf
+    left join star_reading_sp_fall as srsf
     on s.StateUniqueId = srsf.StateUniqueId
-    left join star_math as smf
+    left join star_math_fall as smf
     on s.StateUniqueId = smf.StateUniqueId
-    left join star_math_sp as smsf
+    left join star_math_sp_fall as smsf
     on s.StateUniqueId = smsf.StateUniqueId
-    left join star_el as sef
+    left join star_el_fall as sef
     on s.StateUniqueId = sef.StateUniqueId
-    left join star_el_sp as sesf
+    left join star_el_sp_fall as sesf
     on s.StateUniqueId = sesf.StateUniqueId
-    left join star_reading as srw
+    left join star_reading_winter as srw
     on s.StateUniqueId = srw.StateUniqueId
-    left join star_reading_sp as srsw
+    left join star_reading_sp_winter as srsw
     on s.StateUniqueId = srsw.StateUniqueId
-    left join star_math as smw
+    left join star_math_winter as smw
     on s.StateUniqueId = smw.StateUniqueId
-    left join star_math_sp as smsw
+    left join star_math_sp_winter as smsw
     on s.StateUniqueId = smsw.StateUniqueId
-    left join star_el as sew
+    left join star_el_winter as sew
     on s.StateUniqueId = sew.StateUniqueId
-    left join star_el_sp as sesw
+    left join star_el_sp_winter as sesw
     on s.StateUniqueId = sesw.StateUniqueId
     left join grades_ela as ge
     on s.SchoolId = ge.SchoolId
@@ -374,4 +374,4 @@ with
     on s.StudentUniqueId = o.StudentUniqueId
   )
 
-select * from final
+select * from final order by StateUniqueId
