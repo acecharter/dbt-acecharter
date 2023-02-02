@@ -195,22 +195,16 @@ final AS (
     Quantile,
     LiteracyClassification,
     CASE
-      WHEN GradeEquivalent = '> 12.9' THEN 13
-      WHEN GradeEquivalent = '> 11' THEN 11.1
-      WHEN GradeEquivalent = '> 10' THEN 10.1
-      WHEN GradeEquivalent = '> 9' THEN 9.1
-      WHEN GradeEquivalent = '< 1' THEN 0.9
+      WHEN SUBSTR(GradeEquivalent, 1, 1) = '>' THEN CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) + 0.1
+      WHEN SUBSTR(GradeEquivalent, 1, 1) = '<' THEN CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) - 0.1
       ELSE CAST(GradeEquivalent as FLOAT64)
     END AS GradeEquivalentNumeric,
     CASE
-      WHEN GradeEquivalent = '> 12.9' THEN ROUND(13 - GradePlacement, 1)
-      WHEN GradeEquivalent = '> 11' THEN ROUND(11.1 - GradePlacement, 1)
-      WHEN GradeEquivalent = '> 10' THEN ROUND(10.1 - GradePlacement, 1)
-      WHEN GradeEquivalent = '> 9' THEN ROUND(9.1 - GradePlacement, 1)
-      WHEN GradeEquivalent = '< 1' THEN ROUND(0.9 - GradePlacement, 1)
+      WHEN SUBSTR(GradeEquivalent, 1, 1) = '>' THEN ROUND(CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) + 0.1 - GradePlacement, 1)
+      WHEN SUBSTR(GradeEquivalent, 1, 1) = '<' THEN ROUND(CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) - 0.1 - GradePlacement, 1)
       ELSE ROUND(CAST(GradeEquivalent as FLOAT64) - GradePlacement, 1)
     END AS GradeEquivalentMinusPlacement
   FROM unioned
 )
 
-SELECT * FROM final
+SELECT * FROM final where GradeEquivalent like '<%'
