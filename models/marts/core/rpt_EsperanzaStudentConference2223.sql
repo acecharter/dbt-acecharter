@@ -228,6 +228,56 @@ with
     where AceAssessmentId = '5'
   ),
 
+  grades_s1 as (
+    select *
+    from {{ref ('fct_StudentGrades')}}
+    where SessionName = 'SY2023 Semester 1'
+    and GradeTypeDescriptor = 'Final'
+  ),
+
+  grades_math_s1 as (
+    select
+      SchoolId,
+      StudentUniqueId,
+      NumericGradeEarned as MathNumericGradeS1,
+      LetterGradeEarned as MathLetterGradeS1
+    from grades_s1
+    where STARTS_WITH(SectionIdentifier, 'ACSMAT')
+  ),
+
+  grades_ela_s1 as (
+    select
+      SchoolId,
+      StudentUniqueId,
+      NumericGradeEarned as ElaNumericGradeS1,
+      LetterGradeEarned as ElaLetterGradeS1
+    from grades_s1
+    where STARTS_WITH(SectionIdentifier, 'ACSENG')
+  ),
+
+  grades_science_s1 as (
+    select
+      SchoolId,
+      StudentUniqueId,
+      NumericGradeEarned as ScienceNumericGradeS1,
+      LetterGradeEarned as ScienceLetterGradeS1
+    from grades_s1
+    where STARTS_WITH(SectionIdentifier, 'ACSLS')
+    OR STARTS_WITH(SectionIdentifier, 'ACSSCI')
+    OR STARTS_WITH(SectionIdentifier, 'ACSPS')
+    OR STARTS_WITH(SectionIdentifier, 'ACSESC')
+  ),
+
+  grades_PE_s1 as (
+    select
+      SchoolId,
+      StudentUniqueId,
+      NumericGradeEarned as PeNumericGradeS1,
+      LetterGradeEarned as PeLetterGradeS1
+    from grades_s1
+    where STARTS_WITH(SectionIdentifier, 'ACSPED')
+  ),
+  
   grades as (
     select *
     from {{ref ('fct_StudentGrades')}}
@@ -309,6 +359,14 @@ with
       gs.ScienceLetterGrade,
       gp.PeNumericGrade,
       gp.PeLetterGrade,
+      ges1.ElaNumericGradeS1,
+      ges1.ElaLetterGradeS1,
+      gms1.MathNumericGradeS1,
+      gms1.MathLetterGradeS1,
+      gss1.ScienceNumericGradeS1,
+      gss1.ScienceLetterGradeS1,
+      gps1.PeNumericGradeS1,
+      gps1.PeLetterGradeS1,
       sbac_ela.SbacElaLevel,
       sbac_math.SbacMathLevel,
       ca_science.CastLevel,
@@ -357,6 +415,18 @@ with
     left join grades_pe as gp
     on s.SchoolId = gp.SchoolId
     and s.StudentUniqueId = gp.StudentUniqueId
+    left join grades_ela_s1 as ges1
+    on s.SchoolId = ges1.SchoolId
+    and s.StudentUniqueId = ges1.StudentUniqueId
+    left join grades_math_s1 as gms1
+    on s.SchoolId = gms1.SchoolId
+    and s.StudentUniqueId = gms1.StudentUniqueId
+    left join grades_science_s1 as gss1
+    on s.SchoolId = gss1.SchoolId
+    and s.StudentUniqueId = gss1.StudentUniqueId
+    left join grades_pe_s1 as gps1
+    on s.SchoolId = gps1.SchoolId
+    and s.StudentUniqueId = gps1.StudentUniqueId
     left join sbac_ela
     on s.StateUniqueId = sbac_ela.StateUniqueId
     left join sbac_math
