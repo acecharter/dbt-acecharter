@@ -19,8 +19,9 @@ with
   ela_22 as (
     select
       StudentUniqueId,
-      '2022 ELA SBAC' as AssessmentName,
-      1 as AssessmentOrder,
+      '2021-22' as AssessmentSchoolYear,
+      'ELA' as AssessmentSubject,
+      '2022 SBAC' as AssessmentPeriod,
       SbacElaDfs22 as StudentResult
     from dfs
   ),
@@ -28,8 +29,9 @@ with
   ela_q1 as (
     select
       StudentUniqueId,
-      'ELA Q1 Benchmark' as AssessmentName,
-      2 as AssessmentOrder,
+      '2022-23' as AssessmentSchoolYear,
+      'ELA' as AssessmentSubject,
+      'Q1' as AssessmentPeriod,
       ElaDfsQ1 as StudentResult
     from dfs
   ),
@@ -37,8 +39,9 @@ with
   ela_q2 as (
     select
       StudentUniqueId,
-      'ELA Q2 Benchmark' as AssessmentName,
-      3 as AssessmentOrder,
+      '2022-23' as AssessmentSchoolYear,
+      'ELA' as AssessmentSubject,
+      'Q2' as AssessmentPeriod,
       ElaDfsQ2 as StudentResult
     from dfs
   ),
@@ -46,8 +49,9 @@ with
   math_22 as (
     select
       StudentUniqueId,
-      '2022Math SBAC' as AssessmentName,
-      1 as AssessmentOrder,
+      '2021-22' as AssessmentSchoolYear,
+      'Math' as AssessmentSubject,
+      '2022 SBAC' as AssessmentPeriod,
       SbacMathDfs22 as StudentResult
     from dfs
   ),
@@ -55,8 +59,9 @@ with
   math_q1 as (
     select
       StudentUniqueId,
-      'Math Q1 Benchmark' as AssessmentName,
-      2 as AssessmentOrder,
+      '2022-23' as AssessmentSchoolYear,
+      'Math' as AssessmentSubject,
+      'Q1' as AssessmentPeriod,
       MathDfsQ1 as StudentResult
     from dfs
   ),
@@ -64,8 +69,9 @@ with
   math_q2 as (
     select
       StudentUniqueId,
-      'Math Q2 Benchmark' as AssessmentName,
-      3 as AssessmentOrder,
+      '2022-23' as AssessmentSchoolYear,
+      'Math' as AssessmentSubject,
+      'Q2' as AssessmentPeriod,
       MathDfsQ2 as StudentResult
     from dfs
   ),
