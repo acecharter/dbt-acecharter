@@ -195,7 +195,7 @@ WITH
     LEFT JOIN status_levels AS sl
     ON u.StatusLevel = sl.StatusLevel
     LEFT JOIN change_levels AS cl
-    ON u.StatusLevel = cl.ChangeLevel
+    ON u.ChangeLevel = cl.ChangeLevel
     LEFT JOIN colors AS c
     ON u.Color = c.Color
   )
