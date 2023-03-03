@@ -164,6 +164,9 @@ sources:
       - name: CdeAdjustedCohortOutcomes2021
         description: 2020-21 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
 
+      - name: CdeAdjustedCohortOutcomes2022
+        description: 2021-22 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
+
       - name: CdeChrAbs1617
         description: 2016-17 CDE Chronic Absenteeism Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesabd.asp)
 

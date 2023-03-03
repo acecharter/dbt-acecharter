@@ -1,28 +1,27 @@
 -- Columns dropped: Filler
 WITH
   acgr_2017 AS (
-    SELECT *
-    FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2017')}}
+    SELECT * FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2017')}}
   ),
 
   acgr_2018 AS (
-    SELECT *
-    FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2018')}}
+    SELECT * FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2018')}}
   ),
 
   acgr_2019 AS (
-    SELECT *
-    FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2019')}}
+    SELECT * FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2019')}}
   ),
 
   acgr_2020 AS (
-    SELECT *
-    FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2020')}}
+    SELECT * FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2020')}}
   ),
 
   acgr_2021 AS (
-    SELECT *
-    FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2021')}}
+    SELECT * FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2021')}}
+  ),
+
+  acgr_2022 AS (
+    SELECT * FROM {{ ref('base_RD__CdeAdjustedCohortOutcomes2022')}}
   ),
 
   unioned AS (
@@ -35,6 +34,8 @@ WITH
     SELECT * FROM acgr_2020
     UNION ALL
     SELECT * FROM acgr_2021
+    UNION ALL
+    SELECT * FROM acgr_2022
   ),
 
   final AS (
