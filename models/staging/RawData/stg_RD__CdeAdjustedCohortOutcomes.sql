@@ -25,6 +25,11 @@ WITH
     FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2021')}}
   ),
 
+  acgr_2022 AS (
+    SELECT *
+    FROM {{ source('RawData', 'CdeAdjustedCohortOutcomes2022')}}
+  ),
+
   unioned AS (
     SELECT * FROM acgr_2017
     UNION ALL
@@ -35,6 +40,8 @@ WITH
     SELECT * FROM acgr_2020
     UNION ALL
     SELECT * FROM acgr_2021
+    UNION ALL
+    SELECT * FROM acgr_2022
   ),
 
   final AS (
