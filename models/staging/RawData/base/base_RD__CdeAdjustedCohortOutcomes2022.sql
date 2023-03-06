@@ -34,4 +34,3 @@ select
   CAST(NULLIF(Still_Enrolled__Count_, '*') AS INT64) AS Still_Enrolled__Count_,
   CAST(NULLIF(Still_Enrolled__Rate_, '*') AS FLOAT64) AS Still_Enrolled__Rate_
 from {{ source('RawData', 'CdeAdjustedCohortOutcomes2022')}}
-where Met_UC_CSU_Grad_Req_s__Rate_='*'
