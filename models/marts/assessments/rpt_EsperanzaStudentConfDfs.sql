@@ -46,6 +46,16 @@ with
     from dfs
   ),
 
+  ela_q3 as (
+    select
+      StudentUniqueId,
+      '2022-23' as AssessmentSchoolYear,
+      'ELA' as AssessmentSubject,
+      'Q3' as AssessmentPeriod,
+      ElaDfsQ3 as StudentResult
+    from dfs
+  ),
+
   math_22 as (
     select
       StudentUniqueId,
@@ -76,6 +86,16 @@ with
     from dfs
   ),
 
+  math_q3 as (
+    select
+      StudentUniqueId,
+      '2022-23' as AssessmentSchoolYear,
+      'Math' as AssessmentSubject,
+      'Q3' as AssessmentPeriod,
+      MathDfsQ3 as StudentResult
+    from dfs
+  ),
+
   unioned as (
     select * from ela_22
     union all
@@ -83,11 +103,15 @@ with
     union all
     select * from ela_q2
     union all
+    select * from ela_q3
+    union all
     select * from math_22
     union all
     select * from math_q1
     union all
     select * from math_q2
+    union all
+    select * from math_q3
   ),
 
   final as (
