@@ -95,10 +95,10 @@ WITH
       m.* EXCEPT (AceAssessmentId, TestingStatus, ResultCount),
       m.AssessmentName AS AssessmentSubject,
       m.ResultCount + pm.ResultCount AS ResultCount,
-      s.ResultCount AS ResultCountSpanish,
+      s.ResultCount AS ResultCountOther,
       CASE
         WHEN m.ResultCount + pm.ResultCount > 0 THEN 'Tested'
-        WHEN s.ResultCount > 0 THEN 'Other Tested (Spanish Only)'
+        WHEN s.ResultCount > 0 THEN 'Other Tested (Spanish)'
         ELSE 'Not Tested'
       END AS TestingStatus
     FROM math AS m
@@ -120,11 +120,11 @@ WITH
     SELECT
       r.* EXCEPT (AceAssessmentId, TestingStatus, ResultCount),
       r.AssessmentName AS AssessmentSubject,
-      r.ResultCount + pm.ResultCount + els.ResultCount AS ResultCount,
-      els.ResultCount + s.ResultCount AS ResultCountSpanish,
+      r.ResultCount + pm.ResultCount AS ResultCount,
+      el.ResultCount + els.ResultCount + s.ResultCount AS ResultCountOther,
       CASE
-        WHEN r.ResultCount + pm.ResultCount + els.ResultCount > 0 THEN 'Tested'
-        WHEN els.ResultCount + s.ResultCount > 0 THEN 'Other Tested (Spanish Only)'
+        WHEN r.ResultCount + pm.ResultCount > 0 THEN 'Tested'
+        WHEN el.ResultCount + els.ResultCount + s.ResultCount > 0 THEN 'Other Tested (Early Literacy or Spanish)'
         ELSE 'Not Tested'
       END AS TestingStatus
     FROM reading AS r
