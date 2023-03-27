@@ -120,7 +120,7 @@ WITH
     SELECT
       r.* EXCEPT (AceAssessmentId, TestingStatus, ResultCount),
       r.AssessmentName AS AssessmentSubject,
-      r.ResultCount + pm.ResultCount + el.ResultCount AS ResultCount,
+      r.ResultCount + pm.ResultCount AS ResultCount,
       el.ResultCount + els.ResultCount + s.ResultCount AS ResultCountOther,
       CASE
         WHEN r.ResultCount + pm.ResultCount > 0 THEN 'Tested'
