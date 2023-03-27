@@ -94,11 +94,11 @@ WITH
     SELECT
       m.* EXCEPT (AceAssessmentId, TestingStatus, ResultCount),
       m.AssessmentName AS AssessmentSubject,
-      m.ResultCount + pm.ResultCount AS ResultCount,
-      s.ResultCount AS ResultCountOther,
+      IFNULL(m.ResultCount, 0) + IFNULL(pm.ResultCount, 0) AS ResultCount,
+      IFNULL(s.ResultCount, 0) AS ResultCountOther,
       CASE
-        WHEN m.ResultCount + pm.ResultCount > 0 THEN 'Tested'
-        WHEN s.ResultCount > 0 THEN 'Other Tested (Spanish)'
+        WHEN (IFNULL(m.ResultCount, 0) + IFNULL(pm.ResultCount, 0)) > 0 THEN 'Tested'
+        WHEN IFNULL(s.ResultCount, 0) > 0 THEN 'Other Tested (Spanish)'
         ELSE 'Not Tested'
       END AS TestingStatus
     FROM math AS m
@@ -120,11 +120,11 @@ WITH
     SELECT
       r.* EXCEPT (AceAssessmentId, TestingStatus, ResultCount),
       r.AssessmentName AS AssessmentSubject,
-      r.ResultCount + pm.ResultCount AS ResultCount,
-      el.ResultCount + els.ResultCount + s.ResultCount AS ResultCountOther,
+      IFNULL(r.ResultCount, 0) + IFNULL(pm.ResultCount, 0) AS ResultCount,
+      IFNULL(el.ResultCount, 0) + IFNULL(els.ResultCount, 0) + IFNULL(s.ResultCount, 0) AS ResultCountOther,
       CASE
-        WHEN r.ResultCount + pm.ResultCount > 0 THEN 'Tested'
-        WHEN el.ResultCount + els.ResultCount + s.ResultCount > 0 THEN 'Other Tested (Early Literacy or Spanish)'
+        WHEN (IFNULL(r.ResultCount, 0) + IFNULL(pm.ResultCount, 0)) > 0 THEN 'Tested'
+        WHEN (IFNULL(el.ResultCount, 0) + IFNULL(els.ResultCount, 0) + IFNULL(s.ResultCount, 0)) > 0 THEN 'Other Tested (Early Literacy or Spanish)'
         ELSE 'Not Tested'
       END AS TestingStatus
     FROM reading AS r
