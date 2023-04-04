@@ -245,6 +245,9 @@ sources:
       - name: CdeEnr21
         description: 2021 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
 
+      - name: CdeEnr22
+        description: 2022 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
       - name: CdeSusp1718
         description: 2017-18 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
 
