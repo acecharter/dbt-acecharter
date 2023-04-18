@@ -8,7 +8,6 @@ final AS (
             WHEN '061182013023' THEN '125617'
             ELSE '999999999'
         END AS TestedSchoolId,
-        END AS TestedSchoolId,
         SchoolName AS TestedSchoolName,
         CONCAT(LEFT(SchoolYear, 4), '-', RIGHT(SchoolYear, 2)) AS SchoolYear,
         StudentRenaissanceID,
