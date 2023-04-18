@@ -1,1 +1,1 @@
-  SELECT * FROM {{ source('GoogleSheetData', 'CourseSubjects')}}
+SELECT * FROM {{ source('GoogleSheetData', 'CourseSubjects')}}

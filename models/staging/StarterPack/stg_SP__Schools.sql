@@ -3,15 +3,15 @@ WITH source_table AS (
 ),
 
 sy AS (
-  SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
+    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
 ),
 
 final AS (
-  SELECT
-    sy.SchoolYear,
-    source_table.*
-  FROM source_table
-  CROSS JOIN sy
+    SELECT
+        sy.SchoolYear,
+        source_table.*
+    FROM source_table
+    CROSS JOIN sy
 )
 
 SELECT * FROM final
