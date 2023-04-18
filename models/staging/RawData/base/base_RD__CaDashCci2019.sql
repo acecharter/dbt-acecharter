@@ -1,5 +1,5 @@
 SELECT
-    CAST(cds AS STRING) AS Cds,SELECT
+    CAST(cds AS STRING) AS Cds,
     rtype AS RType,
     schoolname AS SchoolName,
     districtname AS DistrictName,

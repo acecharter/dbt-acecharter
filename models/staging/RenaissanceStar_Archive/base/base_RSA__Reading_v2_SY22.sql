@@ -1,4 +1,4 @@
-WITHSchoolIdentifier=
+WITH
 testing_windows AS (
     SELECT *
     FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
