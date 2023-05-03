@@ -1,4 +1,5 @@
 SELECT
+    '2021-22' AS SchoolYear,
     r._id AS RubricId,
     r.name AS RubricName,
     r.isPrivate AS IsPrivate,
@@ -17,6 +18,6 @@ SELECT
     m.measurement AS Measurement,
     DATE(created) AS DateCreated,
     DATE(r.archivedAt) AS DateArchived
- FROM {{ source('Whetstone', 'Rubrics_raw')}} AS r
+ FROM {{ source('Whetstone_Archive', 'Rubrics_raw_SY22')}} AS r
  LEFT JOIN UNNEST(measurementGroups) AS g
  LEFT JOIN UNNEST(g.measurements) AS m

@@ -1,4 +1,5 @@
 SELECT
+    '2021-22' AS SchoolYear,
     u._id AS UserId,
     u.name AS UserName,
     u.email AS Email,
@@ -8,5 +9,5 @@ SELECT
     i.course AS CourseId,
     DATE(u.lastActivity) AS DateLastActive,
     DATE(u.lastModified) AS DateLastModified,
-FROM {{ source('Whetstone', 'Users_raw')}} AS u
+FROM {{ source('Whetstone_Archive', 'Users_raw_SY22')}} AS u
 LEFT JOIN UNNEST(defaultInformation) AS i

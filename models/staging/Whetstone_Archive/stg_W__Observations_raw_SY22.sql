@@ -1,4 +1,5 @@
 SELECT
+    '2021-22' AS SchoolYear,
     o._id AS ObservationId,
     o.isPrivate AS IsPrivate,
     o.isPublished AS IsPublished,
@@ -21,7 +22,7 @@ SELECT
     DATE(o.signedAt) AS DateSigned,
     DATE(o.archivedAt) AS DateArchived,
     DATE(o.lastModified) AS DateLastModified
-FROM {{ source('Whetstone', 'Observations_raw')}} AS o
+FROM {{ source('Whetstone_Archive', 'Observations_raw_SY22')}} AS o
 LEFT JOIN UNNEST(observer) AS ob
 LEFT JOIN UNNEST(rubric) AS r
 LEFT JOIN UNNEST(teacher) AS t

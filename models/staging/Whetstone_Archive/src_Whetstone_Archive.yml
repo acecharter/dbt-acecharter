@@ -2,13 +2,13 @@ version: 2
 
 
 sources:
-  - name: Whetstone
-    description: SchoolMint Grow (formerly known as Whetstone) data pulled via Landing Zone-managed integration. Additional API documentation available at https://docs.whetstoneeducation.com/.
+  - name: Whetstone_Archive
+    description: SchoolMint Grow (formerly known as Whetstone) data pulled in prior years via Landing Zone-managed integration. Additional API documentation available at https://docs.whetstoneeducation.com/.
     database: landing-zone-acecharter
-    schema: Whetstone
+    schema: Whetstone_Archive
     tables:
 
-      - name: Informals_raw
+      - name: Informals_raw_SY22
         description: Raw data for 'Quick Feedback' touchpoints (Informals)
         columns:
           - name: _id
@@ -59,7 +59,7 @@ sources:
           - name: lastModified
             description: Timestamp for when quick feedback touchpoint item was last modified.
 
-      - name: Measurements_raw
+      - name: Measurements_raw_SY22
         description: Raw data for 'Quick Feedback' touchpoints
         columns:
           - name: _id
@@ -109,7 +109,7 @@ sources:
 
           - name: lastModified
             description: Timestamp for when quick feedback touchpoint item was last modified.
-      - name: Observations_raw
-      - name: Rubrics_raw
-      - name: Schools_raw
-      - name: Users_raw
+      - name: Observations_raw_SY22
+      - name: Rubrics_raw_SY22
+      - name: Schools_raw_SY22
+      - name: Users_raw_SY22

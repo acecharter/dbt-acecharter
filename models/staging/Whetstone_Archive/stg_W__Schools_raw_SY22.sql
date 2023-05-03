@@ -1,4 +1,5 @@
 SELECT
+    '2021-22' AS SchoolYear,
     s._id AS SchoolId,
     s.name AS SchoolName,
     s.abbreviation AS SchoolNameAbbreviation,
@@ -23,7 +24,7 @@ SELECT
     DATE(s.created) AS DateCreated,
     DATE(s.archivedAt) AS DateArchived,
     DATE(s.lastModified) AS DateLastModified
-FROM {{ source('Whetstone', 'Schools_raw')}} AS s
+FROM {{ source('Whetstone_Archive', 'Schools_raw_SY22')}} AS s
 LEFT JOIN UNNEST(admins) AS a
 LEFT JOIN UNNEST(assistantAdmins) AS aa
 LEFT JOIN UNNEST(nonInstructionalAdmins) AS n
