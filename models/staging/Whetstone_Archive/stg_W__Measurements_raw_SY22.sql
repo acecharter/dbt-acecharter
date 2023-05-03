@@ -1,4 +1,5 @@
 SELECT
+  '2021-22' AS SchoolYear,
   m._id AS MeasurementId,
   m.name AS MeasurementName,
   o.label AS MeasurementOptionLabel,
@@ -6,5 +7,5 @@ SELECT
   DATE(created) AS DateCreated,
   DATE(lastModified) AS DateLastModified,
   DATE(m.archivedAt) AS DateArchived
-FROM {{ source('Whetstone', 'Measurements_raw')}} AS m
+FROM {{ source('Whetstone_Archive', 'Measurements_raw_SY22')}} AS m
 LEFT JOIN UNNEST(measurementOptions) AS o
