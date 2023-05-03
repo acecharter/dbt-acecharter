@@ -5,7 +5,7 @@ sources:
   - name: Whetstone_Archive
     description: SchoolMint Grow (formerly known as Whetstone) data pulled in prior years via Landing Zone-managed integration. Additional API documentation available at https://docs.whetstoneeducation.com/.
     database: landing-zone-acecharter
-    schema: Whetstone
+    schema: Whetstone_Archive
     tables:
 
       - name: Informals_raw_SY22
