@@ -6,7 +6,7 @@ sources:
     database: landing-zone-acecharter
     schema: RenaissanceStar
     tables:
-    
+
       - name: EarlyLiteracy_v2
         description: Student-level Renaissance Star Early Literacy Assessment (English) data from current school year. Imported via Landing Zone integration.
 
@@ -16,20 +16,740 @@ sources:
       - name: Math_v2
         description: Student-level Renaissance Star Math Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
         columns:
+
           - name: RenaissanceClientID
-            description: Renaissance customer number
+            description: Internal Renaissance customer number
+
+          - name: SchoolYear
+            description: Name of the school year in Renaissance
+
+          - name: SchoolYearStartDate
+            description: First day of the school year in Renaissance
+
+          - name: SchoolYearEndDate
+            description: Last day of the school year in Renaissance
+
           - name: StudentRenaissanceID
-            description: Unique internal Renaissance student ID. Used by Renaissance to link the student to other Renaissance systems.
+            description: Internal Renaissance ID for the student created by Renaissance
+
           - name: StudentUniqueId
-            description: (StudentSourcedID in source documnetation)
+            description: (StudentSourcedID in Renaissance documentation.) ID for the student used to determine inserts, updates, and deletes when importing data from an external source
+
           - name: StudentIdentifier
+            description: Student Number from PowerSchool SIS
+
           - name: StudentUserID
+            description: Specified by OneRoster and intended to contain an optional, machine-readable ID. Sometimes blank.
+
           - name: StateUniqueId
-            description: (StudentStateID in source documentation) Student's state ID in Renaissance. Blank if not provided.
+            description: (StudentStateID in Renaissance documentation.) California Statewide Student Identifier (SSID) 
+
+          - name: Email
+            description: (StudentEmail in Renaissance documentation.) Student's email address in Renaissance
+
+          - name: FirstName
+            description: (StudentFirstName in Renaissance documentation.) Student's first name in Renaissance
+
+          - name: MiddleName
+            description: (StudentMiddleName in Renaissance documentation.) Student's middle name in Renaissance
+
+          - name: LastSurname
+            description: (StudentLastName in Renaissance documentation.) Student's last name in Renaissance
+
+          - name: Gender
+            description: Student's gender (M for male, F for female, or U for unidentified)
+
+          - name: Birthdate
+            description: (BirthDate in Renaissance documentation.) Student's birthdate
+
+          - name: MultiRace
+            description: Yes if multiple ethnicities are selected for the student in Renaissance, No if one or no ethnicities selected
+
+          - name: HispanicOrLatino
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: AmericanIndianOrAlaskaNative
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: Asian
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: BlackOrAfricanAmerican
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: NativeHawaiianOrOtherPacificIslander
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: White
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: GradeLevel
+            description: (CurrentGrade in Renaissance documentation.) Student's grade enrollment in Renaissance at the time the extract was run
+
+          - name: EnrollmentStatus
+            description: Student is either currently Enrolled or Unenrolled
+
+          - name: DistrictRenaissanceID
+            description: Internal Renaissance ID for the district
+
+          - name: DistrictSourcedID
+            description: Internal ID for the district used to determine inserts, updates, and deletes when importing data from an external source.  
+
+          - name: DistrictIdentifier
+            description: Unknown District ID; possibly used to provide metadata related to the district
+
+          - name: DistrictStateID
+            description: State ID for the district, blank if not provided by the district
+
+          - name: DistrictName
+            description: Name of the district in Renaissance
+
+          - name: SchoolRenaissanceID
+            description: Internal Renaissance ID for the school
+
+          - name: SchoolId
+            description: (SchoolSourcedId in Renaissance documentation.) Internal ID for the school used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: SchoolIdentifier
+            description: ID in Renaissance for the school, blank if not provided
+
+          - name: SchoolStateID
+            description: State ID for the school, blank if not provided by the district or school
+
+          - name: NameOfInstitution
+            description: (SchoolName in Renaissance documentation.) Name of the school where the student tested.
+
+          - name: CourseRenaissanceID
+            description: Internal Renaissance ID for the course
+
+          - name: CourseSourcedID
+            description: Internal ID for the course used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: CourseCode
+            description: ID of the course where the student tested.
+
+          - name: CourseTitle
+            description: (CourseName in Renaissance documentation.) Name of the course where the student tested.
+
+          - name: ClassRenaissanceID
+            description: Internal Renaissance ID for the class
+
+          - name: ClassSourcedID
+            description: Internal ID for the class used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: ClassCode
+            description: ID of the class where the student tested
+
+          - name: GroupID
+            description: ID of the group where the student tested
+
+          - name: GroupOrClassName
+            description: Name of the class or group where the student tested
+
+          - name: TeacherRenaissanceID
+            description: Internal Renaissance ID for the teacher
+
+          - name: StaffUniqueId
+            description: (TeacherSourceID in Renaissance documentation.) Internal ID for the class used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: TeacherIdentifier
+            description: Internal teacher ID from PowerSchool
+
+          - name: TeacherUserID
+            description: ID in Renaissance of the teacher where the student tested.
+
+          - name: TeacherStateID
+            description: State ID of the teacher where the student tested.
+
+          - name: StaffEmail
+            description: (TeacherEmail in Renaissance documentation.) Teacher's email address in Renaissance
+
+          - name: StaffFirstName
+            description: (TeacherFirstName in Renaissance documentation.) Teacher's first name where the student tested
+
+          - name: StaffMiddleName
+            description: (TeacherMiddleName in Renaissance documentation.) Teacher's middle name where the student tested
+
+          - name: StaffLastSurname
+            description: (TeacherLastName in Renaissance documentation.) Teacher's last name where the student tested
+
+          - name: AssessmentID
+            description: Unique internal GUID that is sequentially assigned to each Star Math test taken.
+
+          - name: LaunchDate
+            description: Date the assessment was started. Reported as UTC (Coordinated Universal Time)
+
+          - name: CompletedDate
+            description: Date the assessment was completed. Reported as UTC (Coordinated Universal Time)
+
+          - name: CompletedDateLocal
+            description: CompletedDate converted to the time zone configured for the site where the assessment was taken
+
+          - name: AssessmentNumber
+            description: A count of the student's completed Star Math assessments (e.g 1st test of the year=1, 2nd test=2, etc.)
+
+          - name: AssessmentType
+            description: The type of test taken. Either Enterprise, Non-Enterprise, Algebra, Geometry, or Progress Monitoring. Users can mark a test as Progress Monitoring test within the software; any other Enterprise tests taken should be considered a Benchmark test.
+
+          - name: AssessmentStatus
+            description: Star Math test status (active or deactivated)
+
+          - name: DeactivationReason
+            description: The reason a test was deactivated in the product
+
+          - name: GradePlacement
+            description: Student's grade placement at the time of the Star Math test in the form of Grade.Months\Days (e.g. 0.00-12.01)
+
+          - name: Grade
+            description: Grade level of the assessment taken (this may be adjusted in Renaissance)
+
+          - name: ExtraTime
+            description: Yes if the student was given extra time to complete the test.
+
+          - name: Audio
+            description: (Unknown)
+
+          - name: ScaledScore
+            description: Scaled Score of student's Star Math test (0-1400) using the Enterprise Scale
+
+          - name: StandardErrorOfMeasurement
+            description: Standard error of measurement (SEM) for the Scaled Score
+
+          - name: RaschScore
+            description: A Rasch score is the final score a student receives if a test is scored using the Rasch model, one of several item response theory (IRT) models
+
+          - name: UnifiedScore
+            description: The Unified Scale score range applies to both English and Spanish versions of the Star programs and ranges from 0 to approximately 1400; Star Early Literacy scores range from 200-1100 and Star Reading and Math range from 600-1400
+
+          - name: PartnershipForAssessmentOfReadinessForCollegeAndCareers
+            description: PARCC scores will populate when available. Scale used on Partnership for Assessment of Readiness for College and Careers (PARCC) ranges from 1-5. Only applicable to grades 3-10
+
+          - name: OpenGrowthScore
+            description: (Unknown)
+
+          - name: GradeEquivalent
+            description: Grade Equivalent (GE) value. Grade Equivalent scores range from 0.0 to 12.9+ and represent how a student's test performance compares with that of other students nationally. A GE score preceded by a > sign is a capped score. GE scores in excess of three grade levels above the student's actual grade level are capped. This is done to prevent the misinterpretation that students with excessively high GE scores are capable of work at those higher grade levels
+
+          - name: PercentileRank
+            description: Percentile Rank (PR) value. Norm-referenced score provides a measure of student's math ability compared to other students in the same grade nationally who obtained scores equal to or lower than the score of the student. Scores range from 1 to 99
+
+          - name: NormalCurveEquivalent
+            description: Normal Curve Equivalent (NCE). Norm-referenced score similar to percentile rank, but based on the equal interval scale. NCE scores range from 1 to 99.
+
+          - name: TotalTimeInSeconds
+            description: The time it took to take the entire test displayed in seconds
+
+          - name: TotalCorrect
+            description: Number of questions answered correctly
+
+          - name: TotalPossible
+            description: Number of questions on the assessment
+
+          - name: StudentGrowthPercentileFallFall
+            description: Student's Growth Percentile (SGP) Fall to Fall score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the first test from a prior year's Fall testing window and the assessment from the corresponding Fall date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileFallSpring
+            description: Student's Growth Percentile (SGP) Fall to Spring score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the first test from the Fall testing window and the assessment from the corresponding Spring date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileFallWinter
+            description: Student's Growth Percentile (SGP) Fall to Winter score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the first test from the Fall testing window and the most recent assessment from the corresponding Winter date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileSpringFall
+            description: Student's Growth Percentile (SGP) Spring to Fall score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the last test from a prior year's Spring testing window and the assessment from the corresponding Fall date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileSpringSpring
+            description: Student's Growth Percentile (SGP) Spring to Spring score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the last test from a prior year's Spring testing window and the assessment from the corresponding Spring date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileWinterSpring
+            description: Student's Growth Percentile (SGP) Winter to Spring score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the last test in the Winter testing window and the assessment from the corresponding Spring date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: ScreeningPeriodWindowName
+            description: Name of screening window if test is within the school's set screening windows (blank if outside of screening windows). Not the Star SGP testing window.
+
+          - name: ScreeningWindowStartDate
+            description: Start date of screening window (blank if outside of window)
+
+          - name: ScreeningWindowEndDate
+            description: End date of screening window (blank if outside of window)
+
+          - name: RenaissanceBenchmarkCategoryName
+            description: Renaissance default benchmark categories (At/Above Benchmark=At/Above 40 PR, On Watch=25-39 PR, Intervention=10-24 PR, Urgent Intervention=Below 10 PR)
+
+          - name: RenaissanceBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number (e.g. At/Above Benchmark=1, On Watch=2, Intervention=3, Urgent Intervention=4)
+
+          - name: RenaissanceBenchmarkCategoryNumberOfLevels
+            description: Number of categories that exist, based on the default Renaissance benchmarks
+
+          - name: RenaissanceBenchmarkCategoryMinPercentileRank
+            description: The minimum percentile rank for the benchmark category level
+
+          - name: RenaissanceBenchmarkCategoryMaxPercentileRank
+            description: The maximum percentile rank for the benchmark category level
+
+          - name: StateBenchmarkAssessmentName
+            description: Name of the state test the linking study was performed on
+
+          - name: StateBenchmarkCategoryName
+            description: The benchmark categories used are the benchmarks defined at the state level in the Renaissance program (e.g. Levels 1-4)
+
+          - name: StateBenchmarkProficient
+            description: Indicates whether the level (and corresponding assessment) is considered proficient as determined by the state. If student took multiple tests within a single window, only the last test in the screening window will display data.
+
+          - name: StateBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number (e.g. Level 4=1, Level 3=2, Level 2=3, Level 1=4)
+
+          - name: StateBenchmarkNumberOfCategoryLevels
+            description: Number of categories that exist, based on what the state has set as their benchmark levels
+
+          - name: StateBenchmarkMinScaledScore
+            description: The minimum scaled score for the benchmark category level
+
+          - name: StateBenchmarkMaxScaledScore
+            description: The maximum scaled score for the benchmark category level
+
+          - name: DistrictBenchmarkCategoryName
+            description: The benchmark categories used are those defined at the district level in the Renaissance program
+
+          - name: DistrictBenchmarkProficient
+            description: Indicates whether the district benchmark level (and corresponding assessment) is considered proficient.
+
+          - name: DistrictBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+
+          - name: DistrictBenchmarkNumberOfCategoryLevels
+            description: The number of the categories that exist, based on what the district set as their benchmark levels 
+
+          - name: DistrictBenchmarkMinPercentileRank
+            description: The minimum percentile rank for the benchmark category level
+
+          - name: DistrictBenchmarkMaxPercentileRank
+            description: The maximum percentile rank for the benchmark category level
+
+          - name: SchoolBenchmarkCategoryName
+            description: The benchmark categories used are those defined at the school level in the Renaissance program
+
+          - name: SchoolBenchmarkProficient
+            description: Indicates whether the school benchmark level (and corresponding assessment) is considered proficient.
+
+          - name: SchoolBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+
+          - name: SchoolBenchmarkNumberOfCategoryLevels
+            description: The number of the categories that exist, based on what the school set as their benchmark levels 
+
+          - name: SchoolBenchmarkMinPercentileRank
+            description: The minimum percentile rank for the benchmark category level
+
+          - name: SchoolBenchmarkMaxPercentileRank
+            description: The maximum percentile rank for the benchmark category level
+
+          - name: CurrentSGP
+            description: The current SGP matches the overview dashboards in product. The latest SGP. Will change with each test. Will show in each row of the extract for a student, regardless of the assessment date. There is only one current SGP value for a student at any given point in time.
+
+          - name: Quantile
+            description: A Quantile measure is used to help educators understand which skills and concepts students are ready to learn, the level of success students are expected to have with an upcoming skill or concept, and how students are growing in mathematics on a single scale across grade levels. Shown as a number with a Q after it (e.g. 750Q is 750 Quantile). Range from below 0Q to above 1400Q spanning skills and concepts taught in kindergarten through high school. Scores below 0Q are prefixed with EM for Emerging Mathematician. For these scores, the higher the number, the lower the actual score (e.g. EM200Q < EM100Q)
+
+          - name: TakenAt
+            description: Values include School, Away, or NA (unable to determine)
+
+          - name: TakenAtByIPAddress
+            description: Reflects testing location based on IP Address. If students tested within the IP range of the district they will be marked as testing within School and if outside the IP range, it will display Away. If the site did not enter an IP range, NA will be shown.
+
+          - name: StudentDisplayID
+            description: Student ID displayed within the Renaissance program. Site may choose either StudentSourcedID, StudentIdentifier, StudentUserID, or StudentStateID
+
+          - name: TeacherDisplayID
+            description: Teacher ID (same as TeacherSourcedID)
+
+          - name: SATBenchmarkCategory
+            description: SAT readiness category. Either At/Above Benchmark or Below Benchmark.
+
+          - name: ACTBenchmarkCategory
+            description: ACT readiness category. Either At/Above or Below Benchmark.
       
       - name: Reading_v2
         description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
-      
+        columns:
+
+          - name: RenaissanceClientID
+            description: Internal Renaissance customer number
+
+          - name: SchoolYear
+            description: Name of the school year in Renaissance
+
+          - name: SchoolYearStartDate
+            description: First day of the school year in Renaissance
+
+          - name: SchoolYearEndDate
+            description: Last day of the school year in Renaissance
+
+          - name: StudentRenaissanceID
+            description: Internal Renaissance ID for the student created by Renaissance
+
+          - name: StudentUniqueId
+            description: (StudentSourcedID in Renaissance documentation.) ID for the student used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: StudentIdentifier
+            description: Student Number from PowerSchool SIS
+
+          - name: StudentUserID
+            description: Specified by OneRoster and intended to contain an optional, machine-readable ID. Sometimes blank.
+
+          - name: StateUniqueId
+            description: (StudentStateID in Renaissance documentation.) California Statewide Student Identifier (SSID) 
+
+          - name: Email
+            description: (StudentEmail in Renaissance documentation.) Student's email address in Renaissance
+
+          - name: FirstName
+            description: (StudentFirstName in Renaissance documentation.) Student's first name in Renaissance
+
+          - name: MiddleName
+            description: (StudentMiddleName in Renaissance documentation.) Student's middle name in Renaissance
+
+          - name: LastSurname
+            description: (StudentLastName in Renaissance documentation.) Student's last name in Renaissance
+
+          - name: Gender
+            description: Student's gender (M for male, F for female, or U for unidentified)
+
+          - name: Birthdate
+            description: (BirthDate in Renaissance documentation.) Student's birthdate
+
+          - name: MultiRace
+            description: Yes if multiple ethnicities are selected for the student in Renaissance, No if one or no ethnicities selected
+
+          - name: HispanicOrLatino
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: AmericanIndianOrAlaskaNative
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: Asian
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: BlackOrAfricanAmerican
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: NativeHawaiianOrOtherPacificIslander
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: White
+            description: Yes if selected as ethnicity in Renaissance, No if not selected
+
+          - name: GradeLevel
+            description: (CurrentGrade in Renaissance documentation.) Student's grade enrollment in Renaissance at the time the extract was run
+
+          - name: EnrollmentStatus
+            description: Student is either currently Enrolled or Unenrolled
+
+          - name: DistrictRenaissanceID
+            description: Internal Renaissance ID for the district
+
+          - name: DistrictSourcedID
+            description: Internal ID for the district used to determine inserts, updates, and deletes when importing data from an external source.  
+
+          - name: DistrictIdentifier
+            description: Unknown District ID; possibly used to provide metadata related to the district
+
+          - name: DistrictStateID
+            description: State ID for the district, blank if not provided by the district
+
+          - name: DistrictName
+            description: Name of the district in Renaissance
+
+          - name: SchoolRenaissanceID
+            description: Internal Renaissance ID for the school
+
+          - name: SchoolId
+            description: (SchoolSourcedId in Renaissance documentation.) Internal ID for the school used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: SchoolIdentifier
+            description: ID in Renaissance for the school, blank if not provided
+
+          - name: SchoolStateID
+            description: State ID for the school, blank if not provided by the district or school
+
+          - name: NameOfInstitution
+            description: (SchoolName in Renaissance documentation.) Name of the school where the student tested.
+
+          - name: CourseRenaissanceID
+            description: Internal Renaissance ID for the course
+
+          - name: CourseSourcedID
+            description: Internal ID for the course used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: CourseCode
+            description: ID of the course where the student tested.
+
+          - name: CourseTitle
+            description: (CourseName in Renaissance documentation.) Name of the course where the student tested.
+
+          - name: ClassRenaissanceID
+            description: Internal Renaissance ID for the class
+
+          - name: ClassSourcedID
+            description: Internal ID for the class used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: ClassCode
+            description: ID of the class where the student tested
+
+          - name: GroupID
+            description: ID of the group where the student tested
+
+          - name: GroupOrClassName
+            description: Name of the class or group where the student tested
+
+          - name: TeacherRenaissanceID
+            description: Internal Renaissance ID for the teacher
+
+          - name: StaffUniqueId
+            description: (TeacherSourceID in Renaissance documentation.) Internal ID for the class used to determine inserts, updates, and deletes when importing data from an external source
+
+          - name: TeacherIdentifier
+            description: Internal teacher ID from PowerSchool
+
+          - name: TeacherUserID
+            description: ID in Renaissance of the teacher where the student tested.
+
+          - name: TeacherStateID
+            description: State ID of the teacher where the student tested.
+
+          - name: StaffEmail
+            description: (TeacherEmail in Renaissance documentation.) Teacher's email address in Renaissance
+
+          - name: StaffFirstName
+            description: (TeacherFirstName in Renaissance documentation.) Teacher's first name where the student tested
+
+          - name: StaffMiddleName
+            description: (TeacherMiddleName in Renaissance documentation.) Teacher's middle name where the student tested
+
+          - name: StaffLastSurname
+            description: (TeacherLastName in Renaissance documentation.) Teacher's last name where the student tested
+
+          - name: AssessmentID
+            description: Unique internal GUID that is sequentially assigned to each Star Reading test taken.
+
+          - name: LaunchDate
+            description: Date the assessment was started. Reported as UTC (Coordinated Universal Time)
+
+          - name: CompletedDate
+            description: Date the assessment was completed. Reported as UTC (Coordinated Universal Time)
+
+          - name: CompletedDateLocal
+            description: CompletedDate converted to the time zone configured for the site where the assessment was taken
+
+          - name: AssessmentNumber
+            description: A count of the student's completed Star Reading assessments (e.g 1st test of the year=1, 2nd test=2, etc.)
+
+          - name: AssessmentType
+            description: The type of test taken. Either Enterprise, Non-Enterprise, Progress Monitoring or Grade3 (for 3rd Grade Reading Proficiency). Users can mark a test as Progress Monitoring test within the software; any other Enterprise tests taken should be considered a Benchmark test.
+
+          - name: AssessmentStatus
+            description: Star Reading test status (active or deactivated)
+
+          - name: DeactivationReason
+            description: The reason a test was deactivated in the product
+
+          - name: GradePlacement
+            description: Student's grade placement at the time of the Star Reading test in the form of Grade.Months\Days (e.g. 0.00-12.01)
+
+          - name: Grade
+            description: Grade level of the assessment taken (this may be adjusted in Renaissance)
+
+          - name: ExtraTime
+            description: Yes if the student was given extra time to complete the test.
+
+          - name: Audio
+            description: (Unknown)
+
+          - name: ScaledScore
+            description: Scaled Score of student's Star Reading test (0-1400) using the Enterprise Scale
+
+          - name: StandardErrorOfMeasurement
+            description: Standard error of measurement (SEM) for the Scaled Score
+
+          - name: RaschScore
+            description: A Rasch score is the final score a student receives if a test is scored using the Rasch model, one of several item response theory (IRT) models
+
+          - name: UnifiedScore
+            description: The Unified Scale score range applies to both English and Spanish versions of the Star programs and ranges from 0 to approximately 1400; Star Early Literacy scores range from 200-1100 and Star Reading and Math range from 600-1400
+
+          - name: PartnershipForAssessmentOfReadinessForCollegeAndCareers
+            description: PARCC scores will populate when available. Scale used on Partnership for Assessment of Readiness for College and Careers (PARCC) ranges from 1-5. Only applicable to grades 3-10
+
+          - name: OpenGrowthScore
+            description: (Unknown)
+
+          - name: GradeEquivalent
+            description: Grade Equivalent (GE) value. Grade Equivalent scores range from 0.0 to 12.9+ and represent how a student's test performance compares with that of other students nationally. A GE score preceded by a > sign is a capped score. GE scores in excess of three grade levels above the student's actual grade level are capped. This is done to prevent the misinterpretation that students with excessively high GE scores are capable of work at those higher grade levels
+
+          - name: PercentileRank
+            description: Percentile Rank (PR) value. Norm-referenced score provides a measure of student's reading ability compared to other students in the same grade nationally who obtained scores equal to or lower than the score of the student. Scores range from 1 to 99
+
+          - name: NormalCurveEquivalent
+            description: Normal Curve Equivalent (NCE). Norm-referenced score similar to percentile rank, but based on the equal interval scale. NCE scores range from 1 to 99.
+
+          - name: InstructionalReadingLevel
+            description: Instructional Reading Level (IRL) is a criterion-referenced score that is the highest reading level at which a student is 80% proficient (or higher) at comprehending material with assistance. IRLs are Pre-Primer (PP), Primer (P), 1 through 12, Post-High School (PHS)
+
+          - name: EstimatedOralReadingFluency
+            description: Estimated Oral Reading Fluency (Est. ORF) is an estimate of the student's ability to read words quickly and accurately to comprehend test efficiently. Est. ORF is reported in correct words per minute. Only appears for grades 1-4 in Star Reading
+
+          - name: LowerZoneOfProximalDevelopment
+            description: Lower zone of proximal development range (ZPD) is the range of readability levels from which a student should select books to read; ranges from 0.0 to 5.0
+
+          - name: UpperZoneOfProximalDevelopment
+            description: Upper zone of proximal development range UPD) is the range of readability levels from which a student should select books to read; ranges from 1.0 to 13.0
+
+          - name: Lexile
+            description: Lexile ZPD is a ZPD score converted to the Lexile scale
+
+          - name: LowerLexileZoneOfProximalDevelopment
+            description: Lower zone of Lexile proximal development range
+
+          - name: UpperLexileZoneOfProximalDevelopment
+            description: Upper zone of Lexile proximal development range
+
+          - name: TotalTimeInSeconds
+            description: The time it took to take the entire test displayed in seconds
+
+          - name: TotalCorrect
+            description: Number of questions answered correctly
+
+          - name: TotalPossible
+            description: Number of questions on the assessment
+
+          - name: Grade3_AssessmentAttempts
+            description: Count of grade 3 assessment attempts
+
+          - name: Grade3_PassingStatus
+            description: Passing status of the assessment (either Pass or Fail)
+
+          - name: Grade3_PassingScore
+            description: The score that would be considered passing on the grade 3 assessment
+
+          - name: StudentGrowthPercentileFallFall
+            description: Student's Growth Percentile (SGP) Fall to Fall score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the first test from a prior year's Fall testing window and the assessment from the corresponding Fall date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileFallSpring
+            description: Student's Growth Percentile (SGP) Fall to Spring score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the first test from the Fall testing window and the assessment from the corresponding Spring date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileFallWinter
+            description: Student's Growth Percentile (SGP) Fall to Winter score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the first test from the Fall testing window and the most recent assessment from the corresponding Winter date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileSpringFall
+            description: Student's Growth Percentile (SGP) Spring to Fall score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the last test from a prior year's Spring testing window and the assessment from the corresponding Fall date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileSpringSpring
+            description: Student's Growth Percentile (SGP) Spring to Spring score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the last test from a prior year's Spring testing window and the assessment from the corresponding Spring date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: StudentGrowthPercentileWinterSpring
+            description: Student's Growth Percentile (SGP) Winter to Spring score. SGP is calculated for students who have taken at least two tests within different testing windows. At a minimum, this calculation uses the last test in the Winter testing window and the assessment from the corresponding Spring date. A second prior test score will be used when available. Will recalculate for each test taken. SGP ranges from 1-99.
+
+          - name: ScreeningPeriodWindowName
+            description: Name of screening window if test is within the school's set screening windows (blank if outside of screening windows). Not the Star SGP testing window.
+
+          - name: ScreeningWindowStartDate
+            description: Start date of screening window (blank if outside of window)
+
+          - name: ScreeningWindowEndDate
+            description: End date of screening window (blank if outside of window)
+
+          - name: RenaissanceBenchmarkCategoryName
+            description: Renaissance default benchmark categories (At/Above Benchmark=At/Above 40 PR, On Watch=25-39 PR, Intervention=10-24 PR, Urgent Intervention=Below 10 PR)
+
+          - name: RenaissanceBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number (e.g. At/Above Benchmark=1, On Watch=2, Intervention=3, Urgent Intervention=4)
+
+          - name: RenaissanceBenchmarkCategoryNumberOfLevels
+            description: Number of categories that exist, based on the default Renaissance benchmarks
+
+          - name: RenaissanceBenchmarkCategoryMinPercentileRank
+            description: The minimum percentile rank for the benchmark category level
+
+          - name: RenaissanceBenchmarkCategoryMaxPercentileRank
+            description: The maximum percentile rank for the benchmark category level
+
+          - name: StateBenchmarkAssessmentName
+            description: Name of the state test the linking study was performed on
+
+          - name: StateBenchmarkCategoryName
+            description: The benchmark categories used are the benchmarks defined at the state level in the Renaissance program (e.g. Levels 1-4)
+
+          - name: StateBenchmarkProficient
+            description: Indicates whether the level (and corresponding assessment) is considered proficient as determined by the state. If student took multiple tests within a single window, only the last test in the screening window will display data.
+
+          - name: StateBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number (e.g. Level 4=1, Level 3=2, Level 2=3, Level 1=4)
+
+          - name: StateBenchmarkNumberOfCategoryLevels
+            description: Number of categories that exist, based on what the state has set as their benchmark levels
+
+          - name: StateBenchmarkMinScaledScore
+            description: The minimum scaled score for the benchmark category level
+
+          - name: StateBenchmarkMaxScaledScore
+            description: The maximum scaled score for the benchmark category level
+
+          - name: DistrictBenchmarkCategoryName
+            description: The benchmark categories used are those defined at the district level in the Renaissance program
+
+          - name: DistrictBenchmarkProficient
+            description: Indicates whether the district benchmark level (and corresponding assessment) is considered proficient.
+
+          - name: DistrictBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+
+          - name: DistrictBenchmarkNumberOfCategoryLevels
+            description: The number of the categories that exist, based on what the district set as their benchmark levels 
+
+          - name: DistrictBenchmarkMinPercentileRank
+            description: The minimum percentile rank for the benchmark category level
+
+          - name: DistrictBenchmarkMaxPercentileRank
+            description: The maximum percentile rank for the benchmark category level
+
+          - name: SchoolBenchmarkCategoryName
+            description: The benchmark categories used are those defined at the school level in the Renaissance program
+
+          - name: SchoolBenchmarkProficient
+            description: Indicates whether the school benchmark level (and corresponding assessment) is considered proficient.
+
+          - name: SchoolBenchmarkCategoryLevel
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+
+          - name: SchoolBenchmarkNumberOfCategoryLevels
+            description: The number of the categories that exist, based on what the school set as their benchmark levels 
+
+          - name: SchoolBenchmarkMinPercentileRank
+            description: The minimum percentile rank for the benchmark category level
+
+          - name: SchoolBenchmarkMaxPercentileRank
+            description: The maximum percentile rank for the benchmark category level
+
+          - name: CurrentSGP
+            description: The current SGP matches the overview dashboards in product. The latest SGP. Will change with each test. Will show in each row of the extract for a student, regardless of the assessment date. There is only one current SGP value for a student at any given point in time.
+
+          - name: TakenAt
+            description: Values include School, Away, or NA (unable to determine)
+
+          - name: TakenAtByIPAddress
+            description: Reflects testing location based on IP Address. If students tested within the IP range of the district they will be marked as testing within School and if outside the IP range, it will display Away. If the site did not enter an IP range, NA will be shown.
+
+          - name: StudentDisplayID
+            description: Student ID displayed within the Renaissance program. Site may choose either StudentSourcedID, StudentIdentifier, StudentUserID, or StudentStateID
+
+          - name: TeacherDisplayID
+            description: Teacher ID (same as TeacherSourcedID)
+
+          - name: SATBenchmarkCategory
+            description: SAT readiness category. Either At/Above Benchmark or Below Benchmark.
+
+          - name: ACTBenchmarkCategory
+            description: ACT readiness category. Either At/Above or Below Benchmark.
+
       - name: MathSpanish_v2
         description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
       
