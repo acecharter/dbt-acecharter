@@ -1,5 +1,7 @@
 WITH
     elpac AS (
+        SELECT * FROM {{ ref('base_RD__TomsElpacTested2023')}}
+        UNION ALL
         SELECT * FROM {{ ref('base_RD__TomsElpacTested2022')}}
         UNION ALL
         SELECT * FROM {{ ref('base_RD__TomsElpacTested2021')}}
