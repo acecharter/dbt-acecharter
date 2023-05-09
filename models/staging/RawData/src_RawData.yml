@@ -427,8 +427,6 @@ sources:
         description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2023
       - name: TomsElpacTested2023Esperanza
         description: Student-level ELPAC results exported from TOMS for students tested at Esperanza in 2023
-      # - name: TomsElpacTested2023Inspire
-      #   description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2023
       - name: TomsElpacTested2023HighSchool
         description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2023
 

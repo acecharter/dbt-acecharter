@@ -2,7 +2,6 @@ WITH
     elpac AS (
         SELECT * FROM {{ ref('base_RD__TomsElpacTested2023Empower')}}
         UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2023Esperanza')}}
-        --UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2023Inspire')}}
         UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2023HighSchool')}}
     ),
 
