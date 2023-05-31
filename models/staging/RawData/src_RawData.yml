@@ -394,7 +394,14 @@ sources:
       - name: Elpac2021
       - name: Elpac2022
       - name: ElpacStudentGroups
-      
+      - name: TomsCaasppTested2023Empower
+        description: Student-level CAASPP results exported from TOMS for students tested at Empower in 2023
+      - name: TomsCaasppTested2023Esperanza
+        description: Student-level CAASPP results exported from TOMS for students tested at Esperanza in 2023
+      - name: TomsCaasppTested2023Inspire
+        description: Student-level CAASPP results exported from TOMS for students tested at Inspire in 2023
+      - name: TomsCaasppTested2023HighSchool
+        description: Student-level CAASPP results exported from TOMS for students tested at ACE High School in 2023
       - name: TomsCaasppTested2022Empower
         description: Student-level CAASPP results exported from TOMS for students tested at Empower in 2022
       - name: TomsCaasppTested2022Esperanza
@@ -403,10 +410,8 @@ sources:
         description: Student-level CAASPP results exported from TOMS for students tested at Inspire in 2022
       - name: TomsCaasppTested2022HighSchool
         description: Student-level CAASPP results exported from TOMS for students tested at ACE High School in 2022
-
       - name: TomsEthnicityCodes
         description: Race/ethnicity codes and names for Reporting Ethnicity field in TOMS CAASPP Student Data Files
-
       - name: TomsElpacTested2021Empower
         description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2021 
       - name: TomsElpacTested2021Esperanza
@@ -431,5 +436,3 @@ sources:
         description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2023
       - name: TomsElpacTested2023HighSchool
         description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2023
-
-
