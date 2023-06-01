@@ -37,7 +37,7 @@ WITH
             r.RaceEthnicity
         FROM caaspp AS c
         LEFT JOIN assessment_ids AS a
-        ON c.RecordType = a.SystemOrVendorAssessmentId
+        ON CAST(CAST(c.RecordType AS INT64) AS STRING) = a.SystemOrVendorAssessmentId
         LEFT JOIN race_ethnicity AS r
         ON c.ReportingEthnicity = r.RaceEthnicityCode
     ),
