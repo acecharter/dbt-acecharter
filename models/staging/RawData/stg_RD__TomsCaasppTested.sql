@@ -62,19 +62,19 @@ WITH
         LEFT JOIN min_met_scores AS m
         ON
             c.AceAssessmentId = m.AceAssessmentId
-            AND CAST(c.GradeAssessed AS STRING) = m.GradeLevel
+            AND c.GradeAssessed = m.GradeLevel
         LEFT JOIN min_met_scores AS m1
         ON
             c.AceAssessmentId = m1.AceAssessmentId
-            AND CAST(c.GradeAssessedMinus1 AS STRING) = m1.GradeLevel
+            AND c.GradeAssessedMinus1 = m1.GradeLevel
         LEFT JOIN min_met_scores AS m2
         ON
             c.AceAssessmentId = m2.AceAssessmentId
-            AND CAST(c.GradeAssessedMinus2 AS STRING) = m2.GradeLevel
+            AND c.GradeAssessedMinus2 = m2.GradeLevel
         LEFT JOIN min_met_scores AS m3
         ON
             c.AceAssessmentId = m3.AceAssessmentId
-            AND CAST(c.GradeAssessedMinus3 AS STRING) = m3.GradeLevel
+            AND c.GradeAssessedMinus3 = m3.GradeLevel
     )
 
 SELECT * FROM final
