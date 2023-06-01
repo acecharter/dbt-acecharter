@@ -25,7 +25,7 @@ SELECT
     CASE WHEN FosterStatus = 'Yes' THEN TRUE ELSE FALSE END AS FosterStatus,
     CASE WHEN EconomicDisadvantageStatus = 'Yes' THEN TRUE ELSE FALSE END AS EconomicDisadvantageStatus,
     CASE WHEN EconomicDisadvantageTesting = 'Yes' THEN TRUE ELSE FALSE END AS EconomicDisadvantageTesting,
-    CALPADSNPSSchoolFlag,
+    CASE WHEN CALPADSNPSSchoolFlag = 'Y' THEN TRUE ELSE FALSE END AS CALPADSNPSSchoolFlag,
     CASE WHEN HispanicorLatino = 'Yes' THEN TRUE ELSE FALSE END AS HispanicorLatino,
     CASE WHEN AmericanIndianorAlaskaNative = 'Yes' THEN TRUE ELSE FALSE END AS AmericanIndianorAlaskaNative,
     CASE WHEN Asian = 'Yes' THEN TRUE ELSE FALSE END AS Asian,
