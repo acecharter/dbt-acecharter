@@ -1,41 +1,12 @@
 WITH
-    race_ethnicity AS (
-        SELECT * FROM {{ ref('stg_RD__TomsEthnicityCodes')}}
-    ),
-
-    empower AS (
-        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2022Empower')}}
-    ),
-
-    esperanza AS (
-        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2022Esperanza')}}
-    ),
-
-    inspire AS (
-        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2022Inspire')}}
-    ),
-
-    hs AS (
-        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2022HighSchool')}}
+    caaspp AS (
+        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2023')}}
+        UNION ALL
+        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2022')}}
     ),
     
-    caaspp AS (
-            SELECT * FROM empower
-            UNION ALL
-            SELECT * FROM esperanza
-            UNION ALL
-            SELECT * FROM inspire
-            UNION ALL
-            SELECT * FROM hs
-    ),
-
-    min_met_scores AS (
-        SELECT
-            AceAssessmentId,
-            GradeLevel,
-            MinStandardMetScaleScore
-        FROM {{ ref('fct_CaasppMinMetScaleScores') }}
-        WHERE Area='Overall'
+    race_ethnicity AS (
+        SELECT * FROM {{ ref('stg_RD__TomsEthnicityCodes')}}
     ),
 
     assessment_ids AS (
@@ -47,19 +18,26 @@ WITH
         FROM {{ ref('stg_GSD__Assessments') }}
         WHERE SystemOrVendorName = 'CAASPP'
     ),
+    
+    min_met_scores AS (
+        SELECT
+            AceAssessmentId,
+            GradeLevel,
+            MinStandardMetScaleScore
+        FROM {{ ref('fct_CaasppMinMetScaleScores') }}
+        WHERE Area='Overall'
+    ),
 
-    caaspp_id_yr_added AS (
+    caaspp_id_race_added AS (
         SELECT
             a.AceAssessmentId,
             a.AceAssessmentName,
             a.AssessmentSubject,
-            2022 AS TestYear,
-            '2021-22' AS SchoolYear,
             c.*,
             r.RaceEthnicity
         FROM caaspp AS c
         LEFT JOIN assessment_ids AS a
-        ON c.RecordType = a.SystemOrVendorAssessmentId
+        ON CAST(CAST(c.RecordType AS INT64) AS STRING) = a.SystemOrVendorAssessmentId
         LEFT JOIN race_ethnicity AS r
         ON c.ReportingEthnicity = r.RaceEthnicityCode
     ),
@@ -80,7 +58,7 @@ WITH
             CAST(
                 CASE WHEN c.ScaleScoreMinus3 IS NOT NULL THEN ROUND(c.ScaleScoreMinus3 - m3.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
             ) AS DfsMinus3,
-        FROM caaspp_id_yr_added AS c
+        FROM caaspp_id_race_added AS c
         LEFT JOIN min_met_scores AS m
         ON
             c.AceAssessmentId = m.AceAssessmentId

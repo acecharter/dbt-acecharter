@@ -22,7 +22,7 @@ SELECT
     CEDSLanguageCode,
     CAST(CALPADSPrimaryLanguage AS STRING) AS CALPADSPrimaryLanguage,
     MilitaryStatus,
-    FosterStatus,
+    IFNULL(CAST(FosterStatus AS BOOL), FALSE) AS FosterStatus,
     EconomicDisadvantageStatus,
     EconomicDisadvantageTesting,
     CALPADSNPSSchoolFlag,
