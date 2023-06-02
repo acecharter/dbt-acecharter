@@ -11,9 +11,9 @@ WITH
         SELECT * FROM {{ source('RawData', 'CersInspire2223')}}
     ),
 
-    -- hs AS (
-    --     SELECT * FROM {{ source('RawData', 'CersHighSchool2223')}}
-    -- ),
+    hs AS (
+        SELECT * FROM {{ source('RawData', 'CersHighSchool2223')}}
+    ),
 
     final AS (
         SELECT * FROM empower
@@ -21,8 +21,8 @@ WITH
         SELECT * FROM esperanza
         UNION ALL
         SELECT * FROM inspire
-        -- UNION ALL
-        -- SELECT * FROM hs
+        UNION ALL
+        SELECT * FROM hs
     )
     
 SELECT DISTINCT * FROM final
