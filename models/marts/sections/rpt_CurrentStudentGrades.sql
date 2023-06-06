@@ -119,6 +119,8 @@ WITH
       e.SchoolId = st.SchoolId
       AND e.StudentUniqueId = st.StudentUniqueId
     WHERE e.Rank = 1
+    AND st.StudentUniqueId IS NOT NULL
+    AND g.StudentUniqueId IS NOT NULL
   )
 
 SELECT * FROM final
