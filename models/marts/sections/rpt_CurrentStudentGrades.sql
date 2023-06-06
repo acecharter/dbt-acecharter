@@ -85,6 +85,7 @@ WITH
       e.BeginDate AS SectionEnrollmentBeginDate,
       e.EndDate As SectionEnrollmentEndDate,
       e.IsCurrentSectionEnrollment,
+      g.SchoolYear,
       g.GradingPeriodDescriptor,
       g.GradingPeriod,
       g.GradeTypeDescriptor,

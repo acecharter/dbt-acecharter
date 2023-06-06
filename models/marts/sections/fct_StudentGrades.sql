@@ -1,6 +1,13 @@
 WITH
   grades AS (
+      SELECT * FROM {{ ref('stg_SP__CourseGrades') }}
+      UNION ALL
+      SELECT * FROM {{ ref('stg_SPA__CourseGrades_SY22') }}
+  ),
+
+  final AS (
     SELECT
+      SchoolYear,
       SchoolId,
       SessionName,
       SectionIdentifier,
@@ -20,15 +27,10 @@ WITH
       IsCurrentGradingPeriod,
       NumericGradeEarned,
       LetterGradeEarned
-    FROM {{ ref('stg_SP__CourseGrades') }}
-  ),
-
-  final_or_current_grades AS (
-    SELECT *
     FROM grades
     WHERE
       (GradeTypeDescriptor IN ('Final', 'Grading Period'))
       OR (IsCurrentCourseEnrollment = TRUE AND IsCurrentGradingPeriod = TRUE)
   )
 
-SELECT * FROM final_or_current_grades
+SELECT * FROM final
