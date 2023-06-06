@@ -22,6 +22,7 @@ WITH
       d.StudentGroupName AS StudentGroup,
       e.GradeLevel,
       e.AssessmentType,
+      e.AssessmentObjective,
       e.TotalEnrolled,
       e.TotalTestedWithScores,
       e.ReportingMethod,
