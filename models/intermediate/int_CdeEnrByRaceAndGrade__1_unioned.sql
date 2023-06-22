@@ -49,6 +49,7 @@ WITH
         WHEN Ethnicity = 'African American' THEN '6'
         WHEN Ethnicity = 'White' THEN '7'
         WHEN Ethnicity = 'Two or More Races' THEN '9'
+        ELSE 'ERROR'
       END AS RaceEthnicCode,
       'All' AS Gender,
       GR_K,
@@ -80,4 +81,3 @@ WITH
 SELECT *
 FROM final
 ORDER BY Year, EntityCode, RaceEthnicCode, Gender
-
