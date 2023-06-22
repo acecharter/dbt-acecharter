@@ -25,7 +25,7 @@ WITH
       EnrolledInStatePrivate2And4Year,
       EnrolledOutOfState4YearCollegePublicPrivate,
       EnrolledOutOfState2YearCollegePublicPrivate
-    FROM {{ ref('int_CdeCgr__merged')}}
+    FROM {{ ref('int_CdeCgr__unioned')}}
   ),
 
   final AS (

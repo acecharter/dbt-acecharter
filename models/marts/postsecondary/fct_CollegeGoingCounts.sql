@@ -1,7 +1,7 @@
 with 
   unpivoted as (
     {{ dbt_utils.unpivot(
-      relation=ref('int_CdeCgr__merged'),
+      relation=ref('int_CdeCgr__unioned'),
       cast_to='STRING',
       exclude=[
         'AcademicYear',

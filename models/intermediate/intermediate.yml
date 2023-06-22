@@ -8,6 +8,10 @@ models:
     config:
       materialized: view
 
+  - name: int_Ap__unpivoted
+    description: Combined Advanced Placement (AP) student data file data from multiple years, unpivoted so that each row corresponds with a single test result for a single student.
+
+
   - name: int_Caaspp__1_filtered
     description: >
       CAASPP research file data for the State and all Santa Clara County entities filtered to only include results for the following Demographic IDs:
@@ -58,6 +62,21 @@ models:
         tests:
           - unique
 
+  - name: int_CdeCgr__merged
+    description: Unioned CDE 12-Month and 16-Month College Going Rate (CGR) data
+
+  - name: int_CdeEnrByRaceAndGrade__1_unioned
+    description: Unioned CDE census non-school entity (i.e. district, county, state) and school grade and race/ethnicity group enrollment data.
+
+  - name: int_CdeEnrByRaceAndGrade__2_filtered
+    description: Filtered unioned CDE census grade and race/ethnicity group enrollment data, removing schools/entities not needed for ACE comparisons.
+
+  - name: int_CdeEnrByRaceAndGrade__3_unpivoted
+    description: Unpivoted filtered/unioned CDE census grade and race/ethnicity group enrollment data.
+
+  - name: int_CdeEnrBySubgroup__transformed_unioned
+    description: Unioned school and non-school entity (i.e. district, county, state) subgroup enrollment data and calculating each subgroup's the percent of total school/entity enrollment
+      
   - name: int_Cers__1_elpi_dfs_added
     description: CERS export data containing state summative and SBAC interim assessment results with EL Progress Indicator (for ELPAC) and DFS (for CAASPP) results calculated and added.
 
