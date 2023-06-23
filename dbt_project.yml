@@ -32,14 +32,15 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   ace_charter:
+    # Applies to all files under models/intermediate/
+    intermediate:
+      +materialized: table
+      
     # Applies to all files under models/marts/
     marts:
       +materialized: table
       assessments:
         +materialized: table
-
-        intermediate:
-          +materialized: view
 
       attendance:
         +materialized: table
