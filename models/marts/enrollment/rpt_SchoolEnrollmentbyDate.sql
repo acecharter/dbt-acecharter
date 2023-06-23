@@ -1,41 +1,41 @@
-WITH 
-  schools AS (
-    SELECT
+with 
+  schools as (
+    select
       SchoolYear,
       SchoolId,
       SchoolName,
       SchoolNameMid,
       SchoolNameShort
-    FROM {{ref('dim_Schools')}}
+    from {{ref('dim_Schools')}}
   ),
 
-  enrollment AS (
-    SELECT * FROM {{ref('fct_SchoolEnrollmentByDate')}}
+  enrollment as (
+    select * from {{ref('fct_SchoolEnrollmentByDate')}}
   ),
 
-  reporting_periods AS (
-    SELECT
-      e.CalendarDate,
-      p.ReportingPeriod
-    FROM enrollment AS e
-    CROSS JOIN {{ ref('stg_RD__AttendanceReportingPeriods')}} AS p
-    WHERE e.CalendarDate BETWEEN p.StartDate AND p.EndDate
-    GROUP BY 1, 2
-    ORDER BY e.CalendarDate
+  reporting_periods as (
+    select
+      enrollment.CalendarDate,
+      reporting_periods.ReportingPeriod
+    from enrollment
+    cross join {{ ref('stg_RD__AttendanceReportingPeriods')}} as reporting_periods
+    where enrollment.CalendarDate between reporting_periods.StartDate and reporting_periods.EndDate
+    group by 1, 2
+    order by enrollment.CalendarDate
   ),
 
-  final AS (
-    SELECT
-      s.*,
-      p.ReportingPeriod,
-      e.* EXCEPT(SchoolId, SchoolYear)
-    FROM schools AS s
-    RIGHT JOIN enrollment AS e
-    ON s.SchoolId = e.SchoolId
-    AND s.SchoolYear = e.SchoolYear
-    LEFT JOIN reporting_periods AS p
-    ON e.CalendarDate = p.CalendarDate
-    ORDER BY s.SchoolName, e.CalendarDate
+  final as (
+    select
+      schools.*,
+      reporting_periods.ReportingPeriod,
+      enrollment.* except(SchoolId, SchoolYear)
+    from schools
+    right join enrollment
+    on schools.SchoolId = enrollment.SchoolId
+    and schools.SchoolYear = enrollment.SchoolYear
+    left join reporting_periods
+    on enrollment.CalendarDate = reporting_periods.CalendarDate
+    order by schools.SchoolName, enrollment.CalendarDate
   )
 
-SELECT * FROM final
+select * from final
