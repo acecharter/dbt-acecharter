@@ -8,6 +8,6 @@ SELECT
     i.gradelevel AS GradeLevelId,
     i.course AS CourseId,
     DATE(u.lastActivity) AS DateLastActive,
-    DATE(u.lastModified) AS DateLastModified,
+    DATE(u.lastModified) AS DateLastModified
 FROM {{ source('Whetstone_Archive', 'Users_raw_SY22')}} AS u
 LEFT JOIN UNNEST(defaultInformation) AS i

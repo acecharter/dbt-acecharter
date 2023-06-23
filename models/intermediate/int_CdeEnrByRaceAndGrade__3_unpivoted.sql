@@ -10,6 +10,7 @@ with unpivoted as (
       'Subgroup',
       'SchoolType',
       'RaceEthnicCode',
+      'RaceEthnicity',
       'Gender'
     ],
     remove=[
@@ -38,18 +39,7 @@ enr_final as (
     EntityName,
     SchoolType,
     RaceEthnicCode,
-    case
-      when RaceEthnicCode = '0' then 'Not Reported'
-      when RaceEthnicCode = '1' then 'American Indian or Alaska Native'
-      when RaceEthnicCode = '2' then 'Asian'
-      when RaceEthnicCode = '3' then 'Pacific Islander'
-      when RaceEthnicCode = '4' then 'Filipino'
-      when RaceEthnicCode = '5' then 'Hispanic or Latino'
-      when RaceEthnicCode = '6' then 'African American'
-      when RaceEthnicCode = '7' then 'White'
-      when RaceEthnicCode = '8' then 'Multiple or No Response (pre-2009)'
-      when RaceEthnicCode = '9' then 'Two or More Races'
-    end as RaceEthnicity, 
+    RaceEthnicity,
     Gender,
     case
       when GradeLevel = 'KDGN' then 'K'

@@ -1,6 +1,6 @@
 WITH
   cgr AS (
-    SELECT * FROM {{ ref('int_CdeCgr__merged')}}
+    SELECT * FROM {{ ref('int_CdeCgr__unioned')}}
   ),
 
   entity_names AS (
