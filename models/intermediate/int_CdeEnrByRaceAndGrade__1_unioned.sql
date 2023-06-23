@@ -52,7 +52,7 @@ with
         else 'ERROR'
       end as RaceEthnicCode,
       'All' as Gender,
-      GR_K,
+      GR_K as KDGN,
       GR_1,
       GR_2,
       GR_3,
@@ -102,7 +102,7 @@ with
         else 'ERROR'
       end as RaceEthnicity, 
       Gender,
-      GR_K,
+      KDGN,
       GR_1,
       GR_2,
       GR_3,
