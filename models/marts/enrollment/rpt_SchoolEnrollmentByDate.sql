@@ -1,5 +1,5 @@
 with 
-  schools as (
+  schools AS (
     select
       SchoolYear,
       SchoolId,
@@ -9,11 +9,11 @@ with
     from {{ref('dim_Schools')}}
   ),
 
-  enrollment as (
+  enrollment AS (
     select * from {{ref('fct_SchoolEnrollmentByDate')}}
   ),
 
-  reporting_periods as (
+  reporting_periods AS (
     select
       enrollment.CalendarDate,
       reporting_periods.ReportingPeriod
@@ -24,7 +24,7 @@ with
     order by enrollment.CalendarDate
   ),
 
-  final as (
+  final AS (
     select
       schools.*,
       reporting_periods.ReportingPeriod,

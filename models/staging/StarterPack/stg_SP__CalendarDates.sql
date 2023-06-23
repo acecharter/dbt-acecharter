@@ -1,6 +1,12 @@
 WITH
     calendar_dates AS (
-        SELECT * FROM {{ source('StarterPack', 'CalendarDates')}}
+        SELECT
+            SchoolId,
+            NameOfInstitution,
+            DATE(CalendarDate) AS CalendarDate,
+            CalendarEvent,
+            CountsTowardAttendance
+        FROM {{ source('StarterPack', 'CalendarDates')}}
     ),
 
     sy AS (
