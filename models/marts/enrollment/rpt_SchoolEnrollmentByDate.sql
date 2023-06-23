@@ -28,14 +28,14 @@ with
     select
       schools.*,
       reporting_periods.ReportingPeriod,
-      enrollment.* except(SchoolId, SchoolYear)
+      e.* except(SchoolId, SchoolYear)
     from schools
-    right join enrollment
-    on schools.SchoolId = enrollment.SchoolId
-    and schools.SchoolYear = enrollment.SchoolYear
+    right join enrollment as e
+    on schools.SchoolId = e.SchoolId
+    and schools.SchoolYear = e.SchoolYear
     left join reporting_periods
-    on enrollment.CalendarDate = reporting_periods.CalendarDate
-    order by schools.SchoolName, enrollment.CalendarDate
+    on e.CalendarDate = reporting_periods.CalendarDate
+    order by schools.SchoolName, e.CalendarDate --used alias for enrollment; without alias ordering by CalendarDate results in an error
   )
 
 select * from final
