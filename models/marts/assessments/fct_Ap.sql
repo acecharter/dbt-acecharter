@@ -109,6 +109,7 @@ with
       select
         assessment_ids.AceAssessmentId,
         assessment_ids.AceAssessmentName,
+        assessment_ids.AssessmentSubject,
         case when s.SourceFileYear = CAST(AdminYear as INT64) + 2000 then 'Yes' else 'No' end as AdminYrEqualsSourceFileYr,        
         s.*,
         r.* EXCEPT(SourceFileYear, ApId)
