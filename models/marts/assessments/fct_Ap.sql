@@ -13,6 +13,7 @@ with
     select 
         AceAssessmentId,
         AssessmentNameShort as AceAssessmentName,
+        AssessmentSubject,
         SystemOrVendorAssessmentId as ExamCode
     from {{ ref('stg_GSD__Assessments') }}
     where 
@@ -79,6 +80,7 @@ with
       ay.ApId,
       ay.TestNumber,
       ay.ValueName as AdminYear,
+      concat(cast(1999 + cast(ay.ValueName as int64) as string), '-', ay.ValueName) as AssessmentSchoolYear,
       ec.ValueName as ExamCode,
       en.ExamName,
       eg.ValueName as ExamGrade,
