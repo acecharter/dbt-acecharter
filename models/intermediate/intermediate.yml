@@ -62,7 +62,7 @@ models:
         tests:
           - unique
 
-  - name: int_CdeCgr__merged
+  - name: int_CdeCgr__unioned
     description: Unioned CDE 12-Month and 16-Month College Going Rate (CGR) data
 
   - name: int_CdeEnrByRaceAndGrade__1_unioned
