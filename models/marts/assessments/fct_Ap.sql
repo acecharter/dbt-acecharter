@@ -10,6 +10,8 @@ with
 
   ay as (
     select
+      StateUniqueId,
+      StudentUniqueId,
       SourceFileYear,
       ApId,
       TestNumber,
