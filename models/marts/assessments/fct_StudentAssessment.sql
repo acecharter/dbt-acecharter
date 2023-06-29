@@ -105,7 +105,7 @@ WITH
       AssessmentSchoolYear,
       CONCAT(AceAssessmentName,'-',StateUniqueId) AS AssessmentId,
       CAST(NULL AS STRING) AS AssessmentDate,
-      CASE WHEN GradeLevel = 'Unknown' THEN CAST(NULL AS INT64) ELSE CAST(GradeLevel AS INT64) END AS GradeLevelWhenAssessed,
+      CASE WHEN GradeLevel NOT IN ('9','10','11','12') THEN CAST(NULL AS INT64) ELSE CAST(GradeLevel AS INT64) END AS GradeLevelWhenAssessed,
       GradeLevel AS AssessmentGradeLevel,
       'Overall' AS AssessmentObjective,
       'AP Score' AS ReportingMethod,
