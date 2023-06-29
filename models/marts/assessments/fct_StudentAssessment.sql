@@ -95,6 +95,25 @@ WITH
     FROM {{ ref('stg_RD__Amplify') }}
   ),
 
+  ap AS (
+    SELECT
+      AceAssessmentId,
+      AceAssessmentName AS AssessmentName,
+      AssessmentSubject,
+      StateUniqueId,
+      CASE WHEN AiCode = 54660 THEN '125617' ELSE 'ERROR' END AS TestedSchoolId,
+      AssessmentSchoolYear,
+      CONCAT(AceAssessmentName,'-',StateUniqueId) AS AssessmentId,
+      CAST(NULL AS STRING) AS AssessmentDate,
+      CASE WHEN GradeLevel NOT IN ('9','10','11','12') THEN CAST(NULL AS INT64) ELSE CAST(GradeLevel AS INT64) END AS GradeLevelWhenAssessed,
+      GradeLevel AS AssessmentGradeLevel,
+      'Overall' AS AssessmentObjective,
+      'AP Score' AS ReportingMethod,
+      'INT64' AS StudentResultDataType,
+      CAST(ExamGrade AS STRING) AS StudentResult
+    FROM {{ ref('fct_Ap') }}
+  ),
+
   unioned_results AS (
     SELECT * FROM star
     UNION ALL
@@ -103,6 +122,8 @@ WITH
     SELECT * FROM anet
     UNION ALL
     SELECT * FROM amplify
+    UNION ALL
+    SELECT * FROM ap
   ),
 
   final AS (

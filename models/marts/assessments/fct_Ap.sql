@@ -8,6 +8,18 @@ with
     from ap
   ),
 
+  
+  assessment_ids as (
+    select 
+        AceAssessmentId,
+        AssessmentNameShort as AceAssessmentName,
+        AssessmentSubject,
+        SystemOrVendorAssessmentId as ExamCode
+    from {{ ref('stg_GSD__Assessments') }}
+    where 
+        AssessmentFamilyNameShort = 'AP'
+  ),
+
   ay as (
     select
       SourceFileYear,
@@ -63,11 +75,12 @@ with
   ),
 
   results as (
-    select
+    select     
       ay.SourceFileYear,
       ay.ApId,
       ay.TestNumber,
       ay.ValueName as AdminYear,
+      concat(cast(1999 + cast(ay.ValueName as int64) as string), '-', ay.ValueName) as AssessmentSchoolYear,
       ec.ValueName as ExamCode,
       en.ExamName,
       eg.ValueName as ExamGrade,
@@ -96,6 +109,9 @@ with
 
   final as (
       select
+        assessment_ids.AceAssessmentId,
+        assessment_ids.AceAssessmentName,
+        assessment_ids.AssessmentSubject,
         case when s.SourceFileYear = CAST(AdminYear as INT64) + 2000 then 'Yes' else 'No' end as AdminYrEqualsSourceFileYr,        
         s.*,
         r.* EXCEPT(SourceFileYear, ApId)
@@ -103,6 +119,8 @@ with
       left join results as r
       on  s.ApId = r.ApId 
       and s.SourceFileYear = r.SourceFileYear
+      left join assessment_ids
+      on r.ExamCode = assessment_ids.ExamCode
   )
 
 select * from final
