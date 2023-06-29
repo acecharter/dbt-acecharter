@@ -66,6 +66,8 @@ with
     select
       ay.SourceFileYear,
       ay.ApId,
+      ay.StateUniqueId,
+      ay.StudentUniqueId,
       ay.TestNumber,
       ay.ValueName as AdminYear,
       ec.ValueName as ExamCode,
