@@ -1,13 +1,26 @@
-WITH final AS (
-    SELECT * FROM {{ ref('base_RD__Ap2018')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RD__Ap2019')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RD__Ap2020')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RD__Ap2021')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RD__Ap2022')}}
-)
+with results as (
+    select * from {{ ref('base_RD__Ap2018')}}
+    union all
+    select * from {{ ref('base_RD__Ap2019')}}
+    union all
+    select * from {{ ref('base_RD__Ap2020')}}
+    union all
+    select * from {{ ref('base_RD__Ap2021')}}
+    union all
+    select * from {{ ref('base_RD__Ap2022')}}
+),
 
-SELECT * FROM final
+ids as (
+    select * from {{ ref('stg_GSD__ApStudentIds')}}
+),
+
+final as ()
+  select
+      ids.StateUniqueId,
+      ids.StudentUniqueId,
+      results.*  
+  from results
+  left join ids
+  using (ApId)
+
+select * from final

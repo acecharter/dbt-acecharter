@@ -6,6 +6,9 @@ sources:
     database: landing-zone-acecharter
     schema: GoogleSheetData
     tables:
+      - name: ApStudentIds
+        description: A google sheet showing StateUniqueIds and StudentUniqueIds that correspond to ApIds included in ApStudentDatafiles found in RawData
+        
       - name: Assessments
         description: A google sheet listing assessments used by ACE and corresponding assessment information
         columns:
