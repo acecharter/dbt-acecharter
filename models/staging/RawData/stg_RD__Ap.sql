@@ -14,7 +14,7 @@ ids as (
     select * from {{ ref('stg_GSD__ApStudentIds')}}
 ),
 
-final as ()
+final as (
   select
       ids.StateUniqueId,
       ids.StudentUniqueId,
@@ -22,5 +22,6 @@ final as ()
   from results
   left join ids
   using (ApId)
+)
 
 select * from final
