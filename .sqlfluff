@@ -26,7 +26,7 @@ aliasing = explicit
 allow_scalar = False
 
 [sqlfluff:rules:capitalisation.identifiers]
-extended_capitalisation_policy = lower
+extended_capitalisation_policy = pascal
 
 [sqlfluff:rules:capitalisation.functions]
 capitalisation_policy = lower
