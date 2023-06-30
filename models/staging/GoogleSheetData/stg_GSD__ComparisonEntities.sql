@@ -1,13 +1,13 @@
-SELECT
-    CASE EntityType
-        WHEN 'State' THEN FORMAT("%02d", EntityCode)
-        WHEN 'County' THEN FORMAT("%02d", EntityCode)
-        WHEN 'District' THEN FORMAT("%05d", EntityCode)
-        WHEN 'School' THEN FORMAT("%07d", EntityCode)
-    END AS EntityCode,
+select
+    case EntityType
+        when 'State' then format('%02d', EntityCode)
+        when 'County' then format('%02d', EntityCode)
+        when 'District' then format('%05d', EntityCode)
+        when 'School' then format('%07d', EntityCode)
+    end as EntityCode,
     EntityType,
     EntityName,
     EntityNameShort,
-    FORMAT("%07d", AceComparisonSchoolCode) AS AceComparisonSchoolCode,
+    format('%07d', AceComparisonSchoolCode) as AceComparisonSchoolCode,
     Notes
-FROM {{ source('GoogleSheetData', 'ComparisonEntities')}}
+from {{ source('GoogleSheetData', 'ComparisonEntities') }}

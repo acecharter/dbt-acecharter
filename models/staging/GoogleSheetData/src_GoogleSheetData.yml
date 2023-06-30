@@ -1,6 +1,5 @@
 version: 2
 
-
 sources:
   - name: GoogleSheetData
     database: landing-zone-acecharter
@@ -8,11 +7,10 @@ sources:
     tables:
       - name: ApStudentIds
         description: A google sheet showing StateUniqueIds and StudentUniqueIds that correspond to ApIds included in ApStudentDatafiles found in RawData
-        
+
       - name: Assessments
         description: A google sheet listing assessments used by ACE and corresponding assessment information
         columns:
-        
           - name: AceAssessmentId
             description: Internally created primary key of the table.
             tests:
@@ -50,7 +48,6 @@ sources:
       - name: AssessmentScaleScoreRanges
         description: A google sheet containing assessment- and grade-specific scale score ranges for assessments used by ACE.
         columns:
-
           - name: "AceAssessmentId || '-' || Area || '-' || GradeLevel"
             description: Table does not have a primary key, but the combination of these columns should be unique
             tests:
@@ -88,24 +85,23 @@ sources:
 
           - name: Level3Max
             description: Maximum scale score within Level 3 range
-            
+
           - name: Level4Min
             description: Minimum scale score within Level 4 range; ('N/A' if not applicable)
           - name: Notes
 
-
       - name: CaDashCodes
-        description: Generic codes and corresponding values (i.e. codes/values that are consistent across all indicators) for certain fields in California School Dashboard files as documented on record layout pages found at https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp. 
+        description: Generic codes and corresponding values (i.e. codes/values that are consistent across all indicators) for certain fields in California School Dashboard files as documented on record layout pages found at https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp.
 
       - name: CdeEnrByRaceAndGradeEntities
         description: Official CDE census non-school entity (i.e. district, county, state) enrollment data for grade and race/ethnicity groups copied from Enrollment by Ethnicity and Grade report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
-      
+
       - name: CdeEnrBySubgroupEntities
         description: Official CDE census non-school entity (i.e. district, county, state) enrollment data for key student groups copied from Enrollment by Subgroup report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
-      
+
       - name: CdeEnrBySubgroupSchools
         description: Official CDE census school enrollment data for key student groups copied from School Enrollment by Subgroup report found under Annual Enrollment data on CDE Dataquest website (https://dq.cde.ca.gov/dataquest/dataquest.asp).
-                
+
       - name: CdeReportingCategories
         description: Student group reporting category codes and descriptors used in many CDE downloadable data files.
         columns:
@@ -126,7 +122,7 @@ sources:
             tests:
               - not_null
               - accepted_values:
-                  values: ['State', 'County', 'District', 'School']
+                  values: ["State", "County", "District", "School"]
 
           - name: EntityName
             description: Full entity name
@@ -139,12 +135,11 @@ sources:
               - not_null
 
           - name: AceComparisonSchoolCode
-            description: ACE school state-assigned school code for school to be compared to the specified entity 
+            description: ACE school state-assigned school code for school to be compared to the specified entity
             tests:
               - not_null
 
           - name: Notes
-
 
       - name: CourseSubjects
         description: A google sheet containing courses categorized by academic subject.
@@ -189,7 +184,7 @@ sources:
             description: Name of the table that is manually maintained
           - name: DateOfLastUpdate
             description: Date that each listed table was last updated
-       
+
       - name: RenStarGradePlacementByDayRange
         description: List of Renaissance Star Grade Placement (GP) decimal values and corresponding assessment date info. Used to calculate GP for 20-21 Star Results
 

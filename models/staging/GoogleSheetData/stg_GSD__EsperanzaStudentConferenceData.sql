@@ -1,5 +1,5 @@
 select
-    CAST(Student_ID as STRING) as StudentUniqueId,
+    cast(Student_ID as string) as StudentUniqueId,
     _2022_SBAC_ELA as SbacElaDfs22,
     ELA_Benchmark_Q1 as ElaDfsQ1,
     ELA_Benchmark_Q2 as ElaDfsQ2,
@@ -12,4 +12,4 @@ select
     Math_Benchmark_Q3 as MathDfsQ3,
     Zearn,
     Khan
-from {{ source('GoogleSheetData', 'EsperanzaStudentConferenceData')}}
+from {{ source('GoogleSheetData', 'EsperanzaStudentConferenceData') }}

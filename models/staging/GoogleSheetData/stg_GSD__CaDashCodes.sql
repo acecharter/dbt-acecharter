@@ -1,1 +1,1 @@
-SELECT * FROM {{ source('GoogleSheetData', 'CaDashCodes')}}
+select * from {{ source('GoogleSheetData', 'CaDashCodes') }}
