@@ -9,34 +9,34 @@ WITH
     SELECT
       AceAssessmentId,
       AceAssessmentName,
-      school_year AS Year,
-      CONCAT(CAST(school_year AS STRING), "-", CAST(school_year - 1999 AS STRING)) AS SchoolYear,
+      SchoolYear AS Year,
+      CONCAT(CAST(SchoolYear AS STRING), "-", CAST(SchoolYear - 1999 AS STRING)) AS SchoolYear,
       StateSchoolCode,
-      school_name AS SchoolName,
-      CAST(sas_id AS STRING) AS StateUniqueId,
-      CAST(sis_id AS STRING) AS StudentUniqueId,
-      student_first_name AS FirstName,
-      student_middle_name AS MiddleName,
-      student_last_name AS LastName,
-      CAST(enrollment_grade AS INT64) AS GradeLevel,
+      SchoolName,
+      CAST(SasId AS STRING) AS StateUniqueId,
+      CAST(SisId AS STRING) AS StudentUniqueId,
+      StudentFirstName AS FirstName,
+      StudentMiddleName AS MiddleName,
+      StudentLastName AS LastName,
+      CAST(EnrollmentGrade AS INT64) AS GradeLevel,
       CASE
-        WHEN course = 'english_i' THEN 'English I'
-        WHEN course = 'english_ii' THEN 'English II'
-        WHEN course = 'english_iii' THEN 'English III'
-        WHEN course = 'algebra_i' THEN 'Algebra I'
-        WHEN course = 'geometry' THEN 'Geometry'
-        ELSE course
+        WHEN Course = 'english_i' THEN 'English I'
+        WHEN Course = 'english_ii' THEN 'English II'
+        WHEN Course = 'english_iii' THEN 'English III'
+        WHEN Course = 'algebra_i' THEN 'Algebra I'
+        WHEN Course = 'geometry' THEN 'Geometry'
+        ELSE Course
       END AS Course,
-      period AS Period,
-      teacher_first_name AS TeacherFirstName,
-      teacher_last_name AS TeacherLastName,
-      cycle AS Cycle,
-      subject AS Subject,
-      assessment_id AS AssessmentId,
-      assessment_name AS AssessmentName,
-      SUM(points_received) AS PointsReceived,
-      SUM(points_possible) AS PointsPossible,
-      ROUND(SUM(points_received)/SUM(points_possible), 2) AS Score
+      Period,
+      TeacherFirstName,
+      TeacherLastName,
+      Cycle,
+      Subject,
+      AssessmentId,
+      AssessmentName,
+      SUM(PointsReceived) AS PointsReceived,
+      SUM(PointsPossible) AS PointsPossible,
+      ROUND(SUM(PointsReceived)/SUM(PointsPossible), 2) AS Score
     FROM anet_m
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
   )

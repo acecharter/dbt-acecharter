@@ -5,7 +5,7 @@ templater = dbt
 runaway_limit = 10
 max_line_length = 80
 indent_unit = space
-exclude_rules = ST06
+exclude_rules = structure.column_order, capitalisation.identifiers
 
 [sqlfluff:indentation]
 tab_space_size = 4
@@ -28,9 +28,6 @@ allow_scalar = False
 
 [sqlfluff:rules:ambiguous.column_references]  # Number in group by
 group_by_and_order_by_style = implicit
-
-[sqlfluff:rules:capitalisation.identifiers]
-extended_capitalisation_policy = pascal
 
 [sqlfluff:rules:capitalisation.functions]
 extended_capitalisation_policy = lower
