@@ -1,28 +1,29 @@
-SELECT
-    CAST(cds AS STRING) AS Cds,
-    rtype AS RType,
-    schoolname AS SchoolName,
-    districtname AS DistrictName,
-    countyname AS CountyName,
-    charter_flag AS CharterFlag,
-    coe_flag AS CoeFlag,
-    dass_flag AS DassFlag,
-    studentgroup AS StudentGroup,
-    currnumer AS CurrNumer,
-    currdenom AS CurrDenom,
-    currstatus AS CurrStatus,
-    priornumer AS PriorNumer,
-    priordenom AS PriorDenom,
-    priorstatus AS PriorStatus,
-    fiveyrnumer AS FiveYrNumer,
-    safetynet AS SafetyNet,
-    change AS Change,
-    statuslevel AS StatusLevel,
-    changelevel AS ChangeLevel,
-    color AS Color,
-    box AS Box,
-    reportingyear AS ReportingYear
-FROM {{ source('RawData', 'CaDashGrad2019')}}
-WHERE 
+select
+    cast(cds as string) as Cds,
+    rtype as RType,
+    schoolname as SchoolName,
+    districtname as DistrictName,
+    countyname as CountyName,
+    charter_flag as CharterFlag,
+    coe_flag as CoeFlag,
+    dass_flag as DassFlag,
+    studentgroup as StudentGroup,
+    currnumer as CurrNumer,
+    currdenom as CurrDenom,
+    currstatus as CurrStatus,
+    priornumer as PriorNumer,
+    priordenom as PriorDenom,
+    priorstatus as PriorStatus,
+    fiveyrnumer as FiveYrNumer,
+    safetynet as SafetyNet,
+    change as Change,
+    statuslevel as StatusLevel,
+    changelevel as ChangeLevel,
+    color as Color,
+    box as Box,
+    reportingyear as ReportingYear
+from {{ source('RawData', 'CaDashGrad2019') }}
+where
     rtype = 'X'
-    OR SUBSTR(CAST(cds AS STRING),1,7) = '4369427' --ESUHSD (includes ACE Charter High)
+    --ESUHSD (includes ACE Charter High)
+    or substr(cast(cds as string), 1, 7) = '4369427'
