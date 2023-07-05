@@ -1,13 +1,13 @@
-SELECT
-    CAST(RecordType AS STRING) AS RecordType,
-    CAST(SSID AS STRING) AS SSID,
+select
+    cast(RecordType as string) as RecordType,
+    cast(SSID as string) as SSID,
     StudentLastName,
     StudentFirstName,
     StudentMiddleName,
     DateofBirth,
     Gender,
-    CAST(CAST(GradeAssessed AS INT64) AS STRING) AS GradeAssessed,
-    CAST(CAST(RIGHT(CAST(CALPADSSchoolCode AS STRING), 7) AS INT64) AS STRING) AS CALPADSSchoolCode,
+    cast(cast(GradeAssessed as int64) as string) as GradeAssessed,
+    cast(cast(right(cast(CALPADSSchoolCode as string), 7) as int64) as string) as CALPADSSchoolCode,
     CALPADSSchoolName,
     Section504Status,
     CALPADSIDEAIndicator,
@@ -20,9 +20,9 @@ SELECT
     EnrollmentEffectiveDate,
     ELAS,
     CEDSLanguageCode,
-    CAST(CALPADSPrimaryLanguage AS STRING) AS CALPADSPrimaryLanguage,
+    cast(CALPADSPrimaryLanguage as string) as CALPADSPrimaryLanguage,
     MilitaryStatus,
-    IFNULL(CAST(FosterStatus AS BOOL), FALSE) AS FosterStatus,
+    coalesce(cast(FosterStatus as bool), false) as FosterStatus,
     EconomicDisadvantageStatus,
     EconomicDisadvantageTesting,
     CALPADSNPSSchoolFlag,
@@ -34,30 +34,34 @@ SELECT
     BlackorAfricanAmerican,
     White,
     TwoorMoreRaces,
-    CAST(ReportingEthnicity AS STRING) AS ReportingEthnicity,
-    CAST(CAST(RIGHT(CAST(FinalTestedSchoolCode AS STRING), 7) AS INT64) AS STRING) AS FinalTestedSchoolCode,
+    cast(ReportingEthnicity as string) as ReportingEthnicity,
+    cast(
+        cast(
+            right(cast(FinalTestedSchoolCode as string), 7) as int64
+        ) as string
+    ) as FinalTestedSchoolCode,
     StudentExitCode,
     StudentExitWithdrawalDate,
     StudentRemovedCALPADSFileDate,
     ConditionCode,
-    CAST(Attemptedness AS STRING) AS Attemptedness,
+    cast(Attemptedness as string) as Attemptedness,
     ScoreStatus,
-    CASE
-        WHEN CAST(IncludeIndicator AS STRING) = 'true' THEN 'Y'
-        WHEN CAST(IncludeIndicator AS STRING) = 'false' THEN 'N'
-        ELSE CAST(IncludeIndicator AS STRING)
-    END AS IncludeIndicator,
-    CAST(LexileorQuantileMeasure AS STRING) AS LexileorQuantileMeasure,
-    CAST(GrowthScore AS STRING) AS GrowthScore,
-    CAST(ScaleScore AS INT64) AS ScaleScore,
-    CAST(AchievementLevels AS INT64) AS AchievementLevels,
-    CAST(CAST(GradeAssessedMinus1 AS INT64) AS STRING) AS GradeAssessedMinus1,
-    CAST(ScaleScoreMinus1 AS INT64) AS ScaleScoreMinus1,
-    CAST(AchievementLevelMinus1 AS INT64) AS AchievementLevelMinus1,
-    CAST(CAST(GradeAssessedMinus2 AS INT64) AS STRING) AS GradeAssessedMinus2,
-    CAST(ScaleScoreMinus2 AS INT64) AS ScaleScoreMinus2,
-    CAST(AchievementLevelMinus2 AS INT64) AS AchievementLevelMinus2,
-    CAST(CAST(GradeAssessedMinus3 AS INT64) AS STRING) AS GradeAssessedMinus3,
-    CAST(ScaleScoreMinus3 AS INT64) AS ScaleScoreMinus3,
-    CAST(AchievementLevelMinus3 AS INT64) AS AchievementLevelMinus3
-FROM {{ source('RawData', 'TomsCaasppTested2022Empower')}}
+    case
+        when cast(IncludeIndicator as string) = 'true' then 'Y'
+        when cast(IncludeIndicator as string) = 'false' then 'N'
+        else cast(IncludeIndicator as string)
+    end as IncludeIndicator,
+    cast(LexileorQuantileMeasure as string) as LexileorQuantileMeasure,
+    cast(GrowthScore as string) as GrowthScore,
+    cast(ScaleScore as int64) as ScaleScore,
+    cast(AchievementLevels as int64) as AchievementLevels,
+    cast(cast(GradeAssessedMinus1 as int64) as string) as GradeAssessedMinus1,
+    cast(ScaleScoreMinus1 as int64) as ScaleScoreMinus1,
+    cast(AchievementLevelMinus1 as int64) as AchievementLevelMinus1,
+    cast(cast(GradeAssessedMinus2 as int64) as string) as GradeAssessedMinus2,
+    cast(ScaleScoreMinus2 as int64) as ScaleScoreMinus2,
+    cast(AchievementLevelMinus2 as int64) as AchievementLevelMinus2,
+    cast(cast(GradeAssessedMinus3 as int64) as string) as GradeAssessedMinus3,
+    cast(ScaleScoreMinus3 as int64) as ScaleScoreMinus3,
+    cast(AchievementLevelMinus3 as int64) as AchievementLevelMinus3
+from {{ source('RawData', 'TomsCaasppTested2022Empower') }}
