@@ -66,7 +66,7 @@ caaspp_filtered as (
 caaspp_sy_and_dfs_added as (
     select
         caaspp_filtered.*,
-        concat( cast(caaspp_filtered.TestYear - 1 as string), '-', cast(caaspp_filtered.TestYear - 2000 as string) ) as SchoolYear,
+        concat(cast(caaspp_filtered.TestYear - 1 as string), '-', cast(caaspp_filtered.TestYear - 2000 as string) ) as SchoolYear,
         cast(
             case when caaspp_filtered.MeanScaleScore is not null then round(caaspp_filtered.MeanScaleScore - min_met_scores.MinStandardMetScaleScore, 1) else null end as string
         ) as MeanDistancefromStandard
