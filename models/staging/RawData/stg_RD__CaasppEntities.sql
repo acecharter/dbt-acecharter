@@ -1,53 +1,53 @@
-WITH unioned AS (
-    SELECT * FROM {{ source('RawData', 'CaasppEntities2015')}}
-    UNION ALL
-    SELECT * FROM {{ source('RawData', 'CaasppEntities2016')}}
-    UNION ALL
-    SELECT * FROM {{ source('RawData', 'CaasppEntities2017')}}
-    UNION ALL
-    SELECT * FROM {{ source('RawData', 'CaasppEntities2018')}}
-    UNION ALL
-    SELECT * FROM {{ source('RawData', 'CaasppEntities2019')}}
-    UNION ALL
-    SELECT
-        * EXCEPT (Zip_Code),
-        CAST(Zip_Code AS STRING) AS Zip_Code
-    FROM {{ source('RawData', 'CaasppEntities2021')}}
+with unioned as (
+    select * from {{ source('RawData', 'CaasppEntities2015') }}
+    union all
+    select * from {{ source('RawData', 'CaasppEntities2016') }}
+    union all
+    select * from {{ source('RawData', 'CaasppEntities2017') }}
+    union all
+    select * from {{ source('RawData', 'CaasppEntities2018') }}
+    union all
+    select * from {{ source('RawData', 'CaasppEntities2019') }}
+    union all
+    select
+        * except (Zip_Code),
+        cast(Zip_Code as string) as Zip_Code
+    from {{ source('RawData', 'CaasppEntities2021') }}
 ),
 
-formatted AS (
-    SELECT 
-        FORMAT("%02d", County_Code) AS CountyCode,
-        FORMAT("%05d", District_Code) AS DistrictCode,
-        FORMAT("%07d", School_Code) AS SchoolCode,
-        Test_Year AS TestYear,
-        CAST(Type_Id AS STRING) AS TypeId,
-        County_Name AS CountyName,
-        District_Name AS DistrictName,
-        School_Name AS SchoolName,
-        CASE
-            WHEN REPLACE(Zip_Code, ' ', '') = '' THEN NULL
-            ELSE CAST(Zip_Code AS STRING)
-        END AS ZipCode
-    FROM unioned
+formatted as (
+    select
+        format('%02d', County_Code) as CountyCode,
+        format('%05d', District_Code) as DistrictCode,
+        format('%07d', School_Code) as SchoolCode,
+        Test_Year as TestYear,
+        cast(Type_Id as string) as TypeId,
+        County_Name as CountyName,
+        District_Name as DistrictName,
+        School_Name as SchoolName,
+        case
+            when replace(Zip_Code, ' ', '') = '' then null
+            else cast(Zip_Code as string)
+        end as ZipCode
+    from unioned
 ),
 
-final AS (
-    SELECT
-        CASE
-            WHEN DistrictCode = '00000' THEN CountyCode
-            WHEN SchoolCode = '0000000' THEN DistrictCode
-            ELSE SchoolCode
-        END AS EntityCode,
-        CASE
-            WHEN CountyCode = '00' THEN 'State'
-            WHEN CountyCode = '43' AND DistrictCode = '00000' THEN 'County'
-            WHEN SchoolCode = '0000000' THEN 'District'
-            ELSE 'School'
-        END AS EntityType,
+final as (
+    select
+        case
+            when DistrictCode = '00000' then CountyCode
+            when SchoolCode = '0000000' then DistrictCode
+            else SchoolCode
+        end as EntityCode,
+        case
+            when CountyCode = '00' then 'State'
+            when CountyCode = '43' and DistrictCode = '00000' then 'County'
+            when SchoolCode = '0000000' then 'District'
+            else 'School'
+        end as EntityType,
         *
-    FROM formatted
-    
+    from formatted
+
 )
 
-SELECT * FROM final
+select * from final

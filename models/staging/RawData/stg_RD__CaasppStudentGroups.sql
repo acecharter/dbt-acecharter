@@ -1,5 +1,5 @@
-SELECT
-    CAST(Demographic_ID AS STRING) AS DemographicId,
-    Demographic_Name AS DemographicName,
-    Student_Group AS StudentGroup
-FROM {{ source('RawData', 'CaasppStudentGroups')}}
+select
+    cast(Demographic_ID as string) as DemographicId,
+    Demographic_Name as DemographicName,
+    Student_Group as StudentGroup
+from {{ source('RawData', 'CaasppStudentGroups') }}

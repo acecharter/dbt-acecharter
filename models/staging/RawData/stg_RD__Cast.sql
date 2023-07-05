@@ -2,118 +2,117 @@
     materialized='table'
 )}}
 
-WITH
-    assessment_ids AS (
-        SELECT 
-            AceAssessmentId,
-            AssessmentNameShort AS AceAssessmentName,
-            AssessmentSubject
-        FROM {{ ref('stg_GSD__Assessments') }}
-        WHERE AssessmentNameShort = 'CAST'
-    ),
-    
-    entities AS (
-        SELECT * FROM {{ ref('dim_Entities')}}
-    ),
-    
-    min_met_scores AS (
-        SELECT
-            AceAssessmentId,
-            GradeLevel,
-            MinStandardMetScaleScore
-        FROM {{ ref('fct_CaasppMinMetScaleScores') }}
-        WHERE Area='Overall'
-    ),
+with assessment_ids as (
+    select 
+        AceAssessmentId,
+        AssessmentNameShort as AceAssessmentName,
+        AssessmentSubject
+    from {{ ref('stg_GSD__Assessments') }}
+    where AssessmentNameShort = 'CAST'
+),
 
-    cast_unioned AS (
-        SELECT * FROM {{ ref('base_RD__Cast2019')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cast2021')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cast2022')}}
-    ),
+entities as (
+    select * from {{ ref('dim_Entities')}}
+),
 
-    cast_entity_codes_added AS (
-        SELECT
-            *,
-            CASE
-                WHEN DistrictCode = '00000' THEN CountyCode
-                WHEN SchoolCode = '0000000' THEN DistrictCode
-                ELSE SchoolCode
-            END AS EntityCode
-        FROM cast_unioned
-    ),
+min_met_scores as (
+    select
+        AceAssessmentId,
+        GradeLevel,
+        MinStandardMetScaleScore
+    from {{ ref('fct_CaasppMinMetScaleScores') }}
+    where Area='Overall'
+),
 
-    cast_filtered AS (
-        SELECT
-            a.AceAssessmentId,
-            a.AceAssessmentName,
-            a.AssessmentSubject,
-            e.*,
-            c.* EXCEPT(EntityCode, Filler)
-        FROM cast_entity_codes_added AS c
-        CROSS JOIN assessment_ids AS a
-        LEFT JOIN entities as e
-        ON c.EntityCode = e.EntityCode
-        WHERE c.EntityCode IN (SELECT EntityCode FROM entities)
-    ),
+cast_unioned as (
+    select * from {{ ref('base_RD__Cast2019')}}
+    union all
+    select * from {{ ref('base_RD__Cast2021')}}
+    union all
+    select * from {{ ref('base_RD__Cast2022')}}
+),
 
-    cast_sy_and_dfs_added AS (
-        SELECT
-            c.*,
-            CONCAT( CAST(c.TestYear - 1 AS STRING), '-', CAST(c.TestYear - 2000 AS STRING) ) AS SchoolYear,
-            CAST(
-                CASE WHEN c.MeanScaleScore IS NOT NULL THEN ROUND(c.MeanScaleScore - m.MinStandardMetScaleScore, 1) ELSE NULL END AS STRING
-            ) AS MeanDistanceFromStandard
-        FROM cast_filtered AS c
-        LEFT JOIN min_met_scores AS m
-        ON
-            c.AceAssessmentId = m.AceAssessmentId
-            AND CAST(c.GradeLevel AS STRING) = m.GradeLevel
-    ),
+cast_entity_codes_added as (
+    select
+        *,
+        case
+            when DistrictCode = '00000' then CountyCode
+            when SchoolCode = '0000000' then DistrictCode
+            else SchoolCode
+        end as EntityCode
+    from cast_unioned
+),
 
-    final AS (
-        SELECT
-            AceAssessmentId,
-            AceAssessmentName,
-            AssessmentSubject,
-            EntityCode,
-            EntityType,
-            EntityName,
-            EntityNameMid,
-            EntityNameShort,
-            CountyCode,
-            DistrictCode,
-            SchoolCode,
-            SchoolYear,
-            TestYear,
-            DemographicId,
-            TestType,
-            TotalTestedAtReportingLevel
-            TotalTestedWithScoresAtReportingLevel,
-            GradeLevel,
-            TestId,
-            StudentsEnrolled,
-            StudentsTested,
-            MeanScaleScore,
-            PctStandardExceeded,
-            PctStandardMet,
-            PctStandardMetAndAbove,
-            PctStandardNearlyMet,
-            PctStandardNotMet,
-            StudentsWithScores,
-            LifeSciencesDomainPercentBelowStandard,
-            LifeSciencesDomainPercentNearStandard,
-            LifeSciencesDomainPercentAboveStandard,
-            PhysicalSciencesDomainPercentBelowStandard,
-            PhysicalSciencesDomainPercentNearStandard,
-            PhysicalSciencesDomainPercentAboveStandard,
-            EarthAndSpaceSciencesDomainPercentBelowStandard,
-            EarthAndSpaceSciencesDomainPercentNearStandard,
-            EarthAndSpaceSciencesDomainPercentAboveStandard,
-            TypeId,
-            MeanDistanceFromStandard
-        FROM cast_sy_and_dfs_added
-    )
+cast_filtered as (
+    select
+        assessment_ids.AceAssessmentId,
+        assessment_ids.AceAssessmentName,
+        assessment_ids.AssessmentSubject,
+        entities.*,
+        cast_entity_codes_added.* except(EntityCode, Filler)
+    from cast_entity_codes_added
+    cross join assessment_ids
+    left join entities
+    on cast_entity_codes_added.EntityCode = entities.EntityCode
+    where cast_entity_codes_added.EntityCode in (select EntityCode from entities)
+),
 
-SELECT * FROM final
+cast_sy_and_dfs_added as (
+    select
+        cast_filtered.*,
+        concat(cast(cast_filtered.TestYear - 1 as string), '-', cast(cast_filtered.TestYear - 2000 as string) ) as SchoolYear,
+        cast(
+            case when cast_filtered.MeanScaleScore is not null then round(cast_filtered.MeanScaleScore - min_met_scores.MinStandardMetScaleScore, 1) else null end as string
+        ) as MeanDistanceFromStandard
+    from cast_filtered
+    left join min_met_scores
+    on
+        cast_filtered.AceAssessmentId = min_met_scores.AceAssessmentId
+        and cast(cast_filtered.GradeLevel as string) = min_met_scores.GradeLevel
+),
+
+final as (
+    select
+        AceAssessmentId,
+        AceAssessmentName,
+        AssessmentSubject,
+        EntityCode,
+        EntityType,
+        EntityName,
+        EntityNameMid,
+        EntityNameShort,
+        CountyCode,
+        DistrictCode,
+        SchoolCode,
+        SchoolYear,
+        TestYear,
+        DemographicId,
+        TestType,
+        TotalTestedAtReportingLevel
+        TotalTestedWithScoresAtReportingLevel,
+        GradeLevel,
+        TestId,
+        StudentsEnrolled,
+        StudentsTested,
+        MeanScaleScore,
+        round(PctStandardExceeded / 100, 4) as PctStandardExceeded,
+        round(PctStandardMet / 100, 4) as PctStandardMet,
+        round(PctStandardMetAndAbove / 100, 4) as PctStandardMetAndAbove,
+        round(PctStandardNearlyMet / 100, 4) as PctStandardNearlyMet,
+        round(PctStandardNotMet / 100, 4) as PctStandardNotMet,
+        StudentsWithScores,
+        round(LifeSciencesDomainPercentBelowStandard / 100, 4) as LifeSciencesDomainPercentBelowStandard,
+        round(LifeSciencesDomainPercentNearStandard / 100, 4) as LifeSciencesDomainPercentNearStandard,
+        round(LifeSciencesDomainPercentAboveStandard / 100, 4) as LifeSciencesDomainPercentAboveStandard,
+        round(PhysicalSciencesDomainPercentBelowStandard / 100, 4) as PhysicalSciencesDomainPercentBelowStandard,
+        round(PhysicalSciencesDomainPercentNearStandard / 100, 4) as PhysicalSciencesDomainPercentNearStandard,
+        round(PhysicalSciencesDomainPercentAboveStandard / 100, 4) as PhysicalSciencesDomainPercentAboveStandard,
+        round(EarthAndSpaceSciencesDomainPercentBelowStandard / 100, 4) as EarthAndSpaceSciencesDomainPercentBelowStandard,
+        round(EarthAndSpaceSciencesDomainPercentNearStandard / 100, 4) as EarthAndSpaceSciencesDomainPercentNearStandard,
+        round(EarthAndSpaceSciencesDomainPercentAboveStandard / 100, 4) as EarthAndSpaceSciencesDomainPercentAboveStandard,
+        TypeId,
+        MeanDistanceFromStandard
+    from cast_sy_and_dfs_added
+)
+
+select * from final

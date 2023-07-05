@@ -1,4 +1,4 @@
-SELECT
-    CAST(Test_ID AS STRING) AS TestId,
-    Test_Name AS TestName
-FROM {{ source('RawData', 'CaasppTests')}}
+select
+    cast(Test_ID as string) as TestId,
+    Test_Name as TestName
+from {{ source('RawData', 'CaasppTests') }}
