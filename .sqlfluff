@@ -26,6 +26,9 @@ aliasing = explicit
 [sqlfluff:rules:aliasing.expression]
 allow_scalar = False
 
+[sqlfluff:rules:ambiguous.column_references]  # Number in group by
+group_by_and_order_by_style = implicit
+
 [sqlfluff:rules:capitalisation.identifiers]
 extended_capitalisation_policy = pascal
 
@@ -38,5 +41,6 @@ capitalisation_policy = lower
 [sqlfluff:rules:capitalisation.types]
 extended_capitalisation_policy = lower
 
-[sqlfluff:rules:ambiguous.column_references]  # Number in group by
-group_by_and_order_by_style = implicit
+[sqlfluff:rules:convention.quoted_literals]
+force_enable = True
+preferred_quoted_literal_style = 'single_quotes'
