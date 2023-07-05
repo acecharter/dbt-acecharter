@@ -1,16 +1,17 @@
-SELECT
-    CAST(SchoolId AS STRING) AS SchoolId,
-    FORMAT("%014d", StateCdsCode) AS StateCdsCode,
-    FORMAT("%02d", StateCountyCode) AS StateCountyCode,
-    FORMAT("%02d", StateDistrictCode) AS StateDistrictCode,
-    FORMAT("%07d", StateSchoolCode) AS StateSchoolCode,
+select
+    cast(SchoolId as string) as SchoolId,
+    format("%014d", StateCdsCode) as StateCdsCode,
+    format("%02d", StateCountyCode) as StateCountyCode,
+    format("%02d", StateDistrictCode) as StateDistrictCode,
+    format("%07d", StateSchoolCode) as StateSchoolCode,
     SchoolNameFull,
     SchoolNameMid,
     SchoolNameShort,
     SchoolType,
     MinGrade,
     MaxGrade,
-    CONCAT(CAST(MinGrade AS STRING),'-',CAST(MaxGrade AS STRING)) AS GradesServed,
+    concat(cast(MinGrade as string), "-", cast(MaxGrade as string))
+        as GradesServed,
     Grade5,
     Grade6,
     Grade7,
@@ -19,8 +20,8 @@ SELECT
     Grade10,
     Grade11,
     Grade12,
-    CAST(YearOpened AS INT64) AS YearOpened,
+    cast(YearOpened as int64) as YearOpened,
     PreviousRenewalYears,
-    DATE(CurrentCharterTermStartDate) AS CurrentCharterTermStartDate,
-    DATE(CurrentCharterTermEndDate) AS CurrentCharterTermEndDate
-FROM {{ source('GoogleSheetData', 'Schools')}}
+    date(CurrentCharterTermStartDate) as CurrentCharterTermStartDate,
+    date(CurrentCharterTermEndDate) as CurrentCharterTermEndDate
+from {{ source('GoogleSheetData', 'Schools') }}

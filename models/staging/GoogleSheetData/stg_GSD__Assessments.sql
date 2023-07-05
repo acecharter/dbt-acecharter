@@ -1,10 +1,10 @@
-SELECT
-    CAST(AceAssessmentId AS STRING) AS AceAssessmentId,
+select
+    cast(AceAssessmentId as string) as AceAssessmentId,
     AssessmentNameShort,
     AssessmentName,
     AssessmentSubject,
     AssessmentFamilyNameShort,
     AssessmentFamilyName,
     SystemOrVendorName,
-    CAST(SystemOrVendorAssessmentId AS STRING) AS SystemOrVendorAssessmentId
-FROM {{ source('GoogleSheetData', 'Assessments')}}
+    cast(SystemOrVendorAssessmentId as string) as SystemOrVendorAssessmentId
+from {{ source('GoogleSheetData', 'Assessments') }}

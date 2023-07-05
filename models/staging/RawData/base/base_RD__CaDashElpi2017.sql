@@ -1,31 +1,31 @@
-SELECT
-    CAST(cds AS STRING) AS Cds,
-    rtype AS RType,
-    schoolname AS SchoolName,
-    districtname AS DistrictName,
-    countyname AS CountyName,
-    charter_flag AS CharterFlag,
-    CAST(coe_flag AS BOOL) AS CoeFlag,
-    curradvanced AS CurrProgressed,
-    currmaintained AS CurrMaintainPL4,
-    currnumer AS CurrNumer,
-    currdenom AS CurrDenom,
-    currstatus AS CurrStatus,
-    priornumer AS PriorNumer,
-    priordenom AS PriorDenom,
-    priorstatus AS PriorStatus,
-    change AS Change,
-    statuslevel AS StatusLevel,
-    changeLevel AS ChangeLevel,
-    color AS Color,
-    box AS Box,
-    flag50pct AS Flag50Pct,
-    nsize_met AS NSizeMet,
-    CAST(SUBSTR(reportingyear,1,4) AS INT64) AS ReportingYear
-FROM {{ source('RawData', 'CaDashElpi2017')}}
-WHERE
+select
+    cast(cds as string) as Cds,
+    rtype as RType,
+    schoolname as SchoolName,
+    districtname as DistrictName,
+    countyname as CountyName,
+    charter_flag as CharterFlag,
+    cast(coe_flag as bool) as CoeFlag,
+    curradvanced as CurrProgressed,
+    currmaintained as CurrMaintainPL4,
+    currnumer as CurrNumer,
+    currdenom as CurrDenom,
+    currstatus as CurrStatus,
+    priornumer as PriorNumer,
+    priordenom as PriorDenom,
+    priorstatus as PriorStatus,
+    change as Change,
+    statuslevel as StatusLevel,
+    changeLevel as ChangeLevel,
+    color as Color,
+    box as Box,
+    flag50pct as Flag50Pct,
+    nsize_met as NSizeMet,
+    cast(substr(reportingyear, 1, 4) as int64) as ReportingYear
+from {{ source('RawData', 'CaDashElpi2017') }}
+where
     rtype = 'X'
-    or SUBSTR(CAST(cds as STRING), 1, 7) in (
+    or substr(cast(cds as string), 1, 7) in (
         '4369369',  -- ARUSD
         '4369666',  -- SJUSD (includes ACE Inspire)
         '4369450',  -- FMSD (includes ACE Esperanza)

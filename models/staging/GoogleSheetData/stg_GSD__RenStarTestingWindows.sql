@@ -1,9 +1,9 @@
-SELECT
+select
     SchoolYear,
     TestingWindow,
-    DATE(StartDate) AS TestingWindowStartDate,
-    DATE(EndDate) AS TestingWindowEndDate,
-    DATE(AceWindowStartDate) AS AceWindowStartDate,
-    DATE(AceWindowEndDate) AS AceWindowEndDate,
-    DATE(EligibleStudentsEnrollmentDate) AS EligibleStudentsEnrollmentDate
-FROM {{ source('GoogleSheetData', 'RenStarTestingWindows')}}
+    date(StartDate) as TestingWindowStartDate,
+    date(EndDate) as TestingWindowEndDate,
+    date(AceWindowStartDate) as AceWindowStartDate,
+    date(AceWindowEndDate) as AceWindowEndDate,
+    date(EligibleStudentsEnrollmentDate) as EligibleStudentsEnrollmentDate
+from {{ source('GoogleSheetData', 'RenStarTestingWindows') }}

@@ -1,11 +1,11 @@
-SELECT
+select
     MonthName,
     MonthNumber,
     DayRange,
     DayRangeStart,
     DayRangeEnd,
-    CONCAT(
-        CAST(GradePlacementTenthsPlaceValue AS STRING),
-        CAST(GradePlacementHundredthsPlaceValue AS STRING)
-    ) AS GradePlacementDecimalValue,
-FROM {{ source('GoogleSheetData', 'RenStarGradePlacementByDayRange')}}
+    concat(
+        cast(GradePlacementTenthsPlaceValue as string),
+        cast(GradePlacementHundredthsPlaceValue as string)
+    ) as GradePlacementDecimalValue
+from {{ source('GoogleSheetData', 'RenStarGradePlacementByDayRange') }}

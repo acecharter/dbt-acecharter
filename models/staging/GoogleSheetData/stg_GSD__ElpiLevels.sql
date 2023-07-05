@@ -1,4 +1,4 @@
-SELECT
-    CAST(AceAssessmentId AS STRING) AS AceAssessmentId,
-    * EXCEPT (AceAssessmentId)
-FROM {{ source('GoogleSheetData', 'ElpiLevels')}}
+select
+    cast(AceAssessmentId as string) as AceAssessmentId,
+    * except (AceAssessmentId)
+from {{ source('GoogleSheetData', 'ElpiLevels') }}

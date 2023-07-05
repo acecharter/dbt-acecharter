@@ -1,6 +1,6 @@
-SELECT
+select
     DatasetName,
     TableName,
-    DATE(DateTableLastUpdated) AS DateTableLastUpdated
-FROM {{ source('GoogleSheetData', 'ManuallyMaintainedFilesTracker')}}
-WHERE TableName IS NOT NULL
+    date(DateTableLastUpdated) as DateTableLastUpdated
+from {{ source('GoogleSheetData', 'ManuallyMaintainedFilesTracker') }}
+where TableName is not null

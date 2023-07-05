@@ -1,0 +1,43 @@
+[sqlfluff]
+templater = dbt
+# This change (from jinja to dbt templater) will make linting slower
+# because linting will first compile dbt code into data warehouse code.
+runaway_limit = 10
+max_line_length = 80
+indent_unit = space
+exclude_rules = structure.column_order, capitalisation.identifiers
+
+[sqlfluff:indentation]
+tab_space_size = 4
+
+[sqlfluff:layout:type:comma]
+spacing_before = touch
+line_position = trailing
+
+[sqlfluff:rules:capitalisation.keywords] 
+capitalisation_policy = lower
+
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.expression]
+allow_scalar = False
+
+[sqlfluff:rules:ambiguous.column_references]  # Number in group by
+group_by_and_order_by_style = implicit
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:convention.quoted_literals]
+force_enable = True
+preferred_quoted_literal_style = single_quotes

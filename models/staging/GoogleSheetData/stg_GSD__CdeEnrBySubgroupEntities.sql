@@ -1,14 +1,14 @@
-SELECT
+select
     SchoolYear,
-    CASE
-        WHEN EntityType IN ('State', 'County') THEN FORMAT("%02d", EntityCode)
-        WHEN EntityType = 'District' THEN FORMAT("%05d", EntityCode)
-        WHEN EntityType = 'School' THEN FORMAT("%07d", EntityCode)
-    END AS EntityCode,
+    case
+        when EntityType in ('State', 'County') then format('%02d', EntityCode)
+        when EntityType = 'District' then format('%05d', EntityCode)
+        when EntityType = 'School' then format('%07d', EntityCode)
+    end as EntityCode,
     EntityType,
     EntityName,
     Subgroup,
-    Charter_School_Enrollment AS CharterSchoolEnrollment,
-    Non_Charter_School_Enrollment AS NonCharterSchoolEnrollment,
-    Total_Enrollment AS TotalEnrollment
-FROM {{ source('GoogleSheetData', 'CdeEnrBySubgroupEntities')}}
+    Charter_School_Enrollment as CharterSchoolEnrollment,
+    Non_Charter_School_Enrollment as NonCharterSchoolEnrollment,
+    Total_Enrollment as TotalEnrollment
+from {{ source('GoogleSheetData', 'CdeEnrBySubgroupEntities') }}

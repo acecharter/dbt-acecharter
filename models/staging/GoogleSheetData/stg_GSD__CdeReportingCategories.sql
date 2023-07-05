@@ -1,5 +1,5 @@
-SELECT
-    Code AS ReportingCategoryCode,
+select
+    Code as ReportingCategoryCode,
     ReportingCategory,
-    Type AS ReportingCategoryType
-FROM {{ source('GoogleSheetData', 'CdeReportingCategories')}}
+    Type as ReportingCategoryType
+from {{ source('GoogleSheetData', 'CdeReportingCategories') }}
