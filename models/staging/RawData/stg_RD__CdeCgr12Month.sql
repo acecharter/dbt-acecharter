@@ -1,24 +1,23 @@
-WITH
-    unioned AS (
-        SELECT * FROM {{ ref('base_RD__Cgr12Month2017')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cgr12Month2018')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cgr12Month2019')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cgr12Month2020')}}
+with unioned as (
+        select * from {{ ref('base_RD__Cgr12Month2017')}}
+        union all
+        select * from {{ ref('base_RD__Cgr12Month2018')}}
+        union all
+        select * from {{ ref('base_RD__Cgr12Month2019')}}
+        union all
+        select * from {{ ref('base_RD__Cgr12Month2020')}}
     ),
 
-    final AS (
-        SELECT
+    final as (
+        select
             AcademicYear,
             AggregateLevel,
-            CASE AggregateLevel
-                WHEN 'T' THEN 'State'
-                WHEN 'C' THEN 'County'
-                WHEN 'D' THEN 'District'
-                WHEN 'S' THEN 'School'
-            END AS EntityType,
+            case AggregateLevel
+                when 'T' then 'State'
+                when 'C' then 'County'
+                when 'D' then 'District'
+                when 'S' then 'School'
+            end as EntityType,
             CountyCode,
             DistrictCode,
             SchoolCode,
@@ -31,7 +30,7 @@ WITH
             CompleterType,
             HighSchoolCompleters,
             EnrolledInCollegeTotal12Months,
-            CollegeGoingRateTotal12Months,
+            round(CollegeGoingRateTotal12Months / 100, 3) as CollegeGoingRateTotal12Months,
             EnrolledInState12Months,
             EnrolledOutOfState12Months,
             NotEnrolledInCollege12Months,
@@ -41,14 +40,14 @@ WITH
             EnrolledInStatePrivate2And4Year12Months,
             EnrolledOutOfState4YearCollegePublicPrivate12Months,
             EnrolledOutOfState2YearCollegePublicPrivate12Months
-        FROM unioned
-        WHERE
+        from unioned
+        where
             AggregateLevel = 'T'
-            OR (
+            or (
                 AggregateLevel = 'C' 
-                AND CountyCode = '43'
+                and CountyCode = '43'
             )
-            OR DistrictCode = '69427'
+            or DistrictCode = '69427'
     )
 
-SELECT * FROM final
+select * from final
