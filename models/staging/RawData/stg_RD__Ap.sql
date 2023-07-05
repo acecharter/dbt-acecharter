@@ -15,13 +15,13 @@ ids as (
 ),
 
 final as (
-  select
-      ids.StateUniqueId,
-      ids.StudentUniqueId,
-      results.*  
-  from results
-  left join ids
-  using (ApId)
+    select
+        ids.StateUniqueId,
+        ids.StudentUniqueId,
+        results.*  
+    from results
+    left join ids
+    using (ApId)
 )
 
 select * from final

@@ -1,9 +1,16 @@
-SELECT
-    CONCAT(SchoolYear, ' ',LEFT(ReportingPeriodType, 1), CAST(ReportingPeriodNumber AS STRING)) AS AttendanceReportingPeriodUniqueId,
+select
+    concat(
+        SchoolYear,
+        ' ',
+        left(ReportingPeriodType, 1),
+        cast(ReportingPeriodNumber as string)
+    ) as AttendanceReportingPeriodUniqueId,
     SchoolYear,
     ReportingPeriodType,
     ReportingPeriodNumber,
-    CONCAT(LEFT(ReportingPeriodType, 1), CAST(ReportingPeriodNumber AS STRING)) AS ReportingPeriod,
-    DATE(StartDate) AS StartDate,
-    DATE(EndDate) AS EndDate
-FROM {{ source('RawData', 'AttendanceReportingPeriods')}}
+    concat(
+        left(ReportingPeriodType, 1), cast(ReportingPeriodNumber as string)
+    ) as ReportingPeriod,
+    date(StartDate) as StartDate,
+    date(EndDate) as EndDate
+from {{ source('RawData', 'AttendanceReportingPeriods') }}

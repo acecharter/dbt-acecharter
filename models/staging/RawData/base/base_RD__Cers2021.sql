@@ -1,28 +1,27 @@
-WITH
-    empower AS (
-        SELECT * FROM {{ source('RawData', 'CersEmpower2021')}}
-    ),
+with empower as (
+    select * from {{ source('RawData', 'CersEmpower2021') }}
+),
 
-    esperanza AS (
-        SELECT * FROM {{ source('RawData', 'CersEsperanza2021')}}
-    ),
+esperanza as (
+    select * from {{ source('RawData', 'CersEsperanza2021') }}
+),
 
-    inspire AS (
-        SELECT * FROM {{ source('RawData', 'CersInspire2021')}}
-    ),
+inspire as (
+    select * from {{ source('RawData', 'CersInspire2021') }}
+),
 
-    hs AS (
-        SELECT * FROM {{ source('RawData', 'CersHighSchool2021')}}
-    ),
+hs as (
+    select * from {{ source('RawData', 'CersHighSchool2021') }}
+),
 
-    final AS (
-        SELECT * FROM empower
-        UNION ALL
-        SELECT * FROM esperanza
-        UNION ALL
-        SELECT * FROM inspire
-        UNION ALL
-        SELECT * FROM hs
-    )
-    
-SELECT DISTINCT * FROM final
+final as (
+    select * from empower
+    union all
+    select * from esperanza
+    union all
+    select * from inspire
+    union all
+    select * from hs
+)
+
+select distinct * from final
