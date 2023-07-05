@@ -43,4 +43,4 @@ extended_capitalisation_policy = lower
 
 [sqlfluff:rules:convention.quoted_literals]
 force_enable = True
-preferred_quoted_literal_style = 'single_quotes'
+preferred_quoted_literal_style = single_quotes
