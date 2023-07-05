@@ -29,7 +29,7 @@ allow_scalar = False
 extended_capitalisation_policy = pascal
 
 [sqlfluff:rules:capitalisation.functions]
-capitalisation_policy = lower
+extended_capitalisation_policy = lower
 
 [sqlfluff:rules:capitalisation.literals]
 capitalisation_policy = lower
