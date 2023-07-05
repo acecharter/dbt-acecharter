@@ -7,31 +7,31 @@ select
     Gender,
     concat(
         case
-            when cast(right(format("%06d", Date_Of_Birth), 2) as int64) > 90
+            when cast(right(format('%06d', Date_Of_Birth), 2) as int64) > 90
                 then
                     cast(
-                        cast(right(format("%06d", Date_Of_Birth), 2) as int64)
+                        cast(right(format('%06d', Date_Of_Birth), 2) as int64)
                         + 1900 as string
                     )
             else
                 cast(
-                    cast(right(format("%06d", Date_Of_Birth), 2) as int64)
+                    cast(right(format('%06d', Date_Of_Birth), 2) as int64)
                     + 2000 as string
                 )
         end,
-        "-",
-        left(format("%06d", Date_Of_Birth), 2),
-        "-",
-        substr(format("%06d", Date_Of_Birth), 3, 2)
+        '-',
+        left(format('%06d', Date_Of_Birth), 2),
+        '-',
+        substr(format('%06d', Date_Of_Birth), 3, 2)
     ) as DateOfBirth,
     case Grade_Level
-        when 3 then "<9"
-        when 4 then "9"
-        when 5 then "10"
-        when 6 then "11"
-        when 7 then "12"
-        when 8 then "No longer in high school"
-        when 11 then "Unknown"
+        when 3 then '<9'
+        when 4 then '9'
+        when 5 then '10'
+        when 6 then '11'
+        when 7 then '12'
+        when 8 then 'No longer in high school'
+        when 11 then 'Unknown'
     end as GradeLevel,
     AI_Code as AiCode,
     AI_Institution_Name as AiInstitutionName,
@@ -187,14 +187,14 @@ select
     cast(Irregularity_Code__2_30 as string) as IrregularityCode230,
     cast(Student_Identifier as string) as StudentIdentifier,
     case Derived_Aggregate_Race_Ethnicity_2016_And_Forward
-        when 0 then "No Response"
-        when 1 then "American Indian/Alaska Native"
-        when 2 then "Asian"
-        when 3 then "Black/African American"
-        when 4 then "Hispanic/Latino"
-        when 8 then "Native Hawaiian or Other Pacific Islander"
-        when 9 then "White"
-        when 10 then "Other"
-        when 12 then "Two or More Races, Non-Hispanic"
+        when 0 then 'No Response'
+        when 1 then 'American Indian/Alaska Native'
+        when 2 then 'Asian'
+        when 3 then 'Black/African American'
+        when 4 then 'Hispanic/Latino'
+        when 8 then 'Native Hawaiian or Other Pacific Islander'
+        when 9 then 'White'
+        when 10 then 'Other'
+        when 12 then 'Two or More Races, Non-Hispanic'
     end as RaceEthnicity
 from {{ source('RawData', 'ApStudentDatafile2018') }}
