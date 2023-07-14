@@ -2,7 +2,7 @@ WITH
   anet_m AS (
     SELECT *
     FROM {{ ref('stg_RD__Anet')}} 
-    WHERE scored_by = 'Machine'
+    WHERE ScoredBy = 'Machine'
   ),
 
   final AS (
