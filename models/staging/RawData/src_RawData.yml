@@ -185,6 +185,9 @@ sources:
       - name: CdeCgr12Mo2020
         description: 2019-20 CDE 12-Month College Going Rate (CGR) data file (downloaded from https://www.cde.ca.gov/ds/ad/filescgr12.asp)
 
+      - name: CdeCgr12Mo2021
+        description: 2020-21 CDE 12-Month College Going Rate (CGR) data file (downloaded from https://www.cde.ca.gov/ds/ad/filescgr12.asp)
+
       - name: CdeCgr16Mo2017
         description: 2016-17 CDE 16-Month College Going Rate (CGR) data file (downloaded from https://www.cde.ca.gov/ds/ad/filescgr16.asp)
 
@@ -196,6 +199,9 @@ sources:
 
       - name: CdeCgr16Mo2020
         description: 2019-20 CDE 16-Month College Going Rate (CGR) data file (downloaded from https://www.cde.ca.gov/ds/ad/filescgr16.asp)
+
+      - name: CdeCgr16Mo2021
+        description: 2020-21 CDE 16-Month College Going Rate (CGR) data file (downloaded from https://www.cde.ca.gov/ds/ad/filescgr16.asp)
 
       - name: CdeEnr08
         description: 2008 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
