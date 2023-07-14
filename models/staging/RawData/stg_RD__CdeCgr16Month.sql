@@ -1,54 +1,53 @@
-WITH
-    unioned AS (
-        SELECT * FROM {{ ref('base_RD__Cgr16Month2017')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cgr16Month2018')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cgr16Month2019')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Cgr16Month2020')}}
-    ),
+with unioned as (
+    select * from {{ ref('base_RD__Cgr16Month2017')}}
+    union all
+    select * from {{ ref('base_RD__Cgr16Month2018')}}
+    union all
+    select * from {{ ref('base_RD__Cgr16Month2019')}}
+    union all
+    select * from {{ ref('base_RD__Cgr16Month2020')}}
+),
 
-    final AS (
-        SELECT
-            AcademicYear,
-            AggregateLevel,
-            CASE AggregateLevel
-                WHEN 'T' THEN 'State'
-                WHEN 'C' THEN 'County'
-                WHEN 'D' THEN 'District'
-                WHEN 'S' THEN 'School'
-            END AS EntityType,
-            CountyCode,
-            DistrictCode,
-            SchoolCode,
-            CountyName,
-            DistrictName,
-            SchoolName,
-            CharterSchool,
-            DASS,
-            ReportingCategory,
-            CompleterType,
-            HighSchoolCompleters,
-            EnrolledInCollegeTotal16Months,
-            CollegeGoingRateTotal16Months,
-            EnrolledInState16Months,
-            EnrolledOutOfState16Months,
-            NotEnrolledInCollege16Months,
-            EnrolledUc16Months,
-            EnrolledCsu16Months,
-            EnrolledCcc16Months,
-            EnrolledInStatePrivate2And4Year16Months,
-            EnrolledOutOfState4YearCollegePublicPrivate16Months,
-            EnrolledOutOfState2YearCollegePublicPrivate16Months
-        FROM unioned
-        WHERE
-            AggregateLevel = 'T'
-            OR (
-                AggregateLevel = 'C' 
-                AND CountyCode = '43'
-            )
-            OR DistrictCode = '69427'
-    )
+final as (
+    select
+        AcademicYear,
+        AggregateLevel,
+        case AggregateLevel
+            when 'T' then 'State'
+            when 'C' then 'County'
+            when 'D' then 'District'
+            when 'S' then 'School'
+        end as EntityType,
+        CountyCode,
+        DistrictCode,
+        SchoolCode,
+        CountyName,
+        DistrictName,
+        SchoolName,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        CompleterType,
+        HighSchoolCompleters,
+        EnrolledInCollegeTotal16Months,
+        round(CollegeGoingRateTotal16Months / 100, 3) as CollegeGoingRateTotal16Months,
+        EnrolledInState16Months,
+        EnrolledOutOfState16Months,
+        NotEnrolledInCollege16Months,
+        EnrolledUc16Months,
+        EnrolledCsu16Months,
+        EnrolledCcc16Months,
+        EnrolledInStatePrivate2And4Year16Months,
+        EnrolledOutOfState4YearCollegePublicPrivate16Months,
+        EnrolledOutOfState2YearCollegePublicPrivate16Months
+    from unioned
+    where
+        AggregateLevel = 'T'
+        or (
+            AggregateLevel = 'C' 
+            and CountyCode = '43'
+        )
+        or DistrictCode = '69427'
+)
 
-SELECT * FROM final
+select * from final
