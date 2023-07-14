@@ -6,6 +6,8 @@ with unioned as (
     select * from {{ ref('base_RD__Cgr16Month2019')}}
     union all
     select * from {{ ref('base_RD__Cgr16Month2020')}}
+    union all
+    select * from {{ ref('base_RD__Cgr16Month2021')}}
 ),
 
 final as (
