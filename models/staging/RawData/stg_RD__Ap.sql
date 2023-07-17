@@ -13,7 +13,11 @@ with results as (
 ),
 
 ids as (
-    select distinct * from {{ ref('stg_GSD__ApStudentIds')}}
+    select distinct
+        ApId,
+        StateUniqueId,
+        StudentUniqueId
+    from {{ ref('stg_GSD__ApStudentIds')}}
 ),
 
 final as (

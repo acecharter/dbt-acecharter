@@ -101,7 +101,7 @@ WITH
       AceAssessmentName AS AssessmentName,
       AssessmentSubject,
       StateUniqueId,
-      CASE WHEN AiCode = 54660 THEN '125617' ELSE 'ERROR' END AS TestedSchoolId,
+      CASE WHEN AiCode = 54660 THEN '125617' ELSE 'Unknown' END AS TestedSchoolId,
       AssessmentSchoolYear,
       CONCAT(AceAssessmentName,'-',StateUniqueId) AS AssessmentId,
       CAST(NULL AS STRING) AS AssessmentDate,
@@ -111,7 +111,7 @@ WITH
       'AP Score' AS ReportingMethod,
       'INT64' AS StudentResultDataType,
       CAST(ExamGrade AS STRING) AS StudentResult
-    FROM {{ ref('fct_Ap') }}
+    FROM {{ ref('int_Ap__3_unduplicated') }}
   ),
 
   unioned_results AS (
