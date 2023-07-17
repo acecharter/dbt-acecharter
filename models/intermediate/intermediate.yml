@@ -12,7 +12,7 @@ models:
 
   - name: int_Ap__2_pivoted
     description: Combined Advanced Placement (AP) student data file data from multiple years. Unpivoted data is pivoted so that each row corresponds with a single test result for a single student.
-  
+
   - name: int_Ap__3_unduplicated
     description: Combined Advanced Placement (AP) student data file data from multiple years. Duplicative results contained in multiple years data files is removed so each row corresponds with a single unique test result for a single student.
 
