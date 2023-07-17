@@ -33,6 +33,9 @@ sources:
       - name: ApStudentDatafile2022
         description: 2022 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
       
+      - name: ApStudentDatafile2023
+        description: 2023 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
+      
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
         columns:
