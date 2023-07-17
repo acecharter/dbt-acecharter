@@ -1,16 +1,20 @@
 version: 2
 
 models:
-
   - name: int_Anet__aggregated
     description: Aggregated Achievement Network (ANET) export data to calculated each student's score on each assessment. Raw data file contains question level information (i.e. 1 row per question).
 
     config:
       materialized: view
 
-  - name: int_Ap__unpivoted
-    description: Combined Advanced Placement (AP) student data file data from multiple years, unpivoted so that each row corresponds with a single test result for a single student.
+  - name: int_Ap__1_unpivoted
+    description: Combined Advanced Placement (AP) student data file data from multiple years. Original file is in a wide format where student results and information relating to each result (e.g. score, exam code, etc.) for current and prior years are spread over multiple columns. Data unpivoted so that each row corresponds with a single value from a single test result for a single student.
 
+  - name: int_Ap__2_pivoted
+    description: Combined Advanced Placement (AP) student data file data from multiple years. Unpivoted data is pivoted so that each row corresponds with a single test result for a single student.
+
+  - name: int_Ap__3_unduplicated
+    description: Combined Advanced Placement (AP) student data file data from multiple years. Duplicative results contained in multiple years data files is removed so each row corresponds with a single unique test result for a single student.
 
   - name: int_Caaspp__1_filtered
     description: >
@@ -76,7 +80,7 @@ models:
 
   - name: int_CdeEnrBySubgroup__transformed_unioned
     description: Unioned school and non-school entity (i.e. district, county, state) subgroup enrollment data and calculating each subgroup's the percent of total school/entity enrollment
-      
+
   - name: int_Cers__1_elpi_dfs_added
     description: CERS export data containing state summative and SBAC interim assessment results with EL Progress Indicator (for ELPAC) and DFS (for CAASPP) results calculated and added.
 
@@ -122,4 +126,3 @@ models:
 
     config:
       materialized: view
-
