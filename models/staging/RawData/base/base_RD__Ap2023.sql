@@ -197,4 +197,4 @@ select
         when 10 then 'Other'
         when 12 then 'Two or More Races, Non-Hispanic'
     end as RaceEthnicity
-from {{ source('RawData', 'ApStudentDatafile2022') }}
+from {{ source('RawData', 'ApStudentDatafile2023') }}
