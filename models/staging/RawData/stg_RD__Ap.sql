@@ -8,10 +8,12 @@ with results as (
     select * from {{ ref('base_RD__Ap2021')}}
     union all
     select * from {{ ref('base_RD__Ap2022')}}
+    union all
+    select * from {{ ref('base_RD__Ap2023')}}
 ),
 
 ids as (
-    select * from {{ ref('stg_GSD__ApStudentIds')}}
+    select distinct * from {{ ref('stg_GSD__ApStudentIds')}}
 ),
 
 final as (
