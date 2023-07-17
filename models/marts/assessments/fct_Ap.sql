@@ -4,11 +4,10 @@ with
   ),
 
   students as (
-    select distinct * EXCEPT(FieldName, TestNumber, ValueName)
+    select distinct * EXCEPT(SourceFileYear, FieldName, TestNumber, ValueName)
     from ap
   ),
 
-  
   assessment_ids as (
     select 
         AceAssessmentId,
@@ -20,7 +19,7 @@ with
         AssessmentFamilyNameShort = 'AP'
   ),
 
-  ay as (
+  admin_years as (
     select
       SourceFileYear,
       ApId,
@@ -30,7 +29,7 @@ with
     where FieldName = 'AdminYear'
   ),
 
-  ec as (
+  exam_codes as (
     select
       SourceFileYear,
       ApId,
@@ -40,7 +39,7 @@ with
     where FieldName = 'ExamCode'
   ),
 
-  eg as (
+  exam_grades as (
     select
       SourceFileYear,
       ApId,
@@ -50,7 +49,7 @@ with
     where FieldName = 'ExamGrade'
   ),
 
-  ic1 as (
+  irregularity_code_1 as (
     select
       SourceFileYear,
       ApId,
@@ -60,7 +59,7 @@ with
     where FieldName = 'IrregularityCode1'
   ),
 
-  ic2 as (
+  irregularity_code_2 as (
     select
       SourceFileYear,
       ApId,
@@ -75,52 +74,49 @@ with
   ),
 
   results as (
-    select     
-      ay.SourceFileYear,
-      ay.ApId,
-      ay.TestNumber,
-      ay.ValueName as AdminYear,
-      concat(cast(1999 + cast(ay.ValueName as int64) as string), '-', ay.ValueName) as AssessmentSchoolYear,
-      ec.ValueName as ExamCode,
-      en.ExamName,
-      eg.ValueName as ExamGrade,
-      ic1.ValueName as IrregularityCode1,
-      ic2.ValueName as IrregularityCode2
-    from ay
-    left join ec
-    on ay.ApId = ec.ApId
-    and ay.TestNumber = ec.TestNumber
-    and ay.SourceFileYear = ec.SourceFileYear
-    left join eg
-    on ay.ApId = eg.ApId
-    and ay.TestNumber = eg.TestNumber
-    and ay.SourceFileYear = eg.SourceFileYear
-    left join ic1
-    on ay.ApId = ic1.ApId
-    and ay.TestNumber = ic1.TestNumber
-    and ay.SourceFileYear = ic1.SourceFileYear
-    left join ic2
-    on ay.ApId = ic2.ApId
-    and ay.TestNumber = ic2.TestNumber
-    and ay.SourceFileYear = ic2.SourceFileYear
-    left join exam_names as en
-    on ec.ValueName = en.ExamCode
+    select distinct
+      admin_years.ApId,
+      admin_years.TestNumber,
+      admin_years.ValueName as AdminYear,
+      concat(cast(1999 + cast(admin_years.ValueName as int64) as string), '-', admin_years.ValueName) as AssessmentSchoolYear,
+      exam_codes.ValueName as ExamCode,
+      exam_names.ExamName,
+      exam_grades.ValueName as ExamGrade,
+      irregularity_code_1.ValueName as IrregularityCode1,
+      irregularity_code_2.ValueName as IrregularityCode2
+    from admin_years
+    left join exam_codes
+    on admin_years.ApId = exam_codes.ApId
+    and admin_years.TestNumber = exam_codes.TestNumber
+    and admin_years.SourceFileYear = exam_codes.SourceFileYear
+    left join exam_grades
+    on admin_years.ApId = exam_grades.ApId
+    and admin_years.TestNumber = exam_grades.TestNumber
+    and admin_years.SourceFileYear = exam_grades.SourceFileYear
+    left join irregularity_code_1
+    on admin_years.ApId = irregularity_code_1.ApId
+    and admin_years.TestNumber = irregularity_code_1.TestNumber
+    and admin_years.SourceFileYear = irregularity_code_1.SourceFileYear
+    left join irregularity_code_2
+    on admin_years.ApId = irregularity_code_2.ApId
+    and admin_years.TestNumber = irregularity_code_2.TestNumber
+    and admin_years.SourceFileYear = irregularity_code_2.SourceFileYear
+    left join exam_names
+    on exam_codes.ValueName = exam_names.ExamCode
   ),
 
   final as (
-      select
+      select distinct
         assessment_ids.AceAssessmentId,
         assessment_ids.AceAssessmentName,
-        assessment_ids.AssessmentSubject,
-        case when s.SourceFileYear = CAST(AdminYear as INT64) + 2000 then 'Yes' else 'No' end as AdminYrEqualsSourceFileYr,        
-        s.*,
-        r.* EXCEPT(SourceFileYear, ApId)
-      from students as s
-      left join results as r
-      on  s.ApId = r.ApId 
-      and s.SourceFileYear = r.SourceFileYear
+        assessment_ids.AssessmentSubject,     
+        students.*,
+        results.* EXCEPT(ApId)
+      from students
+      left join results
+      on  students.ApId = results.ApId
       left join assessment_ids
-      on r.ExamCode = assessment_ids.ExamCode
+      on results.ExamCode = assessment_ids.ExamCode
   )
 
 select * from final
