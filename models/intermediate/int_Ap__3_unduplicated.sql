@@ -2,7 +2,7 @@ with ap as (
     select
         concat(StateUniqueId,'-',AssessmentYear,'-',ExamCode) as ResultUniqueId,
         * except(SourceFileYear, TestNumber)
-    from {{ ref('int_Ap__2_repivoted') }}
+    from {{ ref('int_Ap__2_pivoted') }}
 ),
 
 current_year_results as (
