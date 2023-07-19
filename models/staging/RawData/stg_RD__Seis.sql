@@ -1,66 +1,66 @@
-WITH seis_update_dates AS (
-    SELECT
-        CASE TableName
-            WHEN 'SeisEmpower' THEN 'ACE Empower Academy'
-            WHEN 'SeisEsperanza' THEN 'ACE Esperanza Middle'
-            WHEN 'SeisInspire' THEN 'ACE Inspire Academy'
-            WHEN 'SeisHighSchool' THEN 'ACE Charter High'
-        END AS SchoolName,
+with seis_update_dates as (
+    select
+        case TableName
+            when 'SeisEmpower' then 'ACE Empower Academy'
+            when 'SeisEsperanza' then 'ACE Esperanza Middle'
+            when 'SeisInspire' then 'ACE Inspire Academy'
+            when 'SeisHighSchool' then 'ACE Charter High'
+        end as SchoolName,
         DateTableLastUpdated
-    FROM {{ source('GoogleSheetData', 'ManuallyMaintainedFilesTracker')}}
-),
-    
-seis_unioned AS (
-    SELECT
-        * EXCEPT(School_CDS_Code),
-        CAST(School_CDS_Code AS STRING) AS School_CDS_Code
-    FROM {{ source('RawData', 'SeisEmpower')}}
-    UNION ALL
-    SELECT
-        * EXCEPT(School_CDS_Code),
-        CAST(School_CDS_Code AS STRING) AS School_CDS_Code
-    FROM {{ source('RawData', 'SeisEsperanza')}}
-    UNION ALL
-    SELECT
-        * EXCEPT(School_CDS_Code),
-        CAST(School_CDS_Code AS STRING) AS School_CDS_Code
-    FROM {{ source('RawData', 'SeisInspire')}}
-    UNION ALL
-    SELECT
-        * EXCEPT(School_CDS_Code),
-        CAST(School_CDS_Code AS STRING) AS School_CDS_Code
-    FROM {{ source('RawData', 'SeisHighSchool')}}
+    from {{ source('GoogleSheetData', 'ManuallyMaintainedFilesTracker') }}
 ),
 
-seis AS (
-    SELECT
-        CAST(SEIS_ID AS STRING) AS SeisUniqueId,
-        CAST(Student_SSID AS STRING) AS StateUniqueId,
-        Last_Name AS LastName,
-        First_Name AS FirstName,
-        Date_of_Birth AS BirthDate,
-        CASE School_CDS_Code
-            WHEN '116814' THEN '0116814'
-            WHEN '125617' THEN '0125617'
-            WHEN '12924a' THEN '0129247'
-            WHEN '013165a' THEN '0131656'
-        END AS StateSchoolCode,
-        School_of_Attendance AS SchoolName,
-        Grade_Code AS GradeLevel,
-        Student_Eligibility_Status AS StudentEligibilityStatus,
-        Date_of_original_SpEd_Entry AS SpedEntryDate,
-        Disability_1_Code AS Disability1Code,
-        Disability_1 AS Disability1,
-        Disability_2_Code AS Disability2Code,
-        Disability_2 AS Disability2,
-        Date_of_Exit_from_SpEd AS SpedExitDate,
-        Student_Exited AS StudentExited
-    FROM seis_unioned
+seis_unioned as (
+    select
+        * except (School_CDS_Code),
+        cast(School_CDS_Code as string) as School_CDS_Code
+    from {{ source('RawData', 'SeisEmpower') }}
+    union all
+    select
+        * except (School_CDS_Code),
+        cast(School_CDS_Code as string) as School_CDS_Code
+    from {{ source('RawData', 'SeisEsperanza') }}
+    union all
+    select
+        * except (School_CDS_Code),
+        cast(School_CDS_Code as string) as School_CDS_Code
+    from {{ source('RawData', 'SeisInspire') }}
+    union all
+    select
+        * except (School_CDS_Code),
+        cast(School_CDS_Code as string) as School_CDS_Code
+    from {{ source('RawData', 'SeisHighSchool') }}
+),
+
+seis as (
+    select
+        cast(SEIS_ID as string) as SeisUniqueId,
+        cast(Student_SSID as string) as StateUniqueId,
+        Last_Name as LastName,
+        First_Name as FirstName,
+        Date_of_Birth as BirthDate,
+        case School_CDS_Code
+            when '116814' then '0116814'
+            when '125617' then '0125617'
+            when '12924a' then '0129247'
+            when '013165a' then '0131656'
+        end as StateSchoolCode,
+        School_of_Attendance as SchoolName,
+        Grade_Code as GradeLevel,
+        Student_Eligibility_Status as StudentEligibilityStatus,
+        Date_of_original_SpEd_Entry as SpedEntryDate,
+        Disability_1_Code as Disability1Code,
+        Disability_1 as Disability1,
+        Disability_2_Code as Disability2Code,
+        Disability_2 as Disability2,
+        Date_of_Exit_from_SpEd as SpedExitDate,
+        Student_Exited as StudentExited
+    from seis_unioned
 )
 
-SELECT
+select
     s.*,
-    d.DateTableLastUpdated AS SeisExtractDate
-FROM seis AS s
-LEFT JOIN seis_update_dates AS d
-USING (SchoolName)
+    d.DateTableLastUpdated as SeisExtractDate
+from seis as s
+left join seis_update_dates as d
+    on s.SchoolName = d.SchoolName

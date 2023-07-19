@@ -1,94 +1,92 @@
-WITH
-  entity_enr AS (
-    SELECT *      
-    FROM {{ ref('stg_GSD__CdeEnrBySubgroupEntities') }}
-  ),
+with entity_enr as (
+    select * from {{ ref('stg_GSD__CdeEnrBySubgroupEntities') }}
+),
 
-  entity_enr_charter AS (
-    SELECT
-      SchoolYear,
-      EntityCode,
-      Subgroup,
-      'Charter Schools' AS EnrollmentType,
-      CharterSchoolEnrollment AS Enrollment
-    FROM entity_enr
-  ),
+entity_enr_charter as (
+    select
+        SchoolYear,
+        EntityCode,
+        Subgroup,
+        'Charter Schools' as EnrollmentType,
+        CharterSchoolEnrollment as Enrollment
+    from entity_enr
+),
 
-  entity_enr_non_charter AS (
-    SELECT
-      SchoolYear,
-      EntityCode,
-      Subgroup,
-      'Non-Charter Schools' AS EnrollmentType,
-      NonCharterSchoolEnrollment AS Enrollment
-    FROM entity_enr
-  ),
-  
-  entity_enr_total AS (
-    SELECT
-      SchoolYear,
-      EntityCode,
-      Subgroup,
-      'All Schools' AS EnrollmentType,
-      TotalEnrollment AS Enrollment
-    FROM entity_enr
-  ),
+entity_enr_non_charter as (
+    select
+        SchoolYear,
+        EntityCode,
+        Subgroup,
+        'Non-Charter Schools' as EnrollmentType,
+        NonCharterSchoolEnrollment as Enrollment
+    from entity_enr
+),
 
-  entity_enr_unioned AS (
-    SELECT * FROM entity_enr_charter
-    UNION ALL
-    SELECT * FROM entity_enr_non_charter
-    UNION ALL
-    SELECT * FROM entity_enr_total
-  ),
+entity_enr_total as (
+    select
+        SchoolYear,
+        EntityCode,
+        Subgroup,
+        'All Schools' as EnrollmentType,
+        TotalEnrollment as Enrollment
+    from entity_enr
+),
 
-  entity_enr_all_students AS (
-    SELECT * 
-    FROM entity_enr_unioned
-    WHERE Subgroup = 'All Students'
-  ),
+entity_enr_unioned as (
+    select * from entity_enr_charter
+    union all
+    select * from entity_enr_non_charter
+    union all
+    select * from entity_enr_total
+),
 
-  entity_enr_final AS (
-    SELECT
-      u.*,
-      ROUND(u.Enrollment / a.Enrollment, 4) AS PctOfTotalEnrollment
-    FROM entity_enr_unioned AS u
-    LEFT JOIN entity_enr_all_students AS a
-    ON
-      u.SchoolYear = a.SchoolYear
-      AND u.EntityCode = a.EntityCode
-      AND u.EnrollmentType = a.EnrollmentType
-  ),
+entity_enr_all_students as (
+    select *
+    from entity_enr_unioned
+    where Subgroup = 'All Students'
+),
 
-  school_enr AS (
-    SELECT * FROM {{ ref('stg_GSD__CdeEnrBySubgroupSchools')}}
-  ),
+entity_enr_final as (
+    select
+        u.*,
+        round(u.Enrollment / a.Enrollment, 4) as PctOfTotalEnrollment
+    from entity_enr_unioned as u
+    left join entity_enr_all_students as a
+        on
+            u.SchoolYear = a.SchoolYear
+            and u.EntityCode = a.EntityCode
+            and u.EnrollmentType = a.EnrollmentType
+),
 
-  school_enr_all_students AS (
-    SELECT * 
-    FROM school_enr
-    WHERE Subgroup = 'All Students'
-  ),
+school_enr as (
+    select * from {{ ref('stg_GSD__CdeEnrBySubgroupSchools') }}
+),
 
-  school_enr_final AS (
-    SELECT
-      s.SchoolYear,
-      s.SchoolCode AS EntityCode,
-      s.Subgroup,
-      'All Schools' AS EnrollmentType,
-      s.Enrollment,
-      ROUND(s.Enrollment / a.Enrollment, 4) AS PctOfTotalEnrollment
-    FROM school_enr AS s
-    LEFT JOIN school_enr_all_students AS a
-    ON
-      s.SchoolYear = a.SchoolYear
-      AND s.SchoolCode = a.SchoolCode
-  ),
+school_enr_all_students as (
+    select *
+    from school_enr
+    where Subgroup = 'All Students'
+),
 
-  final AS (
-    SELECT * FROM entity_enr_final
-    UNION ALL
-    SELECT * FROM school_enr_final
-  )
+school_enr_final as (
+    select
+        s.SchoolYear,
+        s.SchoolCode as EntityCode,
+        s.Subgroup,
+        'All Schools' as EnrollmentType,
+        s.Enrollment,
+        round(s.Enrollment / a.Enrollment, 4) as PctOfTotalEnrollment
+    from school_enr as s
+    left join school_enr_all_students as a
+        on
+            s.SchoolYear = a.SchoolYear
+            and s.SchoolCode = a.SchoolCode
+),
 
-SELECT * FROM final
+final as (
+    select * from entity_enr_final
+    union all
+    select * from school_enr_final
+)
+
+select * from final

@@ -1,17 +1,16 @@
-WITH
-    elpac AS (
-        SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Empower')}}
-        UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Esperanza')}}
-        UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022Inspire')}}
-        UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2022HighSchool')}}
-    ),
+with elpac as (
+    select * from {{ ref('base_RD__TomsElpacTested2022Empower')}}
+    union all select * from {{ ref('base_RD__TomsElpacTested2022Esperanza')}}
+    union all select * from {{ ref('base_RD__TomsElpacTested2022Inspire')}}
+    union all select * from {{ ref('base_RD__TomsElpacTested2022HighSchool')}}
+),
 
-    final AS (
-        SELECT
-            2022 AS TestYear,
-            '2021-22' AS SchoolYear,
-            *
-        FROM elpac
-    )
+final as (
+    select
+        2022 as TestYear,
+        '2021-22' as SchoolYear,
+        *
+    from elpac
+)
 
-SELECT * FROM final
+select * from final

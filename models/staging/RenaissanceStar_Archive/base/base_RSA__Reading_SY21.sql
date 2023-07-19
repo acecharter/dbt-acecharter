@@ -1,100 +1,160 @@
-WITH
-grade_placement_2021_dates AS (
-    SELECT
-        'Star Reading Enterprise Tests' AS Activity_Type,
-        * EXCEPT (DayRangeEnd),
-        CASE
-            WHEN DayRangeEnd = 31 THEN
-                CASE
-                    WHEN MonthNumber = 2 THEN 28
-                    WHEN MonthNumber IN (4, 6, 9, 11) THEN 30
-                    ELSE DayRangeEnd
-                END
-            ELSE DayRangeEnd
-        END AS DayRangeEnd
-    FROM {{ ref('stg_GSD__RenStarGradePlacementByDayRange')}}
+with grade_placement_2021_dates as (
+    select
+        'Star Reading Enterprise Tests' as Activity_Type,
+        * except (DayRangeEnd),
+        case
+            when DayRangeEnd = 31
+                then
+                    case
+                        when MonthNumber = 2 then 28
+                        when MonthNumber in (4, 6, 9, 11) then 30
+                        else DayRangeEnd
+                    end
+            else DayRangeEnd
+        end as DayRangeEnd
+    from {{ ref('stg_GSD__RenStarGradePlacementByDayRange') }}
 ),
 
-grade_placement AS (
-    SELECT
+grade_placement as (
+    select
         *,
-        CASE
-            WHEN MonthNumber >= 8 THEN CONCAT('2020-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeStart))
-            ELSE CONCAT('2021-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeStart))
-        END AS StartDate,
-        CASE
-            WHEN MonthNumber >= 8 THEN CONCAT('2020-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeEnd))
-            ELSE CONCAT('2021-', FORMAT("%02d", MonthNumber), '-', FORMAT("%02d", DayRangeEnd))
-        END AS EndDate
-    FROM grade_placement_2021_dates
+        case
+            when
+                MonthNumber >= 8
+                then
+                    concat(
+                        '2020-',
+                        format('%02d', MonthNumber),
+                        '-',
+                        format('%02d', DayRangeStart)
+                    )
+            else
+                concat(
+                    '2021-',
+                    format('%02d', MonthNumber),
+                    '-',
+                    format('%02d', DayRangeStart)
+                )
+        end as StartDate,
+        case
+            when
+                MonthNumber >= 8
+                then
+                    concat(
+                        '2020-',
+                        format('%02d', MonthNumber),
+                        '-',
+                        format('%02d', DayRangeEnd)
+                    )
+            else
+                concat(
+                    '2021-',
+                    format('%02d', MonthNumber),
+                    '-',
+                    format('%02d', DayRangeEnd)
+                )
+        end as EndDate
+    from grade_placement_2021_dates
 ),
 
-star_reading_with_gp_added AS (
-    SELECT
+star_reading_with_gp_added as (
+    select
         s.*,
-        CAST(CONCAT(s.Current_Grade, '.', gp.GradePlacementDecimalValue) AS FLOAT64) AS GradePlacement
-    FROM {{ source('RenaissanceStar_Archive', 'Reading_SY21')}} AS s
-    LEFT JOIN grade_placement AS gp
-    USING (Activity_Type)
-    WHERE DATE(s.Activity_Completed_Date) BETWEEN DATE(StartDate) AND DATE(EndDate)
+        cast(
+            concat(
+                s.Current_Grade, '.', gp.GradePlacementDecimalValue
+            ) as float64
+        ) as GradePlacement
+    from {{ source('RenaissanceStar_Archive', 'Reading_SY21') }} as s
+    left join grade_placement as gp
+        on s.Activity_Type = gp.Activity_Type
+where
+    date(s.Activity_Completed_Date) between date(StartDate) and date(EndDate)
 ),
 
-final AS (
-    SELECT
-        CASE School_Id
-            WHEN 'gs_4e804ecc-4623-46b4-a91a-fe2acb88cbb3' THEN '116814'
-            WHEN 'gs_e8341d4c-4366-43e1-99b5-71f66cec337a' THEN '129247'
-            WHEN 'gs_b3f0fcec-7391-479a-93fc-132cf73faa43' THEN '131656'
-            WHEN 'gs_4cfd50a2-23e1-4e6f-bb7d-e25ddee340a2' THEN '125617'
-            ELSE '999999999'
-        END AS TestedSchoolId,
-        School_Name AS TestedSchoolName,
-        CONCAT(LEFT(School_Year, 4), '-', RIGHT(School_Year, 2)) AS SchoolYear,
-        CAST(NULL AS STRING) AS StudentRenaissanceID,
-        CAST(NULL AS STRING) AS StudentIdentifier,
-        CAST(Student_State_ID AS STRING) AS StateUniqueId,
-        CASE
-            WHEN Student_Middle_Name IS NULL THEN CONCAT(Student_Last_Name, ", ", Student_First_Name)
-            ELSE CONCAT(Student_Last_Name, ", ", Student_First_Name, " ", Student_Middle_Name)
-        END AS DisplayName,
-        Student_Last_Name AS LastName,
-        Student_First_Name AS FirstName,
-        Student_Middle_Name AS MiddleName,
-        CAST(NULL AS STRING) AS Gender,
-        DATE(Birthdate) AS BirthDate,
-        CAST(Current_Grade AS STRING) As GradeLevel,
-        CAST(NULL AS STRING) AS EnrollmentStatus,
-        Renaissance_Activity_ID AS AssessmentId,
-        DATE(Activity_Completed_Date) AS AssessmentDate,
-        CAST(NULL AS INT64) AS AssessmentNumber,
-        Activity_Type AS AssessmentType,
-        NULL AS TotalTimeInSeconds,
-        GradePlacement,
-        CAST(Current_Grade AS STRING) AS AssessmentGradeLevel,
-        CAST(Grade_Equivalent AS STRING) AS GradeEquivalent,
-        Scaled_Score AS ScaledScore,
-        Unified_Scale AS UnifiedScore,
-        Percentile_Rank AS PercentileRank,
-        Normal_Curve_Equivalent AS NormalCurveEquivalent,
-        CAST(Instructional_Reading_Level AS STRING) AS InstructionalReadingLevel,
-        Lexile_Score AS Lexile,
-        CASE WHEN Current_SGP_Vector = 'FALL_FALL' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileFallFall,
-        CASE WHEN Current_SGP_Vector = 'FALL_SPRING' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileFallSpring,
-        CASE WHEN Current_SGP_Vector = 'FALL_WINTER' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileFallWinter,
-        CASE WHEN Current_SGP_Vector = 'SPRING_SPRING' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileSpringSpring,
-        CASE WHEN Current_SGP_Vector = 'WINTER_SPRING' THEN Current_SGP ELSE NULL END AS StudentGrowthPercentileWinterSpring,
-        Current_SGP AS CurrentSGP,
-        CAST(RIGHT(State_Benchmark_Category, 1) AS INT64) AS StateBenchmarkCategoryLevel,
-        CAST(NULL AS STRING) AS AceTestingWindowName,
-        CAST(NULL AS DATE) AS AceTestingWindowStartDate,
-        CAST(NULL AS DATE) AS AceTestingWindowEndDate,
-        CASE
-            WHEN Activity_Completed_Date BETWEEN '2020-08-01' AND '2020-11-30'THEN 'Fall'
-            WHEN Activity_Completed_Date BETWEEN '2020-12-01' AND '2021-03-31' THEN 'Winter'
-            WHEN Activity_Completed_Date BETWEEN '2021-04-01' AND'2021-07-31' THEN 'Spring'
-        END AS StarTestingWindow
+final as (
+select
+    case School_Id
+        when 'gs_4e804ecc-4623-46b4-a91a-fe2acb88cbb3' then '116814'
+        when 'gs_e8341d4c-4366-43e1-99b5-71f66cec337a' then '129247'
+        when 'gs_b3f0fcec-7391-479a-93fc-132cf73faa43' then '131656'
+        when 'gs_4cfd50a2-23e1-4e6f-bb7d-e25ddee340a2' then '125617'
+        else '999999999'
+    end as TestedSchoolId,
+    School_Name as TestedSchoolName,
+    concat(left(School_Year, 4), '-', right(School_Year, 2)) as SchoolYear,
+    cast(null as string) as StudentRenaissanceID,
+    cast(null as string) as StudentIdentifier,
+    cast(Student_State_ID as string) as StateUniqueId,
+    case
+        when
+            Student_Middle_Name is null
+            then concat(Student_Last_Name, ', ', Student_First_Name)
+        else
+            concat(
+                Student_Last_Name,
+                ', ',
+                Student_First_Name,
+                ' ',
+                Student_Middle_Name
+            )
+    end as DisplayName,
+    Student_Last_Name as LastName,
+    Student_First_Name as FirstName,
+    Student_Middle_Name as MiddleName,
+    cast(null as string) as Gender,
+    date(Birthdate) as BirthDate,
+    cast(Current_Grade as string) as GradeLevel,
+    cast(null as string) as EnrollmentStatus,
+    Renaissance_Activity_ID as AssessmentId,
+    date(Activity_Completed_Date) as AssessmentDate,
+    cast(null as int64) as AssessmentNumber,
+    Activity_Type as AssessmentType,
+    null as TotalTimeInSeconds,
+    GradePlacement,
+    cast(Current_Grade as string) as AssessmentGradeLevel,
+    cast(Grade_Equivalent as string) as GradeEquivalent,
+    Scaled_Score as ScaledScore,
+    Unified_Scale as UnifiedScore,
+    Percentile_Rank as PercentileRank,
+    Normal_Curve_Equivalent as NormalCurveEquivalent,
+    cast(Instructional_Reading_Level as string)
+        as InstructionalReadingLevel,
+    Lexile_Score as Lexile,
+    case
+        when Current_SGP_Vector = 'FALL_FALL' then Current_SGP
+    end as StudentGrowthPercentileFallFall,
+    case
+        when Current_SGP_Vector = 'FALL_SPRING' then Current_SGP
+    end as StudentGrowthPercentileFallSpring,
+    case
+        when Current_SGP_Vector = 'FALL_WINTER' then Current_SGP
+    end as StudentGrowthPercentileFallWinter,
+    case
+        when Current_SGP_Vector = 'SPRING_SPRING' then Current_SGP
+    end as StudentGrowthPercentileSpringSpring,
+    case
+        when Current_SGP_Vector = 'WINTER_SPRING' then Current_SGP
+    end as StudentGrowthPercentileWinterSpring,
+    Current_SGP as CurrentSGP,
+    cast(right(State_Benchmark_Category, 1) as int64)
+        as StateBenchmarkCategoryLevel,
+    cast(null as string) as AceTestingWindowName,
+    cast(null as date) as AceTestingWindowStartDate,
+    cast(null as date) as AceTestingWindowEndDate,
+    case
+        when
+            Activity_Completed_Date between '2020-08-01' and '2020-11-30'
+            then 'Fall'
+        when
+            Activity_Completed_Date between '2020-12-01' and '2021-03-31'
+            then 'Winter'
+        when
+            Activity_Completed_Date between '2021-04-01' and '2021-07-31'
+            then 'Spring'
+    end as StarTestingWindow
 
-    FROM star_reading_with_gp_added
+from star_reading_with_gp_added
 )
 
-SELECT * FROM final
+select * from final

@@ -1,4 +1,4 @@
-SELECT
-    CAST(EthnicityCode AS STRING) AS RaceEthnicityCode,
-    Ethnicity AS RaceEthnicity
-FROM {{ source('RawData', 'TomsEthnicityCodes')}}
+select
+    cast(EthnicityCode as string) as RaceEthnicityCode,
+    Ethnicity as RaceEthnicity
+from {{ source('RawData', 'TomsEthnicityCodes') }}

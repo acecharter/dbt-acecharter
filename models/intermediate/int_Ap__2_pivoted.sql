@@ -3,7 +3,7 @@ with ap as (
 ),
 
 students as (
-    select distinct * EXCEPT(FieldName, TestNumber, ValueName)
+    select distinct * except(FieldName, TestNumber, ValueName)
     from ap
 ),
 
@@ -88,8 +88,8 @@ results as (
     and admin_year.SourceFileYear = irregularity_code_2.SourceFileYear
 ),
   
-exam_names AS (
-    SELECT * FROM {{ ref('stg_RD__ApExamCodes')}}
+exam_names as (
+    select * from {{ ref('stg_RD__ApExamCodes')}}
 ),
 
 final as (
