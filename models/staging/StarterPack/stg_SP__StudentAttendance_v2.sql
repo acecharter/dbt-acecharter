@@ -10,20 +10,20 @@ with source_table as (
         CountOfAllInAttendanceEvents as CountOfDaysInAttendance,
         CountOfDaysEnrolled
     from {{ source('StarterPack', 'StudentAttendance_v2') }}
-    -- These are fake/test student accounts
-    where StudentUniqueId not in ('16671', '16667', '16668')
+    where StudentUniqueId not in ('16671', '16667', '16668') -- These are fake/test student accounts
 ),
 
-sy as (
-    select * from {{ ref('dim_CurrentSchoolYear') }}
+school_year as (
+    select distinct SchoolYear
+    from {{ ref('stg_SP__CalendarDates') }}
 ),
 
 final as (
     select
-        sy.SchoolYear,
+        school_year.SchoolYear,
         source_table.*
     from source_table
-    cross join sy
+    cross join school_year
 )
 
 select * from final

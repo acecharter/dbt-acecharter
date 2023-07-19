@@ -17,7 +17,8 @@ with
   ),
 
   current_sy AS (
-    SELECT SchoolYear FROM {{ ref('dim_CurrentSchoolYear')}}
+    select distinct SchoolYear
+    from {{ ref('stg_SP__CalendarDates') }}
   ),
 
   prior_sy AS (

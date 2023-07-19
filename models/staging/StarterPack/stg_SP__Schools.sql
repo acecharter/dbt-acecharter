@@ -2,8 +2,9 @@ with source_table as (
     select * from {{ source('StarterPack', 'Schools') }}
 ),
 
-sy as (
-    select * from {{ ref('dim_CurrentSchoolYear') }}
+school_year as (
+    select distinct SchoolYear
+    from {{ ref('stg_SP__CalendarDates') }}
 ),
 
 final as (

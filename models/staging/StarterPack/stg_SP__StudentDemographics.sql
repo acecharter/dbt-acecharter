@@ -45,13 +45,14 @@ students_with_iep as (
         and SpedExitDate is null
 ),
 
-sy as (
-    select * from {{ ref('dim_CurrentSchoolYear') }}
+school_year as (
+    select distinct SchoolYear
+    from {{ ref('stg_SP__CalendarDates') }}
 ),
 
 final as (
     select
-        sy.SchoolYear,
+        school_year.SchoolYear,
         source_table.* except (
             HasIep,
             Email,
@@ -60,18 +61,18 @@ final as (
             CurrentSchoolName,
             CurrentGradeLevel
         ),
-        coalesce (i.StudentEligibilityStatus = 'Eligible/Previously Eligible',
+        coalesce (iep.StudentEligibilityStatus = 'Eligible/Previously Eligible',
         false) as HasIep,
-        i.StudentEligibilityStatus as SeisEligibilityStatus,
+        iep.StudentEligibilityStatus as SeisEligibilityStatus,
         source_table.Email,
         source_table.IsCurrentlyEnrolled,
         source_table.CurrentSchoolId,
         source_table.CurrentSchoolName,
         source_table.CurrentGradeLevel
     from source_table
-    cross join sy
-    left join students_with_iep as i
-        on source_table.StateUniqueId = i.StateUniqueId
+    cross join school_year
+    left join students_with_iep as iep
+        on source_table.StateUniqueId = iep.StateUniqueId
 )
 
 select * from final
