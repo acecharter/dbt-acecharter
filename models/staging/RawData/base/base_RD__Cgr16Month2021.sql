@@ -34,6 +34,35 @@ schools as (
     where AggregateLevel = 'S'
 ),
 
+charter_dass_all as (
+    select
+        AcademicYear,
+        AggregateLevel,
+        CountyCode,
+        DistrictCode,
+        SchoolCode,
+        CountyName,
+        DistrictName,
+        SchoolName,
+        'All' as CharterSchool,
+        'All' as DASS,
+        ReportingCategory,
+        CompleterType,
+        HighSchoolCompleters,
+        EnrolledInCollegeTotal16Months,
+        CollegeGoingRateTotal16Months,
+        EnrolledInState16Months,
+        EnrolledOutOfState16Months,
+        NotEnrolledInCollege16Months,
+        EnrolledUc16Months,
+        EnrolledCsu16Months,
+        EnrolledCcc16Months,
+        EnrolledInStatePrivate2And4Year16Months,
+        EnrolledOutOfState4YearCollegePublicPrivate16Months,
+        EnrolledOutOfState2YearCollegePublicPrivate16Months
+    from schools
+),
+
 charter_all as (
     select
         AcademicYear,
@@ -94,6 +123,8 @@ dass_all as (
 
 final as (
     select * from cgr
+    union all
+    select * from charter_dass_all
     union all
     select * from charter_all
     union all
