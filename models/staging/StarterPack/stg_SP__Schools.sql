@@ -9,10 +9,10 @@ school_year as (
 
 final as (
     select
-        sy.SchoolYear,
+        school_year.SchoolYear,
         source_table.*
     from source_table
-    cross join sy
+    cross join school_year
 )
 
 select * from final
