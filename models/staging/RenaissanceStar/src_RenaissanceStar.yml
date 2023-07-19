@@ -1,12 +1,10 @@
 version: 2
 
-
 sources:
   - name: RenaissanceStar
     database: landing-zone-acecharter
     schema: RenaissanceStar
     tables:
-
       - name: EarlyLiteracy_v2
         description: Student-level Renaissance Star Early Literacy Assessment (English) data from current school year. Imported via Landing Zone integration.
 
@@ -16,7 +14,6 @@ sources:
       - name: Math_v2
         description: Student-level Renaissance Star Math Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
         columns:
-
           - name: RenaissanceClientID
             description: Internal Renaissance customer number
 
@@ -42,7 +39,7 @@ sources:
             description: Specified by OneRoster and intended to contain an optional, machine-readable ID. Sometimes blank.
 
           - name: StateUniqueId
-            description: (StudentStateID in Renaissance documentation.) California Statewide Student Identifier (SSID) 
+            description: (StudentStateID in Renaissance documentation.) California Statewide Student Identifier (SSID)
 
           - name: Email
             description: (StudentEmail in Renaissance documentation.) Student's email address in Renaissance
@@ -93,7 +90,7 @@ sources:
             description: Internal Renaissance ID for the district
 
           - name: DistrictSourcedID
-            description: Internal ID for the district used to determine inserts, updates, and deletes when importing data from an external source.  
+            description: Internal ID for the district used to determine inserts, updates, and deletes when importing data from an external source.
 
           - name: DistrictIdentifier
             description: Unknown District ID; possibly used to provide metadata related to the district
@@ -315,10 +312,10 @@ sources:
             description: Indicates whether the district benchmark level (and corresponding assessment) is considered proficient.
 
           - name: DistrictBenchmarkCategoryLevel
-            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number
 
           - name: DistrictBenchmarkNumberOfCategoryLevels
-            description: The number of the categories that exist, based on what the district set as their benchmark levels 
+            description: The number of the categories that exist, based on what the district set as their benchmark levels
 
           - name: DistrictBenchmarkMinPercentileRank
             description: The minimum percentile rank for the benchmark category level
@@ -333,10 +330,10 @@ sources:
             description: Indicates whether the school benchmark level (and corresponding assessment) is considered proficient.
 
           - name: SchoolBenchmarkCategoryLevel
-            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number
 
           - name: SchoolBenchmarkNumberOfCategoryLevels
-            description: The number of the categories that exist, based on what the school set as their benchmark levels 
+            description: The number of the categories that exist, based on what the school set as their benchmark levels
 
           - name: SchoolBenchmarkMinPercentileRank
             description: The minimum percentile rank for the benchmark category level
@@ -367,11 +364,10 @@ sources:
 
           - name: ACTBenchmarkCategory
             description: ACT readiness category. Either At/Above or Below Benchmark.
-      
+
       - name: Reading_v2
         description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
         columns:
-
           - name: RenaissanceClientID
             description: Internal Renaissance customer number
 
@@ -397,7 +393,7 @@ sources:
             description: Specified by OneRoster and intended to contain an optional, machine-readable ID. Sometimes blank.
 
           - name: StateUniqueId
-            description: (StudentStateID in Renaissance documentation.) California Statewide Student Identifier (SSID) 
+            description: (StudentStateID in Renaissance documentation.) California Statewide Student Identifier (SSID)
 
           - name: Email
             description: (StudentEmail in Renaissance documentation.) Student's email address in Renaissance
@@ -448,7 +444,7 @@ sources:
             description: Internal Renaissance ID for the district
 
           - name: DistrictSourcedID
-            description: Internal ID for the district used to determine inserts, updates, and deletes when importing data from an external source.  
+            description: Internal ID for the district used to determine inserts, updates, and deletes when importing data from an external source.
 
           - name: DistrictIdentifier
             description: Unknown District ID; possibly used to provide metadata related to the district
@@ -700,10 +696,10 @@ sources:
             description: Indicates whether the district benchmark level (and corresponding assessment) is considered proficient.
 
           - name: DistrictBenchmarkCategoryLevel
-            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number
 
           - name: DistrictBenchmarkNumberOfCategoryLevels
-            description: The number of the categories that exist, based on what the district set as their benchmark levels 
+            description: The number of the categories that exist, based on what the district set as their benchmark levels
 
           - name: DistrictBenchmarkMinPercentileRank
             description: The minimum percentile rank for the benchmark category level
@@ -718,10 +714,10 @@ sources:
             description: Indicates whether the school benchmark level (and corresponding assessment) is considered proficient.
 
           - name: SchoolBenchmarkCategoryLevel
-            description: Number of the benchmark level; the level with the highest PR will have the lowest number 
+            description: Number of the benchmark level; the level with the highest PR will have the lowest number
 
           - name: SchoolBenchmarkNumberOfCategoryLevels
-            description: The number of the categories that exist, based on what the school set as their benchmark levels 
+            description: The number of the categories that exist, based on what the school set as their benchmark levels
 
           - name: SchoolBenchmarkMinPercentileRank
             description: The minimum percentile rank for the benchmark category level
@@ -752,7 +748,6 @@ sources:
 
       - name: MathSpanish_v2
         description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
-      
+
       - name: ReadingSpanish_v2
         description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
-

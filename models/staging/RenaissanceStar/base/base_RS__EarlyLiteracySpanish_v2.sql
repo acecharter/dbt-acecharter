@@ -1,40 +1,39 @@
-WITH
-testing_windows AS (
-    SELECT * FROM {{ ref('stg_GSD__RenStarTestingWindows') }}
+with testing_windows as (
+    select * from {{ ref('stg_GSD__RenStarTestingWindows') }}
 ),
 
-star AS (
-    SELECT
-        CASE SchoolIdentifier
-            WHEN '57b1f93e473b517136000009' THEN '116814'
-            WHEN '57b1f93e473b51713600000b' THEN '129247'
-            WHEN '57b1f93e473b517136000007' THEN '131656'
-            WHEN '061182013023' THEN '125617'
-            ELSE '999999999'
-        END AS TestedSchoolId,
-        NameofInstitution AS TestedSchoolName,
-        CONCAT(LEFT(SchoolYear, 5), RIGHT(SchoolYear, 2)) AS SchoolYear,
+star as (
+    select
+        case SchoolIdentifier
+            when '57b1f93e473b517136000009' then '116814'
+            when '57b1f93e473b51713600000b' then '129247'
+            when '57b1f93e473b517136000007' then '131656'
+            when '061182013023' then '125617'
+            else '999999999'
+        end as TestedSchoolId,
+        NameofInstitution as TestedSchoolName,
+        concat(left(SchoolYear, 5), right(SchoolYear, 2)) as SchoolYear,
         StudentRenaissanceID,
         StudentIdentifier,
         StateUniqueId,
-        CASE
-            WHEN MiddleName IS NULL THEN CONCAT(LastSurname, ", ", FirstName)
-            ELSE CONCAT(LastSurname, ", ", FirstName, " ", MiddleName)
-        END AS DisplayName,
-        LastSurname AS LastName,
+        case
+            when MiddleName is null then concat(LastSurname, ', ', FirstName)
+            else concat(LastSurname, ', ', FirstName, ' ', MiddleName)
+        end as DisplayName,
+        LastSurname as LastName,
         FirstName,
         MiddleName,
         Gender,
-        DATE(Birthdate) AS BirthDate,
-        Gradelevel AS GradeLevel,
+        date(Birthdate) as BirthDate,
+        Gradelevel as GradeLevel,
         EnrollmentStatus,
         AssessmentID,
-        DATE(CompletedDateLocal) AS AssessmentDate,
-        CAST(AssessmentNumber AS INT64) AS AssessmentNumber,
+        date(CompletedDateLocal) as AssessmentDate,
+        cast(AssessmentNumber as int64) as AssessmentNumber,
         AssessmentType,
         TotalTimeInSeconds,
         GradePlacement,
-        Grade AS AssessmentGradeLevel,
+        Grade as AssessmentGradeLevel,
         GradeEquivalent,
         ScaledScore,
         UnifiedScore,
@@ -48,21 +47,35 @@ star AS (
         StudentGrowthPercentileSpringSpring,
         StudentGrowthPercentileWinterSpring,
         CurrentSGP,
-        CAST(RIGHT(StateBenchmarkCategoryName, 1) AS INT64) AS StateBenchmarkCategoryLevel
-    FROM {{ source('RenaissanceStar', 'EarlyLiteracySpanish_v2')}}
+        cast(right(StateBenchmarkCategoryName, 1) as int64)
+            as StateBenchmarkCategoryLevel
+    from {{ source('RenaissanceStar', 'EarlyLiteracySpanish_v2') }}
 ),
 
-final AS (
-    SELECT
+final as (
+    select
         s.*,
-        CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.TestingWindow END AS AceTestingWindowName,
-        CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowStartDate END AS AceTestingWindowStartDate,
-        CASE WHEN s.AssessmentDate BETWEEN t.AceWindowStartDate AND t.AceWindowEndDate THEN t.AceWindowEndDate END AS AceTestingWindowEndDate,
-        t.TestingWindow AS StarTestingWindow
-    FROM star as s
-    LEFT JOIN testing_windows AS t
-    ON s.SchoolYear = t.SchoolYear
-    WHERE s.AssessmentDate BETWEEN t.TestingWindowStartDate AND t.TestingWindowEndDate
+        case
+            when
+                s.AssessmentDate between t.AceWindowStartDate and t.AceWindowEndDate
+                then t.TestingWindow
+        end as AceTestingWindowName,
+        case
+            when
+                s.AssessmentDate between t.AceWindowStartDate and t.AceWindowEndDate
+                then t.AceWindowStartDate
+        end as AceTestingWindowStartDate,
+        case
+            when
+                s.AssessmentDate between t.AceWindowStartDate and t.AceWindowEndDate
+                then t.AceWindowEndDate
+        end as AceTestingWindowEndDate,
+        t.TestingWindow as StarTestingWindow
+    from star as s
+    left join testing_windows as t
+        on s.SchoolYear = t.SchoolYear
+    where
+        s.AssessmentDate between t.TestingWindowStartDate and t.TestingWindowEndDate
 )
 
-SELECT * FROM final
+select * from final

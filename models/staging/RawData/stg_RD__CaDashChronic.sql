@@ -87,8 +87,10 @@ chronic_2018 as (
 
 unioned as (
     select * from chronic_2022
-    union all select * from chronic_2019
-    union all select * from chronic_2018
+    union all
+    select * from chronic_2019
+    union all
+    select * from chronic_2018
 ),
 
 unioned_w_entity_codes as (
@@ -154,15 +156,15 @@ final as (
         ifnull(c.ColorName, 'No Color') as ColorName,
         u.*
     from unioned_w_entity_codes as u
-    ifnull entities as e
+    left join entities as e
     on u.EntityCode = e.EntityCode
-    ifnull student_groups as g
+    left join student_groups as g
     on u.StudentGroup = g.StudentGroup
-    ifnull status_levels as sl
+    left join status_levels as sl
     on u.StatusLevel = sl.StatusLevel
-    ifnull change_levels as cl
+    left join change_levels as cl
     on u.ChangeLevel = cl.ChangeLevel
-    ifnull colors as c
+    left join colors as c
     on u.Color = c.Color
 )
 

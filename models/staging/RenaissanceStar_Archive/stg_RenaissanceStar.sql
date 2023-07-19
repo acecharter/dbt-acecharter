@@ -1,155 +1,154 @@
-WITH
-reading_english AS(
-    SELECT * FROM {{ ref('base_RSA__Reading_SY21')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RSA__Reading_v2_SY22')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RS__Reading_v2')}}
+with reading_english as (
+    select * from {{ ref('base_RSA__Reading_SY21')}}
+    union all
+    select * from {{ ref('base_RSA__Reading_v2_SY22')}}
+    union all
+    select * from {{ ref('base_RS__Reading_v2')}}
 ),
 
-reading_spanish AS (
-    SELECT * FROM {{ ref('base_RSA__ReadingSpanish_v2_SY22')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RS__ReadingSpanish_v2')}}
+reading_spanish as (
+    select * from {{ ref('base_RSA__ReadingSpanish_v2_SY22')}}
+    union all
+    select * from {{ ref('base_RS__ReadingSpanish_v2')}}
 ),
 
-math_english AS (
-    SELECT * FROM {{ ref('base_RSA__Math_SY21')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RSA__Math_v2_SY22')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RS__Math_v2')}}
+math_english as (
+    select * from {{ ref('base_RSA__Math_SY21')}}
+    union all
+    select * from {{ ref('base_RSA__Math_v2_SY22')}}
+    union all
+    select * from {{ ref('base_RS__Math_v2')}}
 ),
 
-math_spanish AS (
-    SELECT * FROM {{ ref('base_RSA__MathSpanish_v2_SY22')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RS__MathSpanish_v2')}}
+math_spanish as (
+    select * from {{ ref('base_RSA__MathSpanish_v2_SY22')}}
+    union all
+    select * from {{ ref('base_RS__MathSpanish_v2')}}
 ),
 
-early_literacy_english AS (
-    SELECT * FROM {{ ref('base_RSA__EarlyLiteracy_SY21')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RSA__EarlyLiteracy_SY22')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RS__EarlyLiteracy_v2')}}
+early_literacy_english as (
+    select * from {{ ref('base_RSA__EarlyLiteracy_SY21')}}
+    union all
+    select * from {{ ref('base_RSA__EarlyLiteracy_SY22')}}
+    union all
+    select * from {{ ref('base_RS__EarlyLiteracy_v2')}}
 ),
 
-early_literacy_spanish AS (
-    SELECT * FROM {{ ref('base_RSA__EarlyLiteracySpanish_v2_SY22')}}
-    UNION ALL
-    SELECT * FROM {{ ref('base_RS__EarlyLiteracySpanish_v2')}}
+early_literacy_spanish as (
+    select * from {{ ref('base_RSA__EarlyLiteracySpanish_v2_SY22')}}
+    union all
+    select * from {{ ref('base_RS__EarlyLiteracySpanish_v2')}}
 ),
 
-reading_all AS (
-    SELECT
-        CASE
-            WHEN AssessmentType LIKE '%Enterprise%' THEN '11'
-            WHEN AssessmentType = 'ProgressMonitoring' THEN '24'
-        END AS AceAssessmentId,
-        CASE
-            WHEN AssessmentType LIKE '%Enterprise%' THEN 'Star Reading'
-            WHEN AssessmentType = 'ProgressMonitoring' THEN 'Star Reading Progress Monitoring'
-        END AS AssessmentName,
-        'Reading' AS AssessmentSubject,
+reading_all as (
+    select
+        case
+            when AssessmentType like '%Enterprise%' then '11'
+            when AssessmentType = 'ProgressMonitoring' then '24'
+        end as AceAssessmentId,
+        case
+            when AssessmentType like '%Enterprise%' then 'Star Reading'
+            when AssessmentType = 'ProgressMonitoring' then 'Star Reading Progress Monitoring'
+        end as AssessmentName,
+        'Reading' as AssessmentSubject,
         *
-    FROM reading_english
+    from reading_english
 
-    UNION ALL
+    union all
 
-    SELECT
-        '13' AS AceAssessmentId,
-        'Star Reading (Spanish)' AS AssessmentName,
-        'Reading (Spanish)' AS AssessmentSubject,
+    select
+        '13' as AceAssessmentId,
+        'Star Reading (Spanish)' as AssessmentName,
+        'Reading (Spanish)' as AssessmentSubject,
         *
-    FROM reading_spanish
+    from reading_spanish
 ),
 
-math_all AS (
-    SELECT
-        CASE
-            WHEN AssessmentType LIKE '%Enterprise%' THEN '10'
-            WHEN AssessmentType = 'ProgressMonitoring' THEN '23'
-        END AS AceAssessmentId,
-        CASE
-            WHEN AssessmentType LIKE '%Enterprise%' THEN 'Star Math'
-            WHEN AssessmentType = 'ProgressMonitoring' THEN 'Star Math Progress Monitoring'
-        END AS AssessmentName,
-        'Math' AS AssessmentSubject,
+math_all as (
+    select
+        case
+            when AssessmentType like '%Enterprise%' then '10'
+            when AssessmentType = 'ProgressMonitoring' then '23'
+        end as AceAssessmentId,
+        case
+            when AssessmentType like '%Enterprise%' then 'Star Math'
+            when AssessmentType = 'ProgressMonitoring' then 'Star Math Progress Monitoring'
+        end as AssessmentName,
+        'Math' as AssessmentSubject,
         *
-    FROM math_english
+    from math_english
 
-    UNION ALL
+    union all
 
-    SELECT
-        '12' AS AceAssessmentId,
-        'Star Math (Spanish)' AS AssessmentName,
-        'Math (Spanish)' AS AssessmentSubject,
+    select
+        '12' as AceAssessmentId,
+        'Star Math (Spanish)' as AssessmentName,
+        'Math (Spanish)' as AssessmentSubject,
         *
-    FROM math_spanish
+    from math_spanish
 ),
 
-early_literacy_all AS (
-    SELECT
-        '21' AS AceAssessmentId,
-        'Star Early Literacy' AS AssessmentName,
-        'Early Literacy' AS AssessmentSubject,
+early_literacy_all as (
+    select
+        '21' as AceAssessmentId,
+        'Star Early Literacy' as AssessmentName,
+        'Early Literacy' as AssessmentSubject,
         *
-    FROM early_literacy_english
+    from early_literacy_english
 
-    UNION ALL
+    union all
     
-    SELECT
-        '22' AS AceAssessmentId,
-        'Star Early Literacy (Spanish)' AS AssessmentName,
-        'Early Literacy (Spanish)' AS AssessmentSubject,
+    select
+        '22' as AceAssessmentId,
+        'Star Early Literacy (Spanish)' as AssessmentName,
+        'Early Literacy (Spanish)' as AssessmentSubject,
         *
-    FROM early_literacy_english
+    from early_literacy_english
 ),
 
-reading AS (
-    SELECT
-        * EXCEPT(
+reading as (
+    select
+        * except(
             InstructionalReadingLevel, 
             Lexile
         ),
         InstructionalReadingLevel,
         Lexile,
-        CAST(NULL AS STRING) AS Quantile,
-        CAST(NULL AS STRING) AS LiteracyClassification
-    FROM reading_all
+        cast(null as string) as Quantile,
+        cast(null as string) as LiteracyClassification
+    from reading_all
 ),
 
-math AS (
-    SELECT
-        * EXCEPT(Quantile),
-        CAST(NULL AS STRING) AS InstructionalReadingLevel,
-        CAST(NULL AS STRING) AS Lexile,
+math as (
+    select
+        * except(Quantile),
+        cast(null as string) as InstructionalReadingLevel,
+        cast(null as string) as Lexile,
         Quantile,
-        CAST(NULL AS STRING) AS LiteracyClassification
-    FROM math_all
+        cast(null as string) as LiteracyClassification
+    from math_all
 ),
 
-early_literacy AS (
-    SELECT
-        * EXCEPT(Lexile, LiteracyClassification),
-        CAST(NULL AS STRING) AS InstructionalReadingLevel,
+early_literacy as (
+    select
+        * except(Lexile, LiteracyClassification),
+        cast(null as string) as InstructionalReadingLevel,
         Lexile,
-        CAST(NULL AS STRING) AS Quantile,
+        cast(null as string) as Quantile,
         LiteracyClassification
-    FROM early_literacy_all
+    from early_literacy_all
 ),
 
-unioned AS (
-    SELECT * FROM reading
-    UNION ALL
-    SELECT * FROM math
-    UNION ALL
-    SELECT * FROM early_literacy
+unioned as (
+    select * from reading
+    union all
+    select * from math
+    union all
+    select * from early_literacy
 ),
 
-final AS (
-    SELECT
+final as (
+    select
         AceAssessmentId,
         AssessmentName,
         AssessmentSubject,
@@ -165,7 +164,7 @@ final AS (
         MiddleName,
         Gender,
         BirthDate,
-        CAST(GradeLevel AS INT64) AS GradeLevel,
+        cast(GradeLevel as int64) as GradeLevel,
         EnrollmentStatus,
         AssessmentID,
         AssessmentDate,
@@ -173,7 +172,7 @@ final AS (
         AssessmentType,
         TotalTimeInSeconds,
         GradePlacement,
-        CAST(AssessmentGradeLevel AS INT64) AS AssessmentGradeLevel,
+        cast(AssessmentGradeLevel as int64) as AssessmentGradeLevel,
         GradeEquivalent,
         ScaledScore,
         UnifiedScore,
@@ -194,17 +193,17 @@ final AS (
         Lexile,
         Quantile,
         LiteracyClassification,
-        CASE
-            WHEN SUBSTR(GradeEquivalent, 1, 1) = '>' THEN CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) + 0.1
-            WHEN SUBSTR(GradeEquivalent, 1, 1) = '<' THEN CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) - 0.1
-            ELSE CAST(GradeEquivalent as FLOAT64)
-        END AS GradeEquivalentNumeric,
-        CASE
-            WHEN SUBSTR(GradeEquivalent, 1, 1) = '>' THEN ROUND(CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) + 0.1 - GradePlacement, 1)
-            WHEN SUBSTR(GradeEquivalent, 1, 1) = '<' THEN ROUND(CAST(TRIM(SUBSTR(GradeEquivalent, 2)) AS FLOAT64) - 0.1 - GradePlacement, 1)
-            ELSE ROUND(CAST(GradeEquivalent as FLOAT64) - GradePlacement, 1)
-        END AS GradeEquivalentMinusPlacement
-    FROM unioned
+        case
+            when substr(GradeEquivalent, 1, 1) = '>' then cast(trim(substr(GradeEquivalent, 2)) as float64) + 0.1
+            when substr(GradeEquivalent, 1, 1) = '<' then cast(trim(substr(GradeEquivalent, 2)) as float64) - 0.1
+            else cast(GradeEquivalent as float64)
+        end as GradeEquivalentNumeric,
+        case
+            when substr(GradeEquivalent, 1, 1) = '>' then round(cast(trim(substr(GradeEquivalent, 2)) as float64) + 0.1 - GradePlacement, 1)
+            when substr(GradeEquivalent, 1, 1) = '<' then round(cast(trim(substr(GradeEquivalent, 2)) as float64) - 0.1 - GradePlacement, 1)
+            else round(cast(GradeEquivalent as float64) - GradePlacement, 1)
+        end as GradeEquivalentMinusPlacement
+    from unioned
 )
 
-SELECT * FROM final
+select * from final

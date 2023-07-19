@@ -44,7 +44,7 @@ caaspp_id_race_added as (
 final as (
     select
         c.*,
-        case when ELStatus is true ordate(RFEPDate) > date(TestYear - 4, 6, 15) then true else false end as ElWithinPast4Years,
+        case when ELStatus is true or date(RFEPDate) > date(TestYear - 4, 6, 15) then true else false end as ElWithinPast4Years,
         cast(
             case when c.ScaleScore is not null then round(c.ScaleScore - m.MinStandardMetScaleScore, 0) else null end as int64
         ) as Dfs,
