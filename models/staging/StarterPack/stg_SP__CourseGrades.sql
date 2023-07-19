@@ -1,21 +1,22 @@
-WITH source_table AS (
-    SELECT * FROM {{ source('StarterPack', 'CourseGrades')}}
-    WHERE
-        DATE(_PARTITIONTIME) = CURRENT_DATE('America/Los_Angeles')
-        --DATE(_PARTITIONTIME) = '2022-06-15' --Update the date and use this line in lieu of the preceding line to keep grades dashboard updated over the summer
-        AND LetterGradeEarned IS NOT NULL
+with source_table as (
+    select *
+    from {{ source('StarterPack', 'CourseGrades') }}
+    where
+        date(_PARTITIONTIME) = current_date('America/Los_Angeles')
+        --date(_PARTITIONTIME) = '2022-06-15' --Update the date and use this line in lieu of the preceding line to keep grades dashboard updated over the summer
+        and LetterGradeEarned is not null
 ),
 
-sy AS (
-    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
+sy as (
+    select * from {{ ref('dim_CurrentSchoolYear') }}
 ),
 
-final AS (
-    SELECT
+final as (
+    select
         sy.SchoolYear,
         source_table.*
-    FROM source_table
-    CROSS JOIN sy
+    from source_table
+    cross join sy
 )
 
-SELECT * FROM final
+select * from final

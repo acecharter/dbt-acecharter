@@ -1,13 +1,13 @@
-SELECT
-    '2021-22' AS SchoolYear,
+select
+    '2021-22' as SchoolYear,
     SchoolId,
     NameOfInstitution,
     StudentUniqueId,
     LastSurname,
     FirstName,
-    ROUND(AverageDailyAttendance, 4) AS AverageDailyAttendance,
-    CountOfAllAbsenceEvents AS CountOfDaysAbsent,
-    CountOfAllInAttendanceEvents AS CountOfDaysInAttendance,
+    round(AverageDailyAttendance, 4) as AverageDailyAttendance,
+    CountOfAllAbsenceEvents as CountOfDaysAbsent,
+    CountOfAllInAttendanceEvents as CountOfDaysInAttendance,
     CountOfDaysEnrolled
-FROM {{ source('StarterPack_Archive', 'StudentAttendance_v2_SY22')}}
-WHERE StudentUniqueId != '16348' --This is a fake/test student account
+from {{ source('StarterPack_Archive', 'StudentAttendance_v2_SY22') }}
+where StudentUniqueId != '16348' --This is a fake/test student account

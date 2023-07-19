@@ -1,17 +1,17 @@
-WITH source_table AS (
-    SELECT * FROM {{ source('StarterPack', 'Schools')}}
+with source_table as (
+    select * from {{ source('StarterPack', 'Schools') }}
 ),
 
-sy AS (
-    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
+sy as (
+    select * from {{ ref('dim_CurrentSchoolYear') }}
 ),
 
-final AS (
-    SELECT
+final as (
+    select
         sy.SchoolYear,
         source_table.*
-    FROM source_table
-    CROSS JOIN sy
+    from source_table
+    cross join sy
 )
 
-SELECT * FROM final
+select * from final

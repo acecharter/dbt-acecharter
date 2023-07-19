@@ -1,28 +1,27 @@
-WITH
-source_table AS (
-    SELECT
+with source_table as (
+    select
         SchoolId,
         NameOfInstitution,
         WeekOf,
-        CAST(GradeLevel AS int64) AS GradeLevel,
+        cast(GradeLevel as int64) as GradeLevel,
         Month,
         MonthRank,
         EventDate,
         Apportionment,
         Possible
-    FROM {{ source('StarterPack', 'AverageDailyAttendance_v3')}}
+    from {{ source('StarterPack', 'AverageDailyAttendance_v3') }}
 ),
 
-sy AS (
-    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
+sy as (
+    select * from {{ ref('dim_CurrentSchoolYear') }}
 ),
 
-final AS (
-    SELECT
+final as (
+    select
         sy.SchoolYear,
         source_table.*
-    FROM source_table
-    CROSS JOIN sy
+    from source_table
+    cross join sy
 )
 
-SELECT * FROM final
+select * from final

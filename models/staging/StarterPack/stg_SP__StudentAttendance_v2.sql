@@ -1,28 +1,29 @@
-WITH source_table AS(
-    SELECT
+with source_table as (
+    select
         SchoolId,
         NameOfInstitution,
         StudentUniqueId,
         LastSurname,
         FirstName,
-        ROUND(AverageDailyAttendance, 4) AS AverageDailyAttendance,
-        CountOfAllAbsenceEvents AS CountOfDaysAbsent,
-        CountOfAllInAttendanceEvents AS CountOfDaysInAttendance,
+        round(AverageDailyAttendance, 4) as AverageDailyAttendance,
+        CountOfAllAbsenceEvents as CountOfDaysAbsent,
+        CountOfAllInAttendanceEvents as CountOfDaysInAttendance,
         CountOfDaysEnrolled
-    FROM {{ source('StarterPack', 'StudentAttendance_v2')}}
-    WHERE StudentUniqueId NOT IN ('16671', '16667', '16668') -- These are fake/test student accounts
+    from {{ source('StarterPack', 'StudentAttendance_v2') }}
+    -- These are fake/test student accounts
+    where StudentUniqueId not in ('16671', '16667', '16668')
 ),
 
-sy AS (
-    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
+sy as (
+    select * from {{ ref('dim_CurrentSchoolYear') }}
 ),
 
-final AS (
-    SELECT
+final as (
+    select
         sy.SchoolYear,
         source_table.*
-    FROM source_table
-    CROSS JOIN sy
+    from source_table
+    cross join sy
 )
 
-SELECT * FROM final
+select * from final
