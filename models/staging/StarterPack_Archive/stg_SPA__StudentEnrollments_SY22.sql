@@ -1,14 +1,14 @@
-SELECT
-    '2021-22' AS SchoolYear,
+select
+    '2021-22' as SchoolYear,
     SchoolId,
-    NameOfInstitution AS SchoolName,
+    NameOfInstitution as SchoolName,
     StudentUniqueId,
-    LastSurname AS LastName,
+    LastSurname as LastName,
     FirstName,
-    CAST(GradeLevel AS int64) AS GradeLevel,
+    cast(GradeLevel as int64) as GradeLevel,
     EntryDate,
     ExitWithdrawDate,
     ExitWithdrawReason,
-    FALSE AS IsCurrentEnrollment
-FROM {{ source('StarterPack_Archive', 'StudentEnrollments_SY22')}}
-WHERE StudentUniqueId != '16348' --This is a fake/test student
+    false as IsCurrentEnrollment
+from {{ source('StarterPack_Archive', 'StudentEnrollments_SY22') }}
+where StudentUniqueId != '16348' --This is a fake/test student

@@ -1,5 +1,5 @@
-SELECT
-    '2021-22' AS SchoolYear,
+select
+    '2021-22' as SchoolYear,
     StudentUniqueId,
     StateUniqueId,
     SisUniqueId,
@@ -10,22 +10,27 @@ SELECT
     Birthdate,
     BirthSex,
     Gender,
-    CASE
-        WHEN RaceEthFedRollup = 'Hispanic or Latino of any race' THEN 'Hispanic or Latino' 
-        WHEN RaceEthFedRollup IS NULL THEN 'Unknown/Missing'
-        ELSE RaceEthFedRollup 
-    END AS RaceEthnicity,
+    case
+        when
+            RaceEthFedRollup = 'Hispanic or Latino of any race'
+            then 'Hispanic or Latino'
+        when RaceEthFedRollup is null then 'Unknown/Missing'
+        else RaceEthFedRollup
+    end as RaceEthnicity,
     IsEll,
     EllStatus,
     HasFrl,
     FrlStatus,
     Has504Plan,
     HasIep,
-    CASE WHEN HasIep IS TRUE THEN 'Eligible/Previously Eligible' ELSE NULL END AS SeisEligibilityStatus,
-    CAST (NULL AS STRING) AS Email, --Email addresses in 2021-22 were incorrect due to a data error
-    FALSE AS IsCurrentlyEnrolled,
+    case when HasIep is true then 'Eligible/Previously Eligible' end
+        as SeisEligibilityStatus,
+    --Email addresses in 2021-22 were incorrect due to a data error
+    cast(null as string) as Email,
+    false as IsCurrentlyEnrolled,
     CurrentSchoolId,
     CurrentNameOfInstitution,
-    CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
-FROM {{ source('StarterPack_Archive', 'StudentDemographics_SY22')}}
-WHERE StudentUniqueId != '16348' --Exclude this fake/test student showing up in PS
+    cast(CurrentGradeLevel as int64) as CurrentGradeLevel
+from {{ source('StarterPack_Archive', 'StudentDemographics_SY22') }}
+--Exclude this fake/test student showing up in PS
+where StudentUniqueId != '16348'

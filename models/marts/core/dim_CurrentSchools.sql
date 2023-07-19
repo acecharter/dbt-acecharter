@@ -1,16 +1,16 @@
-WITH sy AS (
-  SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
+with current_school_year as (
+    select distinct SchoolYear
+    from {{ ref('stg_SP__CalendarDates') }}
 ),
 
-schools AS (
-  SELECT * FROM {{ ref('dim_Schools')}}
+schools as (
+    select * from {{ ref('dim_Schools') }}
 ),
 
-final AS (
-  SELECT schools.*
-  FROM sy
-  LEFT JOIN schools
-  USING (SchoolYear)
+final as (
+    select schools.*
+    from schools
+    where SchoolYear = (select * from current_school_year)
 )
 
-SELECT * FROM final
+select * from final

@@ -2,8 +2,8 @@
     - Cohort.Identifier,
     - Cohort.Type
 */
-WITH source_table AS (
-    SELECT
+with source_table as (
+    select
         StudentUniqueId,
         StateUniqueId,
         SisUniqueId,
@@ -14,11 +14,13 @@ WITH source_table AS (
         Birthdate,
         BirthSex,
         Gender,
-        CASE
-            WHEN RaceEthFedRollup = 'Hispanic or Latino of any race' THEN 'Hispanic or Latino' 
-            WHEN RaceEthFedRollup IS NULL THEN 'Unknown/Missing'
-            ELSE RaceEthFedRollup 
-        END AS RaceEthnicity,
+        case
+            when
+                RaceEthFedRollup = 'Hispanic or Latino of any race'
+                then 'Hispanic or Latino'
+            when RaceEthFedRollup is null then 'Unknown/Missing'
+            else RaceEthFedRollup
+        end as RaceEthnicity,
         IsEll,
         EllStatus,
         HasFrl,
@@ -28,47 +30,49 @@ WITH source_table AS (
         Email,
         IsCurrentlyEnrolled,
         CurrentSchoolId,
-        CurrentNameOfInstitution AS CurrentSchoolName,
-        CAST(CurrentGradeLevel AS int64) AS CurrentGradeLevel
-    FROM {{ source('StarterPack', 'StudentDemographics')}}
-    WHERE StudentUniqueId NOT IN ('16671', '16667', '16668')    -- These are fake/test student accounts
+        CurrentNameOfInstitution as CurrentSchoolName,
+        cast(CurrentGradeLevel as int64) as CurrentGradeLevel
+    from {{ source('StarterPack', 'StudentDemographics') }}
+    -- These are fake/test student accounts
+    where StudentUniqueId not in ('16671', '16667', '16668')
 ),
 
-students_with_iep AS (
-    SELECT * 
-    FROM {{ ref('stg_RD__Seis')}}
-    WHERE StudentEligibilityStatus = 'Eligible/Previously Eligible'
-    AND SpedExitDate IS NULL
+students_with_iep as (
+    select *
+    from {{ ref('stg_RD__Seis') }}
+    where
+        StudentEligibilityStatus = 'Eligible/Previously Eligible'
+        and SpedExitDate is null
 ),
 
-sy AS (
-    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
+school_year as (
+    select distinct SchoolYear
+    from {{ ref('stg_SP__CalendarDates') }}
 ),
 
-final AS (
-    SELECT
-        sy.SchoolYear,
-        source_table.* EXCEPT(
+final as (
+    select
+        school_year.SchoolYear,
+        source_table.* except (
             HasIep,
             Email,
             IsCurrentlyEnrolled,
             CurrentSchoolId,
             CurrentSchoolName,
-            CurrentGradeLevel),
-        CASE
-            WHEN i.StudentEligibilityStatus = 'Eligible/Previously Eligible' THEN TRUE
-            ELSE FALSE
-        END AS HasIep,
-        i.StudentEligibilityStatus AS SeisEligibilityStatus,
+            CurrentGradeLevel
+        ),
+        coalesce (iep.StudentEligibilityStatus = 'Eligible/Previously Eligible',
+        false) as HasIep,
+        iep.StudentEligibilityStatus as SeisEligibilityStatus,
         source_table.Email,
         source_table.IsCurrentlyEnrolled,
         source_table.CurrentSchoolId,
         source_table.CurrentSchoolName,
         source_table.CurrentGradeLevel
-    FROM source_table
-    CROSS JOIN sy
-    LEFT JOIN students_with_iep AS i
-    ON source_table.StateUniqueId = i.StateUniqueId
+    from source_table
+    cross join school_year
+    left join students_with_iep as iep
+        on source_table.StateUniqueId = iep.StateUniqueId
 )
 
-SELECT * FROM final
+select * from final

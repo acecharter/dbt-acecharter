@@ -1,4 +1,4 @@
-SELECT
-    '2021-22' AS SchoolYear,
+select
+    '2021-22' as SchoolYear,
     *
-FROM {{ source('StarterPack_Archive', 'CourseEnrollments_v2_SY22')}}
+from {{ source('StarterPack_Archive', 'CourseEnrollments_v2_SY22') }}

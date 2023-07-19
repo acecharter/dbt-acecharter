@@ -1,25 +1,23 @@
-WITH
-    calendar_dates AS (
-        SELECT
-            SchoolId,
-            NameOfInstitution,
-            DATE(CalendarDate) AS CalendarDate,
-            CalendarEvent,
-            CountsTowardAttendance
-        FROM {{ source('StarterPack', 'CalendarDates')}}
-    ),
 
-    sy AS (
-        SELECT CONCAT(MIN(EXTRACT(YEAR FROM CalendarDate)), '-',MIN(EXTRACT(YEAR FROM CalendarDate)-1999)) AS SchoolYear
-        FROM calendar_dates
-    ),
-
-    final AS (
-        SELECT
-            sy.SchoolYear,
-            c.*
-        FROM calendar_dates AS c
-        CROSS JOIN sy
-    )
-
-SELECT * FROM final
+select
+    case
+        when extract(month from CalendarDate) > 7
+            then concat(
+                extract(year from CalendarDate),
+                '-',
+                substr(cast((extract(year from CalendarDate) + 1) as string), 3, 2)
+            )
+        when extract(month from CalendarDate) <= 7
+            then concat(
+                extract(year from CalendarDate) - 1,
+                '-',
+                extract(year from CalendarDate) - 2000
+            )
+        else 'ERROR'
+    end as SchoolYear,
+    SchoolId,
+    NameOfInstitution,
+    date(CalendarDate) as CalendarDate,
+    CalendarEvent,
+    CountsTowardAttendance
+from {{ source('StarterPack', 'CalendarDates') }}

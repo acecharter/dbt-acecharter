@@ -1,12 +1,12 @@
-SELECT
-    '2021-22' AS SchoolYear,
+select
+    '2021-22' as SchoolYear,
     SchoolId,
     NameOfInstitution,
     WeekOf,
-    CAST(GradeLevel AS int64) AS GradeLevel,
+    cast(GradeLevel as int64) as GradeLevel,
     Month,
     MonthRank,
     EventDate,
     Apportionment,
     Possible
-FROM {{ source('StarterPack_Archive', 'AverageDailyAttendance_v3_SY22')}}
+from {{ source('StarterPack_Archive', 'AverageDailyAttendance_v3_SY22') }}

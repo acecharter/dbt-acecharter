@@ -1,6 +1,5 @@
 version: 2
 
-
 sources:
   - name: StarterPack
     database: landing-zone-acecharter
@@ -54,9 +53,9 @@ sources:
             description: The type of grade reported (e.g. Exam, Final, Grading Period).
             tests:
               - not_null
-              
+
           - name: IsCurrentGradingPeriod
-            description: Whether this grade record is part of a currently active grading period.  Before the first day of school and after the last day of school, this value will be False for all records.  
+            description: Whether this grade record is part of a currently active grading period.  Before the first day of school and after the last day of school, this value will be False for all records.
             tests:
               - not_null
 
@@ -101,4 +100,3 @@ sources:
 
       - name: StudentRaceAndEthnicity
         description: Student race and ethnicity information.
-        

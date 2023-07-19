@@ -1,27 +1,31 @@
-WITH source_table AS (
-    SELECT
-        SchoolId,
-        NameOfInstitution,
-        StudentUniqueId,
-        LastSurname,
-        FirstName,
-        EventDate,
-        CASE WHEN AttendanceEventCategoryDescriptor = 'Unreconciled' THEN 'Absent' ELSE NULL END AS AttendanceEventCategoryDescriptor,
-        EventDuration
-    FROM {{ source('StarterPack', 'StudentAttendanceByDate')}}
-    WHERE StudentUniqueId NOT IN ('16671', '16667', '16668')    -- These are fake/test student accounts
-),
-
-sy AS (
-    SELECT * FROM {{ ref('dim_CurrentSchoolYear')}}
-),
-
-final AS (
-    SELECT
-        sy.SchoolYear,
-        source_table.*
-    FROM source_table
-    CROSS JOIN sy
-)
-
-SELECT * FROM final
+select
+    case
+        when extract(month from EventDate) > 7
+            then concat(
+                extract(year from EventDate),
+                '-',
+                substr(cast((extract(year from EventDate) + 1) as string), 3, 2)
+            )
+        when extract(month from EventDate) <= 7
+            then concat(
+                extract(year from EventDate) - 1,
+                '-',
+                extract(year from EventDate) - 2000
+            )
+        else 'ERROR'
+    end as SchoolYear,
+    SchoolId,
+    NameOfInstitution,
+    StudentUniqueId,
+    LastSurname,
+    FirstName,
+    EventDate,
+    case
+        when
+            AttendanceEventCategoryDescriptor = 'Unreconciled'
+            then 'Absent'
+        else AttendanceEventCategoryDescriptor
+    end as AttendanceEventCategoryDescriptor,
+    EventDuration
+from {{ source('StarterPack', 'StudentAttendanceByDate') }}
+where StudentUniqueId not in ('16671', '16667', '16668') -- These are fake/test student accounts
