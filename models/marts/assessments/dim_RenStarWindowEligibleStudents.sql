@@ -1,34 +1,34 @@
 --This script identifies "eligible" students for each testing window based on dates entered in the RenStarWindows table
 
-WITH
-  students AS (
-    SELECT * FROM {{ ref('dim_Students')}}
-  ),
+with students as (
+    select * from {{ ref('dim_Students') }}
+),
 
-  testing_windows AS (
-    SELECT 
-      * EXCEPT(EligibleStudentsEnrollmentDate),
-      CASE
-        WHEN EligibleStudentsEnrollmentDate > CURRENT_DATE() THEN CURRENT_DATE()
-        ELSE EligibleStudentsEnrollmentDate
-      END AS EligibleStudentsEnrollmentDate
-    FROM {{ ref('stg_GSD__RenStarTestingWindows')}}
-    WHERE TestingWindowStartDate < CURRENT_DATE()
-  ),
+test_windows as (
+    select
+        * except (EligibleStudentsEnrollmentDate),
+        case
+            when
+                EligibleStudentsEnrollmentDate > current_date()
+                then current_date()
+            else EligibleStudentsEnrollmentDate
+        end as EligibleStudentsEnrollmentDate
+    from {{ ref('stg_GSD__RenStarTestingWindows') }}
+    where TestingWindowStartDate < current_date()
+),
 
-  final AS (
-    SELECT
-        w.SchoolYear,
-        w.TestingWindow,
-        s.SchoolId,
-        s.StudentUniqueId
-    FROM students AS s
-    CROSS JOIN testing_windows AS w
-    WHERE
-        s.EntryDate <= w.EligibleStudentsEnrollmentDate AND
-        s.ExitWithdrawDate >= w.EligibleStudentsEnrollmentDate
-  )
+final as (
+    select
+        test_windows.SchoolYear,
+        test_windows.TestingWindow,
+        students.SchoolId,
+        students.StudentUniqueId
+    from students
+    cross join test_windows
+    where
+        students.EntryDate <= test_windows.EligibleStudentsEnrollmentDate
+        and students.ExitWithdrawDate >= test_windows.EligibleStudentsEnrollmentDate
+)
 
-SELECT * FROM final
-ORDER BY 1, 2, 3, 4
-
+select * from final
+order by 1, 2, 3, 4

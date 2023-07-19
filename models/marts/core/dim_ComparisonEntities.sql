@@ -1,39 +1,39 @@
-WITH
-  ace_entities AS (
-    SELECT
-      StateSchoolCode AS EntityCode,
-      'School' AS EntityType,
-      SchoolNameFull AS EntityName,
-      SchoolNameMid AS EntityNameMid,
-      SchoolNameShort AS EntityNameShort,
-      StateSchoolCode AS AceComparisonSchoolCode
-    FROM {{ ref('stg_GSD__Schools')}}
-  ),
-  
-  comparison_entities AS (
-    SELECT
-      EntityCode,
-      EntityType,
-      EntityName,
-      EntityNameShort AS EntityNameMid,
-      EntityNameShort,
-      AceComparisonSchoolCode
-    FROM {{ ref('stg_GSD__ComparisonEntities')}} 
-  ),
+with
+ace_entities as (
+    select
+        StateSchoolCode as EntityCode,
+        'School' as EntityType,
+        SchoolNameFull as EntityName,
+        SchoolNameMid as EntityNameMid,
+        SchoolNameShort as EntityNameShort,
+        StateSchoolCode as AceComparisonSchoolCode
+    from {{ ref('stg_GSD__Schools') }}
+),
 
-  unioned AS (
-    SELECT * FROM ace_entities
-    UNION ALL
-    SELECT * FROM comparison_entities
-  ),
+comparison_entities as (
+    select
+        EntityCode,
+        EntityType,
+        EntityName,
+        EntityNameShort as EntityNameMid,
+        EntityNameShort,
+        AceComparisonSchoolCode
+    from {{ ref('stg_GSD__ComparisonEntities') }}
+),
 
-  final AS (
-    SELECT
-      u.*,
-      a.EntityNameMid AS AceComparisonSchoolName
-    FROM unioned AS u
-    LEFT JOIN ace_entities AS a
-    ON u.AceComparisonSchoolCode = a.EntityCode
-  )
+unioned as (
+    select * from ace_entities
+    union all
+    select * from comparison_entities
+),
 
-SELECT * FROM final
+final as (
+    select
+        u.*,
+        a.EntityNameMid as AceComparisonSchoolName
+    from unioned as u
+    left join ace_entities as a
+        on u.AceComparisonSchoolCode = a.EntityCode
+)
+
+select * from final

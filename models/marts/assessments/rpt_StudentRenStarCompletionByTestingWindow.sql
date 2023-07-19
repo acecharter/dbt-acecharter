@@ -1,59 +1,66 @@
-WITH
-  students AS (
-    SELECT * FROM {{ ref('dim_Students') }}
-  ),
+with students as (
+    select * from {{ ref('dim_Students') }}
+),
 
-  schools AS (
-      SELECT
+schools as (
+    select
         SchoolYear,
         SchoolId,
         SchoolName,
         SchoolNameMid,
         SchoolNameShort
-      FROM {{ ref('dim_Schools')}}
-  ),
+    from {{ ref('dim_Schools') }}
+),
 
-  assessments AS (
-    SELECT *
-    FROM {{ ref('stg_GSD__Assessments')}}
-  ),
+assessments as (
+    select *
+    from {{ ref('stg_GSD__Assessments') }}
+),
 
-  completion_by_window AS (
-    SELECT * FROM {{ ref('fct_StudentRenStarCompletionByWindow')}}
-  ),
+completion_by_window as (
+    select * from {{ ref('fct_StudentRenStarCompletionByWindow') }}
+),
 
-  final AS (
-    SELECT
-      sc.* EXCEPT (SchoolYear),
-      st.* EXCEPT (SchoolYear, SchoolId),
-      c.AssessmentSubject AS StarAssessmentSubject,
-      a.AssessmentNameShort,
-      a.AssessmentSubject,
-      c.SchoolYear,
-      c.StarTestingWindow AS TestingWindow,
-      c.* EXCEPT(SchoolYear, StarTestingWindow, AssessmentSubject, SchoolId, StudentUniqueId, AssessmentName, TestingStatus),
-      c.TestingStatus AS WindowTestingStatus
-    FROM completion_by_window AS c
-    LEFT JOIN schools AS sc
-    ON
-      c.SchoolId = sc.SchoolId
-      AND c.SchoolYear = sc.SchoolYear
-    LEFT JOIN students AS st
-    ON
-      c.StudentUniqueId = st.StudentUniqueId
-      AND c.SchoolId = st.SchoolId
-      AND c.SchoolYear = st.SchoolYear
-    LEFT JOIN assessments AS a
-    ON c.AssessmentSubject = a.AssessmentNameShort
-    WHERE st.StudentUniqueId IS NOT NULL
-  )
+final as (
+    select
+        sc.* except (SchoolYear),
+        st.* except (SchoolYear, SchoolId),
+        c.AssessmentSubject as StarAssessmentSubject,
+        a.AssessmentNameShort,
+        a.AssessmentSubject,
+        c.SchoolYear,
+        c.StarTestingWindow as TestingWindow,
+        c.* except (
+            SchoolYear,
+            StarTestingWindow,
+            AssessmentSubject,
+            SchoolId,
+            StudentUniqueId,
+            AssessmentName,
+            TestingStatus
+        ),
+        c.TestingStatus as WindowTestingStatus
+    from completion_by_window as c
+    left join schools as sc
+        on
+            c.SchoolId = sc.SchoolId
+            and c.SchoolYear = sc.SchoolYear
+    left join students as st
+        on
+            c.StudentUniqueId = st.StudentUniqueId
+            and c.SchoolId = st.SchoolId
+            and c.SchoolYear = st.SchoolYear
+    left join assessments as a
+        on c.AssessmentSubject = a.AssessmentNameShort
+    where st.StudentUniqueId is not null
+)
 
-SELECT *
-FROM final
-ORDER BY
-  SchoolNameMid,
-  StarAssessmentSubject,
-  SchoolYear,
-  TestingWindow,
-  GradeLevel,
-  DisplayName
+select *
+from final
+order by
+    SchoolNameMid,
+    StarAssessmentSubject,
+    SchoolYear,
+    TestingWindow,
+    GradeLevel,
+    DisplayName

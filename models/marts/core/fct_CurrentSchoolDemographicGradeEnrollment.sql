@@ -1,108 +1,107 @@
-WITH current_students AS (
-  SELECT *
-  FROM {{ ref('dim_Students')}}
-  WHERE IsCurrentlyEnrolled = TRUE
+with current_students as (
+    select *
+    from {{ ref('dim_Students') }}
+    where IsCurrentlyEnrolled = true
 ),
 
-all_students AS (
-  SELECT
-    SchoolYear,
-    SchoolId,
-    'All Students' AS StudentGroupType,
-    'All Students' AS StudentGroup,
-    GradeLevel,
-    COUNT(*) AS Enrollment
-  FROM current_students
-  GROUP BY 1, 2, 5
+all_students as (
+    select
+        SchoolYear,
+        SchoolId,
+        'All Students' as StudentGroupType,
+        'All Students' as StudentGroup,
+        GradeLevel,
+        count(*) as Enrollment
+    from current_students
+    group by 1, 2, 5
 ),
 
-race_ethnicity AS(
-  SELECT
-    SchoolYear,
-    SchoolId,
-    'Race/Ethnicity' AS StudentGroupType,
-    RaceEthnicity AS StudentGroup,
-    GradeLevel,
-    COUNT(*) AS Enrollment
-  FROM current_students
-  GROUP BY 1, 2, 4, 5
-  ORDER BY 1, 2, 4, 5
+race_ethnicity as (
+    select
+        SchoolYear,
+        SchoolId,
+        'Race/Ethnicity' as StudentGroupType,
+        RaceEthnicity as StudentGroup,
+        GradeLevel,
+        count(*) as Enrollment
+    from current_students
+    group by 1, 2, 4, 5
+    order by 1, 2, 4, 5
 ),
 
-el_status AS (
-  SELECT
-    SchoolYear,
-    SchoolId,
-    'English Learner Status' AS StudentGroupType,
-    CASE 
-        WHEN IsEll='Yes' THEN 'English Learner'
-        WHEN IsEll='No' THEN 'Not English Learner'
-    END AS StudentGroup,
-    GradeLevel,
-    COUNT(*) AS Enrollment
-  FROM current_students
-  GROUP BY 1, 2, 4, 5
-  ORDER BY 1, 2, 4, 5
+el_status as (
+    select
+        SchoolYear,
+        SchoolId,
+        'English Learner Status' as StudentGroupType,
+        case
+            when IsEll = 'Yes' then 'English Learner'
+            when IsEll = 'No' then 'Not English Learner'
+        end as StudentGroup,
+        GradeLevel,
+        count(*) as Enrollment
+    from current_students
+    group by 1, 2, 4, 5
+    order by 1, 2, 4, 5
 ),
 
-frl_status AS (
-  SELECT
-    SchoolYear,
-    SchoolId,
-    'Free/Reduced Meal Eligibility Status' AS StudentGroupType,
-    CASE 
-        WHEN HasFrl='Yes' THEN 'Free/Reduced Meal-Eligible'
-        WHEN HasFrl='No' THEN 'Not Free/Reduced Meal-Eligible'
-    END AS StudentGroup,
-    GradeLevel,
-    COUNT(*) AS Enrollment
-  FROM current_students
-  GROUP BY 1, 2, 4, 5
-  ORDER BY 1, 2, 4, 5
+frl_status as (
+    select
+        SchoolYear,
+        SchoolId,
+        'Free/Reduced Meal Eligibility Status' as StudentGroupType,
+        case
+            when HasFrl = 'Yes' then 'Free/Reduced Meal-Eligible'
+            when HasFrl = 'No' then 'Not Free/Reduced Meal-Eligible'
+        end as StudentGroup,
+        GradeLevel,
+        count(*) as Enrollment
+    from current_students
+    group by 1, 2, 4, 5
+    order by 1, 2, 4, 5
 ),
 
-sped_status AS (
-  SELECT
-    SchoolYear,
-    SchoolId,
-    'Special Education Status' AS StudentGroupType,
-    CASE 
-        WHEN HasIep='Yes' THEN 'Special Education'
-        WHEN HasIep='No' THEN 'Not Special Education'
-    END AS StudentGroup,
-    GradeLevel,
-    COUNT(*) AS Enrollment
-  FROM current_students
-  GROUP BY 1, 2, 4, 5
-  ORDER BY 1, 2, 4, 5
+sped_status as (
+    select
+        SchoolYear,
+        SchoolId,
+        'Special Education Status' as StudentGroupType,
+        case
+            when HasIep = 'Yes' then 'Special Education'
+            when HasIep = 'No' then 'Not Special Education'
+        end as StudentGroup,
+        GradeLevel,
+        count(*) as Enrollment
+    from current_students
+    group by 1, 2, 4, 5
+    order by 1, 2, 4, 5
 ),
 
-gender AS (
-  SELECT
-    SchoolYear,
-    SchoolId,
-    'Gender' AS StudentGroupType,
-    Gender AS StudentGroup,
-    GradeLevel,
-    COUNT(*) AS Enrollment
-  FROM current_students
-  GROUP BY 1, 2, 4, 5
-  ORDER BY 1, 2, 4, 5
+gender as (
+    select
+        SchoolYear,
+        SchoolId,
+        'Gender' as StudentGroupType,
+        Gender as StudentGroup,
+        GradeLevel,
+        count(*) as Enrollment
+    from current_students
+    group by 1, 2, 4, 5
+    order by 1, 2, 4, 5
 ),
 
-final AS (
-  SELECT * FROM all_students
-  UNION ALL
-  SELECT * FROM race_ethnicity
-  UNION ALL
-  SELECT * FROM el_status
-  UNION ALL
-  SELECT * FROM frl_status
-  UNION ALL
-  SELECT * FROM sped_status
-  UNION ALL
-  SELECT * FROM gender
+final as (
+    select * from all_students
+    union all
+    select * from race_ethnicity
+    union all
+    select * from el_status
+    union all
+    select * from frl_status
+    union all
+    select * from sped_status
+    union all
+    select * from gender
 )
 
-SELECT * FROM final
- 
+select * from final

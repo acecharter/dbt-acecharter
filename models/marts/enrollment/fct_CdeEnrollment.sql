@@ -1,36 +1,35 @@
-WITH
-  race_and_grade AS (
-    SELECT
-      SchoolYear,
-      EntityCode,
-      SchoolType,
-      'Race/Ethnicity' AS SubgroupType,
-      RaceEthnicity AS Subgroup,
-      Gender,
-      GradeLevel,
-      Enrollment,
-      PctOfTotalEnrollment
-    FROM {{ ref('int_CdeEnrByRaceAndGrade__3_unpivoted')}}
-  ),
+with race_and_grade as (
+    select
+        SchoolYear,
+        EntityCode,
+        SchoolType,
+        'Race/Ethnicity' as SubgroupType,
+        RaceEthnicity as Subgroup,
+        Gender,
+        GradeLevel,
+        Enrollment,
+        PctOfTotalEnrollment
+    from {{ ref('int_CdeEnrByRaceAndGrade__3_unpivoted') }}
+),
 
-  subgroups AS (
-    SELECT
-      SchoolYear,
-      EntityCode,
-      EnrollmentType AS SchoolType,
-      'Other' AS SubgroupType,
-      Subgroup,
-      'All' AS Gender,
-      'All' AS GradeLevel,
-      Enrollment,
-      PctOfTotalEnrollment
-    FROM {{ ref('int_CdeEnrBySubgroup__transformed_unioned')}}
-  ),
+subgroups as (
+    select
+        SchoolYear,
+        EntityCode,
+        EnrollmentType as SchoolType,
+        'Other' as SubgroupType,
+        Subgroup,
+        'All' as Gender,
+        'All' as GradeLevel,
+        Enrollment,
+        PctOfTotalEnrollment
+    from {{ ref('int_CdeEnrBySubgroup__transformed_unioned') }}
+),
 
-  final AS (
-    SELECT * FROM race_and_grade
-    UNION ALL
-    SELECT * FROM subgroups
-  )
+final as (
+    select * from race_and_grade
+    union all
+    select * from subgroups
+)
 
-SELECT * FROM final
+select * from final

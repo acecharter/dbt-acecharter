@@ -1,37 +1,35 @@
-WITH 
-  elpac AS (
-    SELECT * FROM {{ ref('int_Elpac__2_unpivoted')}} 
-  ),
+with elpac as (
+    select * from {{ ref('int_Elpac__2_unpivoted') }}
+),
 
-  demographics AS (
-    SELECT *
-    FROM {{ ref('stg_RD__ElpacStudentGroups')}}
-  ),
+demographics as (
+    select * from {{ ref('stg_RD__ElpacStudentGroups') }}
+),
 
-  final AS (
-    SELECT
-      e.EntityCode,
-      e.EntityType,
-      e.EntityName,
-      e.EntityNameMid,
-      e.EntityNameShort,
-      e.RecordType,
-      e.TestYear,
-      e.SchoolYear,
-      e.StudentGroupId,
-      d.StudentGroupName AS StudentGroup,
-      e.GradeLevel,
-      e.AssessmentType,
-      e.AssessmentObjective,
-      e.TotalEnrolled,
-      e.TotalTestedWithScores,
-      e.ReportingMethod,
-      e.ResultDataType,
-      e.SchoolResult,
-      e.StudentWithResultCount
-    FROM elpac AS e
-    LEFT JOIN demographics AS d
-    ON e.StudentGroupId = d.StudentGroupId
-  )
+final as (
+    select
+        elpac.EntityCode,
+        elpac.EntityType,
+        elpac.EntityName,
+        elpac.EntityNameMid,
+        elpac.EntityNameShort,
+        elpac.RecordType,
+        elpac.TestYear,
+        elpac.SchoolYear,
+        elpac.StudentGroupId,
+        demographics.StudentGroupName as StudentGroup,
+        elpac.GradeLevel,
+        elpac.AssessmentType,
+        elpac.AssessmentObjective,
+        elpac.TotalEnrolled,
+        elpac.TotalTestedWithScores,
+        elpac.ReportingMethod,
+        elpac.ResultDataType,
+        elpac.SchoolResult,
+        elpac.StudentWithResultCount
+    from elpac
+    left join demographics
+        on elpac.StudentGroupId = demographics.StudentGroupId
+)
 
-SELECT * FROM final
+select * from final

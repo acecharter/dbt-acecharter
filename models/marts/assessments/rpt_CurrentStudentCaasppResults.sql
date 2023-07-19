@@ -1,37 +1,37 @@
-WITH current_students AS (
-    SELECT *
-    FROM {{ ref('dim_Students')}}
-    WHERE IsCurrentlyEnrolled = TRUE
+with current_students as (
+    select *
+    from {{ ref('dim_Students') }}
+    where IsCurrentlyEnrolled = true
 ),
 
-caaspp_results AS (
-    SELECT
-      * EXCEPT (AssessmentDate, StudentResult),
-      CAST(StudentResult AS INT64) AS StudentResult
-    FROM {{ ref('fct_StudentAssessment')}}
-    WHERE
-      AceAssessmentId IN ('1', '2')
+caaspp_results as (
+    select
+        * except (AssessmentDate, StudentResult),
+        cast(StudentResult as int64) as StudentResult
+    from {{ ref('fct_StudentAssessment') }}
+    where
+        AceAssessmentId in ('1', '2')
 ),
 
-schools AS (
-    SELECT
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ ref('dim_CurrentSchools')}}
+schools as (
+    select
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_CurrentSchools') }}
 ),
 
-final AS (
-  SELECT
-    s.*,
-    cs.* EXCEPT (SchoolId, SchoolYear, ExitWithdrawReason),
-    cr.* EXCEPT (StateUniqueId, TestedSchoolId),
-  FROM current_students AS cs
-  INNER JOIN caaspp_results AS cr
-  ON cs.StateUniqueId = cr.StateUniqueId
-  LEFT JOIN schools AS s
-  ON cs.SchoolId = s.SchoolId
+final as (
+    select
+        s.*,
+        cs.* except (SchoolId, SchoolYear, ExitWithdrawReason),
+        cr.* except (StateUniqueId, TestedSchoolId)
+    from current_students as cs
+    inner join caaspp_results as cr
+        on cs.StateUniqueId = cr.StateUniqueId
+    left join schools as s
+        on cs.SchoolId = s.SchoolId
 )
 
-SELECT * FROM final
+select * from final

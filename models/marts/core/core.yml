@@ -12,7 +12,7 @@ models:
         description: Type of entity (either State, County, District, or School)
         tests:
           - accepted_values:
-              values: ['State', 'County', 'District', 'School']
+              values: ["State", "County", "District", "School"]
       - name: EntityName
         description: Full/long version of entity name of
       - name: EntityNameMid
@@ -42,7 +42,6 @@ models:
       - name: StateUniqueId
         description: Statewide Student Identifier (SSID); though new students may have a null value, any non-null values should be unique
 
-
   - name: dim_Students
     description: Student demographic and enrollment information for the most recent enrollment of a student in each school. A student may have multiple records for enrollments in different schools.
     columns:
@@ -65,7 +64,7 @@ models:
       - name: ExitWithdrawDate
       - name: ExitWithdrawReason
       - name: IsCurrentEnrollment
-  
+
   - name: rpt_CurrentStudentDemographics
     description: Staging model for StudentDemographics source data
     columns:

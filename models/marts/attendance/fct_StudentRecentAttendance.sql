@@ -1,101 +1,113 @@
-WITH absences AS (
-  SELECT * FROM {{ ref('stg_SP__StudentAttendanceByDate')}}
-  WHERE AttendanceEventCategoryDescriptor= 'Absent'
+with absences as (
+    select *
+    from {{ ref('stg_SP__StudentAttendanceByDate') }}
+    where AttendanceEventCategoryDescriptor = 'Absent'
 ),
 
-school_days AS (
-  SELECT
-    *,
-    RANK() OVER (
-      PARTITION BY SchoolId
-      ORDER BY CalendarDate DESC
-    ) AS Rank
-  FROM  {{ ref('stg_SP__CalendarDates')}}
-  WHERE CountsTowardAttendance IS TRUE
-  AND CalendarDate < CURRENT_DATE()
-  ORDER BY CalendarDate DESC
+school_days as (
+    select
+        *,
+        rank() over (
+            partition by SchoolId
+            order by CalendarDate desc
+        ) as Rank
+    from {{ ref('stg_SP__CalendarDates') }}
+    where
+        CountsTowardAttendance is true
+        and CalendarDate < current_date()
+    order by CalendarDate desc
 ),
 
-most_recent_10_days AS (
-  SELECT * EXCEPT(Rank) 
-  FROM school_days
-  WHERE Rank <=10
+most_recent_10_days as (
+    select * except (Rank)
+    from school_days
+    where Rank <= 10
 ),
 
-students AS (
-  SELECT *
-  FROM {{ ref('dim_Students')}}
-  WHERE IsCurrentlyEnrolled = TRUE
+students as (
+    select *
+    from {{ ref('dim_Students') }}
+    where IsCurrentlyEnrolled = true
 ),
 
-student_enrollments_by_date AS (
-  SELECT
-    s.SchoolId,
-    s.StudentUniqueId,
-    s.StateUniqueId,
-    s.DisplayName,
-    s.EntryDate,
-    s.ExitWithdrawDate,
-    e.CalendarDate
-  FROM students AS s
-  CROSS JOIN most_recent_10_days AS e
-  WHERE
-  e.CalendarDate >= s.EntryDate
-  AND e.CalendarDate <= s.ExitWithdrawDate
-  AND s.SchoolId = e.SchoolId
+student_enrollments_by_date as (
+    select
+        s.SchoolId,
+        s.StudentUniqueId,
+        s.StateUniqueId,
+        s.DisplayName,
+        s.EntryDate,
+        s.ExitWithdrawDate,
+        e.CalendarDate
+    from students as s
+    cross join most_recent_10_days as e
+    where
+        e.CalendarDate >= s.EntryDate
+        and e.CalendarDate <= s.ExitWithdrawDate
+        and s.SchoolId = e.SchoolId
 ),
 
-student_attendance_by_date AS (
-  SELECT
-    e.*,
-    CASE WHEN a.EventDate IS NOT NULL THEN 'Absent' ELSE 'Present' END AS AttendanceStatus
-  FROM student_enrollments_by_date AS e
-  LEFT JOIN absences AS a
-  ON e.SchoolId = a.SchoolId
-  AND e.StudentUniqueId = a.StudentUniqueId
-  AND e.CalendarDate = a.EventDate
+student_attendance_by_date as (
+    select
+        e.*,
+        case when a.EventDate is not null then 'Absent' else 'Present' end
+            as AttendanceStatus
+    from student_enrollments_by_date as e
+    left join absences as a
+        on
+            e.SchoolId = a.SchoolId
+            and e.StudentUniqueId = a.StudentUniqueId
+            and e.CalendarDate = a.EventDate
 ),
 
-student_attendance_aggregated AS (
-  SELECT
-    * EXCEPT (EntryDate, ExitWithdrawDate, CalendarDate),
-    COUNT(*) AS StatusCount
-  FROM student_attendance_by_date
-  GROUP BY 1, 2, 3, 4, 5
+student_attendance_aggregated as (
+    select
+        * except (EntryDate, ExitWithdrawDate, CalendarDate),
+        count(*) as StatusCount
+    from student_attendance_by_date
+    group by 1, 2, 3, 4, 5
 ),
 
-stu_att_absent AS (
-  SELECT * FROM student_attendance_aggregated
-  WHERE AttendanceStatus = 'Absent'
+stu_att_absent as (
+    select * from student_attendance_aggregated
+    where AttendanceStatus = 'Absent'
 ),
 
-stu_att_present AS (
-  SELECT * FROM student_attendance_aggregated
-  WHERE AttendanceStatus = 'Present'
+stu_att_present as (
+    select * from student_attendance_aggregated
+    where AttendanceStatus = 'Present'
 ),
 
-stu_att_final AS (
-  SELECT
-    s.SchoolId,
-    s.StudentUniqueId,
-    s.StateUniqueId,
-    s.DisplayName,
-    s.GradeLevel,
-    IFNULL(a.StatusCount,0) AS AbsenceCount,
-    IFNULL(a.StatusCount,0) + IFNULL(p.StatusCount,0) AS DaysEnrolledCount,
-    CASE
-      WHEN a.StatusCount IS NULL AND p.StatusCount IS NULL THEN NULL
-      ELSE ROUND(IFNULL(p.StatusCount,0) / (IFNULL(a.StatusCount,0) + IFNULL(p.StatusCount,0)),4)
-    END AS AttendanceRate
-  FROM students AS s
-  LEFT JOIN stu_att_present AS p
-  ON s.SchoolId = p.SchoolId
-  AND s.StudentUniqueId = p.StudentUniqueId 
-  LEFT JOIN stu_att_absent AS a
-  ON s.SchoolId = a.SchoolId
-  AND s.StudentUniqueId = a.StudentUniqueId 
+stu_att_final as (
+    select
+        s.SchoolId,
+        s.StudentUniqueId,
+        s.StateUniqueId,
+        s.DisplayName,
+        s.GradeLevel,
+        coalesce(a.StatusCount, 0) as AbsenceCount,
+        coalesce(a.StatusCount, 0)
+        + coalesce(p.StatusCount, 0) as DaysEnrolledCount,
+        case
+            when a.StatusCount is null and p.StatusCount is null then null
+            else
+                round(
+                    coalesce(p.StatusCount, 0)
+                    / (coalesce(a.StatusCount, 0) + coalesce(p.StatusCount, 0)),
+                    4
+                )
+        end as AttendanceRate
+    from students as s
+    left join stu_att_present as p
+        on
+            s.SchoolId = p.SchoolId
+            and s.StudentUniqueId = p.StudentUniqueId
+    left join stu_att_absent as a
+        on
+            s.SchoolId = a.SchoolId
+            and s.StudentUniqueId = a.StudentUniqueId
 
 )
 
-SELECT * from stu_att_final
-ORDER BY SchoolId, DisplayName
+select * from stu_att_final
+order by SchoolId, DisplayName

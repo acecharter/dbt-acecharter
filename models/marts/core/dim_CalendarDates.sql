@@ -1,7 +1,7 @@
-WITH final AS (
-  SELECT * FROM {{ ref('stg_SP__CalendarDates')}}
-  UNION ALL
-  SELECT * FROM {{ ref('stg_SPA__CalendarDates_SY22')}}
+with final as (
+    select * from {{ ref('stg_SP__CalendarDates') }}
+    union all
+    select * from {{ ref('stg_SPA__CalendarDates_SY22') }}
 )
 
-SELECT * FROM final
+select * from final

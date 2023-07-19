@@ -1,2 +1,2 @@
-SELECT DISTINCT * EXCEPT (AceComparisonSchoolCode, AceComparisonSchoolName)
-FROM {{ ref('dim_ComparisonEntities')}}
+select distinct * except (AceComparisonSchoolCode, AceComparisonSchoolName)
+from {{ ref('dim_ComparisonEntities') }}

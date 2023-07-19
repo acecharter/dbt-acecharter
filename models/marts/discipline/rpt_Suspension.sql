@@ -1,1 +1,1 @@
-SELECT * FROM {{ ref('fct_Suspension')}}
+select * from {{ ref('fct_Suspension') }}

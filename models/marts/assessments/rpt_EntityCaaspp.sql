@@ -1,1 +1,1 @@
-SELECT * FROM {{ ref('fct_EntityCaaspp')}}
+select * from {{ ref('fct_EntityCaaspp') }}

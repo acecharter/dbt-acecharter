@@ -1,74 +1,73 @@
-WITH current_students AS (
-  SELECT *
-  FROM {{ ref('dim_Students')}}
-  WHERE IsCurrentlyEnrolled = TRUE
+with current_students as (
+    select *
+    from {{ ref('dim_Students') }}
+    where IsCurrentlyEnrolled = true
 ),
 
-current_schools AS (
-    SELECT
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ ref('dim_CurrentSchools')}}
+current_schools as (
+    select
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_CurrentSchools') }}
 ),
 
-assessment_results AS (
-    SELECT *
-    FROM {{ ref('fct_StudentAssessment')}}
+assessment_results as (
+    select *
+    from {{ ref('fct_StudentAssessment') }}
 ),
 
-assessment_info AS (
-    SELECT 
-      AceAssessmentId,
-      AssessmentSubject,
-      AssessmentFamilyNameShort,
-      SystemOrVendorName
-    FROM {{ ref('stg_GSD__Assessments')}}
+assessment_info as (
+    select
+        AceAssessmentId,
+        AssessmentSubject,
+        AssessmentFamilyNameShort,
+        SystemOrVendorName
+    from {{ ref('stg_GSD__Assessments') }}
 ),
 
-sbac_results AS (
-    SELECT
-      r.StateUniqueId,
-      r.AssessmentSchoolYear,
-      r.AceAssessmentId,
-      r.AssessmentName,
-      i.AssessmentSubject,
-      i.SystemOrVendorName,
-      r.AssessmentId,
-      r.GradeLevelWhenAssessed,
-      r.AssessmentGradeLevel,
-      r.AssessmentObjective,
-      CAST(r.StudentResult AS INT64) AS AchievementLevel,
-      CASE
-        WHEN r.StudentResult = '1' THEN 'Not Met'
-        WHEN r.StudentResult = '2' THEN 'Nearly Met'
-        WHEN r.StudentResult = '3' THEN 'Met'
-        WHEN r.StudentResult = '4' THEN 'Exceeded'
-      END AS AchievementLevelCategory
-    FROM assessment_results AS r
-    LEFT JOIN assessment_info AS i
-    USING(AceAssessmentId)
-    WHERE 
-      i.SystemOrVendorName = 'CAASPP' AND 
-      i.AssessmentFamilyNameShort = 'SBAC' AND
-      r.AssessmentObjective = 'Overall' AND
-      r.ReportingMethod = 'Achievement Level' AND
-      CAST(r.StudentResult AS INT64) <= 4
+sbac_results as (
+    select
+        r.StateUniqueId,
+        r.AssessmentSchoolYear,
+        r.AceAssessmentId,
+        r.AssessmentName,
+        i.AssessmentSubject,
+        i.SystemOrVendorName,
+        r.AssessmentId,
+        r.GradeLevelWhenAssessed,
+        r.AssessmentGradeLevel,
+        r.AssessmentObjective,
+        cast(r.StudentResult as int64) as AchievementLevel,
+        case
+            when r.StudentResult = '1' then 'Not Met'
+            when r.StudentResult = '2' then 'Nearly Met'
+            when r.StudentResult = '3' then 'Met'
+            when r.StudentResult = '4' then 'Exceeded'
+        end as AchievementLevelCategory
+    from assessment_results as r
+    left join assessment_info as i
+        on r.AceAssessmentId = i.AceAssessmentId
+where
+    i.SystemOrVendorName = 'CAASPP'
+    and i.AssessmentFamilyNameShort = 'SBAC'
+    and r.AssessmentObjective = 'Overall'
+    and r.ReportingMethod = 'Achievement Level'
+    and cast(r.StudentResult as int64) <= 4
 
 )
 
-
-SELECT
-  s.* EXCEPT (SchoolId),
-  cs.* EXCEPT (
-      ExitWithdrawDate,
-      ExitWithdrawReason
-    ),
-  r.* EXCEPT (StateUniqueId)
-FROM current_students AS cs
-LEFT JOIN sbac_results AS r
-ON cs.StateUniqueId = r.StateUniqueId
-LEFT JOIN current_schools AS s
-ON cs.SchoolId = s.SchoolId
-WHERE AceAssessmentId IS NOT NULL
+select
+s.* except (SchoolId),
+cs.* except (
+    ExitWithdrawDate,
+    ExitWithdrawReason
+),
+r.* except (StateUniqueId)
+from current_students as cs
+left join sbac_results as r
+on cs.StateUniqueId = r.StateUniqueId
+left join current_schools as s
+on cs.SchoolId = s.SchoolId
+where AceAssessmentId is not null

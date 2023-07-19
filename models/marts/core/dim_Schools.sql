@@ -1,53 +1,54 @@
-WITH starter_pack_schools AS (
-  SELECT * FROM {{ ref('stg_SP__Schools') }}
-  UNION ALL
-  SELECT * FROM {{ ref('stg_SPA__Schools_SY22')}}
+with starter_pack_schools as (
+    select * from {{ ref('stg_SP__Schools') }}
+    union all
+    select * from {{ ref('stg_SPA__Schools_SY22') }}
 ),
 
-raw_data_schools AS (
-  SELECT *
-  FROM {{ ref('stg_GSD__Schools') }}
+gsd_schools as (
+    select *
+    from {{ ref('stg_GSD__Schools') }}
 ),
 
-final AS (
-  SELECT
-    sp.SchoolYear,
-    sp.SchoolId,
-    rd.StateCdsCode,
-    rd.StateCountyCode,
-    rd.StateDistrictCode,
-    rd.StateSchoolCode,
-    rd.SchoolNameFull AS SchoolName,
-    rd.SchoolNameMid,
-    rd.SchoolNameShort,
-    rd.SchoolType,
-    sp.PhysicalStreetNumberName,
-    sp.PhysicalCity,
-    sp.PhysicalStateAbbreviation,
-    sp.PhysicalPostalCode,
-    sp.MailingStreetNumberName,
-    sp.MailingCity,
-    sp.MailingStateAbbreviation,
-    sp.MailingPostalCode,
-    rd.CurrentCharterTermStartDate,
-    rd.CurrentCharterTermEndDate,
-    rd.YearOpened,
-    rd.PreviousRenewalYears,
-    sp.GradeLevel,
-    rd.GradesServed,
-    rd.Grade5,
-    rd.Grade6,
-    rd.Grade7,
-    rd.Grade8,
-    rd.Grade9,
-    rd.Grade10,
-    rd.Grade11,
-    rd.Grade12
-  FROM starter_pack_schools AS sp
-  LEFT JOIN raw_data_schools AS rd
-  USING (SchoolId)
+final as (
+    select
+        sp.SchoolYear,
+        sp.SchoolId,
+        gsd.StateCdsCode,
+        gsd.StateCountyCode,
+        gsd.StateDistrictCode,
+        gsd.StateSchoolCode,
+        gsd.SchoolNameFull as SchoolName,
+        gsd.SchoolNameMid,
+        gsd.SchoolNameShort,
+        gsd.SchoolType,
+        sp.PhysicalStreetNumberName,
+        sp.PhysicalCity,
+        sp.PhysicalStateAbbreviation,
+        sp.PhysicalPostalCode,
+        sp.MailingStreetNumberName,
+        sp.MailingCity,
+        sp.MailingStateAbbreviation,
+        sp.MailingPostalCode,
+        gsd.CurrentCharterTermStartDate,
+        gsd.CurrentCharterTermEndDate,
+        gsd.YearOpened,
+        gsd.PreviousRenewalYears,
+        sp.GradeLevel,
+        gsd.GradesServed,
+        gsd.Grade5,
+        gsd.Grade6,
+        gsd.Grade7,
+        gsd.Grade8,
+        gsd.Grade9,
+        gsd.Grade10,
+        gsd.Grade11,
+        gsd.Grade12
+    from starter_pack_schools as sp
+    left join gsd_schools as gsd
+        on sp.SchoolId = gsd.SchoolId
 )
 
 
-SELECT * FROM final
-ORDER BY SchoolYear DESC
+select *
+from final
+order by SchoolYear desc

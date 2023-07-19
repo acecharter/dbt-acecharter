@@ -1,129 +1,137 @@
-WITH
-  completion_by_window AS (
-    SELECT * FROM {{ref('fct_StudentRenStarCompletionByWindow')}}
-  ),
+with completion_by_window as (
+    select * from {{ ref('fct_StudentRenStarCompletionByWindow') }}
+),
 
-  student_testing AS (
-    SELECT DISTINCT
-      SchoolYear,
-      SchoolId,
-      StudentUniqueId,
-      AssessmentSubject,
-    FROM completion_by_window
-  ),
+student_testing as (
+    select distinct
+        SchoolYear,
+        SchoolId,
+        StudentUniqueId,
+        AssessmentSubject
+    from completion_by_window
+),
 
-  fall AS (
-    SELECT *
-    FROM completion_by_window
-    WHERE StarTestingWindow = 'Fall'
-  ),
+fall as (
+    select *
+    from completion_by_window
+    where StarTestingWindow = 'Fall'
+),
 
-  winter AS (
-    SELECT *
-    FROM completion_by_window
-    WHERE StarTestingWindow = 'Winter'
-  ),
-  
-  spring AS (
-    SELECT *
-    FROM completion_by_window
-    WHERE StarTestingWindow = 'Spring'
-  ),
+winter as (
+    select *
+    from completion_by_window
+    where StarTestingWindow = 'Winter'
+),
 
-  fall_spring AS (
-    SELECT
-      t.*,
-      'Fall to Spring' AS TestingPeriod,
-      f.TestingStatus AS PreTestStatus,
-      s.TestingStatus AS PostTestStatus,
-      f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
-      s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
-    FROM student_testing AS t
-    LEFT JOIN fall AS f
-    ON
-      t.SchoolYear = f.SchoolYear
-      AND t.SchoolId = f.SchoolId
-      AND t.StudentUniqueId = f.StudentUniqueId
-      AND t.AssessmentSubject = f.AssessmentSubject
-    LEFT JOIN spring AS s
-    ON
-      t.SchoolYear = s.SchoolYear
-      AND t.SchoolId = s.SchoolId
-      AND t.StudentUniqueId = s.StudentUniqueId
-      AND t.AssessmentSubject = s.AssessmentSubject
-  ),
+spring as (
+    select *
+    from completion_by_window
+    where StarTestingWindow = 'Spring'
+),
 
-  fall_winter AS (
-    SELECT
-      t.*,
-      'Fall to Winter' AS TestingPeriod,
-      f.TestingStatus AS PreTestStatus,
-      w.TestingStatus AS PostTestStatus,
-      f.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
-      w.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
-    FROM student_testing AS t
-    LEFT JOIN fall AS f
-    ON
-      t.SchoolYear = f.SchoolYear
-      AND t.SchoolId = f.SchoolId
-      AND t.StudentUniqueId = f.StudentUniqueId
-      AND t.AssessmentSubject = f.AssessmentSubject
-    LEFT JOIN winter AS w
-    ON
-      t.SchoolYear = w.SchoolYear
-      AND t.SchoolId = w.SchoolId
-      AND t.StudentUniqueId = w.StudentUniqueId
-      AND t.AssessmentSubject = w.AssessmentSubject
-  ),
+fall_spring as (
+    select
+        t.*,
+        'Fall to Spring' as TestingPeriod,
+        f.TestingStatus as PreTestStatus,
+        s.TestingStatus as PostTestStatus,
+        f.TestingRequiredBasedOnEnrollmentDates as PreTestRequired,
+        s.TestingRequiredBasedOnEnrollmentDates as PostTestRequired
+    from student_testing as t
+    left join fall as f
+        on
+            t.SchoolYear = f.SchoolYear
+            and t.SchoolId = f.SchoolId
+            and t.StudentUniqueId = f.StudentUniqueId
+            and t.AssessmentSubject = f.AssessmentSubject
+    left join spring as s
+        on
+            t.SchoolYear = s.SchoolYear
+            and t.SchoolId = s.SchoolId
+            and t.StudentUniqueId = s.StudentUniqueId
+            and t.AssessmentSubject = s.AssessmentSubject
+),
 
-  winter_spring AS (
-    SELECT
-      t.*,
-      'Winter to Spring' AS TestingPeriod,
-      w.TestingStatus AS PreTestStatus,
-      s.TestingStatus AS PostTestStatus,
-      w.TestingRequiredBasedOnEnrollmentDates AS PreTestRequired,
-      s.TestingRequiredBasedOnEnrollmentDates AS PostTestRequired
-    FROM student_testing AS t
-    LEFT JOIN winter AS w
-    ON
-      t.SchoolYear = w.SchoolYear
-      AND t.SchoolId = w.SchoolId
-      AND t.StudentUniqueId = w.StudentUniqueId
-      AND t.AssessmentSubject = w.AssessmentSubject
-    LEFT JOIN spring AS s
-    ON
-      t.SchoolYear = s.SchoolYear
-      AND t.SchoolId = s.SchoolId
-      AND t.StudentUniqueId = s.StudentUniqueId
-      AND t.AssessmentSubject = s.AssessmentSubject
-  ),
+fall_winter as (
+    select
+        t.*,
+        'Fall to Winter' as TestingPeriod,
+        f.TestingStatus as PreTestStatus,
+        w.TestingStatus as PostTestStatus,
+        f.TestingRequiredBasedOnEnrollmentDates as PreTestRequired,
+        w.TestingRequiredBasedOnEnrollmentDates as PostTestRequired
+    from student_testing as t
+    left join fall as f
+        on
+            t.SchoolYear = f.SchoolYear
+            and t.SchoolId = f.SchoolId
+            and t.StudentUniqueId = f.StudentUniqueId
+            and t.AssessmentSubject = f.AssessmentSubject
+    left join winter as w
+        on
+            t.SchoolYear = w.SchoolYear
+            and t.SchoolId = w.SchoolId
+            and t.StudentUniqueId = w.StudentUniqueId
+            and t.AssessmentSubject = w.AssessmentSubject
+),
 
-  unioned AS (
-    SELECT * FROM fall_spring
-    UNION ALL
-    SELECT * FROM fall_winter
-    UNION ALL
-    SELECT * FROM winter_spring
-  ),
+winter_spring as (
+    select
+        t.*,
+        'Winter to Spring' as TestingPeriod,
+        w.TestingStatus as PreTestStatus,
+        s.TestingStatus as PostTestStatus,
+        w.TestingRequiredBasedOnEnrollmentDates as PreTestRequired,
+        s.TestingRequiredBasedOnEnrollmentDates as PostTestRequired
+    from student_testing as t
+    left join winter as w
+        on
+            t.SchoolYear = w.SchoolYear
+            and t.SchoolId = w.SchoolId
+            and t.StudentUniqueId = w.StudentUniqueId
+            and t.AssessmentSubject = w.AssessmentSubject
+    left join spring as s
+        on
+            t.SchoolYear = s.SchoolYear
+            and t.SchoolId = s.SchoolId
+            and t.StudentUniqueId = s.StudentUniqueId
+            and t.AssessmentSubject = s.AssessmentSubject
+),
 
-  final AS (
-    SELECT
-      *,
-      CASE WHEN PreTestRequired = 'Yes' AND PostTestRequired = 'Yes' THEN 'Yes' ELSE 'No' END AS PreAndPostTestRequired,
-      CASE
-        WHEN PreTestStatus = 'Tested' AND PostTestStatus = 'Tested' THEN 'Yes'
-        WHEN PreTestStatus != 'Not Tested' AND PostTestStatus != 'Not Tested' THEN 'Other'
-        ELSE 'No'
-      END AS CompletedPreAndPostTest,
-      CASE
-        WHEN
-          (PreTestRequired = 'Yes' OR PreTestStatus = 'Tested')
-          AND (PostTestRequired = 'Yes' OR PostTestStatus = 'Tested')
-        THEN 'Yes' ELSE 'No'
-      END AS IncludeInPeriodCompletionRate,
-    FROM unioned
-  )
+unioned as (
+    select * from fall_spring
+    union all
+    select * from fall_winter
+    union all
+    select * from winter_spring
+),
 
+final as (
+    select
+        *,
+        case
+            when
+                PreTestRequired = 'Yes' and PostTestRequired = 'Yes'
+                then 'Yes'
+            else 'No'
+        end as PreAndPostTestRequired,
+        case
+            when
+                PreTestStatus = 'Tested' and PostTestStatus = 'Tested'
+                then 'Yes'
+            when
+                PreTestStatus != 'Not Tested' and PostTestStatus != 'Not Tested'
+                then 'Other'
+            else 'No'
+        end as CompletedPreAndPostTest,
+        case
+            when
+                (PreTestRequired = 'Yes' or PreTestStatus = 'Tested')
+                and (PostTestRequired = 'Yes' or PostTestStatus = 'Tested')
+                then 'Yes'
+            else 'No'
+        end as IncludeInPeriodCompletionRate
+    from unioned
+)
 
-SELECT * FROM final WHERE PostTestStatus IS NOT NULL # FIGURE OUT HOW TO FILTER THIS ONLY IF WINDOW HAS COMPLETED
+select * from final where PostTestStatus is not null

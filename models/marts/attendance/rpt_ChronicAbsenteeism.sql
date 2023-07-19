@@ -1,1 +1,1 @@
-SELECT * FROM {{ ref('fct_ChronicAbsenteeism')}}
+select * from {{ ref('fct_ChronicAbsenteeism') }}
