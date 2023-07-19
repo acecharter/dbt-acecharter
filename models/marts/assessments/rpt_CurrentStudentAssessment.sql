@@ -1,54 +1,53 @@
-WITH
-  schools AS (
-    SELECT DISTINCT
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ ref('dim_Schools')}}
-  ),
+with schools as (
+    select distinct
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_Schools') }}
+),
 
-  current_students AS (
-    SELECT *
-    FROM {{ ref('dim_Students') }}
-    WHERE IsCurrentlyEnrolled = TRUE
-  ),
+current_students as (
+    select *
+    from {{ ref('dim_Students') }}
+    where IsCurrentlyEnrolled = true
+),
 
-  assessments AS (
-    SELECT
-      a.AceAssessmentId,
-      a.AssessmentName,
-      a.StateUniqueId,
-      a.TestedSchoolId,
-      CASE
-        WHEN a.TestedSchoolId = s.SchoolId THEN s.SchoolNameShort
-        ELSE 'Non-ACE School'
-      END AS TestedSchoolName,
-      a.AssessmentSchoolYear,
-      a.AssessmentId,
-      a.AssessmentDate,
-      a.GradeLevelWhenAssessed,
-      a.AssessmentGradeLevel,
-      a.AssessmentSubject,
-      a.AssessmentObjective,
-      a.ReportingMethod,
-      a.StudentResultDataType,
-      a.StudentResult
-    FROM {{ ref('fct_StudentAssessment')}} AS a
-    LEFT JOIN schools AS s
-    ON a.TestedSchoolId = s.SchoolId
-  ),
+assessments as (
+    select
+        a.AceAssessmentId,
+        a.AssessmentName,
+        a.StateUniqueId,
+        a.TestedSchoolId,
+        case
+            when a.TestedSchoolId = s.SchoolId then s.SchoolNameShort
+            else 'Non-ACE School'
+        end as TestedSchoolName,
+        a.AssessmentSchoolYear,
+        a.AssessmentId,
+        a.AssessmentDate,
+        a.GradeLevelWhenAssessed,
+        a.AssessmentGradeLevel,
+        a.AssessmentSubject,
+        a.AssessmentObjective,
+        a.ReportingMethod,
+        a.StudentResultDataType,
+        a.StudentResult
+    from {{ ref('fct_StudentAssessment') }} as a
+    left join schools as s
+        on a.TestedSchoolId = s.SchoolId
+),
 
-  final AS (
-    SELECT
-      s.* EXCEPT (SchoolId),
-      st.* EXCEPT (SchoolYear),
-      a.* EXCEPT (StateUniqueId)
-    FROM current_students AS st
-    INNER JOIN assessments AS a
-    ON st.StateUniqueId = a.StateUniqueId
-    INNER JOIN schools AS s
-    ON st.SchoolId = s.SchoolId
-  )
+final as (
+    select
+        s.* except (SchoolId),
+        st.* except (SchoolYear),
+        a.* except (StateUniqueId)
+    from current_students as st
+    inner join assessments as a
+        on st.StateUniqueId = a.StateUniqueId
+    inner join schools as s
+        on st.SchoolId = s.SchoolId
+)
 
-SELECT * FROM final
+select * from final

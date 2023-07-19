@@ -1,44 +1,44 @@
-WITH
-  schools AS (
-    SELECT 
-      SchoolYear,
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ref('dim_Schools')}}
-  ),
+with schools as (
+    select
+        SchoolYear,
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_Schools') }}
+),
 
-  students AS (
-    SELECT * EXCEPT(
-      LastName,
-      FirstName,
-      MiddleName,
-      BirthDate
-    )
-    FROM {{ref('dim_Students')}}
-  ),
-  
-  attendance AS (
-    SELECT * FROM {{ ref('fct_StudentAttendance')}}
-  ),
+students as (
+    select
+        * except (
+            LastName,
+            FirstName,
+            MiddleName,
+            BirthDate
+        )
+    from {{ ref('dim_Students') }}
+),
 
-  final AS (
-    SELECT
-      a.SchoolYear,
-      sc.* EXCEPT (SchoolYear),
-      st.* EXCEPT (SchoolYear, SchoolId),
-      a.* EXCEPT (SchoolId, StudentUniqueId, SchoolYear)
-    FROM attendance AS a
-    LEFT JOIN schools AS sc
-    ON
-      a.SchoolId = sc.SchoolId
-      AND a.SchoolYear = sc.SchoolYear
-    LEFT JOIN students AS st
-    ON
-      a.SchoolId = st.SchoolId
-      AND a.StudentUniqueId = st.StudentUniqueId
-      AND a.SchoolYear = st.SchoolYear
-  )
+attendance as (
+    select * from {{ ref('fct_StudentAttendance') }}
+),
 
-SELECT * FROM final
+final as (
+    select
+        a.SchoolYear,
+        sc.* except (SchoolYear),
+        st.* except (SchoolYear, SchoolId),
+        a.* except (SchoolId, StudentUniqueId, SchoolYear)
+    from attendance as a
+    left join schools as sc
+        on
+            a.SchoolId = sc.SchoolId
+            and a.SchoolYear = sc.SchoolYear
+    left join students as st
+        on
+            a.SchoolId = st.SchoolId
+            and a.StudentUniqueId = st.StudentUniqueId
+            and a.SchoolYear = st.SchoolYear
+)
+
+select * from final

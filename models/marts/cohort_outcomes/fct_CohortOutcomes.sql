@@ -1,202 +1,201 @@
-WITH 
-  outcomes AS (
-    SELECT
-      *,
-       CASE
-        WHEN EntityType = 'State' THEN '00'
-        WHEN EntityType = 'County' THEN CountyCode
-        WHEN EntityType = 'District' THEN DistrictCode
-        WHEN EntityType = 'School' THEN SchoolCode
-       END AS EntityCode,     
-    FROM {{ ref('stg_RD__CdeAdjustedCohortOutcomes')}}
-  ),
+with outcomes as (
+    select
+        *,
+        case
+            when EntityType = 'State' then '00'
+            when EntityType = 'County' then CountyCode
+            when EntityType = 'District' then DistrictCode
+            when EntityType = 'School' then SchoolCode
+        end as EntityCode
+    from {{ ref('stg_RD__CdeAdjustedCohortOutcomes') }}
+),
 
-  reg_grad AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'Regular HS Diploma' AS Outcome,
-      RegularHsDiplomaGraduatesCount AS OutcomeCount
-    FROM outcomes
-  ),
+reg_grad as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'Regular HS Diploma' as Outcome,
+        RegularHsDiplomaGraduatesCount as OutcomeCount
+    from outcomes
+),
 
-  met_uc_csu AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Graduate Outcome' AS OutcomeType,
-      RegularHsDiplomaGraduatesCount AS OutcomeDenominator,
-      'Met UC/CSU Grad Requirements' AS Outcome,
-      MetUcCsuGradReqsCount AS OutcomeCount
-    FROM outcomes
-  ),
+met_uc_csu as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Graduate Outcome' as OutcomeType,
+        RegularHsDiplomaGraduatesCount as OutcomeDenominator,
+        'Met UC/CSU Grad Requirements' as Outcome,
+        MetUcCsuGradReqsCount as OutcomeCount
+    from outcomes
+),
 
-  seal_of_biliteracy AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Graduate Outcome' AS OutcomeType,
-      RegularHsDiplomaGraduatesCount AS OutcomeDenominator,
-      'Seal of Biliteracy' AS Outcome,
-      SealOfBiliteracyCount AS OutcomeCount
-    FROM outcomes
-  ),
+seal_of_biliteracy as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Graduate Outcome' as OutcomeType,
+        RegularHsDiplomaGraduatesCount as OutcomeDenominator,
+        'Seal of Biliteracy' as Outcome,
+        SealOfBiliteracyCount as OutcomeCount
+    from outcomes
+),
 
-  golden_state_seal AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Graduate Outcome' AS OutcomeType,
-      RegularHsDiplomaGraduatesCount AS OutcomeDenominator,
-      'Golden State Seal Merit Diploma' AS Outcome,
-      GoldenStateSealMeritDiplomaCount AS OutcomeCount
-    FROM outcomes
-  ),
+golden_state_seal as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Graduate Outcome' as OutcomeType,
+        RegularHsDiplomaGraduatesCount as OutcomeDenominator,
+        'Golden State Seal Merit Diploma' as Outcome,
+        GoldenStateSealMeritDiplomaCount as OutcomeCount
+    from outcomes
+),
 
-  chspe_competer AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'CHSPE Completer' AS Outcome,
-      ChspeCompleterCount AS OutcomeCount
-    FROM outcomes
-  ),
+chspe_competer as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'CHSPE Completer' as Outcome,
+        ChspeCompleterCount as OutcomeCount
+    from outcomes
+),
 
-  adult_ed AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'Adult Ed HS Diploma' AS Outcome,
-      AdultEdHsDiplomaCount AS OutcomeCount
-    FROM outcomes
-  ),
+adult_ed as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'Adult Ed HS Diploma' as Outcome,
+        AdultEdHsDiplomaCount as OutcomeCount
+    from outcomes
+),
 
-  sped AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'SPED Certificate' AS Outcome,
-      SpedCertificateCount AS OutcomeCount
-    FROM outcomes
-  ),
+sped as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'SPED Certificate' as Outcome,
+        SpedCertificateCount as OutcomeCount
+    from outcomes
+),
 
-  ged AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'GED Completer' AS Outcome,
-      GedCompleterCount AS OutcomeCount
-    FROM outcomes
-  ),
+ged as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'GED Completer' as Outcome,
+        GedCompleterCount as OutcomeCount
+    from outcomes
+),
 
-  other AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'Other Transfer' AS Outcome,
-      OtherTransferCount AS OutcomeCount
-    FROM outcomes
-  ),
+other as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'Other Transfer' as Outcome,
+        OtherTransferCount as OutcomeCount
+    from outcomes
+),
 
-  dropout AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'Dropout' AS Outcome,
-      DropoutCount AS OutcomeCount
-    FROM outcomes
-  ),
+dropout as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'Dropout' as Outcome,
+        DropoutCount as OutcomeCount
+    from outcomes
+),
 
-  still_enrolled AS (
-    SELECT
-      AcademicYear,
-      EntityCode,
-      CharterSchool,
-      DASS,
-      ReportingCategory,
-      'Cohort Outcome' AS OutcomeType,
-      CohortStudents AS OutcomeDenominator,
-      'Still Enrolled' AS Outcome,
-      StillEnrolledCount AS OutcomeCount
-    FROM outcomes
-  ),
+still_enrolled as (
+    select
+        AcademicYear,
+        EntityCode,
+        CharterSchool,
+        DASS,
+        ReportingCategory,
+        'Cohort Outcome' as OutcomeType,
+        CohortStudents as OutcomeDenominator,
+        'Still Enrolled' as Outcome,
+        StillEnrolledCount as OutcomeCount
+    from outcomes
+),
 
-  unioned AS (
-    SELECT * FROM reg_grad
-    UNION ALL
-    SELECT * FROM met_uc_csu
-    UNION ALL
-    SELECT * FROM seal_of_biliteracy
-    UNION ALL
-    SELECT * FROM golden_state_seal
-    UNION ALL
-    SELECT * FROM chspe_competer
-    UNION ALL
-    SELECT * FROM adult_ed
-    UNION ALL
-    SELECT * FROM sped
-    UNION ALL
-    SELECT * FROM ged
-    UNION ALL
-    SELECT * FROM other
-    UNION ALL
-    SELECT * FROM dropout
-    UNION ALL
-    SELECT * FROM still_enrolled    
-  ),
+unioned as (
+    select * from reg_grad
+    union all
+    select * from met_uc_csu
+    union all
+    select * from seal_of_biliteracy
+    union all
+    select * from golden_state_seal
+    union all
+    select * from chspe_competer
+    union all
+    select * from adult_ed
+    union all
+    select * from sped
+    union all
+    select * from ged
+    union all
+    select * from other
+    union all
+    select * from dropout
+    union all
+    select * from still_enrolled
+),
 
-final AS (
-  SELECT
-    *,
-    ROUND(OutcomeCount/OutcomeDenominator, 4) AS OutcomeRate
-  FROM unioned
-  WHERE OutcomeDenominator > 0
-  ORDER BY 1, 2, 3, 4, 5, 6, 7
+final as (
+    select
+        *,
+        round(OutcomeCount / OutcomeDenominator, 4) as OutcomeRate
+    from unioned
+    where OutcomeDenominator > 0
+    order by 1, 2, 3, 4, 5, 6, 7
 )
 
 
-SELECT * FROM final
+select * from final

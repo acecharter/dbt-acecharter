@@ -1,75 +1,77 @@
-WITH
-  schools AS (
-    SELECT
-      SchoolYear,
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ ref('dim_Schools')}}
-  ),
+with
+schools as (
+    select
+        SchoolYear,
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_Schools') }}
+),
 
-  students AS (
-    SELECT *
-    FROM {{ ref('dim_Students') }}
-  ),
+students as (
+    select *
+    from {{ ref('dim_Students') }}
+),
 
-  assessments AS (
-    SELECT
-      a.AceAssessmentId,
-      a.AssessmentName,
-      a.StateUniqueId,
-      a.TestedSchoolId,
-      s.SchoolNameMid AS TestedSchoolName,
-      a.AssessmentSchoolYear,
-      a.AssessmentId,
-      a.AssessmentDate,
-      a.GradeLevelWhenAssessed,
-      a.AssessmentGradeLevel,
-      a.AssessmentSubject,
-      a.AssessmentObjective,
-      a.ReportingMethod,
-      CAST(a.StudentResult AS INT) AS StudentResult,
-      CASE
-        WHEN CAST(a.StudentResult AS INT) > 65 THEN 'High Growth'
-        WHEN
-          CAST(a.StudentResult AS INT) >= 50 AND
-          CAST(a.StudentResult AS INT) <= 65
-        THEN 'Above Average Growth'
-        WHEN
-          CAST(a.StudentResult AS INT) >= 35 AND
-          CAST(a.StudentResult AS INT) < 50
-        THEN 'Below Average Growth'
-        WHEN CAST(a.StudentResult AS INT) < 35 THEN 'Low Growth'
-      END AS GrowthLevel,
-      CASE
-        WHEN CAST(a.StudentResult AS INT) >= 35 THEN 'Yes'
-        ELSE 'No' 
-      END AS AtOrAboveAverageGrowth
-    FROM {{ ref('fct_StudentAssessment')}} AS a
-    LEFT JOIN schools AS s
-    ON 
-      a.TestedSchoolId = s.SchoolId
-      AND a.AssessmentSchoolYear = s.SchoolYear
-    WHERE
-      a.ReportingMethod LIKE 'SGP%'
-      AND a.ReportingMethod != 'SGP (current)'
-  ),
+assessments as (
+    select
+        a.AceAssessmentId,
+        a.AssessmentName,
+        a.StateUniqueId,
+        a.TestedSchoolId,
+        schools.SchoolNameMid as TestedSchoolName,
+        a.AssessmentSchoolYear,
+        a.AssessmentId,
+        a.AssessmentDate,
+        a.GradeLevelWhenAssessed,
+        a.AssessmentGradeLevel,
+        a.AssessmentSubject,
+        a.AssessmentObjective,
+        a.ReportingMethod,
+        cast(a.StudentResult as int) as StudentResult,
+        case
+            when cast(a.StudentResult as int) > 65 then 'High Growth'
+            when
+                cast(a.StudentResult as int) >= 50
+                and cast(a.StudentResult as int) <= 65
+                then 'Above Average Growth'
+            when
+                cast(a.StudentResult as int) >= 35
+                and cast(a.StudentResult as int) < 50
+                then 'Below Average Growth'
+            when cast(a.StudentResult as int) < 35 then 'Low Growth'
+        end as GrowthLevel,
+        case
+            when cast(a.StudentResult as int) >= 35 then 'Yes'
+            else 'No'
+        end as AtOrAboveAverageGrowth
+    from {{ ref('fct_StudentAssessment') }} as a
+    left join schools
+        on
+            a.TestedSchoolId = schools.SchoolId
+            and a.AssessmentSchoolYear = schools.SchoolYear
+    where
+        a.ReportingMethod like 'SGP%'
+        and a.ReportingMethod != 'SGP (current)'
+),
 
-  final AS (
-    SELECT
-      s.* EXCEPT (SchoolYear, SchoolId),
-      st.* EXCEPT (SchoolYear),
-      a.* EXCEPT (StateUniqueId)
-    FROM students AS st
-    LEFT JOIN assessments AS a
-    ON st.StateUniqueId = a.StateUniqueId
-    AND st.SchoolId = a.TestedSchoolId
-    AND st.SchoolYear = a.AssessmentSchoolYear
-    LEFT JOIN schools AS s
-    ON st.SchoolId = s.SchoolId
-    AND st.SchoolYear = s.SchoolYear
-    WHERE a.AceAssessmentId IS NOT NULL
-  )
+final as (
+    select
+        schools.* except (SchoolYear, SchoolId),
+        students.* except (SchoolYear),
+        assessments.* except (StateUniqueId)
+    from students
+    left join assessments
+        on
+            students.StateUniqueId = assessments.StateUniqueId
+            and students.SchoolId = assessments.TestedSchoolId
+            and students.SchoolYear = assessments.AssessmentSchoolYear
+    left join schools
+        on
+            students.SchoolId = schools.SchoolId
+            and students.SchoolYear = schools.SchoolYear
+    where assessments.AceAssessmentId is not null
+)
 
-SELECT * FROM final
+select * from final

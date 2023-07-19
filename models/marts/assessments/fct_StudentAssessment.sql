@@ -1,148 +1,166 @@
-WITH
-  star AS (    
-    SELECT
-      s.AceAssessmentId,
-      s.AssessmentName,
-      s.AssessmentSubject,
-      s.StateUniqueId,
-      s.TestedSchoolId,
-      s.SchoolYear AS AssessmentSchoolYear,
-      s.AssessmentID AS AssessmentId,
-      CAST(s.AssessmentDate AS STRING) AS AssessmentDate,
-      s.GradeLevel AS GradeLevelWhenAssessed,
-      CAST(s.AssessmentGradeLevel AS STRING) AS AssessmentGradeLevel,
-      'Overall' AS AssessmentObjective,
-      s.ReportingMethod,
-      s.StudentResultDataType,
-      s.StudentResult
-    FROM {{ ref('int_RenStar_unpivoted') }} AS s
-  ),
+with star as (
+    select
+        AceAssessmentId,
+        AssessmentName,
+        AssessmentSubject,
+        StateUniqueId,
+        TestedSchoolId,
+        SchoolYear as AssessmentSchoolYear,
+        AssessmentID as AssessmentId,
+        cast(AssessmentDate as string) as AssessmentDate,
+        GradeLevel as GradeLevelWhenAssessed,
+        cast(AssessmentGradeLevel as string) as AssessmentGradeLevel,
+        'Overall' as AssessmentObjective,
+        ReportingMethod,
+        StudentResultDataType,
+        StudentResult
+    from {{ ref('int_RenStar_unpivoted') }}
+),
 
-  cers AS (
-    SELECT
-      AceAssessmentId,
-      CASE
-        WHEN AceAssessmentId = '1' THEN 'SB ELA Summative'
-        WHEN AceAssessmentId = '2' THEN 'SB Math Summative'
-        WHEN AceAssessmentId = '3' THEN 'CAA ELA'
-        WHEN AceAssessmentId = '4' THEN 'CAA Math'
-        WHEN AceAssessmentId = '5' THEN 'CAA Science'
-        WHEN AceAssessmentId = '6' THEN 'CAST'
-        WHEN AceAssessmentId = '7' THEN 'CSA'
-        WHEN AceAssessmentId = '8' THEN 'Summative ELPAC'
-        WHEN AceAssessmentId = '9' THEN 'Initial ELPAC'
-        WHEN AceAssessmentId = '15' THEN CONCAT('SB ELA', REGEXP_EXTRACT(AssessmentName, '.+(\\s\\-\\s.+)'))
-        WHEN AceAssessmentId = '16' THEN CONCAT('SB Math', REGEXP_EXTRACT(AssessmentName, '.+(\\s\\-\\s.+)'))
-        WHEN AceAssessmentId = '17' THEN 'SB ELA ICA'
-        WHEN AceAssessmentId = '18' THEN 'SB Math ICA'
-      END AS AssessmentName,
-      CASE
-        WHEN AceAssessmentId IN ('1','3','15','17') THEN 'ELA'
-        WHEN AceAssessmentId IN ('2','4','16','18') THEN 'Math'
-        WHEN AceAssessmentId IN ('5','6') THEN 'Science'
-        WHEN AceAssessmentId IN ('7') THEN 'Spanish'
-        WHEN AceAssessmentId IN ('8','9') THEN 'English Fluency'
-      END AS AssessmentSubject,
-      StateUniqueId,
-      TestedSchoolId,
-      SchoolYear AS AssessmentSchoolYear,
-      AssessmentId,
-      CAST(AssessmentDate AS STRING) AS AssessmentDate,
-      GradeLevelWhenAssessed,
-      AssessmentGradeLevel,
-      AssessmentObjective,
-      ReportingMethod,
-      StudentResultDataType,
-      StudentResult
-    FROM {{ ref('int_Cers__2_unpivoted') }}
-  ),
+cers as (
+    select
+        AceAssessmentId,
+        case
+            when AceAssessmentId = '1' then 'SB ELA Summative'
+            when AceAssessmentId = '2' then 'SB Math Summative'
+            when AceAssessmentId = '3' then 'CAA ELA'
+            when AceAssessmentId = '4' then 'CAA Math'
+            when AceAssessmentId = '5' then 'CAA Science'
+            when AceAssessmentId = '6' then 'CAST'
+            when AceAssessmentId = '7' then 'CSA'
+            when AceAssessmentId = '8' then 'Summative ELPAC'
+            when AceAssessmentId = '9' then 'Initial ELPAC'
+            when
+                AceAssessmentId = '15'
+                then
+                    concat(
+                        'SB ELA',
+                        regexp_extract(AssessmentName, '.+(\\s\\-\\s.+)')
+                    )
+            when
+                AceAssessmentId = '16'
+                then
+                    concat(
+                        'SB Math',
+                        regexp_extract(AssessmentName, '.+(\\s\\-\\s.+)')
+                    )
+            when AceAssessmentId = '17' then 'SB ELA ICA'
+            when AceAssessmentId = '18' then 'SB Math ICA'
+        end as AssessmentName,
+        case
+            when AceAssessmentId in ('1', '3', '15', '17') then 'ELA'
+            when AceAssessmentId in ('2', '4', '16', '18') then 'Math'
+            when AceAssessmentId in ('5', '6') then 'Science'
+            when AceAssessmentId in ('7') then 'Spanish'
+            when AceAssessmentId in ('8', '9') then 'English Fluency'
+        end as AssessmentSubject,
+        StateUniqueId,
+        TestedSchoolId,
+        SchoolYear as AssessmentSchoolYear,
+        AssessmentId,
+        cast(AssessmentDate as string) as AssessmentDate,
+        GradeLevelWhenAssessed,
+        AssessmentGradeLevel,
+        AssessmentObjective,
+        ReportingMethod,
+        StudentResultDataType,
+        StudentResult
+    from {{ ref('int_Cers__2_unpivoted') }}
+),
 
-  anet AS (
-    SELECT
-      AceAssessmentId,
-      CONCAT(AceAssessmentName, ' (Cycle ', CAST(Cycle AS STRING), ')') AS AssessmentName,
-      Subject AS AssessmentSubject,
-      StateUniqueId,
-      StateSchoolCode AS TestedSchoolId,
-      SchoolYear AS AssessmentSchoolYear,
-      CONCAT(AssessmentName,'-',StateUniqueId) AS AssessmentId,
-      CAST(NULL AS STRING) AS AssessmentDate,
-      GradeLevel AS GradeLevelWhenAssessed,
-      CAST(GradeLevel AS STRING) AS AssessmentGradeLevel,
-      'Overall' AS AssessmentObjective,
-      'Percent Score' AS ReportingMethod,
-      'FLOAT64' AS StudentResultDataType,
-      CAST(Score AS STRING) AS StudentResult
-    FROM {{ ref('int_Anet__aggregated') }} AS c 
-  ),
+anet as (
+    select
+        AceAssessmentId,
+        concat(AceAssessmentName, ' (Cycle ', cast(Cycle as string), ')')
+            as AssessmentName,
+        Subject as AssessmentSubject,
+        StateUniqueId,
+        StateSchoolCode as TestedSchoolId,
+        SchoolYear as AssessmentSchoolYear,
+        concat(AssessmentName, '-', StateUniqueId) as AssessmentId,
+        cast(null as string) as AssessmentDate,
+        GradeLevel as GradeLevelWhenAssessed,
+        cast(GradeLevel as string) as AssessmentGradeLevel,
+        'Overall' as AssessmentObjective,
+        'Percent Score' as ReportingMethod,
+        'FLOAT64' as StudentResultDataType,
+        cast(Score as string) as StudentResult
+    from {{ ref('int_Anet__aggregated') }}
+),
 
-  amplify AS (
-    SELECT
-      AceAssessmentId,
-      AceAssessmentName AS AssessmentName,
-      Subject AS AssessmentSubject,
-      StateUniqueId,
-      SchoolId AS TestedSchoolId,
-      SchoolYear AS AssessmentSchoolYear,
-      CONCAT(ElaLessonTitle,'-',StateUniqueId) AS AssessmentId,
-      CAST(ElaHandInDate AS STRING) AS AssessmentDate,
-      CAST(GradeLevel AS INT64) AS GradeLevelWhenAssessed,
-      GradeLevel AS AssessmentGradeLevel,
-      'Overall' AS AssessmentObjective,
-      'Percent Score' AS ReportingMethod,
-      'FLOAT64' AS StudentResultDataType,
-      CAST(ElaTestScore AS STRING) AS StudentResult
-    FROM {{ ref('stg_RD__Amplify') }}
-  ),
+amplify as (
+    select
+        AceAssessmentId,
+        AceAssessmentName as AssessmentName,
+        Subject as AssessmentSubject,
+        StateUniqueId,
+        SchoolId as TestedSchoolId,
+        SchoolYear as AssessmentSchoolYear,
+        concat(ElaLessonTitle, '-', StateUniqueId) as AssessmentId,
+        cast(ElaHandInDate as string) as AssessmentDate,
+        cast(GradeLevel as int64) as GradeLevelWhenAssessed,
+        GradeLevel as AssessmentGradeLevel,
+        'Overall' as AssessmentObjective,
+        'Percent Score' as ReportingMethod,
+        'FLOAT64' as StudentResultDataType,
+        cast(ElaTestScore as string) as StudentResult
+    from {{ ref('stg_RD__Amplify') }}
+),
 
-  ap AS (
-    SELECT
-      AceAssessmentId,
-      AceAssessmentName AS AssessmentName,
-      AssessmentSubject,
-      StateUniqueId,
-      CASE WHEN AiCode = 54660 THEN '125617' ELSE 'Unknown' END AS TestedSchoolId,
-      AssessmentSchoolYear,
-      CONCAT(AceAssessmentName,'-',StateUniqueId) AS AssessmentId,
-      CAST(NULL AS STRING) AS AssessmentDate,
-      CASE WHEN GradeLevel NOT IN ('9','10','11','12') THEN CAST(NULL AS INT64) ELSE CAST(GradeLevel AS INT64) END AS GradeLevelWhenAssessed,
-      GradeLevel AS AssessmentGradeLevel,
-      'Overall' AS AssessmentObjective,
-      'AP Score' AS ReportingMethod,
-      'INT64' AS StudentResultDataType,
-      CAST(ExamGrade AS STRING) AS StudentResult
-    FROM {{ ref('int_Ap__3_unduplicated') }}
-  ),
+ap as (
+    select
+        AceAssessmentId,
+        AceAssessmentName as AssessmentName,
+        AssessmentSubject,
+        StateUniqueId,
+        case when AiCode = 54660 then '125617' else 'Unknown' end
+            as TestedSchoolId,
+        AssessmentSchoolYear,
+        concat(AceAssessmentName, '-', StateUniqueId) as AssessmentId,
+        cast(null as string) as AssessmentDate,
+        case
+            when
+                GradeLevel not in ('9', '10', '11', '12')
+                then cast(null as int64)
+            else cast(GradeLevel as int64)
+        end as GradeLevelWhenAssessed,
+        GradeLevel as AssessmentGradeLevel,
+        'Overall' as AssessmentObjective,
+        'AP Score' as ReportingMethod,
+        'INT64' as StudentResultDataType,
+        cast(ExamGrade as string) as StudentResult
+    from {{ ref('int_Ap__3_unduplicated') }}
+),
 
-  unioned_results AS (
-    SELECT * FROM star
-    UNION ALL
-    SELECT * FROM cers
-    UNION ALL
-    SELECT * FROM anet
-    UNION ALL
-    SELECT * FROM amplify
-    UNION ALL
-    SELECT * FROM ap
-  ),
+unioned_results as (
+    select * from star
+    union all
+    select * from cers
+    union all
+    select * from anet
+    union all
+    select * from amplify
+    union all
+    select * from ap
+),
 
-  final AS (
-    SELECT
-      AceAssessmentId,
-      AssessmentName,
-      StateUniqueId,
-      TestedSchoolId,
-      AssessmentSchoolYear,
-      AssessmentId,
-      AssessmentDate,
-      GradeLevelWhenAssessed,
-      AssessmentGradeLevel,
-      AssessmentSubject,
-      AssessmentObjective,
-      ReportingMethod,
-      StudentResultDataType,
-      StudentResult
-    FROM unioned_results
-  )
+final as (
+    select
+        AceAssessmentId,
+        AssessmentName,
+        StateUniqueId,
+        TestedSchoolId,
+        AssessmentSchoolYear,
+        AssessmentId,
+        AssessmentDate,
+        GradeLevelWhenAssessed,
+        AssessmentGradeLevel,
+        AssessmentSubject,
+        AssessmentObjective,
+        ReportingMethod,
+        StudentResultDataType,
+        StudentResult
+    from unioned_results
+)
 
-SELECT * FROM final
+select * from final

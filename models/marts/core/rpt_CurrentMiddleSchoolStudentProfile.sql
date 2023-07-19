@@ -1,298 +1,310 @@
-with
-  current_ms_students as (
+with current_ms_students as (
     select * except (ExitWithdrawDate, ExitWithdrawReason)
-    from {{ ref('dim_Students')}}
-    where IsCurrentlyEnrolled = TRUE
-    and SchoolId IN ('116814','129247', '131656')
-  ),
+    from {{ ref('dim_Students') }}
+    where
+        IsCurrentlyEnrolled = true
+        and SchoolId in ('116814', '129247', '131656')
+),
 
-  schools AS (
+schools as (
     select
-      SchoolYear,
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    from {{ref('dim_CurrentSchools')}}
-  ),
+        SchoolYear,
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_CurrentSchools') }}
+),
 
-  current_sy AS (
+current_sy as (
     select distinct SchoolYear
     from {{ ref('stg_SP__CalendarDates') }}
-  ),
+),
 
-  prior_sy AS (
-    SELECT SchoolYear
-    FROM {{ ref('dim_SchoolYears')}}
-    WHERE YearsPriorToCurrent = 1
-  ),
+prior_sy as (
+    select SchoolYear
+    from {{ ref('dim_SchoolYears') }}
+    where YearsPriorToCurrent = 1
+),
 
-  attendance as (
+attendance as (
     select a.*
-    from {{ ref('fct_StudentAttendance')}} as a
+    from {{ ref('fct_StudentAttendance') }} as a
     right join current_sy
-    using (SchoolYear)
-  ),
+        on a.SchoolYear = current_sy.SchoolYear
+),
 
-  assessments as (
+assessments as (
     select *
-    from {{ ref('fct_StudentAssessment')}}
+    from {{ ref('fct_StudentAssessment') }}
     where AssessmentObjective = 'Overall'
-  ),
+),
 
-  star as (
+star as (
     select a.*
     from assessments as a
     right join current_sy
-    on a.AssessmentSchoolYear = current_sy.SchoolYear
-    where STARTS_WITH(a.AssessmentName, 'Star')
-    and a.ReportingMethod = 'Grade Equivalent'
-  ),
+        on a.AssessmentSchoolYear = current_sy.SchoolYear
+    where
+        starts_with(a.AssessmentName, 'Star')
+        and a.ReportingMethod = 'Grade Equivalent'
+),
 
-  star_reading as (
+star_reading as (
     select
-      StateUniqueId,
-      MAX(StudentResult) as StarReadingGe
+        StateUniqueId,
+        max(StudentResult) as StarReadingGe
     from star
     where AssessmentSubject = 'Reading'
     group by StateUniqueId
-  ),
+),
 
-  star_reading_sp as (
+star_reading_sp as (
     select
-      StateUniqueId,
-      MAX(StudentResult) as StarReadingSpanishGe
+        StateUniqueId,
+        max(StudentResult) as StarReadingSpanishGe
     from star
     where AssessmentSubject = 'Reading (Spanish)'
-    GROUP BY StateUniqueId
-  ),
+    group by StateUniqueId
+),
 
-  star_math as (
+star_math as (
     select
-      StateUniqueId,
-      MAX(StudentResult) as StarMathGe
+        StateUniqueId,
+        max(StudentResult) as StarMathGe
     from star
     where AssessmentSubject = 'Math'
     group by StateUniqueId
-  ),
+),
 
-  star_math_sp as (
+star_math_sp as (
     select
-      StateUniqueId,
-      MAX(StudentResult) as StarMathSpanishGe
+        StateUniqueId,
+        max(StudentResult) as StarMathSpanishGe
     from star
     where AssessmentSubject = 'Math (Spanish)'
     group by StateUniqueId
-  ),
+),
 
-  star_el as (
+star_el as (
     select
-      StateUniqueId,
-      MAX(StudentResult) as StarEarlyLitGe
+        StateUniqueId,
+        max(StudentResult) as StarEarlyLitGe
     from star
     where AssessmentSubject = 'Early Literacy'
-    GROUP BY StateUniqueId
-  ),
+    group by StateUniqueId
+),
 
-  star_el_sp as (
+star_el_sp as (
     select
-      StateUniqueId,
-      MAX(StudentResult) as StarEarlyLitSpanishGe
+        StateUniqueId,
+        max(StudentResult) as StarEarlyLitSpanishGe
     from star
     where AssessmentSubject = 'Early Literacy (Spanish)'
-    GROUP BY StateUniqueId
-  ),
+    group by StateUniqueId
+),
 
-  state_tests as (
+state_tests as (
     select a.* from assessments as a
     right join prior_sy
-    on a.AssessmentSchoolYear = prior_sy.SchoolYear
-    where a.AceAssessmentId IN ('1','2','3','4','5','6','7','8','9')
-    and a.ReportingMethod = 'Achievement Level'
-  ),
+        on a.AssessmentSchoolYear = prior_sy.SchoolYear
+    where
+        a.AceAssessmentId in ('1', '2', '3', '4', '5', '6', '7', '8', '9')
+        and a.ReportingMethod = 'Achievement Level'
+),
 
-  sbac_ela as (
+sbac_ela as (
     select
-      StateUniqueId,
-      StudentResult as SbacElaLevel
+        StateUniqueId,
+        StudentResult as SbacElaLevel
     from state_tests
     where AceAssessmentId = '1'
-  ),
+),
 
-  sbac_math as (
+sbac_math as (
     select
-      StateUniqueId,
-      StudentResult as SbacMathLevel
+        StateUniqueId,
+        StudentResult as SbacMathLevel
     from state_tests
     where AceAssessmentId = '2'
-  ),
+),
 
-  ca_science as (
+ca_science as (
     select
-      StateUniqueId,
-      StudentResult as CastLevel
+        StateUniqueId,
+        StudentResult as CastLevel
     from state_tests
     where AceAssessmentId = '6'
-  ),
+),
 
-  elpac as (
+elpac as (
     select
-      StateUniqueId,
-      StudentResult as ElpacLevel
+        StateUniqueId,
+        StudentResult as ElpacLevel
     from state_tests
     where AceAssessmentId = '8'
-  ),
+),
 
-  caa_ela as (
+caa_ela as (
     select
-      StateUniqueId,
-      StudentResult as CaaElaLevel
+        StateUniqueId,
+        StudentResult as CaaElaLevel
     from state_tests
     where AceAssessmentId = '3'
-  ),
+),
 
-  caa_math as (
+caa_math as (
     select
-      StateUniqueId,
-      StudentResult as CaaMathLevel
+        StateUniqueId,
+        StudentResult as CaaMathLevel
     from state_tests
     where AceAssessmentId = '4'
-  ),
+),
 
-  caa_science as (
+caa_science as (
     select
-      StateUniqueId,
-      StudentResult as CaaScienceLevel
+        StateUniqueId,
+        StudentResult as CaaScienceLevel
     from state_tests
     where AceAssessmentId = '5'
-  ),
+),
 
-  grades as (
+grades as (
     select *
-    from {{ref ('fct_StudentGrades')}}
-    where IsCurrentGradingPeriod = true
-    and GradingPeriodDescriptor = 'First Semester'
-  ),
+    from {{ ref ('fct_StudentGrades') }}
+    where
+        IsCurrentGradingPeriod = true
+        and GradingPeriodDescriptor = 'First Semester'
+),
 
-  grades_math as (
+grades_math as (
     select
-      SchoolId,
-      StudentUniqueId,
-      NumericGradeEarned as MathNumericGrade,
-      LetterGradeEarned as MathLetterGrade
+        SchoolId,
+        StudentUniqueId,
+        NumericGradeEarned as MathNumericGrade,
+        LetterGradeEarned as MathLetterGrade
     from grades
-    where STARTS_WITH(SectionIdentifier, 'ACSMAT')
-    or STARTS_WITH(SectionIdentifier, 'ACSALG')
-  ),
+    where
+        starts_with(SectionIdentifier, 'ACSMAT')
+        or starts_with(SectionIdentifier, 'ACSALG')
+),
 
-  grades_ela as (
+grades_ela as (
     select
-      SchoolId,
-      StudentUniqueId,
-      NumericGradeEarned as ElaNumericGrade,
-      LetterGradeEarned as ElaLetterGrade
+        SchoolId,
+        StudentUniqueId,
+        NumericGradeEarned as ElaNumericGrade,
+        LetterGradeEarned as ElaLetterGrade
     from grades
-    where STARTS_WITH(SectionIdentifier, 'ACSENG')
-  ),
+    where starts_with(SectionIdentifier, 'ACSENG')
+),
 
-  grades_science as (
+grades_science as (
     select
-      SchoolId,
-      StudentUniqueId,
-      NumericGradeEarned as ScienceNumericGrade,
-      LetterGradeEarned as ScienceLetterGrade
+        SchoolId,
+        StudentUniqueId,
+        NumericGradeEarned as ScienceNumericGrade,
+        LetterGradeEarned as ScienceLetterGrade
     from grades
-    where STARTS_WITH(SectionIdentifier, 'ACSLS')
-    OR STARTS_WITH(SectionIdentifier, 'ACSSCI')
-    OR STARTS_WITH(SectionIdentifier, 'ACSPS')
-    OR STARTS_WITH(SectionIdentifier, 'ACSESC')
-    OR STARTS_WITH(SectionIdentifier, 'ACSES')
-  ),
+    where
+        starts_with(SectionIdentifier, 'ACSLS')
+        or starts_with(SectionIdentifier, 'ACSSCI')
+        or starts_with(SectionIdentifier, 'ACSPS')
+        or starts_with(SectionIdentifier, 'ACSESC')
+        or starts_with(SectionIdentifier, 'ACSES')
+),
 
-  grades_PE as (
+grades_PE as (
     select
-      SchoolId,
-      StudentUniqueId,
-      NumericGradeEarned as PeNumericGrade,
-      LetterGradeEarned as PeLetterGrade
+        SchoolId,
+        StudentUniqueId,
+        NumericGradeEarned as PeNumericGrade,
+        LetterGradeEarned as PeLetterGrade
     from grades
-    where STARTS_WITH(SectionIdentifier, 'ACSPED')
-    or STARTS_WITH(SectionIdentifier, 'ACSPE')
-  ),
+    where
+        starts_with(SectionIdentifier, 'ACSPED')
+        or starts_with(SectionIdentifier, 'ACSPE')
+),
 
-  final as (
+final as (
     select
-      sc.*,
-      s.* EXCEPT(SchoolYear, SchoolId),
-      a.CountOfDaysAbsent,
-      a.CountOfDaysEnrolled,
-      Round(a.AverageDailyAttendance, 2) as AttendanceRate,
-      sr.StarReadingGe,
-      srs.StarReadingSpanishGe,
-      sm.StarMathGe,
-      sms.StarMathSpanishGe,
-      se.StarEarlyLitGe,
-      ses.StarEarlyLitSpanishGe,
-      ge.ElaNumericGrade,
-      ge.ElaLetterGrade,
-      gm.MathNumericGrade,
-      gm.MathLetterGrade,
-      gs.ScienceNumericGrade,
-      gs.ScienceLetterGrade,
-      gp.PeNumericGrade,
-      gp.PeLetterGrade,
-      sbac_ela.SbacElaLevel,
-      sbac_math.SbacMathLevel,
-      ca_science.CastLevel,
-      elpac.ElpacLevel,
-      caa_ela.CaaElaLevel,
-      caa_math.CaaMathLevel,
-      caa_science.CaaScienceLevel
+        sc.*,
+        s.* except (SchoolYear, SchoolId),
+        a.CountOfDaysAbsent,
+        a.CountOfDaysEnrolled,
+        round(a.AverageDailyAttendance, 2) as AttendanceRate,
+        sr.StarReadingGe,
+        srs.StarReadingSpanishGe,
+        sm.StarMathGe,
+        sms.StarMathSpanishGe,
+        se.StarEarlyLitGe,
+        ses.StarEarlyLitSpanishGe,
+        ge.ElaNumericGrade,
+        ge.ElaLetterGrade,
+        gm.MathNumericGrade,
+        gm.MathLetterGrade,
+        gs.ScienceNumericGrade,
+        gs.ScienceLetterGrade,
+        gp.PeNumericGrade,
+        gp.PeLetterGrade,
+        sbac_ela.SbacElaLevel,
+        sbac_math.SbacMathLevel,
+        ca_science.CastLevel,
+        elpac.ElpacLevel,
+        caa_ela.CaaElaLevel,
+        caa_math.CaaMathLevel,
+        caa_science.CaaScienceLevel
     from current_ms_students as s
     left join schools as sc
-    on s.SchoolId = sc.SchoolId
-    and s.SchoolYear = sc.SchoolYear
+        on
+            s.SchoolId = sc.SchoolId
+            and s.SchoolYear = sc.SchoolYear
     left join attendance as a
-    on s.SchoolId = a.SchoolId
-    and s.StudentUniqueId = a.StudentUniqueId
+        on
+            s.SchoolId = a.SchoolId
+            and s.StudentUniqueId = a.StudentUniqueId
     left join star_reading as sr
-    on s.StateUniqueId = sr.StateUniqueId
+        on s.StateUniqueId = sr.StateUniqueId
     left join star_reading_sp as srs
-    on s.StateUniqueId = srs.StateUniqueId
+        on s.StateUniqueId = srs.StateUniqueId
     left join star_math as sm
-    on s.StateUniqueId = sm.StateUniqueId
+        on s.StateUniqueId = sm.StateUniqueId
     left join star_math_sp as sms
-    on s.StateUniqueId = sms.StateUniqueId
+        on s.StateUniqueId = sms.StateUniqueId
     left join star_el as se
-    on s.StateUniqueId = se.StateUniqueId
+        on s.StateUniqueId = se.StateUniqueId
     left join star_el_sp as ses
-    on s.StateUniqueId = ses.StateUniqueId
+        on s.StateUniqueId = ses.StateUniqueId
     left join grades_ela as ge
-    on s.SchoolId = ge.SchoolId
-    and s.StudentUniqueId = ge.StudentUniqueId
+        on
+            s.SchoolId = ge.SchoolId
+            and s.StudentUniqueId = ge.StudentUniqueId
     left join grades_math as gm
-    on s.SchoolId = gm.SchoolId
-    and s.StudentUniqueId = gm.StudentUniqueId
+        on
+            s.SchoolId = gm.SchoolId
+            and s.StudentUniqueId = gm.StudentUniqueId
     left join grades_science as gs
-    on s.SchoolId = gs.SchoolId
-    and s.StudentUniqueId = gs.StudentUniqueId
+        on
+            s.SchoolId = gs.SchoolId
+            and s.StudentUniqueId = gs.StudentUniqueId
     left join grades_pe as gp
-    on s.SchoolId = gp.SchoolId
-    and s.StudentUniqueId = gp.StudentUniqueId
+        on
+            s.SchoolId = gp.SchoolId
+            and s.StudentUniqueId = gp.StudentUniqueId
     left join sbac_ela
-    on s.StateUniqueId = sbac_ela.StateUniqueId
+        on s.StateUniqueId = sbac_ela.StateUniqueId
     left join sbac_math
-    on s.StateUniqueId = sbac_math.StateUniqueId
+        on s.StateUniqueId = sbac_math.StateUniqueId
     left join ca_science
-    on s.StateUniqueId = ca_science.StateUniqueId
+        on s.StateUniqueId = ca_science.StateUniqueId
     left join elpac
-    on s.StateUniqueId = elpac.StateUniqueId
+        on s.StateUniqueId = elpac.StateUniqueId
     left join caa_ela
-    on s.StateUniqueId = caa_ela.StateUniqueId
+        on s.StateUniqueId = caa_ela.StateUniqueId
     left join caa_math
-    on s.StateUniqueId = caa_math.StateUniqueId
+        on s.StateUniqueId = caa_math.StateUniqueId
     left join caa_science
-    on s.StateUniqueId = caa_science.StateUniqueId
-  )
+        on s.StateUniqueId = caa_science.StateUniqueId
+)
 
 select * from final

@@ -1,13 +1,13 @@
-WITH unioned AS (
-  SELECT * FROM {{ ref('stg_SP__StudentAttendanceByDate')}}
-  UNION ALL
-  SELECT * FROM {{ ref('stg_SPA__StudentAttendanceByDate_SY22')}}
+with unioned as (
+    select * from {{ ref('stg_SP__StudentAttendanceByDate') }}
+    union all
+    select * from {{ ref('stg_SPA__StudentAttendanceByDate_SY22') }}
 ),
 
-final AS (
-  SELECT *
-  FROM unioned
-  WHERE AttendanceEventCategoryDescriptor = 'Absent'
+final as (
+    select *
+    from unioned
+    where AttendanceEventCategoryDescriptor = 'Absent'
 )
 
-SELECT * FROM final
+select * from final

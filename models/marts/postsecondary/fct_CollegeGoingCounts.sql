@@ -1,53 +1,55 @@
-with 
-  unpivoted as (
+with unpivoted as (
     {{ dbt_utils.unpivot(
-      relation=ref('int_CdeCgr__unioned'),
-      cast_to='STRING',
-      exclude=[
-        'AcademicYear',
-        'AggregateLevel',
-        'EntityType',
-        'CountyCode',
-        'DistrictCode',
-        'SchoolCode',
-        'CountyName',
-        'DistrictName',
-        'SchoolName',
-        'CharterSchool',
-        'DASS',
-        'ReportingCategory',
-        'CompleterType',
-        'CgrPeriodType',
-        'HighSchoolCompleters',
-        'EnrolledInCollegeTotal'  
-      ],
-      remove=[
-        'CollegeGoingRateTotal',
-        'EnrolledInState',
-        'EnrolledOutOfState',
-        'NotEnrolledInCollege'
-      ],
-      field_name='CollegeGoingGroupType',
-      value_name='Count'
+        relation=ref('int_CdeCgr__unioned'),
+        cast_to='STRING',
+        exclude=[
+            'AcademicYear',
+            'AggregateLevel',
+            'EntityType',
+            'CountyCode',
+            'DistrictCode',
+            'SchoolCode',
+            'CountyName',
+            'DistrictName',
+            'SchoolName',
+            'CharterSchool',
+            'DASS',
+            'ReportingCategory',
+            'CompleterType',
+            'CgrPeriodType',
+            'HighSchoolCompleters',
+            'EnrolledInCollegeTotal'  
+        ],
+        remove=[
+            'CollegeGoingRateTotal',
+            'EnrolledInState',
+            'EnrolledOutOfState',
+            'NotEnrolledInCollege'
+        ],
+        field_name='CollegeGoingGroupType',
+        value_name='Count'
     ) }}
-  )
+)
 
-SELECT
-  AcademicYear,
-  CASE
-    WHEN EntityType = 'State' THEN '00'
-    WHEN EntityType = 'County' THEN CountyCode
-    WHEN EntityType = 'District' THEN DistrictCode
-    WHEN EntityType = 'School' THEN SchoolCode
-  END AS EntityCode,
-  CharterSchool,
-  DASS,
-  ReportingCategory,
-  CompleterType,
-  CgrPeriodType,
-  HighSchoolCompleters,
-  EnrolledInCollegeTotal,
-  CollegeGoingGroupType,
-  Count,
-  CASE WHEN EnrolledInCollegeTotal = 0 THEN NULL ELSE ROUND(CAST(Count AS INT64) / EnrolledInCollegeTotal, 3) END AS PercentOfHsCompleters
-FROM unpivoted
+select
+    AcademicYear,
+    case
+        when EntityType = 'State' then '00'
+        when EntityType = 'County' then CountyCode
+        when EntityType = 'District' then DistrictCode
+        when EntityType = 'School' then SchoolCode
+    end as EntityCode,
+    CharterSchool,
+    DASS,
+    ReportingCategory,
+    CompleterType,
+    CgrPeriodType,
+    HighSchoolCompleters,
+    EnrolledInCollegeTotal,
+    CollegeGoingGroupType,
+    Count,
+    case
+        when EnrolledInCollegeTotal = 0 then null else
+            round(cast(Count as int64) / EnrolledInCollegeTotal, 3)
+    end as PercentOfHsCompleters
+from unpivoted

@@ -1,20 +1,20 @@
-WITH unioned AS (
-  SELECT * FROM {{ ref('stg_SP__StudentEnrollments') }}
-  UNION ALL
-  SELECT * FROM {{ ref('stg_SPA__StudentEnrollments_SY22') }}
+with unioned as (
+    select * from {{ ref('stg_SP__StudentEnrollments') }}
+    union all
+    select * from {{ ref('stg_SPA__StudentEnrollments_SY22') }}
 ),
 
-final AS (
-  SELECT
-    SchoolYear,
-    SchoolId,
-    StudentUniqueId,
-    GradeLevel,
-    EntryDate,
-    ExitWithdrawDate,
-    ExitWithdrawReason,
-    IsCurrentEnrollment
-  FROM unioned
+final as (
+    select
+        SchoolYear,
+        SchoolId,
+        StudentUniqueId,
+        GradeLevel,
+        EntryDate,
+        ExitWithdrawDate,
+        ExitWithdrawReason,
+        IsCurrentEnrollment
+    from unioned
 )
 
-SELECT * FROM final
+select * from final

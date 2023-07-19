@@ -1,47 +1,47 @@
-WITH
-  schools AS (
-    SELECT
-      SchoolYear,
-      SchoolId,
-      SchoolName,
-      SchoolNameMid,
-      SchoolNameShort
-    FROM {{ref('dim_Schools')}}
-  ),
+with schools as (
+    select
+        SchoolYear,
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_Schools') }}
+),
 
-  ada AS (
-    SELECT * FROM {{ ref('fct_SchoolAverageDailyAttendance')}}
-  ),
+ada as (
+    select * from {{ ref('fct_SchoolAverageDailyAttendance') }}
+),
 
-  reporting_periods AS (
-    SELECT
-      a.EventDate,
-      p.ReportingPeriod
-    FROM ada AS a
-    CROSS JOIN {{ ref('stg_RD__AttendanceReportingPeriods')}} AS p
-    WHERE a.EventDate BETWEEN p.StartDate AND p.EndDate
-    GROUP BY 1, 2
-    ORDER BY a.EventDate
-  ),
+reporting_periods as (
+    select
+        a.EventDate,
+        p.ReportingPeriod
+    from ada as a
+    cross join {{ ref('stg_RD__AttendanceReportingPeriods') }} as p
+    where a.EventDate between p.StartDate and p.EndDate
+    group by 1, 2
+    order by a.EventDate
+),
 
-  final AS (
-    SELECT
-      s.*,
-      a.GradeLevel,
-      p.ReportingPeriod,
-      a.Month,
-      a.MonthRank,
-      a.WeekOf,
-      a.EventDate,
-      a.Apportionment,
-      a.Possible,
-      ROUND(a.Apportionment / a.Possible, 4) AS DailyAttendanceRate
-    FROM ada AS a
-    LEFT JOIN schools AS s
-    ON a.SchoolId = s.SchoolId
-    AND a.SchoolYear = s.SchoolYear
-    LEFT JOIN reporting_periods AS p
-    ON a.EventDate = p.EventDate
-  )
+final as (
+    select
+        s.*,
+        a.GradeLevel,
+        p.ReportingPeriod,
+        a.Month,
+        a.MonthRank,
+        a.WeekOf,
+        a.EventDate,
+        a.Apportionment,
+        a.Possible,
+        round(a.Apportionment / a.Possible, 4) as DailyAttendanceRate
+    from ada as a
+    left join schools as s
+        on
+            a.SchoolId = s.SchoolId
+            and a.SchoolYear = s.SchoolYear
+    left join reporting_periods as p
+        on a.EventDate = p.EventDate
+)
 
-SELECT * FROM final
+select * from final

@@ -1,42 +1,41 @@
-WITH 
-  caaspp AS (
-    SELECT * FROM {{ ref('int_Caaspp__2_unpivoted')}} 
-    UNION ALL
-    SELECT * FROM {{ ref('int_Cast__2_unpivoted')}} 
-  ),
+with caaspp as (
+    select * from {{ ref('int_Caaspp__2_unpivoted') }}
+    union all
+    select * from {{ ref('int_Cast__2_unpivoted') }}
+),
 
 
-  demographics AS (
-    SELECT *
-    FROM {{ ref('stg_RD__CaasppStudentGroups')}}
-  ),
+demographics as (
+    select *
+    from {{ ref('stg_RD__CaasppStudentGroups') }}
+),
 
-  final AS (
-    SELECT
-      c.EntityCode,
-      c.EntityType,
-      c.EntityName,
-      c.EntityNameMid,
-      c.EntityNameShort,
-      c.TypeId,
-      c.TestYear,
-      c.SchoolYear,
-      c.DemographicId,
-      d.StudentGroup,
-      d.DemographicName,
-      c.GradeLevel,
-      c.TestId,
-      c.AssessmentSubject AS TestSubject,
-      c.StudentsEnrolled,
-      c.StudentsWithScores,
-      c.AssessmentObjective,
-      c.ReportingMethod,
-      c.ResultDataType,
-      c.SchoolResult,
-      c.StudentWithResultCount
-    FROM caaspp AS c
-    LEFT JOIN demographics AS d
-    ON c.DemographicId = d.DemographicId
-  )
+final as (
+    select
+        caaspp.EntityCode,
+        caaspp.EntityType,
+        caaspp.EntityName,
+        caaspp.EntityNameMid,
+        caaspp.EntityNameShort,
+        caaspp.TypeId,
+        caaspp.TestYear,
+        caaspp.SchoolYear,
+        caaspp.DemographicId,
+        demographics.StudentGroup,
+        demographics.DemographicName,
+        caaspp.GradeLevel,
+        caaspp.TestId,
+        caaspp.AssessmentSubject as TestSubject,
+        caaspp.StudentsEnrolled,
+        caaspp.StudentsWithScores,
+        caaspp.AssessmentObjective,
+        caaspp.ReportingMethod,
+        caaspp.ResultDataType,
+        caaspp.SchoolResult,
+        caaspp.StudentWithResultCount
+    from caaspp
+    left join demographics
+        on caaspp.DemographicId = demographics.DemographicId
+)
 
-SELECT * FROM final
+select * from final

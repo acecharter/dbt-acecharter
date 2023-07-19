@@ -1,35 +1,33 @@
-WITH
-  entities AS (
-    SELECT * FROM {{ ref('dim_Entities')}}
-  ),
-  
-  enrollment AS (
-    SELECT * FROM {{ ref('fct_CdeEnrollment') }}
-  ),
-  
-  final AS (
-    SELECT
-      e.SchoolYear,
-      i.EntityType,
-      e.EntityCode,
-      i.EntityName,
-      i.EntityNameShort,
-      e.SchoolType,
-      e.SubgroupType,
-      e.Subgroup,
-      e.Gender,
-      e.GradeLevel,
-      e.Enrollment,
-      e.PctOfTotalEnrollment
-    FROM enrollment AS e
-    LEFT JOIN entities AS i
-    ON e.EntityCode = i.EntityCode
-    WHERE
-      i.EntityCode IS NOT NULL
-      AND e.Enrollment IS NOT NULL
-  )
+with entities as (
+    select * from {{ ref('dim_Entities') }}
+),
 
-SELECT * FROM final
+enrollment as (
+    select * from {{ ref('fct_CdeEnrollment') }}
+),
 
-ORDER BY 1, 3, 6, 7, 8
-  
+final as (
+    select
+        e.SchoolYear,
+        i.EntityType,
+        e.EntityCode,
+        i.EntityName,
+        i.EntityNameShort,
+        e.SchoolType,
+        e.SubgroupType,
+        e.Subgroup,
+        e.Gender,
+        e.GradeLevel,
+        e.Enrollment,
+        e.PctOfTotalEnrollment
+    from enrollment as e
+    left join entities as i
+        on e.EntityCode = i.EntityCode
+    where
+        i.EntityCode is not null
+        and e.Enrollment is not null
+)
+
+select * from final
+
+order by 1, 3, 6, 7, 8

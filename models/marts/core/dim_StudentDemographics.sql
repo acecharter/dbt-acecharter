@@ -1,33 +1,31 @@
-WITH
-  demographics AS (
-    SELECT * FROM {{ ref('stg_SP__StudentDemographics')}}
-    UNION ALL
-    SELECT * FROM {{ ref('stg_SPA__StudentDemographics_SY22')}}
-  ),
+with demographics as (
+    select * from {{ ref('stg_SP__StudentDemographics') }}
+    union all
+    select * from {{ ref('stg_SPA__StudentDemographics_SY22') }}
+),
 
-  final AS (
-    SELECT
-      SchoolYear,
-      StudentUniqueId,
-      StateUniqueId,
-      SisUniqueId,
-      DisplayName,
-      LastSurname AS LastName,
-      FirstName,
-      MiddleName,
-      Birthdate,
-      BirthSex
-      Gender,
-      RaceEthnicity,
-      CASE WHEN IsEll IS TRUE THEN 'Yes' ELSE 'No' END As IsEll,
-      EllStatus,
-      CASE WHEN HasFrl IS TRUE THEN 'Yes' ELSE 'No' END As HasFrl,
-      FrlStatus,
-      CASE WHEN HasIep IS TRUE THEN 'Yes' ELSE 'No' END As HasIep,
-      SeisEligibilityStatus,
-      Email,
-      IsCurrentlyEnrolled
-    FROM demographics
-  )
+final as (
+    select
+        SchoolYear,
+        StudentUniqueId,
+        StateUniqueId,
+        SisUniqueId,
+        DisplayName,
+        LastSurname as LastName,
+        FirstName,
+        MiddleName,
+        Birthdate,
+        BirthSex as Gender,
+        RaceEthnicity,
+        case when IsEll is true then 'Yes' else 'No' end as IsEll,
+        EllStatus,
+        case when HasFrl is true then 'Yes' else 'No' end as HasFrl,
+        FrlStatus,
+        case when HasIep is true then 'Yes' else 'No' end as HasIep,
+        SeisEligibilityStatus,
+        Email,
+        IsCurrentlyEnrolled
+    from demographics
+)
 
-SELECT * FROM final
+select * from final

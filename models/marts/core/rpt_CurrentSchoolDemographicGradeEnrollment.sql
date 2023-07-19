@@ -1,27 +1,26 @@
-WITH enrollment AS (
-  SELECT *
-  FROM {{ ref('fct_CurrentSchoolDemographicGradeEnrollment') }}
+with enrollment as (
+    select * from {{ ref('fct_CurrentSchoolDemographicGradeEnrollment') }}
 ),
 
-schools AS (
-  SELECT
-    SchoolYear,
-    SchoolId,
-    SchoolName,
-    SchoolNameMid,
-    SchoolNameShort
-  FROM {{ref('dim_CurrentSchools')}}
+schools as (
+    select
+        SchoolYear,
+        SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_CurrentSchools') }}
 ),
 
-final AS (
-  SELECT
-    s.* EXCEPT(SchoolId),
-    e.* EXCEPT(SchoolYear, SchoolId)
-  FROM enrollment AS e
-  LEFT JOIN schools AS s
-  ON
-    s.SchoolYear = e.SchoolYear
-    AND s.SchoolId = e.SchoolId
+final as (
+    select
+        s.* except (SchoolId),
+        e.* except (SchoolYear, SchoolId)
+    from enrollment as e
+    left join schools as s
+        on
+            s.SchoolYear = e.SchoolYear
+            and s.SchoolId = e.SchoolId
 )
 
-SELECT * FROM final
+select * from final

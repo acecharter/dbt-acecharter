@@ -1,6 +1,6 @@
-SELECT
-  AceAssessmentId,
-  Area,
-  GradeLevel,
-  CAST(Level3Min AS INT64) AS MinStandardMetScaleScore
-FROM {{ ref('stg_GSD__AssessmentScaleScoreRanges') }}
+select
+    AceAssessmentId,
+    Area,
+    GradeLevel,
+    cast(Level3Min as int64) as MinStandardMetScaleScore
+from {{ ref('stg_GSD__AssessmentScaleScoreRanges') }}

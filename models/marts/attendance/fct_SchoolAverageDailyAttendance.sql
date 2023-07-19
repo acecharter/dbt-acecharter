@@ -1,12 +1,12 @@
-WITH unioned AS (
-  SELECT * FROM {{ ref('stg_SP__AverageDailyAttendance_v3') }}
-  UNION ALL
-  SELECT * FROM {{ ref('stg_SPA__AverageDailyAttendance_v3_SY22')}}
+with unioned as (
+    select * from {{ ref('stg_SP__AverageDailyAttendance_v3') }}
+    union all
+    select * from {{ ref('stg_SPA__AverageDailyAttendance_v3_SY22') }}
 ),
 
-final AS (
-  SELECT * EXCEPT(NameOfInstitution)
-  FROM unioned
+final as (
+    select * except (NameOfInstitution)
+    from unioned
 )
 
-SELECT * FROM final
+select * from final

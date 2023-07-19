@@ -1,1 +1,1 @@
-SELECT * FROM {{ ref('fct_EntityElpac')}}
+select * from {{ ref('fct_EntityElpac') }}
