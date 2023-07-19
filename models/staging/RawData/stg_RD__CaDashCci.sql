@@ -277,8 +277,8 @@ unioned_w_entity_codes as (
     select
         case
             when RType = 'X' then '00'
-            when RType = 'D' then SUBSTR(cds, 3, 5)
-            when RType = 'S' then SUBSTR(cds, LENGTH(cds)-6, 7)
+            when RType = 'D' then substr(cds, 3, 5)
+            when RType = 'S' then substr(cds, length(cds)-6, 7)
         end as EntityCode,
         *
     from unioned
@@ -327,7 +327,7 @@ change_levels as (
 final as (
     select
         'College/Career' as IndicatorName,
-        ifnull(entities.EntityType, IF(unioned_w_entity_codes.Rtype = 'S', 'School', NULL)) as EntityType,
+        ifnull(entities.EntityType, if(unioned_w_entity_codes.Rtype = 'S', 'School', NULL)) as EntityType,
         ifnull(entities.EntityName, unioned_w_entity_codes.SchoolName) as EntityName,
         ifnull(entities.EntityNameShort, unioned_w_entity_codes.SchoolName) as EntityNameShort,
         student_groups.StudentGroupName,

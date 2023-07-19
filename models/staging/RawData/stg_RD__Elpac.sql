@@ -2,66 +2,79 @@
     materialized='table'
 )}}
 
-WITH
-    entities AS (
-        SELECT * FROM {{ ref('dim_Entities')}}
-    ),
+with entities as (
+    select * from {{ ref('dim_Entities')}}
+),
 
-    assessment_ids AS (
-        SELECT 
-            AceAssessmentId,
-            AssessmentNameShort AS AceAssessmentName,
-            SystemOrVendorAssessmentId
-        FROM {{ ref('stg_GSD__Assessments') }}
-        WHERE SystemOrVendorName = 'ELPAC'
-    ),
+assessment_ids as (
+    select 
+        AceAssessmentId,
+        AssessmentNameShort as AceAssessmentName,
+        SystemOrVendorAssessmentId
+    from {{ ref('stg_GSD__Assessments') }}
+    where SystemOrVendorName = 'ELPAC'
+),
 
-    elpac_unioned AS (
-        SELECT * FROM {{ ref('base_RD__Elpac2018')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Elpac2019')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Elpac2021')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__Elpac2022')}}
-    ),
+elpac_unioned as (
+    select * from {{ ref('base_RD__Elpac2018')}}
+    union all
+    select * from {{ ref('base_RD__Elpac2019')}}
+    union all
+    select * from {{ ref('base_RD__Elpac2021')}}
+    union all
+    select * from {{ ref('base_RD__Elpac2022')}}
+),
 
-    elpac_entity_codes_added AS (
-        SELECT
-            a.AceAssessmentId,
-            a.AceAssessmentName,
-            CASE
-                WHEN u.DistrictCode = '00000' THEN u.CountyCode
-                WHEN u.SchoolCode = '0000000' THEN u.DistrictCode
-                ELSE u.SchoolCode
-            END AS EntityCode,
-            u.*
-        FROM elpac_unioned AS u
-        LEFT JOIN assessment_ids AS a
-        ON u.AssessmentType = a.SystemOrVendorAssessmentId
-    ),
+elpac_entity_codes_added as (
+    select
+        a.AceAssessmentId,
+        a.AceAssessmentName,
+        case
+            when u.DistrictCode = '00000' then u.CountyCode
+            when u.SchoolCode = '0000000' then u.DistrictCode
+            else u.SchoolCode
+        end as EntityCode,
+        u.*
+    from elpac_unioned as u
+    left join assessment_ids as a
+    on u.AssessmentType = a.SystemOrVendorAssessmentId
+),
 
-    elpac_filtered AS (
-        SELECT *
-        FROM elpac_entity_codes_added
-        WHERE EntityCode IN (SELECT EntityCode FROM entities)
-            
-    ),
+elpac_filtered as (
+    select *
+    from elpac_entity_codes_added
+    where EntityCode in (select EntityCode from entities)
+        
+),
 
-    elpac_sy_entity_info_added AS (
-        SELECT
-            entities.* EXCEPT (EntityCode), 
-            CONCAT(
-                CAST(e.TestYear - 1 AS STRING), '-', CAST(e.TestYear - 2000 AS STRING)
-            ) AS SchoolYear,
-            e.*
-        FROM elpac_filtered AS e
-        LEFT JOIN entities
-        ON e.EntityCode = entities.EntityCode
-    ),
+elpac_sy_entity_info_added as (
+    select
+        entities.* except (EntityCode), 
+        concat(
+            cast(e.TestYear - 1 as string), '-', cast(e.TestYear - 2000 as string)
+        ) as SchoolYear,
+        e.*
+    from elpac_filtered as e
+    left join entities
+    on e.EntityCode = entities.EntityCode
+),
 
-    final AS (
-        SELECT
+final as (
+    select
+        AceAssessmentId,
+        AceAssessmentName,
+        EntityCode,
+        EntityType,
+        EntityName,
+        EntityNameMid,
+        EntityNameShort,
+        CountyCode,
+        DistrictCode,
+        SchoolCode,
+        RecordType,
+        CharterNumber,
+        SchoolYear,
+        * except(
             AceAssessmentId,
             AceAssessmentName,
             EntityCode,
@@ -74,23 +87,9 @@ WITH
             SchoolCode,
             RecordType,
             CharterNumber,
-            SchoolYear,
-            * EXCEPT(
-                AceAssessmentId,
-                AceAssessmentName,
-                EntityCode,
-                EntityType,
-                EntityName,
-                EntityNameMid,
-                EntityNameShort,
-                CountyCode,
-                DistrictCode,
-                SchoolCode,
-                RecordType,
-                CharterNumber,
-                SchoolYear
-            )
-        FROM elpac_sy_entity_info_added
-    )
+            SchoolYear
+        )
+    from elpac_sy_entity_info_added
+)
 
-SELECT * FROM final
+select * from final

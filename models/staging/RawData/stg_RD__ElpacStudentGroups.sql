@@ -1,4 +1,4 @@
-SELECT
-    CAST(Student_Group_ID AS STRING) AS StudentGroupId,
-    Student_Group_Name AS StudentGroupName
-FROM {{ source('RawData', 'ElpacStudentGroups')}}
+select
+    cast(Student_Group_ID as string) as StudentGroupId,
+    Student_Group_Name as StudentGroupName
+from {{ source('RawData', 'ElpacStudentGroups') }}

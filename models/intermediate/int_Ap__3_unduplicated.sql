@@ -1,7 +1,8 @@
 with ap as (
     select
-        concat(StateUniqueId,'-',AssessmentYear,'-',ExamCode) as ResultUniqueId,
-        * except(SourceFileYear, TestNumber)
+        concat(StateUniqueId, '-', AssessmentYear, '-', ExamCode)
+            as ResultUniqueId,
+        * except (SourceFileYear, TestNumber)
     from {{ ref('int_Ap__2_pivoted') }}
 ),
 
@@ -14,10 +15,11 @@ current_year_results as (
 other_previous_results as (
     select distinct *
     from ap
-    where CurrentYearScore = 'No'
-    and ResultUniqueId not in (
-        select ResultUniqueId from current_year_results
-    )
+    where
+        CurrentYearScore = 'No'
+        and ResultUniqueId not in (
+            select ResultUniqueId from current_year_results
+        )
 ),
 
 unduplicated_results as (
@@ -27,7 +29,7 @@ unduplicated_results as (
 ),
 
 assessment_ids as (
-    select 
+    select
         AceAssessmentId,
         AssessmentNameShort as AceAssessmentName,
         AssessmentSubject,
@@ -44,8 +46,8 @@ final as (
         unduplicated_results.*
     from unduplicated_results
     left join assessment_ids
-    on unduplicated_results.ExamCode = assessment_ids.ExamCode
+        on unduplicated_results.ExamCode = assessment_ids.ExamCode
 )
 
 select * from final
-order by StateUniqueId, AceAssessmentName, AssessmentYear desc
+order by StateUniqueId asc, AceAssessmentName asc, AssessmentYear desc

@@ -1,80 +1,79 @@
-WITH
-    caaspp AS (
-        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2023')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__TomsCaasppTested2022')}}
-    ),
-    
-    race_ethnicity AS (
-        SELECT * FROM {{ ref('stg_RD__TomsEthnicityCodes')}}
-    ),
+with caaspp as (
+    select * from {{ ref('base_RD__TomsCaasppTested2023')}}
+    union all
+    select * from {{ ref('base_RD__TomsCaasppTested2022')}}
+),
 
-    assessment_ids AS (
-        SELECT 
-            AceAssessmentId,
-            AssessmentNameShort AS AceAssessmentName,
-            AssessmentSubject,
-            SystemOrVendorAssessmentId
-        FROM {{ ref('stg_GSD__Assessments') }}
-        WHERE SystemOrVendorName = 'CAASPP'
-    ),
-    
-    min_met_scores AS (
-        SELECT
-            AceAssessmentId,
-            GradeLevel,
-            MinStandardMetScaleScore
-        FROM {{ ref('fct_CaasppMinMetScaleScores') }}
-        WHERE Area='Overall'
-    ),
+race_ethnicity as (
+    select * from {{ ref('stg_RD__TomsEthnicityCodes')}}
+),
 
-    caaspp_id_race_added AS (
-        SELECT
-            a.AceAssessmentId,
-            a.AceAssessmentName,
-            a.AssessmentSubject,
-            c.*,
-            r.RaceEthnicity
-        FROM caaspp AS c
-        LEFT JOIN assessment_ids AS a
-        ON CAST(CAST(c.RecordType AS INT64) AS STRING) = a.SystemOrVendorAssessmentId
-        LEFT JOIN race_ethnicity AS r
-        ON c.ReportingEthnicity = r.RaceEthnicityCode
-    ),
+assessment_ids as (
+    select 
+        AceAssessmentId,
+        AssessmentNameShort as AceAssessmentName,
+        AssessmentSubject,
+        SystemOrVendorAssessmentId
+    from {{ ref('stg_GSD__Assessments') }}
+    where SystemOrVendorName = 'CAASPP'
+),
 
-    final AS (
-        SELECT
-            c.*,
-            CASE WHEN ELStatus IS TRUE OR DATE(RFEPDate) > DATE(TestYear - 4, 6, 15) THEN TRUE ELSE FALSE END AS ElWithinPast4Years,
-            CAST(
-                CASE WHEN c.ScaleScore IS NOT NULL THEN ROUND(c.ScaleScore - m.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
-            ) AS Dfs,
-            CAST(
-                CASE WHEN c.ScaleScoreMinus1 IS NOT NULL THEN ROUND(c.ScaleScoreMinus1 - m1.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
-            ) AS DfsMinus1,
-            CAST(
-                CASE WHEN c.ScaleScoreMinus2 IS NOT NULL THEN ROUND(c.ScaleScoreMinus2 - m2.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
-            ) AS DfsMinus2,
-            CAST(
-                CASE WHEN c.ScaleScoreMinus3 IS NOT NULL THEN ROUND(c.ScaleScoreMinus3 - m3.MinStandardMetScaleScore, 0) ELSE NULL END AS INT64
-            ) AS DfsMinus3,
-        FROM caaspp_id_race_added AS c
-        LEFT JOIN min_met_scores AS m
-        ON
-            c.AceAssessmentId = m.AceAssessmentId
-            AND c.GradeAssessed = m.GradeLevel
-        LEFT JOIN min_met_scores AS m1
-        ON
-            c.AceAssessmentId = m1.AceAssessmentId
-            AND c.GradeAssessedMinus1 = m1.GradeLevel
-        LEFT JOIN min_met_scores AS m2
-        ON
-            c.AceAssessmentId = m2.AceAssessmentId
-            AND c.GradeAssessedMinus2 = m2.GradeLevel
-        LEFT JOIN min_met_scores AS m3
-        ON
-            c.AceAssessmentId = m3.AceAssessmentId
-            AND c.GradeAssessedMinus3 = m3.GradeLevel
-    )
+min_met_scores as (
+    select
+        AceAssessmentId,
+        GradeLevel,
+        MinStandardMetScaleScore
+    from {{ ref('fct_CaasppMinMetScaleScores') }}
+    where Area='Overall'
+),
 
-SELECT * FROM final
+caaspp_id_race_added as (
+    select
+        a.AceAssessmentId,
+        a.AceAssessmentName,
+        a.AssessmentSubject,
+        c.*,
+        r.RaceEthnicity
+    from caaspp as c
+    left join assessment_ids as a
+    on cast(cast(c.RecordType as int64) as string) = a.SystemOrVendorAssessmentId
+    left join race_ethnicity as r
+    on c.ReportingEthnicity = r.RaceEthnicityCode
+),
+
+final as (
+    select
+        c.*,
+        case when ELStatus is true ordate(RFEPDate) > date(TestYear - 4, 6, 15) then true else false end as ElWithinPast4Years,
+        cast(
+            case when c.ScaleScore is not null then round(c.ScaleScore - m.MinStandardMetScaleScore, 0) else null end as int64
+        ) as Dfs,
+        cast(
+            case when c.ScaleScoreMinus1 is not null then round(c.ScaleScoreMinus1 - m1.MinStandardMetScaleScore, 0) else null end as int64
+        ) as DfsMinus1,
+        cast(
+            case when c.ScaleScoreMinus2 is not null then round(c.ScaleScoreMinus2 - m2.MinStandardMetScaleScore, 0) else null end as int64
+        ) as DfsMinus2,
+        cast(
+            case when c.ScaleScoreMinus3 is not null then round(c.ScaleScoreMinus3 - m3.MinStandardMetScaleScore, 0) else null end as int64
+        ) as DfsMinus3,
+    from caaspp_id_race_added as c
+    left join min_met_scores as m
+    on
+        c.AceAssessmentId = m.AceAssessmentId
+        and c.GradeAssessed = m.GradeLevel
+    left join min_met_scores as m1
+    on
+        c.AceAssessmentId = m1.AceAssessmentId
+        and c.GradeAssessedMinus1 = m1.GradeLevel
+    left join min_met_scores as m2
+    on
+        c.AceAssessmentId = m2.AceAssessmentId
+        and c.GradeAssessedMinus2 = m2.GradeLevel
+    left join min_met_scores as m3
+    on
+        c.AceAssessmentId = m3.AceAssessmentId
+        and c.GradeAssessedMinus3 = m3.GradeLevel
+)
+
+select * from final

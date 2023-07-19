@@ -1,176 +1,175 @@
-WITH
-    elpi_2022 AS (
-        SELECT
-            Cds,
-            RType,
-            SchoolName,
-            DistrictName,
-            CountyName,
-            CharterFlag,
-            CoeFlag,
-            DassFlag,
-            CurrProgressed,
-            PctCurrProgressed,
-            CurrMaintainPL4,
-            PctCurrMaintainPL4,
-            CurrMaintainOth,
-            PctCurrMaintainOth,
-            CurrDeclined,
-            CurrNumer,
-            CurrDenom,
-            CurrStatus,
-            NULL AS PriorDenom,
-            NULL AS PriorStatus,
-            NULL AS Change,
-            StatusLevel,
-            NULL AS ChangeLevel,
-            NULL AS Color,
-            NULL AS Box,
-            Flag95Pct,
-            NSizeMet,
-            NSizeGroup,
-            ReportingYear
-        FROM {{ ref('base_RD__CaDashElpi2022')}} 
-    ),
+with elpi_2022 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        CurrProgressed,
+        PctCurrProgressed,
+        CurrMaintainPL4,
+        PctCurrMaintainPL4,
+        CurrMaintainOth,
+        PctCurrMaintainOth,
+        CurrDeclined,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        null as PriorDenom,
+        null as PriorStatus,
+        null as Change,
+        StatusLevel,
+        null as ChangeLevel,
+        null as Color,
+        null as Box,
+        Flag95Pct,
+        NSizeMet,
+        NSizeGroup,
+        ReportingYear
+    from {{ ref('base_RD__CaDashElpi2022')}} 
+),
 
-    elpi_2019 AS (
-        SELECT
-            Cds,
-            RType,
-            SchoolName,
-            DistrictName,
-            CountyName,
-            CharterFlag,
-            CoeFlag,
-            DassFlag,
-            CurrProgressed,
-            CAST(NULL AS FLOAT64) AS PctCurrProgressed,
-            CurrMaintainPL4,
-            CAST(NULL AS FLOAT64) AS PctCurrMaintainPL4,
-            CAST(NULL AS INT64) AS CurrMaintainOth,
-            CAST(NULL AS FLOAT64) AS PctCurrMaintainOth,
-            CurrDeclined,
-            CurrNumer,
-            CurrDenom,
-            CurrStatus,
-            NULL AS PriorDenom,
-            NULL AS PriorStatus,
-            NULL AS Change,
-            StatusLevel,
-            NULL AS ChangeLevel,
-            NULL AS Color,
-            NULL AS Box,
-            Flag95Pct,
-            NSizeMet,
-            NSizeGroup,
-            ReportingYear
-        FROM {{ ref('base_RD__CaDashElpi2019')}} 
-    ),
+elpi_2019 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        CurrProgressed,
+        cast(null as float64) as PctCurrProgressed,
+        CurrMaintainPL4,
+        cast(null as float64) as PctCurrMaintainPL4,
+        cast(null as int64) as CurrMaintainOth,
+        cast(null as float64) as PctCurrMaintainOth,
+        CurrDeclined,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        null as PriorDenom,
+        null as PriorStatus,
+        null as Change,
+        StatusLevel,
+        null as ChangeLevel,
+        null as Color,
+        null as Box,
+        Flag95Pct,
+        NSizeMet,
+        NSizeGroup,
+        ReportingYear
+    from {{ ref('base_RD__CaDashElpi2019')}} 
+),
 
-    elpi_2017 AS (
-        SELECT
-            Cds,
-            RType,
-            SchoolName,
-            DistrictName,
-            CountyName,
-            CharterFlag,
-            CoeFlag,
-            CAST(NULL AS BOOL) AS DassFlag,
-            CurrProgressed,
-            CAST(NULL AS FLOAT64) AS PctCurrProgressed,
-            CurrMaintainPL4,
-            CAST(NULL AS FLOAT64) AS PctCurrMaintainPL4,
-            CAST(NULL AS INT64) AS CurrMaintainOth,
-            CAST(NULL AS FLOAT64) AS PctCurrMaintainOth,
-            CAST(NULL AS INT64) AS CurrDeclined,
-            CurrNumer,
-            CurrDenom,
-            CurrStatus,
-            PriorDenom,
-            PriorStatus,
-            Change,
-            StatusLevel,
-            ChangeLevel,
-            Color,
-            Box,
-            CAST(NULL AS BOOL) AS Flag95Pct,
-            NSizeMet,
-            CAST(NULL AS STRING) AS NSizeGroup,
-            ReportingYear
-        FROM {{ ref('base_RD__CaDashElpi2017')}} 
-    ),
+elpi_2017 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        cast(null as bool) as DassFlag,
+        CurrProgressed,
+        cast(null as float64) as PctCurrProgressed,
+        CurrMaintainPL4,
+        cast(null as float64) as PctCurrMaintainPL4,
+        cast(null as int64) as CurrMaintainOth,
+        cast(null as float64) as PctCurrMaintainOth,
+        cast(null as int64) as CurrDeclined,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        PriorDenom,
+        PriorStatus,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        cast(null as bool) as Flag95Pct,
+        NSizeMet,
+        cast(null as string) as NSizeGroup,
+        ReportingYear
+    from {{ ref('base_RD__CaDashElpi2017')}} 
+),
 
-    unioned AS (
-        SELECT * FROM elpi_2022
-        UNION ALL
-        SELECT * FROM elpi_2019
-        UNION ALL
-        SELECT * FROM elpi_2017
-    ),
+unioned as (
+    select * from elpi_2022
+    union all
+    select * from elpi_2019
+    union all
+    select * from elpi_2017
+),
 
-    unioned_w_entity_codes AS (
-        SELECT
-            CASE
-                WHEN RType = 'X' THEN '00'
-                WHEN RType = 'D' THEN SUBSTR(cds, 3, 5)
-                WHEN RType = 'S' THEN SUBSTR(cds, LENGTH(cds)-6, 7)
-            END AS EntityCode,
-            *
-        FROM unioned
-    ),
-    
-    entities AS (
-        SELECT * FROM {{ ref('dim_Entities')}}
-    ),
+unioned_w_entity_codes as (
+    select
+        case
+            when RType = 'X' then '00'
+            when RType = 'D' then substr(cds, 3, 5)
+            when RType = 'S' then substr(cds, length(cds)-6, 7)
+        end as EntityCode,
+        *
+    from unioned
+),
 
-    codes AS (
-        SELECT * FROM {{ ref('stg_GSD__CaDashCodes')}}
-    ),
+entities as (
+    select * from {{ ref('dim_Entities')}}
+),
 
-    colors AS (
-        SELECT
-            CAST(Code AS INT64) AS Color,
-            Value AS ColorName
-        FROM codes
-        WHERE CodeColumn = 'Color'
-    ),
+codes as (
+    select * from {{ ref('stg_GSD__CaDashCodes')}}
+),
 
-    status_levels AS (
-        SELECT
-            CAST(Code AS INT64) AS StatusLevel,
-            Value AS StatusLevelName
-        FROM codes
-        WHERE CodeColumn = 'StatusLevel - EL Progress'
-    ),
+colors as (
+    select
+        cast(Code as int64) as Color,
+        Value as ColorName
+    from codes
+    where CodeColumn = 'Color'
+),
 
-    change_levels AS (
-        SELECT
-            CAST(Code AS INT64) AS ChangeLevel,
-            Value AS ChangeLevelName
-        FROM codes
-        WHERE CodeColumn = 'ChangeLevel - EL Progress'
-    ),
+status_levels as (
+    select
+        cast(Code as int64) as StatusLevel,
+        Value as StatusLevelName
+    from codes
+    where CodeColumn = 'StatusLevel - EL Progress'
+),
 
-    final AS (
-        SELECT
-            'EL Progress' AS IndicatorName,
-            IFNULL(e.EntityType, IF(u.Rtype = 'S', 'School', NULL)) AS EntityType,
-            IFNULL(e.EntityName, u.SchoolName) AS EntityName,
-            IFNULL(e.EntityNameShort, u.SchoolName) AS EntityNameShort,
-            IFNULL(sl.StatusLevelName, 'No Status Level') AS StatusLevelName,
-            IFNULL(cl.ChangeLevelName, 'No Change Level') AS ChangeLevelName,
-            IFNULL(c.ColorName, 'No Color') AS ColorName,
-            u.*
-        FROM unioned_w_entity_codes AS u
-        LEFT JOIN entities AS e
-        ON u.EntityCode = e.EntityCode
-        LEFT JOIN status_levels AS sl
-        ON u.StatusLevel = sl.StatusLevel
-        LEFT JOIN change_levels AS cl
-        ON u.ChangeLevel = cl.ChangeLevel
-        LEFT JOIN colors AS c
-        ON u.Color = c.Color
-    )
+change_levels as (
+    select
+        cast(Code as int64) as ChangeLevel,
+        Value as ChangeLevelName
+    from codes
+    where CodeColumn = 'ChangeLevel - EL Progress'
+),
 
-SELECT * FROM final
+final as (
+    select
+        'EL Progress' as IndicatorName,
+        ifnull(e.EntityType, if(u.Rtype = 'S', 'School', null)) as EntityType,
+        ifnull(e.EntityName, u.SchoolName) as EntityName,
+        ifnull(e.EntityNameShort, u.SchoolName) as EntityNameShort,
+        ifnull(sl.StatusLevelName, 'No Status Level') as StatusLevelName,
+        ifnull(cl.ChangeLevelName, 'No Change Level') as ChangeLevelName,
+        ifnull(c.ColorName, 'No Color') as ColorName,
+        u.*
+    from unioned_w_entity_codes as u
+    left join entities as e
+    on u.EntityCode = e.EntityCode
+    left join status_levels as sl
+    on u.StatusLevel = sl.StatusLevel
+    left join change_levels as cl
+    on u.ChangeLevel = cl.ChangeLevel
+    left join colors as c
+    on u.Color = c.Color
+)
+
+select * from final

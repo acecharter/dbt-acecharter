@@ -1,27 +1,27 @@
-WITH
-    elpac AS (
-        SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Empower')}}
-        UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Esperanza')}}
-        UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021Inspire')}}
-        UNION ALL SELECT * FROM {{ ref('base_RD__TomsElpacTested2021HighSchool')}}
+with
+    elpac as (
+        select * from {{ ref('base_RD__TomsElpacTested2021Empower')}}
+        union all select * from {{ ref('base_RD__TomsElpacTested2021Esperanza')}}
+        union all select * from {{ ref('base_RD__TomsElpacTested2021Inspire')}}
+        union all select * from {{ ref('base_RD__TomsElpacTested2021HighSchool')}}
     ),
 
-    final AS (
-        SELECT
-            2021 AS TestYear,
-            '2020-21' AS SchoolYear,
+    final as (
+        select
+            2021 as TestYear,
+            '2020-21' as SchoolYear,
             *,
-            CAST(NULL AS STRING) AS AttemptednessMinus3,
-            CAST(NULL AS STRING) AS GradeAssessedMinus3,
-            CAST(NULL AS STRING) AS OverallScaleScoreMinus3,
-            CAST(NULL AS STRING) AS OverallPLMinus3,
-            CAST(NULL AS STRING) AS OralLanguagePLMinus3,
-            CAST(NULL AS STRING) AS WrittenLanguagePLMinus3,
-            CAST(NULL AS STRING) AS ListeningPLMinus3,
-            CAST(NULL AS STRING) AS SpeakingPLMinus3,
-            CAST(NULL AS STRING) AS ReadingPLMinus3,
-            CAST(NULL AS STRING) AS WritingPLMinus3
-        FROM elpac
+            cast(null as string) as AttemptednessMinus3,
+            cast(null as string) as GradeAssessedMinus3,
+            cast(null as string) as OverallScaleScoreMinus3,
+            cast(null as string) as OverallPLMinus3,
+            cast(null as string) as OralLanguagePLMinus3,
+            cast(null as string) as WrittenLanguagePLMinus3,
+            cast(null as string) as ListeningPLMinus3,
+            cast(null as string) as SpeakingPLMinus3,
+            cast(null as string) as ReadingPLMinus3,
+            cast(null as string) as WritingPLMinus3
+        from elpac
     )
 
-SELECT * FROM final
+select * from final

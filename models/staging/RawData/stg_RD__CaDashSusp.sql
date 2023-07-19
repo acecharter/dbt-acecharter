@@ -1,204 +1,202 @@
-WITH
-    susp_2022 AS (
-        SELECT
-            Cds,
-            RType,
-            SchoolName,
-            DistrictName,
-            CountyName,
-            CharterFlag,
-            CoeFlag,
-            DassFlag,
-            Type,
-            StudentGroup,
-            CurrNumer,
-            CurrDenom,
-            CurrStatus,
-            CAST(NULL AS INT64) AS PriorNumer,
-            CAST(NULL AS INT64) AS PriorDenom,
-            CAST(NULL AS FLOAT64) AS PriorStatus,
-            CAST(NULL AS BOOL) AS SafetyNet,
-            CAST(NULL AS FLOAT64) AS Change,
-            StatusLevel,
-            CAST(NULL AS INT64) AS ChangeLevel,
-            CAST(NULL AS INT64) AS Color,
-            CAST(NULL AS INT64) AS Box,
-            CertifyFlag,
-            ReportingYear
-        FROM {{ ref('base_RD__CaDashSusp2022')}} 
-    ),
+with susp_2022 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        Type,
+        StudentGroup,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        cast(null as int64) as PriorNumer,
+        cast(null as int64) as PriorDenom,
+        cast(null as float64) as PriorStatus,
+        cast(null as bool) as SafetyNet,
+        cast(null as float64) as Change,
+        StatusLevel,
+        cast(null as int64) as ChangeLevel,
+        cast(null as int64) as Color,
+        cast(null as int64) as Box,
+        CertifyFlag,
+        ReportingYear
+    from {{ ref('base_RD__CaDashSusp2022')}} 
+),
 
-    susp_2019 AS (
-        SELECT
-            Cds,
-            RType,
-            SchoolName,
-            DistrictName,
-            CountyName,
-            CharterFlag,
-            CoeFlag,
-            DassFlag,
-            Type,
-            StudentGroup,
-            CurrNumer,
-            CurrDenom,
-            CurrStatus,
-            PriorNumer,
-            PriorDenom,
-            PriorStatus,
-            SafetyNet,
-            Change,
-            StatusLevel,
-            ChangeLevel,
-            Color,
-            Box,
-            CertifyFlag,
-            ReportingYear
-        FROM {{ ref('base_RD__CaDashSusp2019')}} 
-    ),
-    
-    susp_2018 AS (
-        SELECT
-            Cds,
-            RType,
-            SchoolName,
-            DistrictName,
-            CountyName,
-            CharterFlag,
-            CoeFlag,
-            DassFlag,
-            Type,
-            StudentGroup,
-            CurrNumer,
-            CurrDenom,
-            CurrStatus,
-            PriorNumer,
-            PriorDenom,
-            PriorStatus,
-            SafetyNet,
-            Change,
-            StatusLevel,
-            ChangeLevel,
-            Color,
-            Box,
-            CertifyFlag,
-            ReportingYear
-        FROM {{ ref('base_RD__CaDashSusp2018')}} 
-    ),
-    
-    susp_2017 AS (
-        SELECT
-            Cds,
-            RType,
-            SchoolName,
-            DistrictName,
-            CountyName,
-            CharterFlag,
-            CoeFlag,
-            CAST(NULL AS BOOL) AS DassFlag,
-            Type,
-            StudentGroup,
-            CurrNumer,
-            CurrDenom,
-            CurrStatus,
-            PriorNumer,
-            PriorDenom,
-            PriorStatus,
-            SafetyNet,
-            Change,
-            StatusLevel,
-            ChangeLevel,
-            Color,
-            Box,
-            CertifyFlag,
-            ReportingYear
-        FROM {{ ref('base_RD__CaDashSusp2017')}} 
-    ),
+susp_2019 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        Type,
+        StudentGroup,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        PriorNumer,
+        PriorDenom,
+        PriorStatus,
+        SafetyNet,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        CertifyFlag,
+        ReportingYear
+    from {{ ref('base_RD__CaDashSusp2019')}} 
+),
 
-    unioned AS (
-        SELECT * FROM susp_2022
-        UNION ALL
-        SELECT * FROM susp_2019
-        UNION ALL
-        SELECT * FROM susp_2018
-        UNION ALL
-        SELECT * FROM susp_2017
-    ),
+susp_2018 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        Type,
+        StudentGroup,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        PriorNumer,
+        PriorDenom,
+        PriorStatus,
+        SafetyNet,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        CertifyFlag,
+        ReportingYear
+    from {{ ref('base_RD__CaDashSusp2018')}} 
+),
 
-    unioned_w_entity_codes AS (
-        SELECT
-            CASE
-                WHEN RType = 'X' THEN '00'
-                WHEN RType = 'D' THEN SUBSTR(cds, 3, 5)
-                WHEN RType = 'S' THEN SUBSTR(cds, LENGTH(cds)-6, 7)
-            END AS EntityCode,
-            *
-        FROM unioned
-    ),
-    
-    entities AS (
-        SELECT * FROM {{ ref('dim_Entities')}}
-    ),
+susp_2017 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        cast(null as bool) as DassFlag,
+        Type,
+        StudentGroup,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        PriorNumer,
+        PriorDenom,
+        PriorStatus,
+        SafetyNet,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        CertifyFlag,
+        ReportingYear
+    from {{ ref('base_RD__CaDashSusp2017')}} 
+),
 
-    codes AS (
-        SELECT * FROM {{ ref('stg_GSD__CaDashCodes')}}
-    ),
+unioned as (
+    select * from susp_2022
+    union all
+    select * from susp_2019
+    union all
+    select * from susp_2018
+    union all
+    select * from susp_2017
+),
 
-    student_groups AS (
-        SELECT
-            Code AS StudentGroup,
-            Value AS StudentGroupName
-        FROM codes
-        WHERE CodeColumn = 'StudentGroup'
-    ),
+unioned_w_entity_codes as (
+    select
+        case
+            when RType = 'X' then '00'
+            when RType = 'D' then substr(cds, 3, 5)
+            when RType = 'S' then substr(cds, length(cds)-6, 7)
+        end as EntityCode,
+        *
+    from unioned
+),
 
-    colors AS (
-        SELECT
-            CAST(Code AS INT64) AS Color,
-            Value AS ColorName
-        FROM codes
-        WHERE CodeColumn = 'Color'
-    ),
+entities as (
+    select * from {{ ref('dim_Entities')}}
+),
 
-    status_levels AS (
-        SELECT
-            CAST(Code AS INT64) AS StatusLevel,
-            Value AS StatusLevelName
-        FROM codes
-        WHERE CodeColumn = 'StatusLevel - Suspension Rate'
-    ),
+codes as (
+    select * from {{ ref('stg_GSD__CaDashCodes')}}
+),
 
-    change_levels AS (
-        SELECT
-            CAST(Code AS INT64) AS ChangeLevel,
-            Value AS ChangeLevelName
-        FROM codes
-        WHERE CodeColumn = 'ChangeLevel - Suspension Rate'
-    ),
+student_groups as (
+    select
+        Code as StudentGroup,
+        Value as StudentGroupName
+    from codes
+    where CodeColumn = 'StudentGroup'
+),
 
-    final AS (
-        SELECT
-            'Suspension Rate' AS IndicatorName,
-            IFNULL(e.EntityType, IF(u.Rtype = 'S', 'School', NULL)) AS EntityType,
-            IFNULL(e.EntityName, u.SchoolName) AS EntityName,
-            IFNULL(e.EntityNameShort, u.SchoolName) AS EntityNameShort,
-            g.StudentGroupName,
-            IFNULL(sl.StatusLevelName, 'No Status Level') AS StatusLevelName,
-            IFNULL(cl.ChangeLevelName, 'No Change Level') AS ChangeLevelName,
-            IFNULL(c.ColorName, 'No Color') AS ColorName,
-            u.*
-        FROM unioned_w_entity_codes AS u
-        LEFT JOIN entities AS e
-        ON u.EntityCode = e.EntityCode
-        LEFT JOIN student_groups AS g
-        ON u.StudentGroup = g.StudentGroup
-        LEFT JOIN status_levels AS sl
-        ON u.StatusLevel = sl.StatusLevel
-        LEFT JOIN change_levels AS cl
-        ON u.ChangeLevel = cl.ChangeLevel
-        LEFT JOIN colors AS c
-        ON u.Color = c.Color
-    )
+colors as (
+    select
+        cast(Code as int64) as Color,
+        Value as ColorName
+    from codes
+    where CodeColumn = 'Color'
+),
 
-SELECT * FROM final
+status_levels as (
+    select
+        cast(Code as int64) as StatusLevel,
+        Value as StatusLevelName
+    from codes
+    where CodeColumn = 'StatusLevel - Suspension Rate'
+),
 
+change_levels as (
+    select
+        cast(Code as int64) as ChangeLevel,
+        Value as ChangeLevelName
+    from codes
+    where CodeColumn = 'ChangeLevel - Suspension Rate'
+),
+
+final as (
+    select
+        'Suspension Rate' as IndicatorName,
+        ifnull(e.EntityType, IF(u.Rtype = 'S', 'School', null)) as EntityType,
+        ifnull(e.EntityName, u.SchoolName) as EntityName,
+        ifnull(e.EntityNameShort, u.SchoolName) as EntityNameShort,
+        g.StudentGroupName,
+        ifnull(sl.StatusLevelName, 'No Status Level') as StatusLevelName,
+        ifnull(cl.ChangeLevelName, 'No Change Level') as ChangeLevelName,
+        ifnull(c.ColorName, 'No Color') as ColorName,
+        u.*
+    from unioned_w_entity_codes as u
+    left join entities as e
+    on u.EntityCode = e.EntityCode
+    left join student_groups as g
+    on u.StudentGroup = g.StudentGroup
+    left join status_levels as sl
+    on u.StatusLevel = sl.StatusLevel
+    left join change_levels as cl
+    on u.ChangeLevel = cl.ChangeLevel
+    left join colors as c
+    on u.Color = c.Color
+)
+
+select * from final

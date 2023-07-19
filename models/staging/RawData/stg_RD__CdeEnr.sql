@@ -2,62 +2,60 @@
     materialized='table'
 )}}
 
-WITH
-    enrollment AS (
-        SELECT * FROM {{ ref('base_RD__CdeEnr22')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr21')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr20')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr19')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr18')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr17')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr16')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr15')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr14')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr13')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr12')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr11')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr10')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr09')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__CdeEnr08')}}
-    ),
+with enrollment as (
+    select * from {{ ref('base_RD__CdeEnr22')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr21')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr20')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr19')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr18')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr17')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr16')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr15')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr14')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr13')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr12')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr11')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr10')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr09')}}
+    union all
+    select * from {{ ref('base_RD__CdeEnr08')}}
+),
 
-    final AS (
-        SELECT
-            Year,
-            CDS_CODE AS CdsCode,
-            LEFT(CAST(CDS_CODE AS STRING), 2) AS CountyCode,
-            SUBSTR(CAST(CDS_CODE AS STRING), 3, 5) AS DistrictCode,
-            RIGHT(CAST(CDS_CODE AS STRING), 7) AS SchoolCode,
-            COUNTY AS County,
-            DISTRICT AS District,
-            SCHOOL AS School,
-            CAST(ETHNIC AS STRING) AS RaceEthnicCode,
-            GENDER AS Gender,
-            * EXCEPT (
-                    Year,
-                    CDS_CODE,
-                    COUNTY,
-                    DISTRICT,
-                    SCHOOL,
-                    ETHNIC,
-                    GENDER
-            )
-        FROM enrollment
-    )
+final as (
+    select
+        Year,
+        CDS_CODE as CdsCode,
+        LEFT(cast(CDS_CODE as string), 2) as CountyCode,
+        SUBSTR(cast(CDS_CODE as string), 3, 5) as DistrictCode,
+        RIGHT(cast(CDS_CODE as string), 7) as SchoolCode,
+        COUNTY as County,
+        DISTRICT as District,
+        SCHOOL as School,
+        cast(ETHNIC as string) as RaceEthnicCode,
+        GENDER as Gender,
+        * except (
+                Year,
+                CDS_CODE,
+                COUNTY,
+                DISTRICT,
+                SCHOOL,
+                ETHNIC,
+                GENDER
+        )
+    from enrollment
+)
 
-
-SELECT * FROM final
+select * from final

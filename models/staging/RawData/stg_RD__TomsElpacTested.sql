@@ -1,100 +1,102 @@
-WITH
-    elpac AS (
-        SELECT * FROM {{ ref('base_RD__TomsElpacTested2023')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__TomsElpacTested2022')}}
-        UNION ALL
-        SELECT * FROM {{ ref('base_RD__TomsElpacTested2021')}}
-    ),
+with elpac as (
+    select * from {{ ref('base_RD__TomsElpacTested2023')}}
+    union all
+    select * from {{ ref('base_RD__TomsElpacTested2022')}}
+    union all
+    select * from {{ ref('base_RD__TomsElpacTested2021')}}
+),
 
-    assessment_ids AS (
-        SELECT 
-            AceAssessmentId,
-            AssessmentNameShort AS AceAssessmentName,
-            AssessmentSubject,
-            SystemOrVendorAssessmentId
-        FROM {{ ref('stg_GSD__Assessments') }}
-        WHERE SystemOrVendorName = 'ELPAC'
-    ),
+assessment_ids as (
+    select 
+        AceAssessmentId,
+        AssessmentNameShort as AceAssessmentName,
+        AssessmentSubject,
+        SystemOrVendorAssessmentId
+    from {{ ref('stg_GSD__Assessments') }}
+    where SystemOrVendorName = 'ELPAC'
+),
 
-    elpac_id_added AS (
-        SELECT
-            a.AceAssessmentId,
-            a.AceAssessmentName,
-            a.AssessmentSubject,
-            e.*
-        FROM elpac AS e
-        LEFT JOIN assessment_ids AS a
-        ON e.RecordType = a.SystemOrVendorAssessmentId
-    ),
+elpac_id_added as (
+    select
+        a.AceAssessmentId,
+        a.AceAssessmentName,
+        a.AssessmentSubject,
+        e.*
+    from elpac as e
+    left join assessment_ids as a
+    on e.RecordType = a.SystemOrVendorAssessmentId
+),
 
-    elpi_levels AS (
-        SELECT * FROM {{ ref('stg_GSD__ElpiLevels') }}
-    ),
+elpi_levels as (
+    select * from {{ ref('stg_GSD__ElpiLevels') }}
+),
 
-    elpac_elpi_level_added AS(
-        SELECT
-            r.*,
-            e.ElpiLevel,
-            e.ElpiLevelNumeric,
-            e.ElpiLevelRank,
-            e1.ElpiLevel AS ElpiLevelMinus1,
-            e1.ElpiLevelNumeric AS ElpiLevelNumericMinus1,
-            e1.ElpiLevelRank As ElpiLevelRankMinus1,
-            e2.ElpiLevel AS ElpiLevelMinus2,
-            e2.ElpiLevelNumeric AS ElpiLevelNumericMinus2,
-            e2.ElpiLevelRank As ElpiLevelRankMinus2,
-            e3.ElpiLevel AS ElpiLevelMinus3,
-            e3.ElpiLevelNumeric AS ElpiLevelNumericMinus3,
-            e3.ElpiLevelRank As ElpiLevelRankMinus3,
-        FROM elpac_id_added AS r
-        LEFT JOIN elpi_levels AS e
-        ON 
-            r.GradeAssessed = CAST(e.GradeLevel AS STRING) AND
-            CAST(r.OverallScaleScore AS INT64) BETWEEN CAST(e.MinScaleScore AS INT64) AND CAST(e.MaxScaleScore AS INT64)
-        LEFT JOIN elpi_levels AS e1
-        ON 
-            r.GradeAssessedMinus1 = CAST(e1.GradeLevel AS STRING) AND
-            CAST(r.OverallScaleScoreMinus1 AS INT64) BETWEEN CAST(e1.MinScaleScore AS INT64) AND CAST(e1.MaxScaleScore AS INT64)
-        LEFT JOIN elpi_levels AS e2
-        ON 
-            r.GradeAssessedMinus2 = CAST(e2.GradeLevel AS STRING) AND
-            CAST(r.OverallScaleScoreMinus2 AS INT64) BETWEEN CAST(e2.MinScaleScore AS INT64) AND CAST(e2.MaxScaleScore AS INT64)
-        LEFT JOIN elpi_levels AS e3
-        ON 
-            r.GradeAssessedMinus3 = CAST(e3.GradeLevel AS STRING) AND
-            CAST(r.OverallScaleScoreMinus3 AS INT64) BETWEEN CAST(e3.MinScaleScore AS INT64) AND CAST(e3.MaxScaleScore AS INT64)
-    ),
+elpac_elpi_level_added as (
+    select
+        r.*,
+        e.ElpiLevel,
+        e.ElpiLevelNumeric,
+        e.ElpiLevelRank,
+        e1.ElpiLevel as ElpiLevelMinus1,
+        e1.ElpiLevelNumeric as ElpiLevelNumericMinus1,
+        e1.ElpiLevelRank as ElpiLevelRankMinus1,
+        e2.ElpiLevel as ElpiLevelMinus2,
+        e2.ElpiLevelNumeric as ElpiLevelNumericMinus2,
+        e2.ElpiLevelRank as ElpiLevelRankMinus2,
+        e3.ElpiLevel as ElpiLevelMinus3,
+        e3.ElpiLevelNumeric as ElpiLevelNumericMinus3,
+        e3.ElpiLevelRank as ElpiLevelRankMinus3,
+    from elpac_id_added as r
+    left join elpi_levels as e
+    on 
+        r.GradeAssessed = cast(e.GradeLevel as string) and
+        cast(r.OverallScaleScore as int64) between cast(e.MinScaleScore as int64) and cast(e.MaxScaleScore as int64)
+    left join elpi_levels as e1
+    on 
+        r.GradeAssessedMinus1 = cast(e1.GradeLevel as string) and
+        cast(r.OverallScaleScoreMinus1 as int64) between cast(e1.MinScaleScore as int64) and cast(e1.MaxScaleScore as int64)
+    left join elpi_levels as e2
+    on 
+        r.GradeAssessedMinus2 = cast(e2.GradeLevel as string) and
+        cast(r.OverallScaleScoreMinus2 as int64) between cast(e2.MinScaleScore as int64) and cast(e2.MaxScaleScore as int64)
+    left join elpi_levels as e3
+    on 
+        r.GradeAssessedMinus3 = cast(e3.GradeLevel as string) and
+        cast(r.OverallScaleScoreMinus3 as int64) between cast(e3.MinScaleScore as int64) and cast(e3.MaxScaleScore as int64)
+),
 
-    elpi_change_added AS (
-        SELECT
-            *,
-            ElpiLevelRank - ElpiLevelRankMinus1 AS ElpiLevelChange,
-            CASE
-                WHEN ElpiLevelNumeric = ElpiLevelNumeric THEN CONCAT('Maintained at ', ElpiLevel)
-                When ElpiLevelNumeric > ElpiLevelNumericMinus1 THEN 'Increased'
-                WHEN ElpiLevelNumeric < ElpiLevelNumericMinus1 THEN 'Declined'
-            END AS ElpiChangeCategory,
-            (ElpiLevelNumeric = 4 AND ElpiLevelNumericMinus1 = 4) OR ElpiLevelNumeric - ElpiLevelNumericMinus1 > 0 AS ElpiProgress,
-            ElpiLevelRankMinus1 - ElpiLevelRankMinus2 AS ElpiLevelChangeMinus1,
-            CASE
-                WHEN ElpiLevelNumericMinus1 = ElpiLevelNumericMinus2 THEN CONCAT('Maintained at ', ElpiLevelMinus1)
-                When ElpiLevelNumericMinus1 > ElpiLevelNumericMinus2 THEN 'Increased'
-                WHEN ElpiLevelNumericMinus1 < ElpiLevelNumericMinus2 THEN 'Declined'
-            END AS ElpiChangeCategoryMinus1,
-            (ElpiLevelNumericMinus1 = 4 AND ElpiLevelNumericMinus2 = 4) OR ElpiLevelNumericMinus1 - ElpiLevelNumericMinus2 > 0 AS ElpiProgressMinus1,
-            ElpiLevelRankMinus2 - ElpiLevelRankMinus3 AS ElpiLevelChangeMinus2,
-            CASE
-                WHEN ElpiLevelNumericMinus2 = ElpiLevelNumericMinus3 THEN CONCAT('Maintained at ', ElpiLevelMinus2)
-                When ElpiLevelNumericMinus2 > ElpiLevelNumericMinus3 THEN 'Increased'
-                WHEN ElpiLevelNumericMinus2 < ElpiLevelNumericMinus3 THEN 'Declined'
-            END AS ElpiChangeCategoryMinus2,
-            (ElpiLevelNumericMinus2 = 4 AND ElpiLevelNumericMinus3 = 4) OR ElpiLevelNumericMinus2 - ElpiLevelNumericMinus3 > 0 AS ElpiProgressMinus2,
-        FROM elpac_elpi_level_added
-    ),
+elpi_change_added as (
+    select
+        *,
+        ElpiLevelRank - ElpiLevelRankMinus1 as ElpiLevelChange,
+        case
+            when ElpiLevelNumeric = ElpiLevelNumeric then concat('Maintained at ', ElpiLevel)
+            when ElpiLevelNumeric > ElpiLevelNumericMinus1 then 'Increased'
+            when ElpiLevelNumeric < ElpiLevelNumericMinus1 then 'Declined'
+            else 'ERROR'
+        end as ElpiChangeCategory,
+        (ElpiLevelNumeric = 4 and ElpiLevelNumericMinus1 = 4) or ElpiLevelNumeric - ElpiLevelNumericMinus1 > 0 as ElpiProgress,
+        ElpiLevelRankMinus1 - ElpiLevelRankMinus2 as ElpiLevelChangeMinus1,
+        case
+            when ElpiLevelNumericMinus1 = ElpiLevelNumericMinus2 then concat('Maintained at ', ElpiLevelMinus1)
+            when ElpiLevelNumericMinus1 > ElpiLevelNumericMinus2 then 'Increased'
+            when ElpiLevelNumericMinus1 < ElpiLevelNumericMinus2 then 'Declined'
+            else 'ERROR'
+        end as ElpiChangeCategoryMinus1,
+        (ElpiLevelNumericMinus1 = 4 and ElpiLevelNumericMinus2 = 4) or ElpiLevelNumericMinus1 - ElpiLevelNumericMinus2 > 0 as ElpiProgressMinus1,
+        ElpiLevelRankMinus2 - ElpiLevelRankMinus3 as ElpiLevelChangeMinus2,
+        case
+            when ElpiLevelNumericMinus2 = ElpiLevelNumericMinus3 then concat('Maintained at ', ElpiLevelMinus2)
+            when ElpiLevelNumericMinus2 > ElpiLevelNumericMinus3 then 'Increased'
+            when ElpiLevelNumericMinus2 < ElpiLevelNumericMinus3 then 'Declined'
+            else 'ERROR'
+        end as ElpiChangeCategoryMinus2,
+        (ElpiLevelNumericMinus2 = 4 and ElpiLevelNumericMinus3 = 4) or ElpiLevelNumericMinus2 - ElpiLevelNumericMinus3 > 0 as ElpiProgressMinus2,
+    from elpac_elpi_level_added
+),
 
- final AS (
-     SELECT
+final as (
+    select
         AceAssessmentId,
         AceAssessmentName,
         AssessmentSubject,
@@ -199,7 +201,7 @@ WITH
         ElpiLevelMinus3,
         ElpiLevelNumericMinus3,
         ElpiLevelRankMinus3
-        FROM elpi_change_added
-    )
+    from elpi_change_added
+)
 
-SELECT * FROM final
+select * from final

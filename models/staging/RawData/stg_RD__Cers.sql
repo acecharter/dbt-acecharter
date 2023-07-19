@@ -2,104 +2,104 @@
     materialized='table'
 )}}
 
-WITH
-    assessment_ids AS (
-        SELECT 
-            AceAssessmentId,
-            AssessmentNameShort AS AceAssessmentName,
-            CASE AssessmentNameShort
-                WHEN 'SB ELA Summative' THEN 'ELA SUM'
-                WHEN 'SB Math Summative' THEN 'Math SUM'
-                WHEN 'CAA ELA' THEN 'CAAELA SUM'
-                WHEN 'CAA Math' THEN 'CAAMATH SUM'
-                WHEN 'CAST' THEN 'CAST SUM'
-                WHEN 'CSA' THEN 'CSA SUM'
-                WHEN 'SB ELA IAB/FIAB' THEN 'ELA IAB'
-                WHEN 'SB Math IAB/FIAB' THEN 'Math IAB'
-                WHEN 'SB ELA ICA' THEN 'ELA ICA'
-                WHEN 'SB Math ICA' THEN 'Math ICA'
-                WHEN 'Summative ELPAC' THEN 'ELPAC SUM'
-                WHEN 'ALT ELPAC' THEN 'ALTELPAC SUM'
-            END AS SubjectAssessmentSubType
-        FROM {{ ref('stg_GSD__Assessments') }}
-        WHERE 
-            SystemOrVendorName = 'CAASPP' 
-            OR SystemOrVendorName = 'ELPAC'
-    ),
+with assessment_ids as (
+    select 
+        AceAssessmentId,
+        AssessmentNameShort as AceAssessmentName,
+        case AssessmentNameShort
+            when 'SB ELA Summative' then 'ELA SUM'
+            when 'SB Math Summative' then 'Math SUM'
+            when 'CAA ELA' then 'CAAELA SUM'
+            when 'CAA Math' then 'CAAMATH SUM'
+            when 'cast' then 'cast SUM'
+            when 'CSA' then 'CSA SUM'
+            when 'SB ELA IAB/FIAB' then 'ELA IAB'
+            when 'SB Math IAB/FIAB' then 'Math IAB'
+            when 'SB ELA ICA' then 'ELA ICA'
+            when 'SB Math ICA' then 'Math ICA'
+            when 'Summative ELPAC' then 'ELPAC SUM'
+            when 'ALT ELPAC' then 'ALTELPAC SUM'
+            else 'ERROR'
+        end as SubjectAssessmentSubType
+    from {{ ref('stg_GSD__Assessments') }}
+    where 
+        SystemOrVendorName = 'CAASPP' 
+        or SystemOrVendorName = 'ELPAC'
+),
 
-    cers_1819 AS(
-        SELECT * FROM {{ ref('base_RD__Cers1819') }}
-    ),
+cers_1819 as (
+    select * from {{ ref('base_RD__Cers1819') }}
+),
 
-    cers_1920 AS(
-        SELECT * FROM {{ ref('base_RD__Cers1920') }}
-    ),
+cers_1920 as (
+    select * from {{ ref('base_RD__Cers1920') }}
+),
 
-    cers_2021 AS(
-        SELECT * FROM {{ ref('base_RD__Cers2021') }}
-    ),
+cers_2021 as (
+    select * from {{ ref('base_RD__Cers2021') }}
+),
 
-    cers_2122 AS(
-        SELECT * FROM {{ ref('base_RD__Cers2122') }}
-    ),
+cers_2122 as (
+    select * from {{ ref('base_RD__Cers2122') }}
+),
 
-    cers_2223 AS(
-        SELECT * FROM {{ ref('base_RD__Cers2223') }}
-    ),
+cers_2223 as (
+    select * from {{ ref('base_RD__Cers2223') }}
+),
 
-    unioned AS (
-        SELECT * FROM cers_1819 
-        UNION ALL
-        SELECT * FROM cers_1920
-        UNION ALL
-        SELECT * FROM cers_2021
-        UNION ALL
-        SELECT * FROM cers_2122
-        UNION ALL
-        SELECT * FROM cers_2223
-             
-    ),
+unioned as (
+    select * from cers_1819 
+    union all
+    select * from cers_1920
+    union all
+    select * from cers_2021
+    union all
+    select * from cers_2122
+    union all
+    select * from cers_2223
+            
+),
 
-    final AS (
-        SELECT
-            a.AceAssessmentId,
-            a.AceAssessmentName,
-            u.DistrictId AS TestDistrictId,
-            u.DistrictName AS TestDistrictName,
-            u.SchoolId AS TestSchoolCdsCode,
-            u.SchoolName AS TestSchoolName,
-            u.StudentIdentifier AS StateUniqueId,
-            u.FirstName,
-            u.LastOrSurname AS LastSurname,
-            DATE(u.SubmitDateTime) AS AssessmentDate,
-            CAST(u.SchoolYear AS INT64) AS TestSchoolYear,
-            u.TestSessionId,
-            u.AssessmentType,
-            u.AssessmentSubType,
-            u.AssessmentName,
-            u.Subject,
-            CASE u.GradeLevelWhenAssessed
-                WHEN 'IT' THEN -4
-                WHEN 'PR' THEN -3
-                WHEN 'PK' THEN -2
-                WHEN 'TK' THEN -1
-                WHEN 'KG' THEN 0
-                WHEN 'PS' THEN 14
-                ELSE SAFE_CAST(u.GradeLevelWhenAssessed AS INT64)
-            END AS GradeLevelWhenAssessed,
-            u.Completeness,
-            u.AdministrationCondition,
-            SAFE_CAST(u.ScaleScoreAchievementLevel AS INT64) AS ScaleScoreAchievementLevel,
-            SAFE_CAST(u.ScaleScore AS INT64) AS ScaleScore,
-            NULLIF(u.Alt1ScoreAchievementLevel,'') AS Alt1ScoreAchievementLevel,
-            NULLIF(u.Alt2ScoreAchievementLevel,'') AS Alt2ScoreAchievementLevel,
-            NULLIF(u.Claim1ScoreAchievementLevel,'') AS Claim1ScoreAchievementLevel,
-            NULLIF(u.Claim2ScoreAchievementLevel,'') AS Claim2ScoreAchievementLevel,
-            NULLIF(u.Claim3ScoreAchievementLevel,'') AS Claim3ScoreAchievementLevel,
-            NULLIF(u.Claim4ScoreAchievementLevel,'') AS Claim4ScoreAchievementLevel
-        FROM unioned AS u
-        LEFT JOIN assessment_ids AS a
-        ON CONCAT(u.Subject, ' ', u.AssessmentSubType) = a.SubjectAssessmentSubType
-    )
+final as (
+    select distinct
+        a.AceAssessmentId,
+        a.AceAssessmentName,
+        u.DistrictId as TestDistrictId,
+        u.DistrictName as TestDistrictName,
+        u.SchoolId as TestSchoolCdsCode,
+        u.SchoolName as TestSchoolName,
+        u.StudentIdentifier as StateUniqueId,
+        u.FirstName,
+        u.LastOrSurname as LastSurname,
+        DATE(u.SubmitDateTime) as AssessmentDate,
+        cast(u.SchoolYear as int64) as TestSchoolYear,
+        u.TestSessionId,
+        u.AssessmentType,
+        u.AssessmentSubType,
+        u.AssessmentName,
+        u.Subject,
+        case u.GradeLevelwhenAssessed
+            when 'IT' then -4
+            when 'PR' then -3
+            when 'PK' then -2
+            when 'TK' then -1
+            when 'KG' then 0
+            when 'PS' then 14
+            else safe_cast(u.GradeLevelwhenAssessed as int64)
+        end as GradeLevelwhenAssessed,
+        u.Completeness,
+        u.AdministrationCondition,
+        safe_cast(u.ScaleScoreAchievementLevel as int64) as ScaleScoreAchievementLevel,
+        safe_cast(u.ScaleScore as int64) as ScaleScore,
+        nullif(u.Alt1ScoreAchievementLevel,'') as Alt1ScoreAchievementLevel,
+        nullif(u.Alt2ScoreAchievementLevel,'') as Alt2ScoreAchievementLevel,
+        nullif(u.Claim1ScoreAchievementLevel,'') as Claim1ScoreAchievementLevel,
+        nullif(u.Claim2ScoreAchievementLevel,'') as Claim2ScoreAchievementLevel,
+        nullif(u.Claim3ScoreAchievementLevel,'') as Claim3ScoreAchievementLevel,
+        nullif(u.Claim4ScoreAchievementLevel,'') as Claim4ScoreAchievementLevel
+    from unioned as u
+    left join assessment_ids as a
+    on concat(u.Subject, ' ', u.AssessmentSubType) = a.SubjectAssessmentSubType
+)
 
-SELECT DISTINCT * FROM final
+select * from final

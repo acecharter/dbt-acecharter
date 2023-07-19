@@ -1,46 +1,48 @@
-WITH 
-  anet_m AS (
-    SELECT *
-    FROM {{ ref('stg_RD__Anet')}} 
-    WHERE ScoredBy = 'Machine'
-  ),
+with anet_m as (
+    select *
+    from {{ ref('stg_RD__Anet') }}
+    where ScoredBy = 'Machine'
+),
 
-  final AS (
-    SELECT
-      AceAssessmentId,
-      AceAssessmentName,
-      SchoolYear AS Year,
-      CONCAT(CAST(SchoolYear AS STRING), "-", CAST(SchoolYear - 1999 AS STRING)) AS SchoolYear,
-      StateSchoolCode,
-      SchoolName,
-      CAST(SasId AS STRING) AS StateUniqueId,
-      CAST(SisId AS STRING) AS StudentUniqueId,
-      StudentFirstName AS FirstName,
-      StudentMiddleName AS MiddleName,
-      StudentLastName AS LastName,
-      CAST(EnrollmentGrade AS INT64) AS GradeLevel,
-      CASE
-        WHEN Course = 'english_i' THEN 'English I'
-        WHEN Course = 'english_ii' THEN 'English II'
-        WHEN Course = 'english_iii' THEN 'English III'
-        WHEN Course = 'algebra_i' THEN 'Algebra I'
-        WHEN Course = 'geometry' THEN 'Geometry'
-        ELSE Course
-      END AS Course,
-      Period,
-      TeacherFirstName,
-      TeacherLastName,
-      Cycle,
-      Subject,
-      AssessmentId,
-      AssessmentName,
-      SUM(PointsReceived) AS PointsReceived,
-      SUM(PointsPossible) AS PointsPossible,
-      ROUND(SUM(PointsReceived)/SUM(PointsPossible), 2) AS Score
-    FROM anet_m
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-  )
+final as (
+    select
+        AceAssessmentId,
+        AceAssessmentName,
+        SchoolYear as Year,
+        concat(
+            cast(SchoolYear as string), '-', cast(SchoolYear - 1999 as string)
+        ) as SchoolYear,
+        StateSchoolCode,
+        SchoolName,
+        cast(SasId as string) as StateUniqueId,
+        cast(SisId as string) as StudentUniqueId,
+        StudentFirstName as FirstName,
+        StudentMiddleName as MiddleName,
+        StudentLastName as LastName,
+        cast(EnrollmentGrade as int64) as GradeLevel,
+        case
+            when Course = 'english_i' then 'English I'
+            when Course = 'english_ii' then 'English II'
+            when Course = 'english_iii' then 'English III'
+            when Course = 'algebra_i' then 'Algebra I'
+            when Course = 'geometry' then 'Geometry'
+            else Course
+        end as Course,
+        Period,
+        TeacherFirstName,
+        TeacherLastName,
+        Cycle,
+        Subject,
+        AssessmentId,
+        AssessmentName,
+        sum(PointsReceived) as PointsReceived,
+        sum(PointsPossible) as PointsPossible,
+        round(sum(PointsReceived) / sum(PointsPossible), 2) as Score
+    from anet_m
+    group by
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+)
 
-SELECT *
-FROM final
-ORDER BY cycle
+select *
+from final
+order by cycle

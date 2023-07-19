@@ -1,19 +1,18 @@
-WITH
-  entities AS (
-    SELECT * FROM {{ ref('dim_Entities')}}
-  ),
+with
+entities as (
+    select * from {{ ref('dim_Entities') }}
+),
 
-  enrollment AS (
-    SELECT * FROM {{ ref('int_CdeEnrByRaceAndGrade__1_unioned') }}
-  ),
+enrollment as (
+    select * from {{ ref('int_CdeEnrByRaceAndGrade__1_unioned') }}
+),
 
-  final AS (
-    SELECT
-      enr.*
-    FROM enrollment AS enr
-    LEFT JOIN entities
-    ON enr.EntityCode = entities.EntityCode
-    WHERE entities.EntityCode IS NOT NULL
-  )
+final as (
+    select enr.*
+    from enrollment as enr
+    left join entities
+        on enr.EntityCode = entities.EntityCode
+    where entities.EntityCode is not null
+)
 
-SELECT * FROM final
+select * from final
