@@ -1,4 +1,4 @@
--- Unlike previous years 2021 data did not include records where the CharterSchool and AlternativeSchoolAccountabilityStatus fields were 'All'; so these records are added here to facilitate downstream reporting
+-- Unlike previous years 2021 data did not include records  where the CharterSchool and AlternativeSchoolAccountabilityStatus fields were 'All'; so these records are added here to facilitate downstream reporting
 with cgr as (
     select
         AcademicYear,
@@ -32,6 +32,35 @@ schools as (
     select *
     from cgr
     where AggregateLevel = 'S'
+),
+
+charter_dass_all as (
+    select
+        AcademicYear,
+        AggregateLevel,
+        CountyCode,
+        DistrictCode,
+        SchoolCode,
+        CountyName,
+        DistrictName,
+        SchoolName,
+        'All' as CharterSchool,
+        'All' as DASS,
+        ReportingCategory,
+        CompleterType,
+        HighSchoolCompleters,
+        EnrolledInCollegeTotal12Months,
+        CollegeGoingRateTotal12Months,
+        EnrolledInState12Months,
+        EnrolledOutOfState12Months,
+        NotEnrolledInCollege12Months,
+        EnrolledUc12Months,
+        EnrolledCsu12Months,
+        EnrolledCcc12Months,
+        EnrolledInStatePrivate2And4Year12Months,
+        EnrolledOutOfState4YearCollegePublicPrivate12Months,
+        EnrolledOutOfState2YearCollegePublicPrivate12Months
+    from schools
 ),
 
 charter_all as (
@@ -94,6 +123,8 @@ dass_all as (
 
 final as (
     select * from cgr
+    union all
+    select * from charter_dass_all
     union all
     select * from charter_all
     union all
