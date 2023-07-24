@@ -1,6 +1,8 @@
 with demographics as (
     select * from {{ ref('stg_SP__StudentDemographics') }}
     union all
+    select * from {{ ref('stg_SPA__StudentDemographics_SY23') }}
+    union all
     select * from {{ ref('stg_SPA__StudentDemographics_SY22') }}
 ),
 
@@ -28,4 +30,4 @@ final as (
     from demographics
 )
 
-select * from final
+select distinct * from final

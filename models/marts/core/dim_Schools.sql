@@ -1,6 +1,8 @@
 with starter_pack_schools as (
     select * from {{ ref('stg_SP__Schools') }}
     union all
+    select * from {{ ref('stg_SPA__Schools_SY23') }}
+    union all
     select * from {{ ref('stg_SPA__Schools_SY22') }}
 ),
 
@@ -49,6 +51,6 @@ final as (
 )
 
 
-select *
+select distinct *
 from final
 order by SchoolYear desc

@@ -9,12 +9,20 @@ sources:
       - name: AverageDailyAttendance_v3_SY22
         description: Provides aggregate calculations of average daily attendance for the 2021-22 school year.
 
+      - name: AverageDailyAttendance_v3_SY23
+        description: Provides aggregate calculations of average daily attendance for the 2022-23 school year.
+
       - name: CalendarDates_SY22
         description: General student calendar information for schools in the 2021-22 school year.
+      - name: CalendarDates_SY23
+        description: General student calendar information for schools in the 2022-23 school year.
 
       - name: CourseEnrollments_v2_SY22
         description: Provides current year course enrollments for all students and schools for the 2021-22 school year.
 
+
+      - name: CourseEnrollments_v2_SY23
+        description: Provides current year course enrollments for all students and schools for the 2022-23 school year.
       - name: CourseGrades_SY22
         description: Grade marks for all grading periods for the 2021-22 school year. One row per grade per grading period per course enrollment per student.
 
@@ -68,6 +76,8 @@ sources:
 
           - name: PerformanceBaseConversionDescriptor
             description: The descriptor value mapped to the performance level earned by the student for the section and respective grading period. (currently all null)
+      - name: CourseGrades_SY23
+        description: Grade marks for all grading periods for the 2022-23 school year. One row per grade per grading period per course enrollment per student.
 
       - name: DisciplineActions_SY22
         description: Information related to student discipline actions for the 2021-22 school year.
@@ -84,20 +94,35 @@ sources:
               - unique
               - not_null
 
+      - name: Schools_SY23
+        description: Schools within the organization for the 2022-23 school year.
+      
       - name: Staff_v2_SY22
         description: Demographical information about staff members for each of their work assignments for the 2021-22 school year.
 
       - name: StudentAttendanceByDate_SY22
         description: Student attendance table providing all non-present attendance events from a day-level view for the 2021-22 school year.
 
+      - name: StudentAttendanceByDate_SY23
+        description: Student attendance table providing all non-present attendance events from a day-level view for the 2022-23 school year.
+
       - name: StudentAttendance_v2_SY22
         description: Attendance aggregations taken at the student level. Includes the student's average daily attendance, sums of all attendance event durations, and counts of all attendance events for the 2021-22 school year.
+
+      - name: StudentAttendance_v2_SY23
+        description: Attendance aggregations taken at the student level. Includes the student's average daily attendance, sums of all attendance event durations, and counts of all attendance events for the 2022-23 school year.
 
       - name: StudentDemographics_SY22
         description: General demographic information about students enrolled in the 2021-22 school year.
 
+      - name: StudentDemographics_SY23
+        description: General demographic information about students enrolled in the 2022-23 school year.
+
       - name: StudentEnrollments_SY22
         description: Student enrollments for students enrolled in the 2021-22 school year.
+
+      - name: StudentEnrollments_SY23
+        description: Student enrollments for students enrolled in the 2022-23 school year.
 
       - name: StudentRaceAndEthnicity_SY22
         description: Student race and ethnicity information for the 2021-22 school year.
