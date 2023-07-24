@@ -15,6 +15,7 @@ test_windows as (
         end as EligibleStudentsEnrollmentDate
     from {{ ref('stg_GSD__RenStarTestingWindows') }}
     where TestingWindowStartDate < current_date()
+    and SchoolYear != '2020-21'
 ),
 
 final as (

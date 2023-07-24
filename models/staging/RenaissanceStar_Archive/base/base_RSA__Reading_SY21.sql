@@ -138,22 +138,7 @@ select
     end as StudentGrowthPercentileWinterSpring,
     Current_SGP as CurrentSGP,
     cast(right(State_Benchmark_Category, 1) as int64)
-        as StateBenchmarkCategoryLevel,
-    cast(null as string) as AceTestingWindowName,
-    cast(null as date) as AceTestingWindowStartDate,
-    cast(null as date) as AceTestingWindowEndDate,
-    case
-        when
-            Activity_Completed_Date between '2020-08-01' and '2020-11-30'
-            then 'Fall'
-        when
-            Activity_Completed_Date between '2020-12-01' and '2021-03-31'
-            then 'Winter'
-        when
-            Activity_Completed_Date between '2021-04-01' and '2021-07-31'
-            then 'Spring'
-    end as StarTestingWindow
-
+        as StateBenchmarkCategoryLevel
 from star_reading_with_gp_added
 )
 

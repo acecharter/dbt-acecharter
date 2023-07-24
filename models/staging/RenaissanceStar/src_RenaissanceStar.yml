@@ -5,11 +5,14 @@ sources:
     database: landing-zone-acecharter
     schema: RenaissanceStar
     tables:
+      - name: EarlyLiteracySpanish_v2
+        description: Student-level Renaissance Star Early Literacy Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
+
       - name: EarlyLiteracy_v2
         description: Student-level Renaissance Star Early Literacy Assessment (English) data from current school year. Imported via Landing Zone integration.
 
-      - name: EarlyLiteracySpanish_v2
-        description: Student-level Renaissance Star Early Literacy Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
+      - name: MathSpanish_v2
+        description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
 
       - name: Math_v2
         description: Student-level Renaissance Star Math Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63546.pdf
@@ -364,6 +367,9 @@ sources:
 
           - name: ACTBenchmarkCategory
             description: ACT readiness category. Either At/Above or Below Benchmark.
+
+      - name: ReadingSpanish_v2
+        description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
 
       - name: Reading_v2
         description: Student-level Renaissance Star Reading Enterprise Assessment (English) data from current school year. Imported via Landing Zone integration. Column definitions documentation available at https://doc.renlearn.com/KMNet/R63547.pdf
@@ -745,9 +751,3 @@ sources:
 
           - name: ACTBenchmarkCategory
             description: ACT readiness category. Either At/Above or Below Benchmark.
-
-      - name: MathSpanish_v2
-        description: Student-level Renaissance Star Math Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.
-
-      - name: ReadingSpanish_v2
-        description: Student-level Renaissance Star Reading Enterprise Assessment (Spanish) data from current school year. Imported via Landing Zone integration.

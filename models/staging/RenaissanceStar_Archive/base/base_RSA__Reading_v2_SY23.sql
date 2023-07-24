@@ -34,6 +34,8 @@ select
     UnifiedScore,
     PercentileRank,
     NormalCurveEquivalent,
+    InstructionalReadingLevel,
+    Lexile,
     StudentGrowthPercentileFallFall,
     StudentGrowthPercentileFallSpring,
     StudentGrowthPercentileFallWinter,
@@ -41,6 +43,5 @@ select
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
     cast(right(StateBenchmarkCategoryName, 1) as int64)
-        as StateBenchmarkCategoryLevel,
-    Quantile
-from {{ source('RenaissanceStar_Archive', 'MathSpanish_v2_SY22') }}
+        as StateBenchmarkCategoryLevel
+from {{ source('RenaissanceStar_Archive', 'Reading_v2_SY23') }}
