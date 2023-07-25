@@ -35,7 +35,6 @@ final as (
         gsd.CurrentCharterTermEndDate,
         gsd.YearOpened,
         gsd.PreviousRenewalYears,
-        sp.GradeLevel,
         gsd.GradesServed,
         gsd.Grade5,
         gsd.Grade6,
@@ -49,7 +48,6 @@ final as (
     left join gsd_schools as gsd
         on sp.SchoolId = gsd.SchoolId
 )
-
 
 select distinct *
 from final
