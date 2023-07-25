@@ -1,10 +1,12 @@
 with unioned as (
     select * from {{ ref('stg_SP__StudentAttendance_v2') }}
     union all
+    select * from {{ ref('stg_SPA__StudentAttendance_v2_SY23') }}
+    union all
     select * from {{ ref('stg_SPA__StudentAttendance_v2_SY22') }}
 )
 
-select
+select distinct
     SchoolYear,
     SchoolId,
     StudentUniqueId,

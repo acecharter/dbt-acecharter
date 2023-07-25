@@ -1,36 +1,37 @@
-WITH
-  grades AS (
-      SELECT * FROM {{ ref('stg_SP__CourseGrades') }}
-      UNION ALL
-      SELECT * FROM {{ ref('stg_SPA__CourseGrades_SY22') }}
-  ),
+with grades as (
+    select * from {{ ref('stg_SP__CourseGrades') }}
+    union all
+    select * from {{ ref('stg_SPA__CourseGrades_SY23') }}
+    union all
+    select * from {{ ref('stg_SPA__CourseGrades_SY22') }}
+),
 
-  final AS (
-    SELECT
-      SchoolYear,
-      SchoolId,
-      SessionName,
-      SectionIdentifier,
-      ClassPeriodName,
-      StudentUniqueId,
-      GradingPeriodDescriptor,
-      CASE
-        WHEN GradingPeriodDescriptor = 'First Nine Weeks' THEN 'Q1'
-        WHEN GradingPeriodDescriptor = 'Second Nine Weeks' THEN 'Q2'
-        WHEN GradingPeriodDescriptor = 'Third Nine Weeks' THEN 'Q3'
-        WHEN GradingPeriodDescriptor = 'Fourth Nine Weeks' THEN 'Q4'
-        WHEN GradingPeriodDescriptor = 'First Semester' THEN 'S1'
-        WHEN GradingPeriodDescriptor = 'Second Semester' THEN 'S2'
-      END AS GradingPeriod,
-      GradeTypeDescriptor,
-      IsCurrentCourseEnrollment,
-      IsCurrentGradingPeriod,
-      NumericGradeEarned,
-      LetterGradeEarned
-    FROM grades
-    WHERE
-      (GradeTypeDescriptor IN ('Final', 'Grading Period'))
-      OR (IsCurrentCourseEnrollment = TRUE AND IsCurrentGradingPeriod = TRUE)
-  )
+final as (
+    select
+        SchoolYear,
+        SchoolId,
+        SessionName,
+        SectionIdentifier,
+        ClassPeriodName,
+        StudentUniqueId,
+        GradingPeriodDescriptor,
+        case
+            when GradingPeriodDescriptor = 'First Nine Weeks' then 'Q1'
+            when GradingPeriodDescriptor = 'Second Nine Weeks' then 'Q2'
+            when GradingPeriodDescriptor = 'Third Nine Weeks' then 'Q3'
+            when GradingPeriodDescriptor = 'Fourth Nine Weeks' then 'Q4'
+            when GradingPeriodDescriptor = 'First Semester' then 'S1'
+            when GradingPeriodDescriptor = 'Second Semester' then 'S2'
+        end as GradingPeriod,
+        GradeTypeDescriptor,
+        IsCurrentCourseEnrollment,
+        IsCurrentGradingPeriod,
+        NumericGradeEarned,
+        LetterGradeEarned
+    from grades
+    where
+        (GradeTypeDescriptor in ('Final', 'Grading Period'))
+        or (IsCurrentCourseEnrollment = true and IsCurrentGradingPeriod = true)
+)
 
-SELECT * FROM final
+select distinct * from final

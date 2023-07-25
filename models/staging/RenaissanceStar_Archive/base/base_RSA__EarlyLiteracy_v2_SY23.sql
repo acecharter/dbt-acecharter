@@ -1,5 +1,5 @@
 select
-    case SchoolIdentifier
+    case trim(SchoolIdentifier)
         when '57b1f93e473b517136000009' then '116814'
         when '57b1f93e473b51713600000b' then '129247'
         when '57b1f93e473b517136000007' then '131656'
@@ -7,40 +7,49 @@ select
         else '999999999'
     end as TestedSchoolId,
     NameofInstitution as TestedSchoolName,
-    concat(left(SchoolYear, 5), right(SchoolYear, 2)) as SchoolYear,
+    SchoolYear,
     StudentRenaissanceID,
-    StudentIdentifier,
+    cast(StudentIdentifier as string) as StudentIdentifier,
     StateUniqueId,
     case
-        when MiddleName is null then concat(LastSurname, ', ', FirstName)
-        else concat(LastSurname, ', ', FirstName, ' ', MiddleName)
+        when
+            MiddleName is null
+            then concat(LastSurname, ', ', FirstName)
+        else
+            concat(
+                LastSurname,
+                ', ',
+                FirstName,
+                ' ',
+                MiddleName
+            )
     end as DisplayName,
     LastSurname as LastName,
     FirstName,
     MiddleName,
     Gender,
-    date(Birthdate) as BirthDate,
-    Gradelevel as GradeLevel,
+    date(BirthDate) as BirthDate,
+    GradeLevel,
     EnrollmentStatus,
     AssessmentID,
-    date(CompletedDateLocal) as AssessmentDate,
+    date(CompletedDate) as AssessmentDate,
     cast(AssessmentNumber as int64) as AssessmentNumber,
     AssessmentType,
     TotalTimeInSeconds,
     GradePlacement,
-    Grade as AssessmentGradeLevel,
-    GradeEquivalent,
+    cast(Grade as string) as AssessmentGradeLevel,
+    cast(GradeEquivalent as string) as GradeEquivalent,
     ScaledScore,
     UnifiedScore,
     PercentileRank,
     NormalCurveEquivalent,
+    Lexile,
+    LiteracyClassification,
     StudentGrowthPercentileFallFall,
     StudentGrowthPercentileFallSpring,
     StudentGrowthPercentileFallWinter,
     StudentGrowthPercentileSpringSpring,
     StudentGrowthPercentileWinterSpring,
     CurrentSGP,
-    cast(right(StateBenchmarkCategoryName, 1) as int64)
-        as StateBenchmarkCategoryLevel,
-    Quantile
-from {{ source('RenaissanceStar_Archive', 'MathSpanish_v2_SY22') }}
+    cast(StateBenchmarkCategoryLevel as int64) as StateBenchmarkCategoryLevel
+from {{ source('RenaissanceStar_Archive', 'EarlyLiteracy_v2_SY23') }}

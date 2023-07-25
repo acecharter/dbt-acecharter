@@ -4,6 +4,10 @@ with calendar_dates as (
     where CountsTowardAttendance = true
     union all
     select *
+    from {{ ref('stg_SPA__CalendarDates_SY23') }}
+    where CountsTowardAttendance = true
+    union all
+    select *
     from {{ ref('stg_SPA__CalendarDates_SY22') }}
     where CountsTowardAttendance = true
 ),
@@ -19,4 +23,4 @@ final as (
     order by SchoolYear desc
 )
 
-select * from final
+select distinct * from final

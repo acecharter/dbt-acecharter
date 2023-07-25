@@ -1,6 +1,8 @@
 with starter_pack_schools as (
     select * from {{ ref('stg_SP__Schools') }}
     union all
+    select * from {{ ref('stg_SPA__Schools_SY23') }}
+    union all
     select * from {{ ref('stg_SPA__Schools_SY22') }}
 ),
 
@@ -33,7 +35,6 @@ final as (
         gsd.CurrentCharterTermEndDate,
         gsd.YearOpened,
         gsd.PreviousRenewalYears,
-        sp.GradeLevel,
         gsd.GradesServed,
         gsd.Grade5,
         gsd.Grade6,
@@ -48,7 +49,6 @@ final as (
         on sp.SchoolId = gsd.SchoolId
 )
 
-
-select *
+select distinct *
 from final
 order by SchoolYear desc

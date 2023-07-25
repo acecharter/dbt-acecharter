@@ -43,4 +43,4 @@ select
     cast(right(StateBenchmarkCategoryName, 1) as int64)
         as StateBenchmarkCategoryLevel,
     Quantile
-from {{ source('RenaissanceStar_Archive', 'MathSpanish_v2_SY22') }}
+from {{ source('RenaissanceStar_Archive', 'MathSpanish_v2_SY23') }}
