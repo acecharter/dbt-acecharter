@@ -415,6 +415,14 @@ sources:
         description: Student-level CAASPP results exported from TOMS for students tested at ACE High School in 2022
       - name: TomsEthnicityCodes
         description: Race/ethnicity codes and names for Reporting Ethnicity field in TOMS CAASPP Student Data Files
+      - name: TomsElpacEnrolledEmpower
+        description: Student-level ELPAC results exported from TOMS for students enrolled at Empower as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
+      - name: TomsElpacEnrolledEsperanza
+        description: Student-level ELPAC results exported from TOMS for students enrolled at Esperanza as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
+      - name: TomsElpacEnrolledHighSchool
+        description: Student-level ELPAC results exported from TOMS for students enrolled at ACE High School as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
+      - name: TomsElpacEnrolledInspire
+        description: Student-level ELPAC results exported from TOMS for students enrolled at Inspire as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
       - name: TomsElpacTested2021Empower
         description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2021 
       - name: TomsElpacTested2021Esperanza
