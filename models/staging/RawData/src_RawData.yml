@@ -136,6 +136,15 @@ sources:
       - name: CaDashSusp2022
         description: 2022 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 
+      - name: CalpadsSelaEmpower
+        description: CALPADS ODS Active Students SELA Extract for Empower as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
+
+      - name: CalpadsSelaEsperanza
+        description: CALPADS ODS Active Students SELA Extract for Esperanza as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
+
+      - name: CalpadsSelaInspire
+        description: CALPADS ODS Active Students SELA Extract for Inspire as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
+
       - name: Cast2019
         description: 2019 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
 
