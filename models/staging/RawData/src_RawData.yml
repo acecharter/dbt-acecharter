@@ -145,6 +145,15 @@ sources:
       - name: CalpadsSelaInspire
         description: CALPADS ODS Active Students SELA Extract for Inspire as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
 
+      - name: CalpadsSinfEmpower
+        description: CALPADS ODS Active Students SINF Extract for Empower as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
+
+      - name: CalpadsSinfEsperanza
+        description: CALPADS ODS Active Students SINF Extract for Esperanza as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
+
+      - name: CalpadsSinfInspire
+        description: CALPADS ODS Active Students SINF Extract for Inspire as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
+
       - name: Cast2019
         description: 2019 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
 
