@@ -72,7 +72,7 @@ elpi_change_added as (
         *,
         ElpiLevelRank - ElpiLevelRankMinus1 as ElpiLevelChange,
         case
-            when ElpiLevelNumeric = ElpiLevelNumeric then concat('Maintained at ', ElpiLevel)
+            when ElpiLevelNumeric = ElpiLevelNumericMinus1 then concat('Maintained at ', ElpiLevel)
             when ElpiLevelNumeric > ElpiLevelNumericMinus1 then 'Increased'
             when ElpiLevelNumeric < ElpiLevelNumericMinus1 then 'Declined'
             else 'ERROR'

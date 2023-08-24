@@ -1,11 +1,40 @@
 with sinf as (
-    select * from {{ source('RawData', 'CalpadsSinfEmpower') }}
-    union all select * from {{ source('RawData', 'CalpadsSinfEsperanza') }}
-    union all select * from {{ source('RawData', 'CalpadsSinfInspire') }}
+    select
+        'Empower' as SchoolName,
+        *
+    from {{ source('RawData', 'CalpadsSinfEmpower') }}
+    union all
+    select
+        'Esperanza' as SchoolName,
+        *
+    from {{ source('RawData', 'CalpadsSinfEsperanza') }}
+    union all
+    select
+        'Inspire' as SchoolName, 
+        *
+    from {{ source('RawData', 'CalpadsSinfInspire') }}
     
-) 
+),
+
+sinf_dates as (
+    select 
+        substr(TableName, 12) as SchoolName,
+        *
+    from {{ ref('stg_GSD__ManuallyMaintainedFilesTracker')}}
+    where TableName like 'CalpadsSinf%'
+),
+
+sinf_with_file_date as (
+    select
+        sinf_dates.DateTableLastUpdated as ExtractDate,
+        sinf.*
+    from sinf
+    inner join sinf_dates
+    on sinf.SchoolName = sinf_dates.SchoolName
+)
 
 select
+    ExtractDate,
     Record_Type_Code as RecordTypeCode,
     date(concat(
         substr(Effective_Start_Date, 1, 4),
@@ -38,4 +67,4 @@ select
         '-',
         substr(Student_Initial_US_School_Enrollment_Date_K_12, 7, 2)
     )) as InitialUsSchoolEnrollmentDateK12
-from sinf
+from sinf_with_file_date

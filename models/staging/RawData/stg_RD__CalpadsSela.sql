@@ -1,11 +1,40 @@
 with sela as (
-    select * from {{ source('RawData', 'CalpadsSelaEmpower') }}
-    union all select * from {{ source('RawData', 'CalpadsSelaEsperanza') }}
-    union all select * from {{ source('RawData', 'CalpadsSelaInspire') }}
+    select
+        'Empower' as SchoolName,
+        *
+    from {{ source('RawData', 'CalpadsSelaEmpower') }}
+    union all
+    select
+        'Esperanza' as SchoolName,
+        *
+    from {{ source('RawData', 'CalpadsSelaEsperanza') }}
+    union all
+    select
+        'Inspire' as SchoolName,
+        *
+    from {{ source('RawData', 'CalpadsSelaInspire') }}
     
-) 
+),
+
+sela_dates as (
+    select 
+        substr(TableName, 12) as SchoolName,
+        *
+    from {{ ref('stg_GSD__ManuallyMaintainedFilesTracker')}}
+    where TableName like 'CalpadsSela%'
+),
+
+sela_with_file_date as (
+    select
+        sela_dates.DateTableLastUpdated as ExtractDate,
+        sela.*
+    from sela
+    inner join sela_dates
+    on sela.SchoolName = sela_dates.SchoolName
+)
 
 select
+    ExtractDate,
     Record_Type_Code as RecordTypeCode,
     cast(cast(School_of_Attendance as int64) as string) as SchoolId,
     concat(
@@ -26,4 +55,4 @@ select
         substr(English_Language_Acquisition_Status_Start_Date, 7, 2)
     )) as ElaStatusStartDate,
     Primary_Language_Code as PrimaryLanguageCode
-from sela
+from sela_with_file_date
