@@ -1,0 +1,41 @@
+with sinf as (
+    select * from {{ source('RawData', 'CalpadsSinfEmpower') }}
+    union all select * from {{ source('RawData', 'CalpadsSinfEsperanza') }}
+    union all select * from {{ source('RawData', 'CalpadsSinfInspire') }}
+    
+) 
+
+select
+    Record_Type_Code as RecordTypeCode,
+    date(concat(
+        substr(Effective_Start_Date, 1, 4),
+        '-',
+        substr(Effective_Start_Date, 5, 2),
+        '-',
+        substr(Effective_Start_Date, 7, 2)
+    )) as EffectiveStartDate,
+    date(concat(
+        substr(Effective_End_Date, 1, 4),
+        '-',
+        substr(Effective_End_Date, 5, 2),
+        '-',
+        substr(Effective_End_Date, 7, 2)
+    )) as EffectiveEndDate,
+    cast(cast(School_of_Attendance as int64) as string) as SchoolId,
+    concat(
+        substr(Academic_Year_ID, 1, 4),
+        '-',
+        substr(Academic_Year_ID, 8, 2)
+     ) as SchoolYear,
+    SSID as StateUniqueId,
+    Local_Student_ID as StudentUniqueId,
+    Student_Legal_First_Name as FirstName,
+    Student_Legal_Last_Name as LastName,
+    date(concat(
+        substr(Student_Initial_US_School_Enrollment_Date_K_12, 1, 4),
+        '-',
+        substr(Student_Initial_US_School_Enrollment_Date_K_12, 5, 2),
+        '-',
+        substr(Student_Initial_US_School_Enrollment_Date_K_12, 7, 2)
+    )) as InitialUsSchoolEnrollmentDateK12
+from sinf
