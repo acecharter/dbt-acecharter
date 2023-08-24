@@ -14,17 +14,9 @@ select
         substr(Academic_Year_ID, 8, 2)
      ) as SchoolYear,
     SSID as StateUniqueId,
+    Local_Student_ID as StudentUniqueId,
     Student_Legal_First_Name as FirstName,
     Student_Legal_Last_Name as LastName,
-    date(concat(
-        substr(Student_Birth_Date, 1, 4),
-        '-',
-        substr(Student_Birth_Date, 5, 2),
-        '-',
-        substr(Student_Birth_Date, 7, 2)
-    )) as BirthDate,
-    Student_Gender_Code as Gender,
-    Local_Student_ID as StudentUniqueId,
     English_Language_Acquisition_Status_Code as ElaStatusCode,
     date(concat(
         substr(English_Language_Acquisition_Status_Start_Date, 1, 4),
