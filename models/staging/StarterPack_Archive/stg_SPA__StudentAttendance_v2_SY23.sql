@@ -4,7 +4,7 @@ with hs_summer_enrollments as (
         StudentUniqueId
     from {{ ref('stg_SPA__StudentEnrollments_SY23')}}
     where ExitWithdrawDate = '2023-07-08'
-)
+),
 
 -- Remove 17 additional enrollment days for HS students whose summer enrollment were included in data (identified by a '2023-07-08' ExitWithdrawDate); attendance was not recorded for these days
 final as (
