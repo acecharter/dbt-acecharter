@@ -1,53 +1,49 @@
-WITH
-  academic_subjects AS (
-    SELECT
-      CourseCode,
-      AcademicSubject
-    FROM {{ ref('stg_GSD__CourseSubjects')}}
-  ),
+with academic_subjects as (
+    select
+        CourseCode,
+        AcademicSubject
+    from {{ ref('stg_GSD__CourseSubjects') }}
+),
 
-  sections AS (
-    SELECT
-      SchoolId,
-      SessionName,
-      SectionIdentifier,
-      CourseCode,
-      CourseTitle,
-      CourseGpaApplicability,
-      ClassPeriodName,
-      Room,
-      AvailableCredits,
-      MIN(BeginDate) AS SectionBeginDate,
-      MAX(EndDate) AS SectionEndDate,
-      MIN(StaffBeginDate) AS SectionStaffBeginDate,
-      MAX(StaffEndDate) AS SectionStaffEndDate
-    FROM {{ ref('stg_SP__CourseEnrollments_v2') }}
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
-  ),
+sections as (
+    select
+        SchoolId,
+        SessionName,
+        SectionIdentifier,
+        CourseCode,
+        CourseTitle,
+        CourseGpaApplicability,
+        ClassPeriodName,
+        Room,
+        AvailableCredits,
+        min(BeginDate) as SectionBeginDate,
+        max(EndDate) as SectionEndDate,
+        min(StaffBeginDate) as SectionStaffBeginDate,
+        max(StaffEndDate) as SectionStaffEndDate
+    from {{ ref('stg_SP__CourseEnrollments_v2') }}
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9
+),
 
-  final AS (
-    SELECT DISTINCT
-      s.SchoolId,
-      s.SessionName,
-      s.SectionIdentifier,
-      s.CourseCode,
-      a.AcademicSubject,
-      s.CourseTitle,
-      s.CourseGpaApplicability,
-      s.ClassPeriodName,
-      s.Room,
-      s.AvailableCredits,
-      s.SectionBeginDate,
-      s.SectionEndDate,
-      s.SectionStaffBeginDate,
-      s.SectionStaffEndDate
-    FROM sections AS s
-    LEFT JOIN academic_subjects AS a
-    USING (CourseCode)
-    ORDER BY 1, 2, 3, 4, 8
-  )
+final as (
+    select distinct
+        s.SchoolId,
+        s.SessionName,
+        s.SectionIdentifier,
+        s.CourseCode,
+        a.AcademicSubject,
+        s.CourseTitle,
+        s.CourseGpaApplicability,
+        s.ClassPeriodName,
+        s.Room,
+        s.AvailableCredits,
+        s.SectionBeginDate,
+        s.SectionEndDate,
+        s.SectionStaffBeginDate,
+        s.SectionStaffEndDate
+    from sections as s
+    left join academic_subjects as a
+        on s.CourseCode = a.CourseCode
+order by 1, 2, 3, 4, 8
+)
 
-SELECT * FROM final
-
-
-
+select * from final

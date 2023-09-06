@@ -1,126 +1,126 @@
-WITH
-  grades AS (
-    SELECT * FROM {{ ref('fct_StudentGrades')}}
-  ),
+with grades as (
+    select * from {{ ref('fct_StudentGrades') }}
+),
 
-  current_schools AS (
-    SELECT * FROM {{ref('dim_CurrentSchools')}}
-  ),
+current_schools as (
+    select * from {{ ref('dim_CurrentSchools') }}
+),
 
-  current_students AS (
-    SELECT *
-    FROM {{ ref('dim_Students')}}
-    WHERE IsCurrentlyEnrolled = TRUE
-  ),
-  
-  sections AS (
-    SELECT * FROM {{ ref('dim_Sections') }}  
-  ),
+current_students as (
+    select *
+    from {{ ref('dim_Students') }}
+    where IsCurrentlyEnrolled = true
+),
 
-  teachers AS (
-    SELECT *
-    FROM {{ ref('dim_SectionStaff') }} 
-    WHERE 
-      StaffClassroomPosition = 'Teacher of Record'
-      AND IsCurrentStaffAssociation=TRUE
-  ),
+sections as (
+    select * from {{ ref('dim_Sections') }}
+),
 
-  enrollments_ranked AS (
-    SELECT
-      *,
-      RANK() OVER (
-        PARTITION BY 
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName,
-          StudentUniqueId
-        ORDER BY
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName,
-          StudentUniqueId,
-          EndDate DESC
-      ) AS Rank
-    FROM {{ ref('fct_StudentSectionEnrollments') }}
-  ),
+teachers as (
+    select *
+    from {{ ref('dim_SectionStaff') }}
+    where
+        StaffClassroomPosition = 'Teacher of Record'
+        and IsCurrentStaffAssociation = true
+),
 
-  final AS (
-    SELECT
-      s.SchoolId,
-      sc.SchoolName,
-      sc.SchoolNameMid,
-      sc.SchoolNameShort,
-      s.CourseCode,
-      s.CourseTitle,
-      s.CourseGpaApplicability,
-      s.AcademicSubject,
-      s.SessionName,
-      s.SectionIdentifier,
-      s.ClassPeriodName,
-      s.AvailableCredits,
-      s.SectionBeginDate,
-      s.SectionEndDate,
-      t.StaffUniqueId,
-      t.StaffDisplayName,
-      t.StaffClassroomPosition,
-      e.StudentUniqueId,
-      st.StateUniqueId,
-      st.DisplayName,
-      st.Gender,
-      st.RaceEthnicity,
-      st.IsEll,
-      st.EllStatus,
-      st.HasFrl,
-      st.FrlStatus,
-      st.HasIep,
-      st.SeisEligibilityStatus,
-      st.GradeLevel,
-      st.Email,
-      st.EntryDate,
-      st.ExitWithdrawDate,
-      st.ExitWithdrawReason,
-      st.IsCurrentlyEnrolled,
-      e.BeginDate AS SectionEnrollmentBeginDate,
-      e.EndDate As SectionEnrollmentEndDate,
-      e.IsCurrentSectionEnrollment,
-      g.SchoolYear,
-      g.GradingPeriodDescriptor,
-      g.GradingPeriod,
-      g.GradeTypeDescriptor,
-      g.IsCurrentGradingPeriod,
-      g.NumericGradeEarned,
-      g.LetterGradeEarned
-    FROM sections AS s
-    LEFT JOIN teachers AS t
-      ON
-        s.SchoolId = t.SchoolId
-        AND s.SessionName = t.SessionName
-        AND s.SectionIdentifier = t.SectionIdentifier
-        AND s.ClassPeriodName = t.ClassPeriodName
-    LEFT JOIN enrollments_ranked AS e
-      ON 
-        s.SchoolId = e.SchoolId
-        AND s.SessionName = e.SessionName
-        AND s.SectionIdentifier = e.SectionIdentifier
-        AND s.ClassPeriodName = e.ClassPeriodName
-    LEFT JOIN grades AS g
-    ON
-      e.SchoolId = g.SchoolId
-      AND e.SessionName = g.SessionName
-      AND e.SectionIdentifier = g.SectionIdentifier
-      AND e.ClassPeriodName = g.ClassPeriodName
-      AND e.StudentUniqueId = g.StudentUniqueId
-    LEFT JOIN current_schools AS sc
-    ON e.SchoolId = sc.SchoolId
-    LEFT JOIN current_students AS st
-    ON
-      e.SchoolId = st.SchoolId
-      AND e.StudentUniqueId = st.StudentUniqueId
-    WHERE e.Rank = 1
-    AND st.StudentUniqueId IS NOT NULL
-    AND g.StudentUniqueId IS NOT NULL
-  )
+enrollments_ranked as (
+    select
+        *,
+        rank() over (
+            partition by
+                SchoolId,
+                SessionName,
+                SectionIdentifier,
+                ClassPeriodName,
+                StudentUniqueId
+            order by
+                SchoolId asc,
+                SessionName asc,
+                SectionIdentifier asc,
+                ClassPeriodName asc,
+                StudentUniqueId asc,
+                EndDate desc
+        ) as Rank
+    from {{ ref('fct_StudentSectionEnrollments') }}
+),
 
-SELECT * FROM final
+final as (
+    select
+        s.SchoolId,
+        sc.SchoolName,
+        sc.SchoolNameMid,
+        sc.SchoolNameShort,
+        s.CourseCode,
+        s.CourseTitle,
+        s.CourseGpaApplicability,
+        s.AcademicSubject,
+        s.SessionName,
+        s.SectionIdentifier,
+        s.ClassPeriodName,
+        s.AvailableCredits,
+        s.SectionBeginDate,
+        s.SectionEndDate,
+        t.StaffUniqueId,
+        t.StaffDisplayName,
+        t.StaffClassroomPosition,
+        e.StudentUniqueId,
+        st.StateUniqueId,
+        st.DisplayName,
+        st.Gender,
+        st.RaceEthnicity,
+        st.IsEll,
+        st.EllStatus,
+        st.HasFrl,
+        st.FrlStatus,
+        st.HasIep,
+        st.SeisEligibilityStatus,
+        st.GradeLevel,
+        st.Email,
+        st.EntryDate,
+        st.ExitWithdrawDate,
+        st.ExitWithdrawReason,
+        st.IsCurrentlyEnrolled,
+        e.BeginDate as SectionEnrollmentBeginDate,
+        e.EndDate as SectionEnrollmentEndDate,
+        e.IsCurrentSectionEnrollment,
+        g.SchoolYear,
+        g.GradingPeriodDescriptor,
+        g.GradingPeriod,
+        g.GradeTypeDescriptor,
+        g.IsCurrentGradingPeriod,
+        g.NumericGradeEarned,
+        g.LetterGradeEarned
+    from sections as s
+    left join teachers as t
+        on
+            s.SchoolId = t.SchoolId
+            and s.SessionName = t.SessionName
+            and s.SectionIdentifier = t.SectionIdentifier
+            and s.ClassPeriodName = t.ClassPeriodName
+    left join enrollments_ranked as e
+        on
+            s.SchoolId = e.SchoolId
+            and s.SessionName = e.SessionName
+            and s.SectionIdentifier = e.SectionIdentifier
+            and s.ClassPeriodName = e.ClassPeriodName
+    left join grades as g
+        on
+            e.SchoolId = g.SchoolId
+            and e.SessionName = g.SessionName
+            and e.SectionIdentifier = g.SectionIdentifier
+            and e.ClassPeriodName = g.ClassPeriodName
+            and e.StudentUniqueId = g.StudentUniqueId
+    left join current_schools as sc
+        on e.SchoolId = sc.SchoolId
+    left join current_students as st
+        on
+            e.SchoolId = st.SchoolId
+            and e.StudentUniqueId = st.StudentUniqueId
+    where
+        e.Rank = 1
+        and st.StudentUniqueId is not null
+        and g.StudentUniqueId is not null
+)
+
+select * from final
