@@ -1,93 +1,93 @@
-WITH
-  sections AS (
-    SELECT * FROM {{ ref('dim_Sections') }}  
-  ),
+with sections as (
+    select * from {{ ref('dim_Sections') }}
+),
 
-  teachers AS (
-    SELECT
-      *
-    FROM {{ ref('dim_SectionStaff') }} 
-    WHERE
-      StaffClassroomPosition = 'Teacher of Record'
-      AND IsCurrentStaffAssociation = TRUE
-  ),
+teachers as (
+    select *
+    from {{ ref('dim_SectionStaff') }}
+    where
+        StaffClassroomPosition = 'Teacher of Record'
+        and IsCurrentStaffAssociation = true
+),
 
-  enrollments_ranked AS (
-    SELECT
-      *,
-      RANK() OVER (
-        PARTITION BY 
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName,
-          StudentUniqueId
-        ORDER BY
-          SchoolId,
-          SessionName,
-          SectionIdentifier,
-          ClassPeriodName,
-          StudentUniqueId,
-          EndDate DESC
-      ) AS Rank
-    FROM {{ ref('fct_StudentSectionEnrollments') }}  
-  ),
+enrollments_ranked as (
+    select
+        *,
+        rank() over (
+            partition by
+                SchoolId,
+                SessionName,
+                SectionIdentifier,
+                ClassPeriodName,
+                StudentUniqueId
+            order by
+                SchoolId asc,
+                SessionName asc,
+                SectionIdentifier asc,
+                ClassPeriodName asc,
+                StudentUniqueId asc,
+                EndDate desc
+        ) as Rank
+    from {{ ref('fct_StudentSectionEnrollments') }}
+),
 
-  joined AS (
-    SELECT
-      s.*,
-      t.* EXCEPT(
+joined as (
+    select
+        s.*,
+        t.* except (
+            SchoolId,
+            SessionName,
+            SectionIdentifier,
+            ClassPeriodName
+        ),
+        e.* except (
+            SchoolId,
+            SessionName,
+            SectionIdentifier,
+            ClassPeriodName,
+            Rank
+        )
+    from sections as s
+    left join teachers as t
+        on
+            s.SchoolId = t.SchoolId
+            and s.SessionName = t.SessionName
+            and s.SectionIdentifier = t.SectionIdentifier
+            and s.ClassPeriodName = t.ClassPeriodName
+    left join enrollments_ranked as e
+        on
+            s.SchoolId = e.SchoolId
+            and s.SessionName = e.SessionName
+            and s.SectionIdentifier = e.SectionIdentifier
+            and s.ClassPeriodName = e.ClassPeriodName
+    where e.Rank = 1
+),
+
+final as (
+    select
         SchoolId,
-        SessionName,
-        SectionIdentifier,
-        ClassPeriodName),
-      e.* EXCEPT(
-        SchoolId,
+        AcademicSubject,
+        CourseCode,
+        CourseTitle,
+        CourseGpaApplicability,
         SessionName,
         SectionIdentifier,
         ClassPeriodName,
-        Rank),
-    FROM sections AS s
-    LEFT JOIN teachers AS t
-      ON
-        s.SchoolId = t.SchoolId
-        AND s.SessionName = t.SessionName
-        AND s.SectionIdentifier = t.SectionIdentifier
-        AND s.ClassPeriodName = t.ClassPeriodName
-    LEFT JOIN enrollments_ranked AS e
-      ON 
-        s.SchoolId = e.SchoolId
-        AND s.SessionName = e.SessionName
-        AND s.SectionIdentifier = e.SectionIdentifier
-        AND s.ClassPeriodName = e.ClassPeriodName
-    WHERE e.Rank = 1
-  ),
+        Room,
+        AvailableCredits,
+        SectionBeginDate,
+        SectionEndDate,
+        StaffUniqueId,
+        StaffDisplayName,
+        StaffClassroomPosition,
+        SectionStaffBeginDate,
+        SectionStaffEndDate,
+        IsCurrentStaffAssociation,
+        StudentUniqueId,
+        BeginDate as StudentSectionBeginDate,
+        EndDate as StudentSectionEndDate,
+        IsCurrentSectionEnrollment
+    from joined
+)
 
-  final AS (
-    SELECT
-      SchoolId,
-      AcademicSubject,
-      CourseCode,
-      CourseTitle,
-      CourseGpaApplicability,
-      SessionName,
-      SectionIdentifier,
-      ClassPeriodName,
-      Room,
-      AvailableCredits,
-      SectionBeginDate,
-      SectionEndDate,
-      StaffUniqueId,
-      StaffDisplayName,
-      StaffClassroomPosition,
-      SectionStaffBeginDate,
-      SectionStaffEndDate,
-      IsCurrentStaffAssociation,
-      StudentUniqueId,
-      BeginDate AS StudentSectionBeginDate,
-      EndDate AS StudentSectionEndDate,
-      IsCurrentSectionEnrollment
-    FROM joined
-  )
-
-SELECT * FROM final
+select * from final
