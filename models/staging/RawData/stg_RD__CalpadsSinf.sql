@@ -15,7 +15,7 @@ with sinf as (
     from {{ source('RawData', 'CalpadsSinfInspire') }}
     union all
     select
-        'High School' as SchoolName,
+        'HighSchool' as SchoolName,
         *
     from {{ source('RawData', 'CalpadsSinfHighSchool') }}
     

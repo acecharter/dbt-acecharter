@@ -15,7 +15,7 @@ with sela as (
     from {{ source('RawData', 'CalpadsSelaInspire') }}
     union all
     select
-        'High School' as SchoolName,
+        'HighSchool' as SchoolName,
         *
     from {{ source('RawData', 'CalpadsSelaHighSchool') }}
     
