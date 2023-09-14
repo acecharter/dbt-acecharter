@@ -13,6 +13,7 @@ with sinf as (
         'Inspire' as SchoolName, 
         *
     from {{ source('RawData', 'CalpadsSinfInspire') }}
+    union all
     select
         'High School' as SchoolName,
         *
