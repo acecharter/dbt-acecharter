@@ -13,6 +13,11 @@ with sela as (
         'Inspire' as SchoolName,
         *
     from {{ source('RawData', 'CalpadsSelaInspire') }}
+    select
+        'High School' as SchoolName,
+        *
+    from {{ source('RawData', 'CalpadsSelaHighSchool') }}
+    union all
     
 ),
 

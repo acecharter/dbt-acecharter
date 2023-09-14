@@ -13,6 +13,10 @@ with sinf as (
         'Inspire' as SchoolName, 
         *
     from {{ source('RawData', 'CalpadsSinfInspire') }}
+    select
+        'High School' as SchoolName,
+        *
+    from {{ source('RawData', 'CalpadsSinfHighSchool') }}
     
 ),
 
