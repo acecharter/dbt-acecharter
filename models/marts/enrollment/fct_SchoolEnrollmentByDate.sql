@@ -1,19 +1,35 @@
-with dates as (
-    select *
-    from {{ ref('stg_SP__CalendarDates') }}
-    where
-        CalendarEvent = 'Instructional day'
-        and CalendarDate < current_date('America/Los_Angeles')
+with calendar_dates as (
+    select CalendarDate
+    from unnest(
+        generate_date_array(
+            (select min(CalendarDate) from {{ ref('stg_SP__CalendarDates') }}),
+            current_date('America/Los_Angeles'),
+            interval 1 day)
+    ) AS CalendarDate
+),
+
+schools as (
+    select * from {{ ref('stg_SP__Schools') }}
+),
+
+school_dates as (
+    select
+        c.CalendarDate,
+        s.SchoolYear,
+        s.SchoolId
+    from calendar_dates as c
+    cross join schools as s
 ),
 
 student_enrollments as (
-    select *
-    from {{ ref('stg_SP__StudentEnrollments') }}
+    select * from {{ ref('stg_SP__StudentEnrollments') }}
 ),
 
 joined as (
     select
-        d.* except (CalendarEvent),
+        d.SchoolYear,
+        d.SchoolId,
+        d.CalendarDate,
         case
             when (
                 e.SchoolYear = d.SchoolYear
@@ -26,8 +42,8 @@ joined as (
             as EnrollmentEntry,
         case when e.ExitWithdrawDate = d.CalendarDate then 1 else 0 end
             as EnrollmentExit
-    from dates as d
-    left join student_enrollments as e
+    from school_dates as d
+    full outer join student_enrollments as e
         on
             d.SchoolId = e.SchoolId
             and d.SchoolYear = e.SchoolYear
@@ -46,3 +62,4 @@ final as (
 )
 
 select * from final
+order by CalendarDate
