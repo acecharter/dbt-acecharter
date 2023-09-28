@@ -12,15 +12,25 @@ enrollment as (
     select * from {{ ref('fct_SchoolEnrollmentByDate') }}
 ),
 
+-- Adjust reporting period EndDate to include subsequent dates (weekends/holidays) prior to the start of the next reporting periods to avoid losing students exited on these days
+reporting_period_incl_wknd as (
+    select
+        * except(EndDate),
+        coalesce(
+            lead(StartDate) over (partition by SchoolYear order by StartDate asc) - 1,
+            EndDate
+        ) as EndDate
+    from {{ ref('stg_RD__AttendanceReportingPeriods') }}
+),
+
 reporting_periods as (
     select
         enrollment.CalendarDate,
-        reporting_periods.ReportingPeriod
+        reporting_period_incl_wknd.ReportingPeriod
     from enrollment
-    cross join
-        {{ ref('stg_RD__AttendanceReportingPeriods') }} as reporting_periods
+    cross join reporting_period_incl_wknd
     where
-        enrollment.CalendarDate between reporting_periods.StartDate and reporting_periods.EndDate
+        enrollment.CalendarDate between reporting_period_incl_wknd.StartDate and reporting_period_incl_wknd.EndDate
     group by 1, 2
     order by enrollment.CalendarDate
 ),
@@ -41,3 +51,4 @@ final as (
 )
 
 select * from final
+order by CalendarDate
