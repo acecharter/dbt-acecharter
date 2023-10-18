@@ -30,6 +30,8 @@ cast_unioned as (
     select * from {{ ref('base_RD__Cast2021')}}
     union all
     select * from {{ ref('base_RD__Cast2022')}}
+    union all
+    select * from {{ ref('base_RD__Cast2023')}}
 ),
 
 cast_entity_codes_added as (
