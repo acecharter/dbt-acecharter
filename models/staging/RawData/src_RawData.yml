@@ -1,6 +1,5 @@
 version: 2
 
-
 sources:
   - name: RawData
     database: landing-zone-acecharter
@@ -8,34 +7,34 @@ sources:
     tables:
       - name: Anet2021MachineScored
         description: Achievement Network (ANET) interim data for 2021-22 machine-scored questions. Subject/Cycle-specific export files merged manually prior to uploading to BigQuery. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
+
       - name: Anet2022MachineScored
         description: Achievement Network (ANET) interim data for 2022-23 machine-scored questions. Subject/Cycle-specific export files merged manually prior to uploading to BigQuery. Data dictionary available at https://docs.google.com/spreadsheets/d/1_YzndyAzXSlsoygzts2W1dXr0I1IzcxLmSQIb6kLyUg/edit#gid=1509206850
-      
+
       - name: Amplify2223
         description: Amplify interim admin report export for 2022-23. Amplify admin reports export guide available at https://my.amplify.com/admin-reports/downloads/Admin_Reports_Export_Guide_ELA.pdf
-      
+
       - name: ApExamCodes
         description: Advanced Placement (AP) exam codes used in student data file downloaded from College Board website. Pulled from layout file documentation available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
-      
+
       - name: ApStudentDatafile2018
         description: 2018 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
-      
+
       - name: ApStudentDatafile2019
         description: 2019 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
-      
+
       - name: ApStudentDatafile2020
         description: 2020 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
-      
+
       - name: ApStudentDatafile2021
         description: 2021 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
-      
+
       - name: ApStudentDatafile2022
         description: 2022 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
-      
+
       - name: ApStudentDatafile2023
         description: 2023 Advanced Placement (AP) student data file downloaded from College Board website. Layout file documentation is available at https://apcentral.collegeboard.org/exam-administration-ordering-scores/scores/available-reports/student-datafile
-      
+
       - name: AttendanceReportingPeriods
         description: Attendance reporting period date information
         columns:
@@ -169,6 +168,8 @@ sources:
       - name: Cast2022
         description: 2022 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
 
+      - name: Cast2023
+        description: 2023 California Science Test (CAST) All Student Groups research file. Downloaded from https://caaspp-elpac.cde.ca.gov/caaspp/ResearchFileListCAST
 
       - name: CdeAdjustedCohortOutcomes2017
         description: 2016-17 CDE 4-Year Adjusted Cohort Graduation Rate and Outcome Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesacgr.asp)
@@ -244,7 +245,7 @@ sources:
 
       - name: CdeEnr12
         description: 2012 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
-        
+
       - name: CdeEnr13
         description: 2013 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
 
@@ -252,13 +253,13 @@ sources:
         description: 2014 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
 
       - name: CdeEnr15
-        description: 2015 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)      
+        description: 2015 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
 
       - name: CdeEnr16
-        description: 2016 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)      
-      
+        description: 2016 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
+
       - name: CdeEnr17
-        description: 2017 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)      
+        description: 2017 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
 
       - name: CdeEnr18
         description: 2018 Census Day Enrollment Data file (downloaded from https://www.cde.ca.gov/ds/ad/filesenr.asp)
@@ -346,7 +347,7 @@ sources:
 
       - name: CersHighSchool1819
         description: An extract from CERS (California Educator Reporting System) listing all 2018-19 CAASPP assessment results for students enrolled at ACE High School
-      
+
       - name: SeisEmpower
         description: An extract from SEIS (Special Education Information System) listing Empower students with SEIS records
         columns:
@@ -398,76 +399,153 @@ sources:
               - unique
               - not_null
           - name: Student_SSID
-            description: Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
+            description:
+              Unique student ID assigned by the State of California (same as StateUniqueId column in StarterPack tables)
               - unique
               - not_null
       - name: Caaspp2015
+        description: 2015 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: Caaspp2016
+        description: 2016 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: Caaspp2017
+        description: 2017 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: Caaspp2018
+        description: 2018 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: Caaspp2019
+        description: 2019 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: Caaspp2021
+        description: 2021 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: Caaspp2022
+        description: 2022 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
+      - name: Caaspp2023
+        description: 2023 California Assessment of Student Performance and Progress (CAASPP) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppEntities2015
+        description: 2015 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppEntities2016
+        description: 2016 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppEntities2017
+        description: 2017 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppEntities2018
+        description: 2018 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppEntities2019
+        description: 2019 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppEntities2021
+        description: 2021 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
+      - name: CaasppEntities2022
+        description: 2022 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
+      - name: CaasppEntities2023
+        description: 2023 CAASPP Entities file included with the All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppStudentGroups
+        description: Summative CAASPP Student Group ID/Name Table research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: CaasppTests
+        description: Summative CAASPP Test ID/Test Name Table research file. Downloaded from https://caaspp-elpac.ets.org/caaspp/ResearchFileListSB
+
       - name: Elpac2018
+        description: 2018 Summative English Language Proficiency Assessments for California (ELPAC) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/elpac/ResearchFilesSA
+
       - name: Elpac2019
+        description: 2019 Summative English Language Proficiency Assessments for California (ELPAC) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/elpac/ResearchFilesSA
+
       - name: Elpac2021
+        description: 2021 Summative English Language Proficiency Assessments for California (ELPAC) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/elpac/ResearchFilesSA
+
       - name: Elpac2022
+        description: 2022 Summative English Language Proficiency Assessments for California (ELPAC) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/elpac/ResearchFilesSA
+
+      - name: Elpac2023
+        description: 2023 Summative English Language Proficiency Assessments for California (ELPAC) All Student Groups research file. Downloaded from https://caaspp-elpac.ets.org/elpac/ResearchFilesSA
+
       - name: ElpacStudentGroups
+        description: Summative ELPAC Student Group ID/Name Table research file. Downloaded from https://caaspp-elpac.ets.org/elpac/ResearchFilesSA
+
       - name: TomsCaasppTested2023Empower
         description: Student-level CAASPP results exported from TOMS for students tested at Empower in 2023
+
       - name: TomsCaasppTested2023Esperanza
         description: Student-level CAASPP results exported from TOMS for students tested at Esperanza in 2023
+
       - name: TomsCaasppTested2023Inspire
         description: Student-level CAASPP results exported from TOMS for students tested at Inspire in 2023
+
       - name: TomsCaasppTested2023HighSchool
         description: Student-level CAASPP results exported from TOMS for students tested at ACE High School in 2023
+
       - name: TomsCaasppTested2022Empower
         description: Student-level CAASPP results exported from TOMS for students tested at Empower in 2022
+
       - name: TomsCaasppTested2022Esperanza
         description: Student-level CAASPP results exported from TOMS for students tested at Esperanza in 2022
+
       - name: TomsCaasppTested2022Inspire
         description: Student-level CAASPP results exported from TOMS for students tested at Inspire in 2022
+
       - name: TomsCaasppTested2022HighSchool
         description: Student-level CAASPP results exported from TOMS for students tested at ACE High School in 2022
+
       - name: TomsEthnicityCodes
         description: Race/ethnicity codes and names for Reporting Ethnicity field in TOMS CAASPP Student Data Files
+
       - name: TomsElpacEnrolledEmpower
         description: Student-level ELPAC results exported from TOMS for students enrolled at Empower as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
+
       - name: TomsElpacEnrolledEsperanza
         description: Student-level ELPAC results exported from TOMS for students enrolled at Esperanza as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
+
       - name: TomsElpacEnrolledHighSchool
         description: Student-level ELPAC results exported from TOMS for students enrolled at ACE High School as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
+
       - name: TomsElpacEnrolledInspire
         description: Student-level ELPAC results exported from TOMS for students enrolled at Inspire as of the DateTableLastUpdated in stg_GSD__ManuallyMaintainedFilesTracker
+
       - name: TomsElpacTested2021Empower
-        description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2021 
+        description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2021
+
       - name: TomsElpacTested2021Esperanza
         description: Student-level ELPAC results exported from TOMS for students tested at Esperanza in 2021
+
       - name: TomsElpacTested2021HighSchool
         description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2021
+
       - name: TomsElpacTested2021Inspire
-        description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2021 
+        description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2021
+
       - name: TomsElpacTested2022Empower
         description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2022
+
       - name: TomsElpacTested2022Esperanza
         description: Student-level ELPAC results exported from TOMS for students tested at Esperanza in 2022
+
       - name: TomsElpacTested2022Inspire
         description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2022
+
       - name: TomsElpacTested2022HighSchool
-        description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2022 
+        description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2022
+        
       - name: TomsElpacTested2023Empower
         description: Student-level ELPAC results exported from TOMS for students tested at Empower in 2023
+
       - name: TomsElpacTested2023Esperanza
         description: Student-level ELPAC results exported from TOMS for students tested at Esperanza in 2023
+
       - name: TomsElpacTested2023Inspire
         description: Student-level ELPAC results exported from TOMS for students tested at Inspire in 2023
+        
       - name: TomsElpacTested2023HighSchool
         description: Student-level ELPAC results exported from TOMS for students tested at ACE High School in 2023
