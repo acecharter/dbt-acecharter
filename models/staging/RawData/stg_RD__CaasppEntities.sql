@@ -13,6 +13,16 @@ with unioned as (
         * except (Zip_Code),
         cast(Zip_Code as string) as Zip_Code
     from {{ source('RawData', 'CaasppEntities2021') }}
+    union all
+    select
+        * except (Zip_Code),
+        cast(Zip_Code as string) as Zip_Code
+    from {{ source('RawData', 'CaasppEntities2022') }}
+    union all
+    select
+        * except (Zip_Code),
+        cast(Zip_Code as string) as Zip_Code
+    from {{ source('RawData', 'CaasppEntities2023') }}
 ),
 
 formatted as (
