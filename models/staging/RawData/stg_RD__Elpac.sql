@@ -23,6 +23,8 @@ elpac_unioned as (
     select * from {{ ref('base_RD__Elpac2021')}}
     union all
     select * from {{ ref('base_RD__Elpac2022')}}
+    union all
+    select * from {{ ref('base_RD__Elpac2023')}}
 ),
 
 elpac_entity_codes_added as (
