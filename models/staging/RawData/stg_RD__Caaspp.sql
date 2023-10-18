@@ -35,6 +35,8 @@ caaspp_unioned as (
     select * from {{ ref('base_RD__Caaspp2021')}}
     union all
     select * from {{ ref('base_RD__Caaspp2022')}}
+    union all
+    select * from {{ ref('base_RD__Caaspp2023')}}
 ),
 
 caaspp_entity_codes_added as (
