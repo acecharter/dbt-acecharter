@@ -1,10 +1,9 @@
-with 
-    elpac as (
-        select * from {{ ref('base_RD__TomsCaasppEnrolledEmpower')}}
-        union all select * from {{ ref('base_RD__TomsCaasppEnrolledEsperanza')}}
-        union all select * from {{ ref('base_RD__TomsCaasppEnrolledInspire')}}
-        union all select * from {{ ref('base_RD__TomsCaasppEnrolledHighSchool')}}
-    ),
+with caaspp as (
+    select * from {{ ref('base_RD__TomsCaasppEnrolledEmpower')}}
+    union all select * from {{ ref('base_RD__TomsCaasppEnrolledEsperanza')}}
+    union all select * from {{ ref('base_RD__TomsCaasppEnrolledInspire')}}
+    union all select * from {{ ref('base_RD__TomsCaasppEnrolledHighSchool')}}
+),
 
 race_ethnicity as (
     select * from {{ ref('stg_RD__TomsEthnicityCodes')}}
@@ -20,6 +19,19 @@ assessment_ids as (
     where SystemOrVendorName = 'CAASPP'
 ),
 
+caaspp_yrs_id_added as (
+    select
+        cast(extract(year from FinalTestCompletedDate) as int64) as TestYear,
+        concat(cast(cast(extract(year from FinalTestCompletedDate) - 1 as int64) as string),'-', cast(cast(extract(year from FinalTestCompletedDate) - 2000 as int64) as string)) as SchoolYear,
+        a.AceAssessmentId,
+        a.AceAssessmentName,
+        a.AssessmentSubject,
+        c.*
+    from caaspp as c
+    left join assessment_ids as a
+    on c.RecordType = a.SystemOrVendorAssessmentId
+),
+
 min_met_scores as (
     select
         AceAssessmentId,
@@ -31,14 +43,9 @@ min_met_scores as (
 
 caaspp_id_race_added as (
     select
-        a.AceAssessmentId,
-        a.AceAssessmentName,
-        a.AssessmentSubject,
         c.*,
         r.RaceEthnicity
-    from caaspp as c
-    left join assessment_ids as a
-    on cast(cast(c.RecordType as int64) as string) = a.SystemOrVendorAssessmentId
+    from caaspp_yrs_id_added as c
     left join race_ethnicity as r
     on c.ReportingEthnicity = r.RaceEthnicityCode
 ),

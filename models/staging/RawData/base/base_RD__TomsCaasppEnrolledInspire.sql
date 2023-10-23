@@ -36,6 +36,7 @@ select
     TwoorMoreRaces,
     cast(ReportingEthnicity as string) as ReportingEthnicity,
     right(cast(FinalTestedSchoolCode as string), 7) as FinalTestedSchoolCode,
+    date(FinalTestCompletedDate) as FinalTestCompletedDate,
     StudentExitCode,
     date(StudentExitWithdrawalDate) as StudentExitWithdrawalDate,
     date(StudentRemovedCALPADSFileDate) as StudentRemovedCALPADSFileDate,
