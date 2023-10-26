@@ -14,6 +14,10 @@ susp_2021 as (
     select * from {{ source('RawData', 'CdeSusp2021') }}
 ),
 
+susp_2122 as (
+    select * from {{ source('RawData', 'CdeSusp2122') }}
+),
+
 unioned as (
     select * from susp_1718
     union all
@@ -22,6 +26,8 @@ unioned as (
     select * from susp_1920
     union all
     select * from susp_2021
+    union all
+    select * from susp_2122
 ),
 
 final as (
