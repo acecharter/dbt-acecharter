@@ -135,6 +135,27 @@ sources:
       - name: CaDashSusp2022
         description: 2022 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 
+      - name: CaDashCci2023
+        description: 2023 CA School Dashboard College/Career indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashChronic2023
+        description: 2023 CA School Dashboard Chronic Absenteeism Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashEla2023
+        description: 2023 CA School Dashboard ELA indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashElpi2023
+        description: 2023 CA School Dashboard English Learner Progress indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashGrad2023
+        description: 2023 CA School Dashboard Graduation Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashMath2023
+        description: 2023 CA School Dashboard Math data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
+      - name: CaDashSusp2023
+        description: 2023 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
+
       - name: CalpadsSelaEmpower
         description: CALPADS ODS Active Students SELA Extract for Empower as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
 

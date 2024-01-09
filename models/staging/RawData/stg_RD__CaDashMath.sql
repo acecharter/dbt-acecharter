@@ -1,4 +1,37 @@
-with math_2022 as (
+with math_2023 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        StudentGroup,
+        CurrDenom,
+        CurrStatus,
+        PriorDenom,
+        PriorStatus,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        HsCutPoints,
+        PairShareMethod,
+        CurrPRateEnrolled,
+        CurrPRateTested,
+        CurrPRate,
+        CurrNumPrLoss,
+        CurrDenomWithoutPrLoss,
+        CurrStatusWithoutPrLoss,
+        Indicator,
+        ReportingYear
+    from {{ ref('base_RD__CaDashMath2023')}} 
+),
+
+math_2022 as (
     select
         Cds,
         RType,
@@ -19,16 +52,14 @@ with math_2022 as (
         cast(null as int64) as Color,
         cast(null as int64) as Box,
         HsCutPoints,
-        cast(null as float64) as CurrAdjustment,
-        cast(null as float64) as PriorAdjustment,
         PairShareMethod,
-        cast(null as bool) as NoTestFlag,
         PRateEnrolled,
         PRateTested,
         PRate,
         NumPrLoss,
         CurrDenomWithoutPrLoss,
         CurrStatusWithoutPrLoss,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashMath2022')}} 
 ),
@@ -53,16 +84,14 @@ math_2019 as (
         Color,
         Box,
         HsCutPoints,
-        CurrAdjustment,
-        PriorAdjustment,
         PairShareMethod,
-        NoTestFlag,
         cast(null as int64) as PRateEnrolled,
         cast(null as int64) as PRateTested,
         cast(null as int64) as PRate,
         cast(null as int64) as NumPrLoss,
         cast(null as int64) as CurrDenomWithoutPrLoss,
         cast(null as float64) as CurrStatusWithoutPrLoss,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashMath2019')}} 
 ),
@@ -88,16 +117,14 @@ math_2018 as (
         Color,
         Box,
         HsCutPoints,
-        CurrAdjustment,
-        PriorAdjustment,
         PairShareMethod,
-        cast(null as bool) as NoTestFlag,
         cast(null as int64) as PRateEnrolled,
         cast(null as int64) as PRateTested,
         cast(null as int64) as PRate,
         cast(null as int64) as NumPrLoss,
         cast(null as int64) as CurrDenomWithoutPrLoss,
         cast(null as float64) as CurrStatusWithoutPrLoss,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashMath2018')}} 
 ),
@@ -123,21 +150,21 @@ math_2017 as (
         Color,
         cast(null as int64) as Box,
         cast(null as bool) as HsCutPoints,
-        cast(null as float64) as CurrAdjustment,
-        cast(null as float64) as PriorAdjustment,
         cast(null as string) as PairShareMethod,
-        cast(null as bool) as NoTestFlag,
         cast(null as int64) as PRateEnrolled,
         cast(null as int64) as PRateTested,
         cast(null as int64) as PRate,
         cast(null as int64) as NumPrLoss,
         cast(null as int64) as CurrDenomWithoutPrLoss,
         cast(null as float64) as CurrStatusWithoutPrLoss,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashMath2017')}} 
 ),
 
 unioned as (
+    select * from math_2023
+    union all
     select * from math_2022
     union all
     select * from math_2019

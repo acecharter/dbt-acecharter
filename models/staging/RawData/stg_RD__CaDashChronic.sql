@@ -1,4 +1,33 @@
-with chronic_2022 as (
+with chronic_2023 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        StudentGroup,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        PriorNumer,
+        PriorDenom,
+        PriorStatus,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        CertifyFlag,
+        DataErrorFlag,
+        Indicator,
+        ReportingYear
+    from {{ ref('base_RD__CaDashChronic2023')}} 
+),
+
+chronic_2022 as (
     select
         Cds,
         RType,
@@ -16,13 +45,13 @@ with chronic_2022 as (
         cast(null as int64) as PriorDenom,
         cast(null as float64) as PriorStatus,
         cast(null as float64) as Change,
-        cast(null as bool) as SafetyNet,
         StatusLevel,
         cast(null as int64) as ChangeLevel,
         cast(null as int64) as Color,
         cast(null as int64) as Box,
         CertifyFlag,
         DataErrorFlag,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashChronic2022')}} 
 ),
@@ -45,13 +74,13 @@ chronic_2019 as (
         PriorDenom,
         PriorStatus,
         Change,
-        SafetyNet,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
         CertifyFlag,
         DataErrorFlag,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashChronic2019')}} 
 ),
@@ -74,18 +103,20 @@ chronic_2018 as (
         PriorDenom,
         PriorStatus,
         Change,
-        SafetyNet,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
         CertifyFlag,
         cast(null as bool) as DataErrorFlag,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashChronic2018')}} 
 ),
 
 unioned as (
+    select * from chronic_2023
+    union all
     select * from chronic_2022
     union all
     select * from chronic_2019

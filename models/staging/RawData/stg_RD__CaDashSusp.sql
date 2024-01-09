@@ -1,4 +1,38 @@
-with susp_2022 as (
+with susp_2023 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        Type,
+        StudentGroup,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        PriorNumer,
+        PriorDenom,
+        PriorStatus,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        SmallDenom,
+        CurrNSizeMet,
+        PriorNSizeMet,
+        AccountabilityMet,
+        CertifyFlag,
+        PriorCertifyFlag,
+        Indicator,
+        ReportingYear
+    from {{ ref('base_RD__CaDashSusp2023')}} 
+),
+
+susp_2022 as (
     select
         Cds,
         RType,
@@ -16,13 +50,18 @@ with susp_2022 as (
         cast(null as int64) as PriorNumer,
         cast(null as int64) as PriorDenom,
         cast(null as float64) as PriorStatus,
-        cast(null as bool) as SafetyNet,
         cast(null as float64) as Change,
         StatusLevel,
         cast(null as int64) as ChangeLevel,
         cast(null as int64) as Color,
         cast(null as int64) as Box,
+        cast(null as bool) as SmallDenom,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
         CertifyFlag,
+        cast(null as bool) as PriorCertifyFlag,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashSusp2022')}} 
 ),
@@ -45,13 +84,18 @@ susp_2019 as (
         PriorNumer,
         PriorDenom,
         PriorStatus,
-        SafetyNet,
         Change,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
+        cast(null as bool) as SmallDenom,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
         CertifyFlag,
+        cast(null as bool) as PriorCertifyFlag,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashSusp2019')}} 
 ),
@@ -74,13 +118,18 @@ susp_2018 as (
         PriorNumer,
         PriorDenom,
         PriorStatus,
-        SafetyNet,
         Change,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
+        cast(null as bool) as SmallDenom,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
         CertifyFlag,
+        cast(null as bool) as PriorCertifyFlag,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashSusp2018')}} 
 ),
@@ -103,18 +152,25 @@ susp_2017 as (
         PriorNumer,
         PriorDenom,
         PriorStatus,
-        SafetyNet,
         Change,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
+        cast(null as bool) as SmallDenom,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
         CertifyFlag,
+        cast(null as bool) as PriorCertifyFlag,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashSusp2017')}} 
 ),
 
 unioned as (
+    select * from susp_2023
+    union all
     select * from susp_2022
     union all
     select * from susp_2019
