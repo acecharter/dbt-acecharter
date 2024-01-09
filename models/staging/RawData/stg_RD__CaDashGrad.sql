@@ -1,4 +1,36 @@
-with grad_2022 as (
+with grad_2023 as (
+    select
+        Cds,
+        RType,
+        SchoolName,
+        DistrictName,
+        CountyName,
+        CharterFlag,
+        CoeFlag,
+        DassFlag,
+        StudentGroup,
+        CurrNumer,
+        CurrDenom,
+        CurrStatus,
+        PriorNumer,
+        PriorDenom,
+        PriorStatus,
+        Change,
+        StatusLevel,
+        ChangeLevel,
+        Color,
+        Box,
+        SmallDenom,
+        FiveYrNumer,
+        CurrNSizeMet,
+        PriorNSizeMet,
+        AccountabilityMet,
+        Indicator,
+        ReportingYear
+    from {{ ref('base_RD__CaDashGrad2023')}} 
+),    
+
+grad_2022 as (
     select
         Cds,
         RType,
@@ -15,13 +47,17 @@ with grad_2022 as (
         cast(null as int64) as PriorNumer,
         cast(null as int64) as PriorDenom,
         cast(null as float64) as PriorStatus,
-        FiveYrNumer,
-        cast(null as bool) as SafetyNet,
         cast(null as float64) as Change,
         StatusLevel,
         cast(null as int64) as ChangeLevel,
         cast(null as int64) as Color,
         cast(null as int64) as Box,
+        cast(null as bool) as SmallDenom,
+        FiveYrNumer,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashGrad2022')}} 
 ),
@@ -43,13 +79,17 @@ grad_2019 as (
         PriorNumer,
         PriorDenom,
         PriorStatus,
-        FiveYrNumer,
-        SafetyNet,
         Change,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
+        cast(null as bool) as SmallDenom,
+        FiveYrNumer,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashGrad2019')}} 
 ),
@@ -71,13 +111,17 @@ grad_2018 as (
         PriorNumer,
         PriorDenom,
         PriorStatus,
-        null as FiveYrNumer,
-        SafetyNet,
         Change,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
+        cast(null as bool) as SmallDenom,
+        cast(null as int64) as FiveYrNumer,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashGrad2018')}} 
 ),
@@ -99,18 +143,24 @@ grad_2017 as (
         PriorNumer,
         PriorDenom,
         PriorStatus,
-        null as FiveYrNumer,
-        SafetyNet,
         Change,
         StatusLevel,
         ChangeLevel,
         Color,
         Box,
+        cast(null as bool) as SmallDenom,
+        cast(null as int64) as FiveYrNumer,
+        cast(null as bool) as CurrNSizeMet,
+        cast(null as bool) as PriorNSizeMet,
+        cast(null as bool) as AccountabilityMet,
+        cast(null as string) as Indicator,
         ReportingYear
     from {{ ref('base_RD__CaDashGrad2017')}} 
 ),
 
 unioned as (
+    select * from grad_2023
+    union all
     select * from grad_2022
     union all
     select * from grad_2019
