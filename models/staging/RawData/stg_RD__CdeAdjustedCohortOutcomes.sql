@@ -24,7 +24,7 @@ acgr_2022 as (
 
 acgr_2023 as (
     select * from {{ ref('base_RD__CdeAdjustedCohortOutcomes2023')}}
-)
+),
 
 unioned as (
     select * from acgr_2017
