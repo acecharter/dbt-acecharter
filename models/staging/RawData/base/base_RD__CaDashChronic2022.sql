@@ -18,10 +18,9 @@ select
 from {{ source('RawData', 'CaDashChronic2022') }}
 where
     rtype = 'X'
-    or (rtype = 'S' and charter_flag = true and dass_flag is null)
-    -- or substr(cast(cds as string), 1, 7) in (
-    --     '4369369',  -- ARUSD
-    --     '4369666',  -- SJUSD (includes ACE Inspire)
-    --     '4369450'  -- FMSD (includes ACE Esperanza)
-    -- )
-    -- or cds = 43104390116814  -- ACE Empower
+    or substr(cast(cds as string), 1, 7) in (
+        '4369369',  -- ARUSD
+        '4369666',  -- SJUSD (includes ACE Inspire)
+        '4369450'  -- FMSD (includes ACE Esperanza)
+    )
+    or cds = 43104390116814  -- ACE Empower
