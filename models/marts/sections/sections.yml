@@ -96,6 +96,59 @@ models:
         tests:
           - not_null
 
+  - name: dim_SectionStaff
+    description: All student course enrollments. A student could potentially have multiple rows associated with a single course if they exited and subsequently re-enrolled, but BeginDate and EndDate should be unique and not overlap.
+    columns:
+      - name: SchoolId
+        description: The unique ID of the school where the student is enrolled in a section.
+        tests:
+          - not_null
+
+      - name: SessionName
+        description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
+        tests:
+          - not_null
+
+      - name: SectionIdentifier
+        description: The ID of the section of a course from PowerSchool SIS.
+        tests:
+          - not_null
+
+      - name: ClassPeriodName
+        description: The timeblock when section occurs.
+        tests:
+          - not_null
+
+      - name: StaffUniqueId
+        description: The unique ID of any staff member associated with a section of a course.
+        tests:
+          - not_null
+
+      - name: StaffDisplayName
+        description: Staff member name
+        tests:
+          - not_null
+
+      - name: StaffClassroomPosition
+        description: The classroom position of the staff member. A value of 'Teacher of Record' typically indicates the primary teacher for a section.
+        tests:
+          - not_null
+
+      - name: StaffBeginDate
+        description: Month, day, and year of the beginning of the staff member's association with the section indicated by SectionIdentifier.
+        tests:
+          - not_null
+
+      - name: StaffEndDate
+        description: Month, day, and year of the ending of the staff member's association with the section indicated by SectionIdentifier.
+        tests:
+          - not_null
+
+      - name: IsCurrentStaffAssociation
+        description:
+          Whether or not the staff member's association with the section is currently active or was active at the end of the section's session. If the staff member's association with the section ended prior to the end of the section, then this will show False.  Note that sometimes when session end dates are changed in the SIS, they can get out of alignment with default staff section end dates and this may show as False from that mismatch.
+          - not_null
+
   - name: dim_Sections
     description: Unique sections for each course at each school.
     columns:
@@ -159,59 +212,6 @@ models:
 
       - name: SectionEndDate
         description: Latest month, day, and year of student enrollment end dates associated with this section.
-
-  - name: dim_SectionStaff
-    description: All student course enrollments. A student could potentially have multiple rows associated with a single course if they exited and subsequently re-enrolled, but BeginDate and EndDate should be unique and not overlap.
-    columns:
-      - name: SchoolId
-        description: The unique ID of the school where the student is enrolled in a section.
-        tests:
-          - not_null
-
-      - name: SessionName
-        description: Typically a combination of the school year and the term name (i.e. SchoolYear + Semester #)
-        tests:
-          - not_null
-
-      - name: SectionIdentifier
-        description: The ID of the section of a course from PowerSchool SIS.
-        tests:
-          - not_null
-
-      - name: ClassPeriodName
-        description: The timeblock when section occurs.
-        tests:
-          - not_null
-
-      - name: StaffUniqueId
-        description: The unique ID of any staff member associated with a section of a course.
-        tests:
-          - not_null
-
-      - name: StaffDisplayName
-        description: Staff member name
-        tests:
-          - not_null
-
-      - name: StaffClassroomPosition
-        description: The classroom position of the staff member. A value of 'Teacher of Record' typically indicates the primary teacher for a section.
-        tests:
-          - not_null
-
-      - name: StaffBeginDate
-        description: Month, day, and year of the beginning of the staff member's association with the section indicated by SectionIdentifier.
-        tests:
-          - not_null
-
-      - name: StaffEndDate
-        description: Month, day, and year of the ending of the staff member's association with the section indicated by SectionIdentifier.
-        tests:
-          - not_null
-
-      - name: IsCurrentStaffAssociation
-        description:
-          Whether or not the staff member's association with the section is currently active or was active at the end of the section's session. If the staff member's association with the section ended prior to the end of the section, then this will show False.  Note that sometimes when session end dates are changed in the SIS, they can get out of alignment with default staff section end dates and this may show as False from that mismatch.
-          - not_null
 
   - name: fct_StudentGrades
     description: Grade marks for all grading periods for the current school year. One row per grade per grading period per course enrollment per student. Excludes gradebook grades for completed periods.
@@ -313,3 +313,6 @@ models:
         description: Whether or not the student's enrollment in the course section is currently active.
         tests:
           - not_null
+
+  - name: rpt_CurrentStudentGrades
+    description: Grade marks for all grading periods for the current school year for currently enrolled students. One row per grade per grading period per course enrollment per student. Excludes gradebook grades for completed periods.

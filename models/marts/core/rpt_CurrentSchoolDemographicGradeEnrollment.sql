@@ -14,7 +14,7 @@ schools as (
 
 final as (
     select
-        s.* except (SchoolId),
+        s.*,
         e.* except (SchoolYear, SchoolId)
     from enrollment as e
     left join schools as s

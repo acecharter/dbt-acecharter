@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: fct_ChronicAbsenteeism
+    description: Aggregate annual public chronic absenteeism rates for ACE schools and comparison entities disaggregated by student group and charter school status
+    columns:
+      - name: "AcademicYear || '-' || EntityCode || '-' || CharterSchool || '-' || ReportingCategory"
+        description: No existing primary key, but each academic year-entity code-charter school-reporting category combo should be unique
+        tests:
+          - unique
+      
+  - name: fct_SchoolAverageDailyAttendance
+    description: Aggregate calculations of average daily attendance for years where StarterPack data is available
+    columns:
+      - name: "SchoolId || '-' || GradeLevel || '-' || EventDate"
+        description: No existing primary key, but the combination of these columns should be unique
+        tests:
+          - unique
+
+  - name: fct_StudentAbsencesByDate
+    description: A log of student-level absences by date
+    columns:
+      - name: "StudentUniqueId || '-' || EventDate"
+        description: No existing primary key, but each student ID/event date combo should be unique
+        tests:
+          - unique
+
+  - name: fct_StudentAttendance
+    description: Aggregate student-level attendance information by school/school year
+    columns:
+      - name: "SchoolYear || '-' || SchoolId || '-' || StudentUniqueId"
+        description: No existing primary key, but each school year/school ID/student ID combo should be unique
+        tests:
+          - unique
+      - name: SchoolYear
+      - name: SchooId
+      - name: StudentUniqueId
+      - name: CountOfDaysAbsent
+      - name: CountOfDaysInAttendance
+      - name: CountOfDaysEnrolled
+      - name: AbsenceRate
+      - name: AverageDailyAttendance
+      - name: AttendanceRateGroup
+      - name: IsChronicallyAbsent
+
+  - name: fct_StudentRecentAttendance
+    description: Aggregate student-level attendance information for the most recent 10 school instructional days
+    columns:
+      - name: "SchoolId || '-' || StudentUniqueId"
+        description: No existing primary key since a student may transfer between schools, but each school ID/student ID combo should be unique
+        tests:
+          - unique
+
+  - name: rpt_ChronicAbsenteeism
+    description: Aggregate annual public chronic absenteeism rates for ACE schools and comparison entities disaggregated by student group and charter school status
+
+  - name: rpt_SchoolAttendance
+    description: Aggregate calculations of average daily attendance for years where StarterPack data is available including attendance reporting period information
+
+  - name: rpt_StudentAttendance
+    description: Aggregate student-level attendance information by school/school year
