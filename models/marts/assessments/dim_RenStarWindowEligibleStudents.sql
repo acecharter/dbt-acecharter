@@ -1,5 +1,3 @@
---This script identifies "eligible" students for each testing window based on dates entered in the RenStarWindows table
-
 with students as (
     select * from {{ ref('dim_Students') }}
 ),

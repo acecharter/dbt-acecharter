@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: rpt_CaDash
+    description: CA School Dashboard data for all state indicators
+    columns:
+      - name: "IndicatorName || '-' || EntityCode || '-' || StudentGroup || '-' || ReportingYear"
+        description: No existing primary key, but combination of these columns should be unique
+        tests:
+          - unique
+      

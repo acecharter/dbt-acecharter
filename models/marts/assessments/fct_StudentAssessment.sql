@@ -68,45 +68,6 @@ cers as (
     from {{ ref('int_Cers__2_unpivoted') }}
 ),
 
-anet as (
-    select
-        AceAssessmentId,
-        concat(AceAssessmentName, ' (Cycle ', cast(Cycle as string), ')')
-            as AssessmentName,
-        Subject as AssessmentSubject,
-        StateUniqueId,
-        StateSchoolCode as TestedSchoolId,
-        SchoolYear as AssessmentSchoolYear,
-        concat(AssessmentName, '-', StateUniqueId) as AssessmentId,
-        cast(null as string) as AssessmentDate,
-        GradeLevel as GradeLevelWhenAssessed,
-        cast(GradeLevel as string) as AssessmentGradeLevel,
-        'Overall' as AssessmentObjective,
-        'Percent Score' as ReportingMethod,
-        'FLOAT64' as StudentResultDataType,
-        cast(Score as string) as StudentResult
-    from {{ ref('int_Anet__aggregated') }}
-),
-
-amplify as (
-    select
-        AceAssessmentId,
-        AceAssessmentName as AssessmentName,
-        Subject as AssessmentSubject,
-        StateUniqueId,
-        SchoolId as TestedSchoolId,
-        SchoolYear as AssessmentSchoolYear,
-        concat(ElaLessonTitle, '-', StateUniqueId) as AssessmentId,
-        cast(ElaHandInDate as string) as AssessmentDate,
-        cast(GradeLevel as int64) as GradeLevelWhenAssessed,
-        GradeLevel as AssessmentGradeLevel,
-        'Overall' as AssessmentObjective,
-        'Percent Score' as ReportingMethod,
-        'FLOAT64' as StudentResultDataType,
-        cast(ElaTestScore as string) as StudentResult
-    from {{ ref('stg_RD__Amplify') }}
-),
-
 ap as (
     select
         AceAssessmentId,
@@ -136,10 +97,6 @@ unioned_results as (
     select * from star
     union all
     select * from cers
-    union all
-    select * from anet
-    union all
-    select * from amplify
     union all
     select * from ap
 ),

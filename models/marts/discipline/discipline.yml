@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: fct_Suspension
+    description: State suspension rate data aggregated by entity and student group
+    columns:
+      - name: "AcademicYear || '-' || EntityCode || '-' || CharterSchool || '-' || ReportingCategory"
+        description: No existing primary key, but combination of these columns should be unique
+        tests:
+          - unique
+
+  - name: rpt_Suspension
+    description: State suspension rate data aggregated by entity and student group

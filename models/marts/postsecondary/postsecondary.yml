@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dim_CgrEntities
+    description: Entity information for the state and each school, district, and county to include in college-going rate comparison entity models
+    columns:
+      - name: EntityType
+        description: Type of entity (either State, County, District, or School)
+        tests:
+          - accepted_values:
+              values: ["State", "County", "District", "School"]
+      - name: EntityCode
+        description: Primary key of table; Entity-level state code (e.g. 2-digit county code for state and county entities, 5-digit district code for district entities, 7-digit school code for school entities)
+        tests:
+          - not_null
+      - name: EntityName
+      
+  - name: fct_CollegeGoingCounts
+    description: CDE college-going count data
+    columns:
+      - name: "AcademicYear || '-' || EntityCode || '-' || CharterSchool || '-' || DASS || '-' || ReportingCategory || '-' || CompleterType || '-' || CgrPeriodType || '-' || CollegeGoingGroupType"
+        description: No existing primary key, but combination of these columns should be unique
+        tests:
+          - unique
+
+  - name: fct_CollegeGoingRate
+    description: CDE college-going rate data
+    columns:
+      - name: "AcademicYear || '-' || EntityCode || '-' || CharterSchool || '-' || DASS || '-' || ReportingCategory || '-' || CompleterType || '-' || CgrPeriodType"
+        description: No existing primary key, but combination of these columns should be unique
+        tests:
+          - unique
+
+  - name: rpt_CollegeGoingCounts
+    description: CDE college-going count information with student group and entity name information filtered to include only ACE comparison entities
+
+  - name: rpt_CollegeGoingRate
+    description: CDE college-going rate information with student group and entity name information added filtered to include only ACE comparison entities

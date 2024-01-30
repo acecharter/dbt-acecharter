@@ -1,6 +1,9 @@
 version: 2
 
 models:
+  - name: dim_CalendarDates
+    description: General student calendar information for schools for current and archived academic years.
+
   - name: dim_ComparisonEntities
     description: Entity information for the state and each school, district, and county to include in comparison entity models
     columns:
@@ -18,16 +21,36 @@ models:
       - name: EntityNameMid
       - name: EntityNameShort
 
-  - name: dim_Schools
-    description: School-level information for each school
+  - name: dim_CurrentSchools
+    description: School-level information for each school operating in the current school year
     columns:
-      - name: "SchoolYear || '-' || SchoolId"
-        description: No existing primary key, but each school-student combo should have a unique EntryDate
-
       - name: SchoolId
         description: Primary key of table
         tests:
           - not_null
+
+  - name: dim_Entities
+    description: Entity-level information for each entity (entity types include schools, district, and the state)
+    columns:
+      - name: EntityCode
+        description: Primary key of table
+        tests:
+          - not_null
+  
+  - name: dim_SchoolYears
+    description: School year information for years with StarterPack data
+    columns:
+      - name: SchoolYear
+        description: Primary key of table
+      - name: StartDate
+      - name: EndDate
+      - name: YearsPriorToCurrent
+
+  - name: dim_Schools
+    description: School-level information for each school
+    columns:
+      - name: "SchoolYear || '-' || SchoolId"
+        description: No existing primary key, but each school-school id combo should be unique
 
   - name: dim_StudentDemographics
     description: Student demographic information for each unique student
@@ -50,6 +73,14 @@ models:
         tests:
           - unique
 
+  - name: fct_CurrentSchoolDemographicGradeEnrollment
+    description: Current enrollment totals by school, demographic group, and grade level
+    columns:
+      - name: "SchoolYear || '-' || SchoolId || '-' || StudentGroup || '-' || GradeLevel"
+        description: No true primary key, but each schoolyear-school-student-gradelevel combo should be unique
+        tests:
+          - unique
+
   - name: fct_StudentSchoolEnrollments
     description: Student enrollment information for each unique enrollment of a student in a school. A student could have multiple enrollments in a school if they exited and subsequently re-enrolled, but the entry and exit dates of each should be unique and not overlapping with subsequent enrollments.
     columns:
@@ -65,8 +96,19 @@ models:
       - name: ExitWithdrawReason
       - name: IsCurrentEnrollment
 
+  - name: rpt_CurrentMiddleSchoolStudentProfile
+    description: Wide table of student demographic, attendance, and academic information for current middle school students.
+
+  - name: rpt_CurrentSchoolDemographicGradeEnrollment
+    description: Current enrollment totals by school, demographic group, and grade level, including additional school information
+    columns:
+      - name: "SchoolYear || '-' || SchoolId || '-' || StudentGroup || '-' || GradeLevel"
+        description: No true primary key, but each schoolyear-school-student-gradelevel combo should be unique
+        tests:
+          - unique
+
   - name: rpt_CurrentStudentDemographics
-    description: Staging model for StudentDemographics source data
+    description: Student demographic and enrollment information for the currently enrolled students.
     columns:
       - name: EllStatus
         tests:

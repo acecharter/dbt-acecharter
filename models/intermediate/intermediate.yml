@@ -1,11 +1,6 @@
 version: 2
 
 models:
-  - name: int_Anet__aggregated
-    description: Aggregated Achievement Network (ANET) export data to calculated each student's score on each assessment. Raw data file contains question level information (i.e. 1 row per question).
-
-    config:
-      materialized: view
 
   - name: int_Ap__1_unpivoted
     description: Combined Advanced Placement (AP) student data file data from multiple years. Original file is in a wide format where student results and information relating to each result (e.g. score, exam code, etc.) for current and prior years are spread over multiple columns. Data unpivoted so that each row corresponds with a single value from a single test result for a single student.

@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: dim_RenStarWindowEligibleStudents
+    description: Students who met internally-defined eligibility criteria for inclusion in aggregate reporting of Renaissance Star testing windows
+      
+  - name: fct_CaasppMinMetScaleScores
+    description: Minimum "standard met" scale scores by grade level for state CAASPP (SBAC ELA, SBAC Math, CAST) assessments
+      
+  - name: fct_EntityCaaspp
+    description: Aggregate summative CAASPP results by entity, student group, grade level, objective, and result type
+    columns:
+      - name: "EntityCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId || '-' || AssessmentObjective || '-' || ReportingMethod"
+        description: No true primary key, but the combination of these columns should be unique
+      
+  - name: fct_EntityElpac
+    description: Aggregate summative ELPAC results by entity, student group, grade level, objective, and result type
+    columns:
+      - name: "EntityCode || '-' || TestYear || '-' || StudentGroupId || '-' || GradeLevel || '-' || TestId || '-' || AssessmentObjective || '-' || ReportingMethod"
+        description: No true primary key, but the combination of these columns should be unique
+
+  - name: fct_StudentAssessment
+    description: Student assessment results on state summative and interim, Renaissance Star, and Advanced Placement (AP) assessments by reporting method (i.e. score type)
+    columns:
+      - name: "tbd"
+        description: No true primary key, but the combination of these columns should be unique
+      
+  - name: fct_StudentRenStarCompletionByWindow
+    description: Student-level Renaissance Star testing status by testing window
+      
+  - name: fct_StudentRenStarMultiWindowCompletion
+    description: Student-level Renaissance Star testing status over multiple testing windows. Completion in two testing windows required to calculate SGP growth score.
+      
+  - name: fct_StudentRenStarWindowResultCounts
+    description: Count of the number of times a student took each Renaissance Star assessment by testing window
+      
+  - name: rpt_CurrentStudentAssessment
+    description: Student assessment results for currently enrolled students on state summative and interim, Renaissance Star, and Advanced Placement (AP) assessments by reporting method (i.e. score type)
+      
+  - name: rpt_CurrentStudentCaasppResults
+    description: Student assessment results for currently enrolled students on state summative CAASPP assessments
+      
+  - name: rpt_CurrentStudentElpacResults
+    description: Student assessment results for currently enrolled students on state summative ELPAC assessment
+      
+  - name: rpt_CurrentStudentSbacAchievementLevels
+    description: Student assessment results for currently enrolled students on state summative and interim (ELA and Math) SBAC assessments
+      
+  - name: rpt_EntityCaaspp
+    description: Aggregate entity assessment results for students on summative CAASPP assessments
+      
+  - name: rpt_EntityCaasppComparisons
+    description: Aggregate entity assessment results for students on summative CAASPP assessments by ACE comparison school
+      
+  - name: rpt_EntityElpac
+    description: Aggregate entity assessment results for students on summative ELPAC assessment
+      
+  - name: rpt_StudentRenStarCompletionByTestingWindow
+    description: Student-level Renaissance Star testing status by testing window with additional school info
+      
+  - name: rpt_StudentRenStarGrowth
+    description: Student-level Renaissance Star growth results by testing window with additional school info
+      
+  - name: rpt_StudentRenStarMaxResultsByWindow
+    description: Student-level Renaissance Star results by testing window, including only the highest score for students with multiple results for the same assessment/testing window
+      
+  - name: rpt_StudentRenStarMultiWindowCompletion
+    description: Student-level Renaissance Star testing status over multiple testing windows with additional school info. Completion in two testing windows required to calculate SGP growth scores.
