@@ -12,15 +12,15 @@ models:
   - name: fct_SchoolAverageDailyAttendance
     description: Aggregate calculations of average daily attendance for years where StarterPack data is available
     columns:
-      - name: "SchoolId || '-' || EventDate"
-        description: No existing primary key, but each school ID/event date combo should be unique
+      - name: "SchoolId || '-' || GradeLevel || '-' || EventDate"
+        description: No existing primary key, but the combination of these columns should be unique
         tests:
           - unique
 
   - name: fct_StudentAbsencesByDate
     description: A log of student-level absences by date
     columns:
-      - name: "StudentId || '-' || EventDate"
+      - name: "StudentUniqueId || '-' || EventDate"
         description: No existing primary key, but each student ID/event date combo should be unique
         tests:
           - unique

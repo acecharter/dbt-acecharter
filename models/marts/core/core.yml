@@ -103,7 +103,7 @@ models:
     description: Current enrollment totals by school, demographic group, and grade level, including additional school information
     columns:
       - name: "SchoolYear || '-' || SchoolId || '-' || StudentGroup || '-' || GradeLevel"
-        description: No true primary key, but each schoolyear-school-student-gradelevel combo should be unique
+        description: No true primary key, but combination of these columns should be unique
         tests:
           - unique
 
