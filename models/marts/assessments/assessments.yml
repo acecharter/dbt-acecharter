@@ -12,18 +12,24 @@ models:
     columns:
       - name: "EntityCode || '-' || TestYear || '-' || DemographicId || '-' || GradeLevel || '-' || TestId || '-' || AssessmentObjective || '-' || ReportingMethod"
         description: No true primary key, but the combination of these columns should be unique
+        tests:
+          - unique
       
   - name: fct_EntityElpac
     description: Aggregate summative ELPAC results by entity, student group, grade level, objective, and result type
     columns:
       - name: "EntityCode || '-' || TestYear || '-' || StudentGroupId || '-' || GradeLevel || '-' || TestId || '-' || AssessmentObjective || '-' || ReportingMethod"
         description: No true primary key, but the combination of these columns should be unique
+        tests:
+          - unique
 
   - name: fct_StudentAssessment
     description: Student assessment results on state summative and interim, Renaissance Star, and Advanced Placement (AP) assessments by reporting method (i.e. score type)
-    columns:
-      - name: "tbd"
+    columns: 
+      - name: "AssessmentName || '-' || StateUniqueId || '-' || AssessmentDate || '-' || AssessmentObjective || '-' || ReportingMethod"
         description: No true primary key, but the combination of these columns should be unique
+        tests:
+          - unique
       
   - name: fct_StudentRenStarCompletionByWindow
     description: Student-level Renaissance Star testing status by testing window
