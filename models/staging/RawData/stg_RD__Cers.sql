@@ -11,7 +11,7 @@ with assessment_ids as (
             when 'SB Math Summative' then 'Math SUM'
             when 'CAA ELA' then 'CAAELA SUM'
             when 'CAA Math' then 'CAAMATH SUM'
-            when 'cast' then 'cast SUM'
+            when 'CAST' then 'CAST SUM'
             when 'CSA' then 'CSA SUM'
             when 'SB ELA IAB/FIAB' then 'ELA IAB'
             when 'SB Math IAB/FIAB' then 'Math IAB'
