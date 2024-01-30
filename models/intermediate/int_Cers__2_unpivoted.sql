@@ -10,7 +10,7 @@ with unpivoted as (
             'AssessmentId',
             'AceAssessmentId',
             'AceAssessmentName',
-            'AceAssessmentSubject'
+            'AceAssessmentSubject',
             'AssessmentName',
             'TestSchoolCdsCode',
             'StateUniqueId',
