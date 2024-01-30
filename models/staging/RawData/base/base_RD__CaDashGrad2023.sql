@@ -29,5 +29,6 @@ select
 from {{ source('RawData', 'CaDashGrad2023') }}
 where
     rtype = 'X'
-    --ESUHSD (includes ACE Charter High)
-    or substr(cast(cds as string), 1, 7) = '4369427'
+    or (rtype = 'S' and charter_flag = true and dass_flag is null)
+    -- --ESUHSD (includes ACE Charter High)
+    -- or substr(cast(cds as string), 1, 7) = '4369427'
