@@ -17,6 +17,7 @@ cers as (
     select
         AceAssessmentId,
         AceAssessmentName,
+        AceAssessmentSubject,
         TestDistrictId,
         TestDistrictName,
         TestSchoolCdsCode,

@@ -6,6 +6,7 @@ with assessment_ids as (
     select 
         AceAssessmentId,
         AssessmentNameShort as AceAssessmentName,
+        AssessmentSubject as AceAssessmentSubject,
         case AssessmentNameShort
             when 'SB ELA Summative' then 'ELA SUM'
             when 'SB Math Summative' then 'Math SUM'
@@ -64,6 +65,7 @@ final as (
     select distinct
         a.AceAssessmentId,
         a.AceAssessmentName,
+        a.AceAssessmentSubject,
         u.DistrictId as TestDistrictId,
         u.DistrictName as TestDistrictName,
         u.SchoolId as TestSchoolCdsCode,

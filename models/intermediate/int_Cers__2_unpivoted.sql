@@ -10,6 +10,7 @@ with unpivoted as (
             'AssessmentId',
             'AceAssessmentId',
             'AceAssessmentName',
+            'AceAssessmentSubject'
             'AssessmentName',
             'TestSchoolCdsCode',
             'StateUniqueId',
@@ -56,6 +57,7 @@ final as (
                     )
             else AceAssessmentName
         end as AssessmentName,
+        AceAssessmentSubject as AssessmentSubject,
         cast(
             cast(
                 right(TestSchoolCdsCode, 7)
