@@ -66,5 +66,5 @@ select
 from {{ source('RawData', 'CaDashCci2023') }}
 where
     rtype = 'X'
-    ESUHSD (includes ACE Charter High)
+    --ESUHSD (includes ACE Charter High)
     or substr(cast(cds as string), 1, 7) = '4369427'
