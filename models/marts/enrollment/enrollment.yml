@@ -9,7 +9,7 @@ models:
         tests:
           - unique
 
-  - name: fct_SchoolDenrollmentByDate
+  - name: fct_SchoolEnrollmentByDate
     description: Aggregate ACE enrollment by school and date
     columns:
       - name: "CalendarDate || '-' || SchoolId"
