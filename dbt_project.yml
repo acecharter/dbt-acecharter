@@ -72,10 +72,15 @@ models:
         base:
           +materialized: ephemeral
 
-      RenaissanceStar_Archive:
+      RenaissanceStar:
+        +tags: daily
         base:
           +materialized: ephemeral
 
-      RenaissanceStar:
+      RenaissanceStar_Archive:
         base:
           +materialized: ephemeral
+      
+      StarterPack:
+        +tags: daily
+
