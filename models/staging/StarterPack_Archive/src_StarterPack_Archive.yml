@@ -69,7 +69,6 @@ sources:
 
           - name: NumericGradeEarned
             description: The numeric value of the grade earned by the student for the section and respective grading period.
-            tests:
 
           - name: LetterGradeEarned
             description: The letter grade of the grade earned by the student for the section and respective grading period.
