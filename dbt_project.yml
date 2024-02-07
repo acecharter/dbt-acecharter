@@ -65,6 +65,9 @@ models:
     staging:
       +materialized: table
 
+      GoogleSheetData:
+        +materialized: view
+
       RawData:
         base:
           +materialized: ephemeral
