@@ -10,7 +10,7 @@ caaspp_results as (
         cast(StudentResult as int64) as StudentResult
     from {{ ref('fct_StudentAssessment') }}
     where
-        AceAssessmentId in ('1', '2')
+        AceAssessmentId in ('1', '2', '6')
 ),
 
 schools as (
