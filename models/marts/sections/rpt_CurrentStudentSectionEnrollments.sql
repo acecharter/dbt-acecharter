@@ -61,9 +61,6 @@ final as (
     on section_enrollments.SchoolId = teachers.SchoolId
     and section_enrollments.SessionName = teachers.SessionName
     and section_enrollments.SectionIdentifier = teachers.SectionIdentifier
-
-
-
 )
 
 select * from final
