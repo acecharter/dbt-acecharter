@@ -316,3 +316,7 @@ models:
 
   - name: rpt_CurrentStudentGrades
     description: Grade marks for all grading periods for the current school year for currently enrolled students. One row per grade per grading period per course enrollment per student. Excludes gradebook grades for completed periods.
+
+  - name: rpt_CurrentStudentSectionEnrollments
+    description: All current student course section enrollments, including school, course, teacher, and student demographic information.
+  
