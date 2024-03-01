@@ -6,6 +6,7 @@ with unioned as (
 
 final as (
     select
+        SchoolYear,
         cast(SchoolCode as string) as SchoolCode,
         cast(SSID as string) as SSID,
         StudentName,
