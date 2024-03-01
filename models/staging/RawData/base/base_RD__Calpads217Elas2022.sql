@@ -1,17 +1,17 @@
 with empower as (
-    select * from {{ ref('base_RD__Calpads217SelaEmpower2022')}}
+    select * from {{ ref('base_RD__Calpads217ElasEmpower2022')}}
 ),
 
 esperanza as (
-    select * from {{ ref('base_RD__Calpads217SelaEsperanza2022')}}
+    select * from {{ ref('base_RD__Calpads217ElasEsperanza2022')}}
 ),
 
 hs as (
-    select * from {{ ref('base_RD__Calpads217SelaHighSchool2022')}}
+    select * from {{ ref('base_RD__Calpads217ElasHighSchool2022')}}
 ),
 
 inspire as (
-    select * from {{ ref('base_RD__Calpads217SelaInspire2022')}}
+    select * from {{ ref('base_RD__Calpads217ElasInspire2022')}}
 )
 
 final as (
