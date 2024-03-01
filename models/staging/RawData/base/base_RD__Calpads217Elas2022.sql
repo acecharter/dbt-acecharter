@@ -14,7 +14,7 @@ inspire as (
     select * from {{ ref('base_RD__Calpads217Elas2022Inspire')}}
 ),
 
-final as (
+unioned as (
     select * from empower
     union all
     select * from esperanza
@@ -22,6 +22,13 @@ final as (
     select * from hs
     union all
     select * from inspire
+),
+
+final as (
+    select
+        '2021-22' as SchoolYear,
+        *
+    from unioned
 )
 
 select * from final
