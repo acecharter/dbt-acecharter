@@ -12,7 +12,7 @@ hs as (
 
 inspire as (
     select * from {{ ref('base_RD__Calpads217ElasInspire2023')}}
-)
+),
 
 final as (
     select * from empower
