@@ -4,5 +4,5 @@ select
     StudentName,
     LocalID,
     RFEPDate
-from {{ source('RawData', 'Calpads217SelaEmpower2022') }}
+from {{ source('RawData', 'Calpads217ElasInspire2023') }}
 where SchoolCode is not null
