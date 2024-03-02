@@ -121,3 +121,11 @@ models:
 
     config:
       materialized: view
+
+  - name: int_TomsCaasppTested__recent_rfep_aggregated
+    description: >
+      Aggregated CAASPP results for recently reclassified English proficient (RFEP) students (i.e. within the last 4 years) 
+      and combined English learner/recent RFEP students
+
+    config:
+      materialized: table
