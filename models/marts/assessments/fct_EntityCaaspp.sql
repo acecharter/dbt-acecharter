@@ -31,7 +31,7 @@ final as (
         caaspp.AssessmentObjective,
         caaspp.ReportingMethod,
         caaspp.ResultDataType,
-        caaspp.SchoolResult,
+        cast(caaspp.SchoolResult as float64) as SchoolResult,
         caaspp.StudentWithResultCount
     from caaspp
     left join demographics

@@ -41,10 +41,95 @@ caaspp_id_race_added as (
     on c.ReportingEthnicity = r.RaceEthnicityCode
 ),
 
+rfep as (
+    select * from {{ ref('stg_RD__Calpads217Elas')}}
+),
+
+caaspp_rfep_updated as (
+    select
+        caaspp.AceAssessmentId,
+        caaspp.AceAssessmentName,
+        caaspp.AssessmentSubject,
+        caaspp.TestYear,
+        caaspp.SchoolYear,
+        caaspp.RecordType,
+        caaspp.SSID,
+        caaspp.StudentLastName,
+        caaspp.StudentFirstName,
+        caaspp.StudentMiddleName,
+        caaspp.DateofBirth,
+        caaspp.Gender,
+        caaspp.GradeAssessed,
+        caaspp.CALPADSSchoolCode,
+        caaspp.CALPADSSchoolName,
+        caaspp.Section504Status,
+        caaspp.CALPADSIDEAIndicator,
+        caaspp.IDEAIndicatorForTesting,
+        caaspp.MigrantStatus,
+        caaspp.ELStatus,
+        caaspp.ELEntryDate,
+        coalesce(caaspp.RFEPDate, rfep.RFEPDate) as RFEPDate,
+        caaspp.FirstEntryDateInUSSchool,
+        caaspp.EnrollmentEffectiveDate,
+        caaspp.ELAS,
+        caaspp.CEDSLanguageCode,
+        caaspp.CALPADSPrimaryLanguage,
+        caaspp.MilitaryStatus,
+        caaspp.FosterStatus,
+        caaspp.EconomicDisadvantageStatus,
+        caaspp.EconomicDisadvantageTesting,
+        caaspp.CALPADSNPSSchoolFlag,
+        caaspp.HispanicorLatino,
+        caaspp.AmericanIndianorAlaskaNative,
+        caaspp.Asian,
+        caaspp.HawaiianOrOtherPacificIslander,
+        caaspp.Filipino,
+        caaspp.BlackorAfricanAmerican,
+        caaspp.White,
+        caaspp.TwoorMoreRaces,
+        caaspp.ReportingEthnicity,
+        caaspp.FinalTestedSchoolCode,
+        caaspp.StudentExitCode,
+        caaspp.StudentExitWithdrawalDate,
+        caaspp.StudentRemovedCALPADSFileDate,
+        caaspp.ConditionCode,
+        caaspp.Attemptedness,
+        caaspp.ScoreStatus,
+        caaspp.IncludeIndicator,
+        caaspp.LexileorQuantileMeasure,
+        caaspp.GrowthScore,
+        caaspp.ScaleScore,
+        caaspp.AchievementLevels,
+        caaspp.GradeAssessedMinus1,
+        caaspp.ScaleScoreMinus1,
+        caaspp.AchievementLevelMinus1,
+        caaspp.GradeAssessedMinus2,
+        caaspp.ScaleScoreMinus2,
+        caaspp.AchievementLevelMinus2,
+        caaspp.GradeAssessedMinus3,
+        caaspp.ScaleScoreMinus3,
+        caaspp.AchievementLevelMinus3,
+        caaspp.RaceEthnicity,
+        case
+            when caaspp.SchoolYear not in (select distinct SchoolYear from rfep) then null
+            when 
+                caaspp.RFEPDate is null 
+                and rfep.RFEPDate is not null
+            then 'Y' 
+            else 'N'
+        end as EndOfYearRfep
+    from caaspp_id_race_added as caaspp
+    left join rfep
+    on caaspp.CALPADSSchoolCode = rfep.SchoolCode
+    and caaspp.SSID = rfep.SSID
+    and caaspp.SchoolYear = rfep.SchoolYear
+),
+
 final as (
     select
         c.*,
-        case when ELStatus is true or date(RFEPDate) > date(TestYear - 4, 6, 15) then true else false end as ElWithinPast4Years,
+        case
+        when ELStatus is true or date(RFEPDate) > date(TestYear - 4, 6, 15) then 'Y' else 'N' end as ElWithinPast4Years,
         cast(
             case when c.ScaleScore is not null then round(c.ScaleScore - m.MinStandardMetScaleScore, 0) else null end as int64
         ) as Dfs,
@@ -56,8 +141,8 @@ final as (
         ) as DfsMinus2,
         cast(
             case when c.ScaleScoreMinus3 is not null then round(c.ScaleScoreMinus3 - m3.MinStandardMetScaleScore, 0) else null end as int64
-        ) as DfsMinus3,
-    from caaspp_id_race_added as c
+        ) as DfsMinus3
+    from caaspp_rfep_updated as c
     left join min_met_scores as m
     on
         c.AceAssessmentId = m.AceAssessmentId

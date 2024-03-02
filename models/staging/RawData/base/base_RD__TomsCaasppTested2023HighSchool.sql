@@ -7,7 +7,7 @@ select
     date(DateofBirth) as DateofBirth,
     Gender,
     cast(cast(GradeAssessed as int64) as string) as GradeAssessed,
-    right(cast(CALPADSSchoolCode as string), 7) as CALPADSSchoolCode,
+    cast(cast(right(cast(CALPADSSchoolCode as string), 7) as int64) as string) as CALPADSSchoolCode,
     CALPADSSchoolName,
     Section504Status,
     CALPADSIDEAIndicator,

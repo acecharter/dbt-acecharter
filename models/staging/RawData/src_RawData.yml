@@ -147,6 +147,31 @@ sources:
       - name: CaDashSusp2023
         description: 2023 CA School Dashboard Suspension Rate indicator data file. Downloaded from https://www.cde.ca.gov/ta/ac/cm/dashboardresources.asp
 
+      - name: Calpads217Elas2022Empower
+        description: Empower 2021-22 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+
+      - name: Calpads217Elas2023Empower
+        description: Empower 2022-23 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+
+      - name: Calpads217Elas2022Esperanza
+        description: Esperanza 2021-22 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+
+      - name: Calpads217Elas2023Esperanza
+        description: Esperanza 2022-23 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+        
+      - name: Calpads217Elas2022HighSchool
+        description: ACE Charter High School 2021-22 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+        
+      - name: Calpads217Elas2023HighSchool
+        description: ACE Charter High School 2022-23 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+        
+      - name: Calpads217Elas2022Inspire
+        description: Inspire 2021-22 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+        
+      - name: Calpads217Elas2023Inspire
+        description: Inspire 2022-23 CALPADS Snapshot Report 2.17 English Language Acquisition Status - ELs Reclassified RFEP Student List
+
+        
       - name: CalpadsSelaEmpower
         description: CALPADS ODS Active Students SELA Extract for Empower as of DateTableLastUpdated listed in stg_GSD__ManuallyMaintainedFilesTracker
 
