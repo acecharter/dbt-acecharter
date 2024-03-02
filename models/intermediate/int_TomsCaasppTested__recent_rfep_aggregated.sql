@@ -1,5 +1,10 @@
 with schools as (
-    select * from {{ ref('dim_Schools')}}
+    select
+        format("%07d", cast(SchoolId as int64)) as SchoolId,
+        SchoolName,
+        SchoolNameMid,
+        SchoolNameShort
+    from {{ ref('dim_Schools')}}
 ),
 
 caaspp_recent_rfep_and_el_excl_newcomers as (
