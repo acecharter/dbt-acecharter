@@ -3,7 +3,7 @@ with entity_caaspp as (
 ),
 
 recent_rfep as (
-    select * from {{ ref('int_TomsCaasppTestedResults__recent_rfep_aggregated')}}
+    select * from {{ ref('int_TomsCaasppTested__recent_rfep_aggregated')}}
 ),
 
 final as (

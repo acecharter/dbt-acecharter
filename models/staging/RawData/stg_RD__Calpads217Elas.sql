@@ -7,7 +7,7 @@ with unioned as (
 final as (
     select
         SchoolYear,
-        cast(SchoolCode as string) as SchoolCode,
+        format("%07d", SchoolCode) as SchoolCode,
         cast(SSID as string) as SSID,
         StudentName,
         cast(LocalID as string) as LocalID,
