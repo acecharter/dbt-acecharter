@@ -122,7 +122,7 @@ final as (
         cast(null as string) as DemographicId,
         'English-Language Fluency' as StudentGroup,
         unioned.DemographicName,
-        unioned.GradeAssessed as GradeLevel,
+        cast(unioned.GradeAssessed as int64) as GradeLevel,
         unioned.RecordType as TestId,
         unioned.AssessmentSubject as TestSubject,
         cast(null as int64) as StudentsEnrolled,
