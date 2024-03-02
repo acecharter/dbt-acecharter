@@ -98,7 +98,7 @@ dfs as (
 pct_met_or_above as (
     select * except(PercentMetOrAbove),
     'FLOAT64' as ResultDataType,
-    'Percent Met or Above' as ReportingMethod,
+    'Percent Met and Above' as ReportingMethod,
     PercentMetOrAbove as SchoolResult
     from unioned_agg
 ),
