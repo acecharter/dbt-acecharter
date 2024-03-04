@@ -25,9 +25,10 @@ combined_schoolwide_agg as (
         '13' as GradeAssessed,
         RecordType,
         AssessmentSubject,
+        count(*) as StudentsWithScores,
         round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
         round(avg(Dfs), 1) as AverageDfs,
-        count(*) as StudentWithResultCount
+        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
     from caaspp_recent_rfep_and_el_excl_newcomers
     group by 1, 2, 3, 4, 5, 6, 7
 ),
@@ -41,9 +42,10 @@ combined_by_grade_level_agg as (
         GradeAssessed,
         RecordType,
         AssessmentSubject,
+        count(*) as StudentsWithScores,
         round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
         round(avg(Dfs), 1) as AverageDfs,
-        count(*) as StudentWithResultCount
+        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
     from caaspp_recent_rfep_and_el_excl_newcomers
     group by 1, 2, 3, 4, 5, 6, 7
 ),
@@ -57,9 +59,10 @@ recent_rfep_schoolwide_agg as (
         '13' as GradeAssessed,
         RecordType,
         AssessmentSubject,
+        count(*) as StudentsWithScores,
         round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
         round(avg(Dfs), 1) as AverageDfs,
-        count(*) as StudentWithResultCount
+        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
     from caaspp_recent_rfep_and_el_excl_newcomers
     where RFEPDate is not null
     group by 1, 2, 3, 4, 5, 6, 7
@@ -74,9 +77,10 @@ recent_rfep_by_grade_level_agg as (
         GradeAssessed,
         RecordType,
         AssessmentSubject,
+        count(*) as StudentsWithScores,
         round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
         round(avg(Dfs), 1) as AverageDfs,
-        count(*) as StudentWithResultCount
+        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
     from caaspp_recent_rfep_and_el_excl_newcomers
     where RFEPDate is not null
     group by 1, 2, 3, 4, 5, 6, 7
@@ -131,7 +135,7 @@ final as (
         unioned.RecordType as TestId,
         unioned.AssessmentSubject as TestSubject,
         cast(null as int64) as StudentsEnrolled,
-        unioned.StudentWithResultCount as StudentsWithScores,
+        unioned.StudentsWithScores,
         'Overall' as AssessmentObjective,
         unioned.ReportingMethod,
         unioned.ResultDataType,
