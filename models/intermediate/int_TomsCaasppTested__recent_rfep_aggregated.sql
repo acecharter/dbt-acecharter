@@ -7,26 +7,66 @@ with schools as (
     from {{ ref('dim_Schools')}}
 ),
 
-caaspp_excl_newcomers as (
-    select *
+caaspp as (
+    select
+        *,
+        case
+            when ElWithinPast4Years = 'N' then 'Not a Recent RFEP or EL'
+            when ELAS = 'RFEP' and ElWithinPast4Years = 'Y' then 'Recent RFEP (in last 4 years)'
+            when ELAS = 'EL' and FirstEntryDateInUSSchool > date(concat(cast(TestYear - 1 as string),'-04-15')) then 'Newcomer EL'
+            else 'EL (non-newcomer)'
+        end as DemographicName
     from {{ ref('stg_RD__TomsCaasppTested')}}
-    where ScoreStatus = 'V'
-    and IncludeIndicator = 'Y'
-    and FirstEntryDateInUSSchool <= date(concat(cast(TestYear - 1 as string),'-04-15'))
+    where IncludeIndicator = 'Y'
 ),
 
-caaspp_recent_rfep_and_el as (
+schoolwide_agg as (
+    select
+        CALPADSSchoolCode,
+        TestYear,
+        SchoolYear,
+        DemographicName,
+        '13' as GradeAssessed,
+        RecordType,
+        AssessmentSubject,
+        count(*) as StudentsWithScores,
+        round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
+        round(avg(Dfs), 1) as AverageDfs,
+        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
+    from caaspp
+    group by 1, 2, 3, 4, 5, 6, 7
+),
+
+by_grade_level_agg as (
+    select
+        CALPADSSchoolCode,
+        TestYear,
+        SchoolYear,
+        DemographicName,
+        GradeAssessed,
+        RecordType,
+        AssessmentSubject,
+        count(*) as StudentsWithScores,
+        round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
+        round(avg(Dfs), 1) as AverageDfs,
+        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
+    from caaspp
+    group by 1, 2, 3, 4, 5, 6, 7
+
+),
+
+caaspp_recent_rfep_and_non_newcomer_el as (
     select *
-    from caaspp_excl_newcomers
-    where ElWithinPast4Years = 'Y'
+    from caaspp
+    where DemographicName in ('Recent RFEP (in last 4 years)', 'EL (non-newcomer)')
 ),
 
-recent_rfep_el_combo_schoolwide_agg as (
+recent_rfep_and_non_newcomer_el_schoolwide_agg as (
     select
         CALPADSSchoolCode,
         TestYear,
         SchoolYear,
-        'EL within last 4 years' as DemographicName,
+        'EL (non-newcomer) or RFEP in last 4 years' as DemographicName,
         '13' as GradeAssessed,
         RecordType,
         AssessmentSubject,
@@ -34,16 +74,16 @@ recent_rfep_el_combo_schoolwide_agg as (
         round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
         round(avg(Dfs), 1) as AverageDfs,
         sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
-    from caaspp_recent_rfep_and_el
+    from caaspp_recent_rfep_and_non_newcomer_el
     group by 1, 2, 3, 4, 5, 6, 7
 ),
 
-recent_rfep_el_combo_by_grade_level_agg as (
+recent_rfep_and_non_newcomer_el_by_grade_level_agg as (
     select
         CALPADSSchoolCode,
         TestYear,
         SchoolYear,
-        'EL within last 4 years' as DemographicName,
+        'EL (non-newcomer) or RFEP in last 4 years' as DemographicName,
         GradeAssessed,
         RecordType,
         AssessmentSubject,
@@ -51,98 +91,18 @@ recent_rfep_el_combo_by_grade_level_agg as (
         round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
         round(avg(Dfs), 1) as AverageDfs,
         sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
-    from caaspp_recent_rfep_and_el
-    group by 1, 2, 3, 4, 5, 6, 7
-),
-
-recent_rfep_schoolwide_agg as (
-    select
-        CALPADSSchoolCode,
-        TestYear,
-        SchoolYear,
-        'Recent RFEP (within last 4 years)' as DemographicName,
-        '13' as GradeAssessed,
-        RecordType,
-        AssessmentSubject,
-        count(*) as StudentsWithScores,
-        round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
-        round(avg(Dfs), 1) as AverageDfs,
-        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
-    from caaspp_recent_rfep_and_el
-    where RFEPDate is not null
-    group by 1, 2, 3, 4, 5, 6, 7
-),
-
-recent_rfep_by_grade_level_agg as (
-    select
-        CALPADSSchoolCode,
-        TestYear,
-        SchoolYear,
-        'Recent RFEP (within last 4 years)' as DemographicName,
-        GradeAssessed,
-        RecordType,
-        AssessmentSubject,
-        count(*) as StudentsWithScores,
-        round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
-        round(avg(Dfs), 1) as AverageDfs,
-        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
-    from caaspp_recent_rfep_and_el
-    where RFEPDate is not null
-    group by 1, 2, 3, 4, 5, 6, 7
-),
-
-caaspp_non_recent_rfep_or_el as (
-    select *
-    from caaspp_excl_newcomers
-    where ElWithinPast4Years = 'N'
-),
-
-non_recent_rfep_or_el_schoolwide_agg as (
-    select
-        CALPADSSchoolCode,
-        TestYear,
-        SchoolYear,
-        'Not EL within last 4 years' as DemographicName,
-        '13' as GradeAssessed,
-        RecordType,
-        AssessmentSubject,
-        count(*) as StudentsWithScores,
-        round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
-        round(avg(Dfs), 1) as AverageDfs,
-        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
-    from caaspp_non_recent_rfep_or_el
-    group by 1, 2, 3, 4, 5, 6, 7
-),
-
-non_recent_rfep_or_el_by_grade_level_agg as (
-    select
-        CALPADSSchoolCode,
-        TestYear,
-        SchoolYear,
-        'Not EL within last 4 years' as DemographicName,
-        GradeAssessed,
-        RecordType,
-        AssessmentSubject,
-        count(*) as StudentsWithScores,
-        round(sum(case when AchievementLevels>=3 then 1 else 0 end) / count(*), 3) as PercentMetOrAbove,
-        round(avg(Dfs), 1) as AverageDfs,
-        sum(case when AchievementLevels>=3 then 1 else 0 end) as StudentWithResultCount
-    from caaspp_non_recent_rfep_or_el
+    from caaspp_recent_rfep_and_non_newcomer_el
     group by 1, 2, 3, 4, 5, 6, 7
 ),
 
 unioned_agg as (
-    select * from recent_rfep_el_combo_schoolwide_agg
+    select * from schoolwide_agg
     union all
-    select * from recent_rfep_el_combo_by_grade_level_agg
+    select * from by_grade_level_agg
     union all
-    select * from recent_rfep_schoolwide_agg
+    select * from recent_rfep_and_non_newcomer_el_schoolwide_agg
     union all
-    select * from recent_rfep_by_grade_level_agg
-    union all
-    select * from non_recent_rfep_or_el_schoolwide_agg
-    union all
-    select * from non_recent_rfep_or_el_by_grade_level_agg
+    select * from recent_rfep_and_non_newcomer_el_by_grade_level_agg
 ),
 
 dfs as (
