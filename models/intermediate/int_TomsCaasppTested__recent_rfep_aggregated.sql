@@ -1,5 +1,5 @@
 with schools as (
-    select
+    select distinct
         format("%07d", cast(SchoolId as int64)) as SchoolId,
         SchoolName,
         SchoolNameMid,
