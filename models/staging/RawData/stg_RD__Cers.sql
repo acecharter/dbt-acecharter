@@ -48,6 +48,10 @@ cers_2223 as (
     select * from {{ ref('base_RD__Cers2223') }}
 ),
 
+cers_2324 as (
+    select * from {{ ref('base_RD__Cers2324') }}
+),
+
 unioned as (
     select * from cers_1819 
     union all
@@ -58,6 +62,8 @@ unioned as (
     select * from cers_2122
     union all
     select * from cers_2223
+    union all
+    select * from cers_2324
             
 ),
 
