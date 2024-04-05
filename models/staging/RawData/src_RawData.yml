@@ -330,6 +330,15 @@ sources:
 
       - name: CdeSusp2122
         description: 2021-22 CDE Suspension Data file (downloaded from https://www.cde.ca.gov/ds/ad/filessd.asp)
+        
+      - name: CersInspire2324
+        description: An extract from CERS (California Educator Reporting System) listing all 2023-24 CAASPP assessment results for students enrolled at Inspire
+
+      - name: CersEmpower2324
+        description: An extract from CERS (California Educator Reporting System) listing all 2023-24 CAASPP assessment results for students enrolled at Empower
+
+      - name: CersEsperanza2324
+        description: An extract from CERS (California Educator Reporting System) listing all 2023-24 CAASPP assessment results for students enrolled at Esperanza
 
       - name: CersEmpower2223
         description: An extract from CERS (California Educator Reporting System) listing all 2022-23 CAASPP assessment results for students enrolled at Empower
