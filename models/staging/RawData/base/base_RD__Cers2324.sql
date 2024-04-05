@@ -10,9 +10,9 @@ inspire as (
     select * from {{ source('RawData', 'CersInspire2324') }}
 ),
 
--- hs as (
---     select * from {{ source('RawData', 'CersHighSchool2223') }}
--- ),
+hs as (
+    select * from {{ source('RawData', 'CersHighSchool2223') }}
+),
 
 final as (
     select * from empower
@@ -20,8 +20,8 @@ final as (
     select * from esperanza
     union all
     select * from inspire
-    -- union all
-    -- select * from hs
+    union all
+    select * from hs
 )
 
 select distinct * from final
