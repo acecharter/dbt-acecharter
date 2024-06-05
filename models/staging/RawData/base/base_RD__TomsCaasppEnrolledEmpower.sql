@@ -10,8 +10,8 @@ select
     right(cast(CALPADSSchoolCode as string), 7) as CALPADSSchoolCode,
     CALPADSSchoolName,
     Section504Status,
-    CALPADSIDEAIndicator,
-    IDEAIndicatorForTesting,
+    PrimaryDisabilityType,
+    PrimaryDisabilityForTesting,
     MigrantStatus,
     ELStatus,
     date(ELEntryDate) as ELEntryDate,
@@ -38,8 +38,8 @@ select
     right(cast(FinalTestedSchoolCode as string), 7) as FinalTestedSchoolCode,
     date(FinalTestCompletedDate) as FinalTestCompletedDate,
     StudentExitCode,
-    date(StudentExitWithdrawalDate) as StudentExitWithdrawalDate,
-    date(StudentRemovedCALPADSFileDate) as StudentRemovedCALPADSFileDate,
+    date(StudentExitDate) as StudentExitDate,
+    date(StudentExitFileDate) as StudentExitFileDate,
     ConditionCode,
     case
         when cast(Attemptedness as string) = 'true' then 'Y'
